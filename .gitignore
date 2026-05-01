@@ -1,0 +1,48 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Donnees lourdes ou non versionnables
+data/raw/
+data/embeddings/
+data/saves/
+data/models/
+logs/
+
+# Modeles
+*.gguf
+*.bin
+*.safetensors
+
+# Editeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outils
+.tool-versions
+.python-version
