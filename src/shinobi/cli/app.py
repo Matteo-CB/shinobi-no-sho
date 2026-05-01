@@ -9,9 +9,7 @@ from rich.console import Console
 from rich.panel import Panel
 
 from shinobi import __version__
-from shinobi.cli.character_creation import run_character_creation
-from shinobi.cli.menu import show_menu
-from shinobi.cli.play import play_session
+from shinobi.cli.menu import main_loop
 from shinobi.config import settings
 from shinobi.errors import SaveNotFoundError
 from shinobi.persistence import saves as save_module
@@ -19,6 +17,7 @@ from shinobi.persistence import saves as save_module
 app = typer.Typer(
     add_completion=False,
     no_args_is_help=False,
+    invoke_without_command=True,
     help="Shinobi no Sho. Le livre du shinobi.",
 )
 console = Console()
@@ -26,18 +25,22 @@ console = Console()
 
 @app.callback(invoke_without_command=True)
 def root(ctx: typer.Context) -> None:
-    """Si appele sans sous-commande, affiche le menu."""
+    """Si appele sans sous-commande, lance la boucle de menu (jamais quitte sauf demande)."""
     if ctx.invoked_subcommand is None:
-        show_menu()
+        main_loop()
 
 
 @app.command()
 def play(save_id: str | None = typer.Option(None, help="Save_id a charger.")) -> None:
-    """Lance ou reprend une partie."""
+    """Reprend la derniere partie ou un save specifique."""
+    from shinobi.cli.play import play_session
+
     if save_id is None:
         items = save_module.list_saves()
         if not items:
-            console.print("Aucune save existante. Lance `shinobi new` pour creer un personnage.")
+            console.print(
+                "Aucune save existante. Lance `shinobi new` ou `shinobi` pour creer un personnage."
+            )
             raise typer.Exit(0)
         save_id = sorted(items, key=lambda s: s.last_played, reverse=True)[0].save_id
     play_session(save_id)
@@ -46,6 +49,8 @@ def play(save_id: str | None = typer.Option(None, help="Save_id a charger.")) ->
 @app.command(name="new")
 def new() -> None:
     """Creation d'un nouveau personnage."""
+    from shinobi.cli.character_creation import run_character_creation
+
     run_character_creation()
 
 
@@ -57,7 +62,8 @@ def list_cmd() -> None:
         console.print(Panel("Aucune save trouvee.", title="Saves"))
         return
     lines = [
-        f"- {s.save_id} : {s.character_name}, {s.character_age} ans, an {s.current_year} {s.current_date} ({s.village}, {s.rank})"
+        f"- {s.save_id} : {s.character_name}, {s.character_age} ans, "
+        f"an {s.current_year} {s.current_date} ({s.village}, {s.rank})"
         for s in items
     ]
     console.print(Panel("\n".join(lines), title=f"Saves ({len(items)})"))
@@ -103,16 +109,17 @@ def config_cmd() -> None:
         Panel.fit(
             "\n".join(
                 [
-                    f"LLM backend : {settings.llm_backend_url}",
-                    f"Modele : {settings.llm_model_name}",
-                    f"Path GGUF : {settings.llm_model_path}",
-                    f"Embeddings : {settings.embeddings_model_name} ({settings.embeddings_device})",
-                    f"Saves dir : {settings.saves_dir}",
-                    f"Canonical dir : {settings.canonical_data_dir}",
-                    f"Profil canonicite : {settings.canonicity_profile_sources}",
+                    f"LLM backend : [cyan]{settings.llm_backend_url}[/cyan]",
+                    f"Modele : [cyan]{settings.llm_model_name}[/cyan]",
+                    f"Path GGUF : [cyan]{settings.llm_model_path}[/cyan]",
+                    f"Embeddings : [cyan]{settings.embeddings_model_name}[/cyan] ({settings.embeddings_device})",
+                    f"Saves dir : [cyan]{settings.saves_dir}[/cyan]",
+                    f"Canonical dir : [cyan]{settings.canonical_data_dir}[/cyan]",
+                    f"Profil canonicite : [cyan]{settings.canonicity_profile_sources}[/cyan]",
                 ]
             ),
             title="Configuration",
+            border_style="cyan",
         )
     )
 

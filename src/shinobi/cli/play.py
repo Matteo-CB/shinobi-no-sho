@@ -1,15 +1,22 @@
-"""Boucle de jeu principale (sans LLM en fallback)."""
+"""Boucle de jeu principale avec UI rich et narration LLM optionnelle."""
 
 from __future__ import annotations
 
 import asyncio
 
-import typer
 from rich.console import Console
 from rich.panel import Panel
+from rich.prompt import Prompt
+from rich.text import Text
 
 from shinobi.canon.loader import load_canon
-from shinobi.cli.display import print_status, print_techniques
+from shinobi.cli.display import (
+    action_menu,
+    outcome_color,
+    print_objectives,
+    print_status,
+    print_techniques,
+)
 from shinobi.engine.actions import (
     Action,
     ResolutionInputs,
@@ -28,6 +35,17 @@ from shinobi.types import ActionType
 from shinobi.utils.time_utils import GameDate
 
 console = Console()
+
+
+META_HELP = {
+    "/status": "Affiche le panneau de statut detaille",
+    "/techniques": "Liste tes techniques connues et en cours",
+    "/objectives": "Liste tes objectifs declares",
+    "/journal": "Affiche les 20 derniers tours",
+    "/help": "Affiche cette aide",
+    "/save": "Force un snapshot complet (auto deja active)",
+    "/quit": "Sauvegarde et retourne au menu principal",
+}
 
 
 def play_session(save_id: str) -> None:
@@ -54,34 +72,44 @@ def play_session(save_id: str) -> None:
     store = ChromaStore()
     retriever = Retriever(store, canon)
     turn = meta.total_turns
+    last_proposed: list[dict] = []
 
     console.print(
         Panel.fit(
-            f"Tu reprends la partie de {character.name} a l'an {world.current_year}, jour {world.current_date}.",
-            title="Reprise",
+            f"Tu reprends [bold yellow]{character.name}[/bold yellow] a l'an {world.current_year}, "
+            f"jour {world.current_date}.\nTape [cyan]/help[/cyan] pour les commandes.",
+            title="Partie en cours",
+            border_style="cyan",
         )
     )
 
     while not character.is_dead:
         turn += 1
         print_status(console, character, world)
-        intent = typer.prompt(
-            "Action libre (ou /quit pour sauvegarder et sortir)",
+        if last_proposed:
+            action_menu(console, last_proposed)
+
+        intent = Prompt.ask(
+            "[bold cyan]Action[/bold cyan] [dim](numero, texte libre, ou /help)[/dim]",
             default="je m'entraine",
         ).strip()
 
         if intent.startswith("/"):
-            if intent == "/quit":
-                console.print("Sauvegarde finale...")
-                break
-            if intent == "/status":
-                print_status(console, character, world)
-                continue
-            if intent == "/techniques":
-                print_techniques(console, character)
-                continue
-            console.print("Commande inconnue.")
+            if not _handle_meta(intent, character, world):
+                save_module.append_narrative_log(
+                    save_id,
+                    {"turn": turn, "year": world.current_year, "type": "session_end"},
+                )
+                console.print("[green]Sauvegarde effectuee. Retour au menu.[/green]")
+                return
+            turn -= 1  # n'a pas consomme de tour reel
             continue
+
+        # Si le joueur a tape un numero correspondant a une action proposee, on prend son label.
+        if intent.isdigit() and last_proposed:
+            idx = int(intent) - 1
+            if 0 <= idx < len(last_proposed):
+                intent = last_proposed[idx].get("label_fr", intent)
 
         action = Action(
             action_type=ActionType.custom,
@@ -93,7 +121,7 @@ def play_session(save_id: str) -> None:
                 character=character,
                 world=world,
                 action=action,
-                seed=world.seed,
+                seed=world.seed & 0x7FFFFFFFFFFFFFFF,
             )
         )
         character, world = apply_action_to_state(character, world, result)
@@ -111,47 +139,98 @@ def play_session(save_id: str) -> None:
             hour=new_date.hour,
             minute=new_date.minute,
         )
-        world = world.model_copy(update={"seed": next_seed(result.seed_after)})
+        seed_after = next_seed(result.seed_after) & 0x7FFFFFFFFFFFFFFF
+        world = world.model_copy(update={"seed": seed_after})
         world, fired, cancelled = tick_scheduler(world, canon, turn_number=turn)
 
-        console.print(Panel(result.summary_fr, title="Resultat"))
+        outcome_text = Text(result.summary_fr, style=outcome_color(result.outcome.value))
+        console.print(
+            Panel(
+                outcome_text,
+                title=f"Resultat (tour {turn})",
+                border_style=outcome_color(result.outcome.value),
+            )
+        )
         for f in fired:
-            console.print(f"[yellow]Evenement canon declenche : {f.event_id}[/yellow]")
+            console.print(f"  [yellow]>>> Evenement canon declenche : {f.event_id}[/yellow]")
         for c in cancelled:
-            console.print(f"[red]Evenement canon annule : {c.event_id}[/red]")
+            console.print(f"  [red]>>> Evenement canon annule : {c.event_id}[/red]")
+
+        last_proposed = []
+        try:
+            narration = asyncio.run(
+                _attempt_narration(character, world, canon, retriever, result, intent)
+            )
+            if narration is not None:
+                console.print(Panel(narration.narrative, title="Narration", border_style="cyan"))
+                for d in narration.npc_dialogue:
+                    console.print(
+                        f"  [bold magenta]{d.get('character_id', '?')}[/bold magenta] : "
+                        f"[italic]{d.get('line', '')}[/italic]"
+                    )
+                last_proposed = narration.proposed_actions or []
+                for obs in narration.world_observations:
+                    console.print(f"  [dim cyan]Observation :[/dim cyan] {obs}")
+        except Exception as exc:
+            console.print(f"[dim]Narration LLM indisponible ({type(exc).__name__})[/dim]")
 
         try:
-            asyncio.run(_attempt_narration(character, world, canon, retriever, result, intent))
-        except Exception as exc:
-            console.print(
-                f"[dim]Narration LLM indisponible ({type(exc).__name__}: {str(exc)[:80]})[/dim]"
+            save_module.save_turn(
+                save_id,
+                turn_number=turn,
+                action_result=result,
+                new_character=character,
+                new_world=world,
+                seed_state=seed_after,
             )
+            save_module.append_narrative_log(
+                save_id,
+                {
+                    "turn": turn,
+                    "year": world.current_year,
+                    "date": world.current_date,
+                    "type": "narration",
+                    "content": result.summary_fr,
+                    "intent": intent,
+                },
+            )
+        except Exception as exc:
+            console.print(f"[red]Erreur de sauvegarde : {type(exc).__name__}: {exc}[/red]")
 
-        save_module.save_turn(
-            save_id,
-            turn_number=turn,
-            action_result=result,
-            new_character=character,
-            new_world=world,
-            seed_state=world.seed,
-        )
-        save_module.append_narrative_log(
-            save_id,
-            {
-                "turn": turn,
-                "year": world.current_year,
-                "type": "narration",
-                "content": result.summary_fr,
-            },
-        )
-
-    console.print("Fin de session.")
+    console.print(
+        Panel(f"[red]Fin de la vie de {character.name}.[/red]", title="Mort", border_style="red")
+    )
 
 
-async def _attempt_narration(character, world, canon, retriever, result, intent: str) -> None:
+def _handle_meta(command: str, character, world) -> bool:
+    """Traite une commande meta. Retourne False si on doit quitter."""
+    if command in ("/quit", "/exit"):
+        return False
+    if command == "/help":
+        body = "\n".join(f"  [cyan]{cmd}[/cyan] : {desc}" for cmd, desc in META_HELP.items())
+        console.print(Panel(body, title="Commandes meta", border_style="cyan"))
+    elif command == "/status":
+        print_status(console, character, world)
+    elif command == "/techniques":
+        print_techniques(console, character)
+    elif command == "/objectives":
+        descriptions = []
+        for goal in character.declared_goals:
+            descriptions.append(f"{goal.goal_id} : {goal.status.value}")
+        print_objectives(console, descriptions)
+    elif command == "/journal":
+        console.print("[dim]Journal narratif : voir data/saves/<save_id>/narrative_log.jsonl[/dim]")
+    elif command == "/save":
+        console.print("[green]Snapshot deja effectue automatiquement chaque tour.[/green]")
+    else:
+        console.print(f"[red]Commande inconnue : {command}[/red] (tape [cyan]/help[/cyan])")
+    return True
+
+
+async def _attempt_narration(character, world, canon, retriever, result, intent: str):
     async with LLMClient() as client:
         if not await client.health():
-            return
+            return None
         narrator = Narrator(client, canon, retriever)
         request = NarrationRequest(
             turn_summary=intent,
@@ -163,14 +242,10 @@ async def _attempt_narration(character, world, canon, retriever, result, intent:
             character_state_summary=(
                 f"{character.name}, {character.age_years} ans, "
                 f"{character.rank} a {character.current_village}, "
-                f"chakra {character.chakra.current}/{character.chakra.max}"
+                f"chakra {character.chakra.current}/{character.chakra.max}, "
+                f"clan {character.clan or 'civil'}, "
+                f"natures {', '.join(character.natures) or 'aucune'}"
             ),
             duration_str=f"{result.duration_minutes} minutes",
         )
-        try:
-            narration = await narrator.narrate(request)
-            console.print(Panel(narration.narrative, title="Narration"))
-            for d in narration.npc_dialogue:
-                console.print(f"  [cyan]{d.get('character_id', '?')}[/cyan] : {d.get('line', '')}")
-        except Exception as exc:
-            console.print(f"[dim]Narration: {type(exc).__name__}[/dim]")
+        return await narrator.narrate(request)

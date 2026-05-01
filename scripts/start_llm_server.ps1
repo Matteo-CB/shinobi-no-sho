@@ -21,8 +21,31 @@ if (-not (Test-Path $ModelPath)) {
     exit 1
 }
 
-# Verifier que llama-server est dans le PATH
+# Refresh PATH from registry (au cas ou le shell aurait ete lance avant la modification du PATH)
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+$machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+$env:Path = "$machinePath;$userPath"
+
+# Verifier que llama-server est trouvable, soit dans le PATH soit aux emplacements connus
 $llamaServer = Get-Command llama-server -ErrorAction SilentlyContinue
+if (-not $llamaServer) {
+    $candidates = @(
+        "C:\Users\matte\llama.cpp\llama-server.exe",
+        "C:\llama.cpp\llama-server.exe",
+        ".\llama.cpp\llama-server.exe"
+    )
+    foreach ($candidate in $candidates) {
+        if (Test-Path $candidate) {
+            $env:Path = "$(Split-Path $candidate);$env:Path"
+            $llamaServer = Get-Command llama-server -ErrorAction SilentlyContinue
+            if ($llamaServer) {
+                Write-Host "llama-server trouve dans : $(Split-Path $candidate)" -ForegroundColor DarkGray
+                break
+            }
+        }
+    }
+}
+
 if (-not $llamaServer) {
     Write-Host "llama-server introuvable dans le PATH." -ForegroundColor Red
     Write-Host ""

@@ -178,7 +178,7 @@ def save_turn(
                 encode_json(action_result.action.model_dump(mode="json")),
                 encode_json(action_result.model_dump(mode="json")),
                 action_result.duration_minutes,
-                seed_state,
+                str(seed_state),
                 _iso_now(),
             ),
         )

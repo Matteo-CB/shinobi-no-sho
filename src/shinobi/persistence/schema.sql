@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS turns (
     action_payload TEXT NOT NULL,
     action_result TEXT NOT NULL,
     duration_minutes INTEGER NOT NULL,
-    seed_state INTEGER NOT NULL,
+    seed_state TEXT NOT NULL,
     created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_turns_year ON turns(year);
