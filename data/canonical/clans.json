@@ -1,0 +1,782 @@
+[
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Aburame Symbol.svg:200px\n|english=Aburame Clan\n|unnamed clan=No\n|kanji=油女一族\n|romaji=Aburame Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Aburame Clan|油女一族|Aburame Ichizoku}} is a well-known clan of Konohagakure. At birth, members of this clan are offered to several special breeds of insects as a nest, residing just under their host's skin. These insects will then live in symbiosis with their host from that point on. Because of this, its members are characterised by their use of insects as weapons.",
+    "id": "aburame",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Aburame",
+    "sources": [
+      "narutopedia:Aburame_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Akimichi Symbol.svg:200px\n|english=Akimichi Clan\n|unnamed clan=No\n|kanji=秋道一族\n|romaji=Akimichi Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Akimichi Clan|秋道一族|Akimichi Ichizoku}} is a well known clan of Konohagakure. Many of their clan's techniques revolve around the manipulation of their bodyweight and size through the use of Yang Release. It has had fifteen family heads, with Chōza Akimichi being the fifteenth. Chōji Akimichi is stated to become the sixteenth head.",
+    "id": "akimichi",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Akimichi",
+    "sources": [
+      "narutopedia:Akimichi_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Amagiri Clan\n|unnamed clan=No\n|kanji=天霧一族\n|romaji=Amagiri Ichizoku\n|affiliations=Yumegakure\n|media=Game\n|game debut=Naruto Shippūden: Kizuna Drive\n}}\nThe {{translation|Amagiri Clan|天霧一族|Amagiri Ichizoku}} is a clan that founded Yumegakure, and one of the three clans that hail from the village.",
+    "id": "amagiri",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Amagiri",
+    "sources": [
+      "narutopedia:Amagiri_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Chinoike Clan.png\n|english=Chinoike Clan\n|unnamed clan=No\n|kanji=血之池一族\n|romaji=Chinoike Ichizoku\n|affiliations=Land of Lightning, Land of Hot Water,\n|Kekkei Genkai=Ketsuryūgan\n|media=Anime, Novel\n}}\nThe {{translation|Chinoike Clan|血之池一族|Chinoike Ichizoku}} was a clan active during the Warring States Period. Its members possess the Ketsuryūgan, a kekkei genkai that grants them the ability to manipulate liquids with high iron content.",
+    "id": "chinoike",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Chinoike",
+    "sources": [
+      "narutopedia:Chinoike_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{Looking for|the Fūma clan from the manga|the anime-only Fūma clan from the Land of Sound|Fūma Clan (Land of Sound)|Fūma clan}}\n|image name=Fūma Symbol.svg:200px\n|english=Fūma Clan\n|unnamed clan=No\n|kanji=風魔一族\n|romaji=Fūma Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga\n}}\nThe {{translation|Fūma Clan|風魔一族|Fūma Ichizoku}} is a renowned ninja clan distantly related to the Uchiha Clan, famous in at least Amegakure and the Land of Fire. They are well-known as an aggressive clan and fight using their characteristic giant Fūma Shuriken; a large, four-bladed weapon",
+    "id": "fuma",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Fūma",
+    "sources": [
+      "narutopedia:Fūma_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{Looking for|the anime-only Fūma clan from the Land of Sound|the Fūma clan from the manga|Fūma Clan}}\n|image name=Fūma Clan (Land of Sound).png\n|english=Fūma Clan\n|unnamed clan=No\n|kanji=ふうま一族\n|romaji=Fūma Ichizoku\n|affiliations=Land of Sound\n|media=Anime\n}}\nThe {{translation|Fūma Clan|ふうま一族|Fūma Ichizoku}} is a shinobi clan from the Land of the Rice Fields, where Orochimaru established the Land of Sound. The clan specialises in using chakra threads and also have a large number of shinobi trained in archery. It also has a number of hidden techniques, including the C",
+    "id": "fuma_land_of_sound",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Fūma (Land of Sound)",
+    "sources": [
+      "narutopedia:Fūma_Clan_(Land_of_Sound)"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Funato Symbol.svg:200px\n|english=Funato Clan\n|unnamed clan=No\n|kanji=舟戸一族\n|romaji=Funato Ichizoku\n|affiliations=Land of Water\n|media=Anime\n}}\nThe {{translation|Funato Clan|舟戸一族|Funato Ichizoku}} is a clan of pirates in the Land of Water. One of the oldest known clans in the country, the Funato Clan were known for their plundering, abductions and strength on open water.",
+    "id": "funato",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Funato",
+    "sources": [
+      "narutopedia:Funato_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{looking for|the clan|the sage|Hagoromo Ōtsutsuki}}\n|image name=Hagoromo Symbol.svg:200px\n|english=Hagoromo Clan\n|unnamed clan=No\n|kanji=羽衣一族\n|romaji=Hagoromo Ichizoku\n|ref=\n|media=Anime, Manga\n}}\nThe {{Translation|Hagoromo Clan|羽衣一族|Hagoromo Ichizoku}} is one of the earlier clans which existed during the war-torn era preceding the creation of the hidden villages. While not a great deal is known about them, they were one of the warring factions alongside the Uchiha clan to oppose the Senju clan in battle — an alliance that led to Kawarama Senju's death, amongst many",
+    "id": "hagoromo",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hagoromo",
+    "sources": [
+      "narutopedia:Hagoromo_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Hatake Symbol.svg:200px\n|english=Hatake Clan\n|unnamed clan=No\n|kanji=はたけ一族\n|romaji=Hatake Ichizoku\n|ref=\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Hatake Clan|はたけ一族|Hatake Ichizoku}} is one of the many clans that reside in Konohagakure. \nIts only known members are renowned ninja: {{translation|'''Konoha's White Fang|木ノ葉の白い牙|Konoha no Shiroi Kiba}} Sakumo, and his son {{translation|Copy Ninja Kakashi'''|コピー忍者のカカシ|Kopī Ninja no Kakashi}}. The latter would later become the Sixth Hokage following the end of the Fourth",
+    "id": "hatake",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hatake",
+    "sources": [
+      "narutopedia:Hatake_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Hirasaka Clan\n|unnamed clan=No\n|kanji=比良坂一族\n|romaji=Hirasaka Ichizoku\n|affiliations=Yumegakure\n|media=Game\n|game debut=Naruto Shippūden: Kizuna Drive\n}}\nThe {{translation|Hirasaka Clan|比良坂一族|Hirasaka Ichizoku}} is one of the three clans that hail from Yumegakure.",
+    "id": "hirasaka",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hirasaka",
+    "sources": [
+      "narutopedia:Hirasaka_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{looking for|the family|disambig=Hōki}}\n|english=Hōki Family\n|unnamed clan=No\n|kanji=ホウキ族\n|romaji=Hōki-zoku\n|affiliations=Sunagakure, Konohagakure\n|media=Novel\n|novel debut=Gaara Hiden: A Sandstorm Mirage\n}}\nThe {{translation|Hōki Family|ホウキ族|Hōki-zoku}} is a matrilineal shinobi clan (and family) of medical-nin and information gatherers from Sunagakure, who originated in and moved down to the village of Konohagakure. The members of the family are also called \"people who work behind the scenes\" and, until the events of Gaara Hiden, were never placed in the centre of",
+    "id": "hoki_family",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hōki Family",
+    "sources": [
+      "narutopedia:Hōki_Family"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|unnamed clan=Yes\n|affiliations=Kirigakure\n|media=Anime\n}}\nThis shinobi clan is from Kirigakure. All of its known members appear to have shark-like features such as sharp, pointed teeth and facial features that resemble gills. During the Sixth Mizukage's era, the family name no longer appears on memorials, which Shizuma attributes to his family being considered a nuisance in the peaceful time due to their reputation for being bloodthirsty and violent, especially among its most notable members.",
+    "id": "hoshigaki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hoshigaki",
+    "sources": [
+      "narutopedia:Hoshigaki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Hōzuki Symbol.svg:200px\n|english=Hōzuki Clan\n|unnamed clan=No\n|kanji=鬼灯一族\n|romaji=Hōzuki Ichizoku\n|affiliations=Kirigakure\n|media=Anime, Manga, Novel, Game\n}}\nThe {{translation|Hōzuki Clan|鬼灯一族|Hōzuki Ichizoku}} is a group of ninja that settled in Kirigakure after the ending of the Warring States Period.\nMembers of this clan possess the ability to turn their bodies into a liquid state using their Hydrification Technique. This however, seems to require that they stay well hydrated at all times and as such, at least two known members are known to carry water bot",
+    "id": "hozuki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hōzuki",
+    "sources": [
+      "narutopedia:Hōzuki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{Looking for|clan from Konohagakure|chapter 79 of the manga|The Hyūga Clan (chapter)|The Hyūga Clan}}\n|image name=Hyūga Symbol.svg:200px\n|english=Hyūga Clan\n|unnamed clan=No\n|kanji=日向一族\n|romaji=Hyūga Ichizoku\n|affiliations=Konohagakure\n|Kekkei Genkai=Byakugan\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Hyūga Clan|日向一族|Hyūga Ichizoku}} or {{translation|Hyūga Family|日向家|Hyūga-ke}} is a well known clan of Konohagakure, as well as the strongest clan in the village, standing alongside the Uchiha Clan. All members born into this clan possess the Byakugan,",
+    "id": "hyuga",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Hyūga",
+    "sources": [
+      "narutopedia:Hyūga_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Iburi Ichizoku.png\n|english=Iburi Clan\n|unnamed clan=No\n|kanji=イブリ一族\n|romaji=Iburi Ichizoku\n|Kekkei Genkai=Iburi Clan's Kekkei Genkai\n|media=Anime, Game\n}}\nThe {{translation|Iburi Clan|イブリ一族|Iburi Ichizoku}} was a seclusive clan that lived underground in the Land of Fire. They had the ability to become smoke at will and still be able to physically interact with the world around them. However, this ability was imperfect, causing them to occasionally transform unintentionally. In their smoke form, they were vulnerable to wind as it caused them to disperse perman",
+    "id": "iburi",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Iburi",
+    "sources": [
+      "narutopedia:Iburi_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Inuzuka Symbol.svg:200px\n|english=Inuzuka Clan\n|unnamed clan=No\n|kanji=犬塚一族\n|romaji=Inuzuka Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Inuzuka Clan|犬塚一族|Inuzuka Ichizoku}} or {{translation|Inuzuka Family|犬塚家|Inuzuka-ke}} is a family of shinobi in Konohagakure known for their use of ninken as fighting companions and are easily identified by the distinctive red fang markings on their cheeks.",
+    "id": "inuzuka",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Inuzuka",
+    "sources": [
+      "narutopedia:Inuzuka_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Izuno Symbol.svg:200px\n|english=Izuno Clan\n|unnamed clan=No\n|kanji=伊豆野一族\n|romaji=Izuno Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game\n}}\nThe {{translation|Izuno Clan|伊豆野一族|Izuno Ichizoku}} is a family of shinobi in Konohagakure known for their use of cat inspired ninjutsu.",
+    "id": "izuno",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Izuno",
+    "sources": [
+      "narutopedia:Izuno_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Jugo no Ichizoku.png\n|unnamed clan=Yes\n|Kekkei Genkai=Jūgo's Clan's Kekkei Genkai\n|media=Anime, Manga\n}}\nThis clan is an unnamed family, which originated from an unknown area. The members of this clan possess the innate ability to absorb natural energy from their surroundings due to their unique bodies. However, the adverse effects of this energy results in sudden and uncontrollable surges of madness, causing them to sporadically go berserk. Their unique bodies also secrete special fluids that allow them to undergo various drastic physical alterations. \nThe on",
+    "id": "jugos",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Jūgo's",
+    "sources": [
+      "narutopedia:Jūgo's_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Kagetsu Symbol.svg\n|english=Kagetsu Family\n|unnamed clan=No\n|affiliations=Land of Fire\n|media=Anime\n}}\nThe Kagetsu Family hail from Motoyoshi Village within the Land of Fire. They were originally ordinary herb-sellers that, though poor, lived happy lives filled with laughter. When they discovered that the herbs growing in the surrounding mountainside were valuable, the family became rich. They also became serious and laughter disappeared from their lives. Tōbei Kagetsu, the head of the clan, fakes his death in an elaborate attempt to remind his children to smi",
+    "id": "kagetsu_family",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kagetsu Family",
+    "sources": [
+      "narutopedia:Kagetsu_Family"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{looking for|the clan|the princess|Kaguya Ōtsutsuki}}\n|image name=Kaguya Men.png\n|english=Kaguya Clan\n|unnamed clan=No\n|kanji=かぐや一族\n|romaji=Kaguya Ichizoku\n|Kekkei Genkai=Shikotsumyaku\n|media=Anime, Manga, Game\n}}\nThe {{translation|Kaguya Clan|かぐや一族|Kaguya Ichizoku}} is a now extinct clan, known for their savage battle tactics and archaic values, and as descendants of Kaguya Ōtsutsuki, a select few have inherited a derivative of her original ability to manipulate one's bone structures.",
+    "id": "kaguya",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kaguya",
+    "sources": [
+      "narutopedia:Kaguya_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Kamizuru Clan.PNG\n|unnamed clan=No\n|kanji=上水流一族\n|romaji=Kamizuru Ichizoku\n|affiliations=Iwagakure\n|media=Anime, Novel\n}}\nThe {{translation|Kamizuru Clan|上水流一族|Kamizuru Ichizoku}} was a clan of bee users from Iwagakure who were once very well-known and revered. Suzumebachi claims that the First Tsuchikage was a member of the clan.",
+    "id": "kamizuru",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kamizuru",
+    "sources": [
+      "narutopedia:Kamizuru_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|unnamed clan=Yes\n|affiliations=Kirigakure\n|media=Anime\n}}\nThis family was a group of people from Kirigakure, which has produced renowned shinobi. One of its members Yagura, went on to become the Fourth Mizukage. He used fear to rule the village and enforced Kiri's reputation as \"Village of the Bloody Mist\". Before dying, he had a child, who went on to have Kagura. Because of his grandfather's tyrannical reign, villagers kept their distance from Kagura. After the era of the \"Bloody Mist\", the family name no longer appears on memorials, which Shizuma Hoshigaki attributes i",
+    "id": "karatachi_family",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Karatachi Family",
+    "sources": [
+      "narutopedia:Karatachi_Family"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Gaara's dream.png;The Kazekage Clan as seen within Gaara's Infinite Tsukuyomi dream.\n|english=Kazekage Clan\n|unnamed clan=Yes\n|affiliations=Sunagakure\n|Kekkei Genkai=Magnet Release,\n|media=Manga, Novel\n}}\nThis shinobi clan from Sunagakure holds high influential authority in its village. Its true family name is unknown.",
+    "id": "kazekage",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kazekage",
+    "sources": [
+      "narutopedia:Kazekage_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Kedōin Symbol.svg:200px\n|english=Kedōin Clan\n|unnamed clan=No\n|kanji=祁答院一族\n|romaji=Kedōin Ichizoku\n|media=Anime\n}}\nThe {{translation|Kedōin Clan|祁答院一族|Kedōin Ichizoku}} is a small clan led by Agari Kaisen.",
+    "id": "kedoin",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kedōin",
+    "sources": [
+      "narutopedia:Kedōin_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Kodon Clan\n|unnamed clan=No\n|kanji=虎呑一族\n|romaji=Kodon Ichizoku\n|affiliations=Howling Wolf Village\n|media=Novel\n|novel debut=Naruto Jinraiden: The Day the Wolf Howled\n}}\nThe {{translation|Kodon Clan|虎呑一族|Kodon Ichizoku}} is a clan of the Howling Wolf Village. They are able to make a medicinal form of saigenzai known as Kotarō within their bodies; although only Kodon can do this, it is not a kekkei genkai. They sell Kotarō at their store, {{translation|Rengyōdō|連翹堂|lit meaning=Hypericum's Shrine}}. In the past, members of the Kodon Clan saved the village by sealing",
+    "id": "kodon",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kodon",
+    "sources": [
+      "narutopedia:Kodon_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Kohaku Symbol.svg:200px\n|english=Kohaku Clan\n|unnamed clan=No\n|romaji=Kohaku Ichizoku\n|affiliations=Land of Fire, Konohagakure\n|media=Anime\n}}\nThe {{translation|Kohaku Clan||Kohaku Ichizoku}} was a shinobi clan that had a village near the border of the Land of Fire to that of Amegakure. This village was one of many villages that was attacked by Furido's 4-Man Team, and all villagers subsequently massacred with the use of Limelight.\nthumb|left|Kohaku clan members revived as zombies.\nThe deceased members of this clan were later revived as zombies by their killer",
+    "id": "kohaku",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kohaku",
+    "sources": [
+      "narutopedia:Kohaku_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Kumanoi Clan\n|unnamed clan=No\n|kanji=熊胆一族\n|romaji=Kumanoi Ichizoku\n|affiliations=Howling Wolf Village\n|media=Novel\n|novel debut=Naruto Jinraiden: The Day the Wolf Howled\n}}\nThe {{translation|Kumanoi Clan|熊胆一族|Kumanoi Ichizoku}} was a clan of the Howling Wolf Village. They accidentally discovered blue fire powder while trying to find a medicine that would grant eternal youth. The Kumanoi profited greatly from the sale of blue fire powder and were also able to use it to help the Howling Wolf Village defeat Amegakure; after the battle, however, the Kumanoi forced th",
+    "id": "kumanoi",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kumanoi",
+    "sources": [
+      "narutopedia:Kumanoi_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{Looking for|the shinobi clan|the Nine-Tailed Demon Fox|Kurama|disambig=Kurama (disambiguation)}}\n|image name=Kurama Symbol.svg:100px\n|english=Kurama Clan\n|unnamed clan=No\n|kanji=鞍馬一族\n|romaji=Kurama Ichizoku\n|affiliations=Konohagakure\n|Kekkei Genkai=Kurama Clan's Kekkei Genkai\n|media=Anime\n}}\nThe {{translation|Kurama Clan|鞍馬一族|Kurama Ichizoku}} is a clan of extremely skilled genjutsu users, exclusive to the anime. This talent in genjutsu is due to the kekkei genkai that the clan possesses. However, once every few generations, a member of the clan will be born with s",
+    "id": "kurama",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Kurama",
+    "sources": [
+      "narutopedia:Kurama_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Lee Clan.png\n|unnamed clan=No\n|kanji=リー一族\n|romaji=Rī Ichizoku\n|affiliations=Konohagakure\n|media=Novel\n|novel debut=Boruto: Naruto the Movie\n}}\nThe {{translation|Lee Clan|リー一族|Rī Ichizoku}} is one of the many clans that reside in Konohagakure. The two known members of this clan — Rock Lee and his son Metal Lee — are known for their taijutsu skills.",
+    "id": "lee",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Lee",
+    "sources": [
+      "narutopedia:Lee_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Nara Symbol.svg:200px\n|english=Nara Clan\n|unnamed clan=No\n|kanji=奈良一族\n|romaji=Nara Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Nara Clan|奈良一族|Nara Ichizoku}} or {{translation|Nara Family|奈良家|Nara-ke}} is one of the many clans of Konohagakure. They are known for tending deer and their ability to manipulate shadows through the use of Yin Release. Two of its members, Shikaku and his son Shikamaru, are well known for their high-level of intelligence, and both have served as advisors to the Hokage. After Shikaku'",
+    "id": "nara",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Nara",
+    "sources": [
+      "narutopedia:Nara_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Onikuma Clan\n|unnamed clan=No\n|kanji=鬼熊一族\n|romaji=Onikuma Ichizoku\n|ref=\n|affiliations=Konohagakure\n|media=Anime\n}}\nThe {{translation|Onikuma Clan|鬼熊一族|Onikuma Ichizoku}} is one of the many clans that reside in Konohagakure. They use a Hiden jutsu that is described as a possession-type summoning.",
+    "id": "onikuma",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Onikuma",
+    "sources": [
+      "narutopedia:Onikuma_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Ōtsutsuki Symbol.svg:200px\n|english=Ōtsutsuki Clan\n|unnamed clan=No\n|kanji=大筒木一族\n|romaji=Ōtsutsuki Ichizoku\n|Kekkei Genkai=Byakugan, Tenseigan, Sharingan, Mangekyō Sharingan, Rinnegan, Kokugan, Wood Release, Jōgan, Senrigan\n|Kekkei Mora=\n|media=Anime, Manga, Novel, Game, Movie canon\n}}\nThe {{translation|Ōtsutsuki Clan|大筒木一族|Ōtsutsuki Ichizoku}} is an ancient clan of horned humanoid creatures known as  {{translation|celestial beings|天津人|amatsubito}}, and also described as {{translation|aliens|宇宙人|uchūjin}} from another planet, and revered as equivalent to gods.",
+    "id": "otsutsuki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Ōtsutsuki",
+    "sources": [
+      "narutopedia:Ōtsutsuki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Rinha Clan\n|unnamed clan=No\n|romaji=Rinha Ichizoku\n|Kekkei Genkai=Rinha Clan's Kekkei Genkai\n|media=Game\n|game debut=Naruto Shippūden 3D: The New Era\n}}\nThe {{translation|Rinha Clan||Rinha Ichizoku}} was a clan with specialists in medical ninjutsu. They have performed admirably in the past wars. A survivor named Malice was the best of the clan.",
+    "id": "rinha",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Rinha",
+    "sources": [
+      "narutopedia:Rinha_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Ryū Symbol.svg:200px\n|english=Ryū Clan\n|unnamed clan=No\n|kanji=龍一族\n|romaji=Ryū Ichizoku\n|affiliations=Mount Koryū\n|media=Game\n|game debut=Naruto Shippūden: Dragon Blade Chronicles\n}}\nThe {{translation|Ryū Clan|龍一族|Ryū Ichizoku}} was once a powerful clan of Dragon Guardians entrusted with keeping the Dragon Blade.",
+    "id": "ryu",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Ryū",
+    "sources": [
+      "narutopedia:Ryū_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Sarutobi Symbol.svg:200px\n|english=Sarutobi Clan\n|unnamed clan=No\n|kanji=猿飛一族\n|romaji=Sarutobi Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Sarutobi Clan|猿飛一族|Sarutobi Ichizoku}} is an influential clan from Konohagakure. It has produced several renowned members who have held positions of high authority, including the Third Hokage; whose son, Asuma, held membership in the Twelve Guardian Ninja, while his other child served directly under the Hokage along with their spouse as Anbu. All known members have also b",
+    "id": "sarutobi",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Sarutobi",
+    "sources": [
+      "narutopedia:Sarutobi_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Sendō Clan\n|unnamed clan=No\n|kanji=仙道一族\n|romaji=Sendō Ichizoku\n|affiliations=Howling Wolf Village\n|media=Novel\n|novel debut=Naruto Jinraiden: The Day the Wolf Howled\n}}\nThe {{translation|Sendō Clan|仙道一族|Sendō Ichizoku}} is a clan of the Howling Wolf Village led by Jiryū Sendō. Jiryū formed the clan after the village declared its neutrality from all conflicts. He gathered together many of the village's former shinobi - left unemployed by the neutrality - and created a criminal gang that primarily dealt in saigenzai, a popular hallucinogen. Because of their saigenz",
+    "id": "sendo",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Sendō",
+    "sources": [
+      "narutopedia:Sendō_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Senju Symbol.svg\n|unnamed clan=No\n|kanji=千手一族\n|romaji=Senju Ichizoku\n|other={{translation|\"The clan with a thousand skills\"|「千の手を持つ一族」|\"Sen no te o motsu ichizoku\"}}, {{translation|Senju clan of the forest|森の千手一族|Mori no Senju Ichizoku}}\n|affiliations=Konohagakure\n|Kekkei Genkai=Wood Release\n|media=Anime, Manga, Game, Movie\n}}\nThe {{translation|Senju Clan|千手一族|Senju Ichizoku}} was one of the clans responsible for founding the first shinobi village: Konohagakure — the other being their rival Uchiha Clan. Although the clan itself no longer appears to exist as a",
+    "id": "senju",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Senju",
+    "sources": [
+      "narutopedia:Senju_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Shiin.png\n|unnamed clan=Yes\n|affiliations=Otogakure, Land of Sound,\n|media=Anime\n}}\nThe Shiin Clan was a small shinobi clan from the Land of the Rice Fields, where Orochimaru established the Land of Sound. Despite their size, they were famous in the country due to their high ideals and determination. After Otogakure was founded, all the skilled members joined Otogakure, and when the country's daimyō stopped hiring them, their leader Shiin set his eyes on a goldmine near the country's border, as a way to support his clan. He and the clan members were met with r",
+    "id": "shiin",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Shiin",
+    "sources": [
+      "narutopedia:Shiin_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Shimura Symbol.svg:200px\n|english=Shimura Clan\n|unnamed clan=No\n|kanji=志村一族\n|romaji=Shimura Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Game\n}}\nThe {{translation|Shimura Clan|志村一族|Shimura Ichizoku}} is a shinobi clan from Konohagakure.",
+    "id": "shimura",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Shimura",
+    "sources": [
+      "narutopedia:Shimura_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Shirogane Symbol.svg:200px\n|english=Shirogane Clan\n|unnamed clan=No\n|kanji=白銀一族\n|romaji=Shirogane Ichizoku\n|affiliations=Land of Wind\n|media=Game\n|game debut=Naruto: Uzumaki Chronicles 2\n}}\nThe {{translation|Shirogane Clan|白銀一族|Shirogane Ichizoku}} was a puppet clan from the Land of Wind.",
+    "id": "shirogane",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Shirogane",
+    "sources": [
+      "narutopedia:Shirogane_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Taketori Clan\n|unnamed clan=No\n|kanji=竹取一族\n|romaji=Taketori Ichizoku\n|media=Anime\n}}\nThe {{translation|Taketori Clan|竹取一族|Taketori Ichizoku}} is a clan, presumably outside of Konohagakure. While not much is known about them, this clan seems to have close connections to the Hyūga clan for political matters, according to Natsu Hyūga.",
+    "id": "taketori",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Taketori",
+    "sources": [
+      "narutopedia:Taketori_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Tenrō Clan\n|unnamed clan=No\n|kanji=天狼一族\n|romaji=Tenrō Ichizoku\n|affiliations=Yumegakure\n|media=Game\n|game debut=Naruto Shippūden: Kizuna Drive\n}}\nThe {{translation|Tenrō Clan|天狼一族|Tenrō Ichizoku}} is a clan of shinobi that hail from Yumegakure.",
+    "id": "tenro",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Tenrō",
+    "sources": [
+      "narutopedia:Tenrō_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Tsuchigumo Symbol.svg:150px\n|english=Tsuchigumo Clan\n|unnamed clan=No\n|kanji=土蜘蛛一族\n|romaji=Tsuchigumo Ichizoku\n|affiliations=Tsuchigumo Village\n|media=Anime\n}}\nThe {{translation|Tsuchigumo Clan|土蜘蛛一族|Tsuchigumo Ichizoku}} is a clan that formed a pact with the Third Hokage during the Third Shinobi World War. The clan's leader at that time, En no Gyōja, developed a technique that could wipe out an entire village. By terms of the pact with the Third Hokage, En no Gyōja declared the technique to be forbidden, in exchange for protection provided by Konoha in times",
+    "id": "tsuchigumo",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Tsuchigumo",
+    "sources": [
+      "narutopedia:Tsuchigumo_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Uchiha Symbol.svg:200px\n|english=Uchiha Clan\n|unnamed clan=No\n|kanji=うちは一族\n|romaji=Uchiha Ichizoku\n|other={{translation|\"Clan of Tragedy\"|「悲劇の一族」|\"Higeki no ichizoku\"}}\n|affiliations=Konohagakure\n|Kekkei Genkai=Sharingan, Mangekyō Sharingan\n|media=Anime, Manga, Novel, Game, Movie, Movie canon\n}}\nThe {{translation|Uchiha Clan|うちは一族|Uchiha Ichizoku}} is a well known clan of Konohagakure, reputed to be the village's strongest because of their Sharingan and natural battle prowess. After helping found Konoha decades ago, the Uchiha grew increasingly isolated from t",
+    "id": "uchiha",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Uchiha",
+    "sources": [
+      "narutopedia:Uchiha_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Uzumaki Symbol.svg:200px\n|english=Uzumaki clan\n|unnamed clan=No\n|kanji=うずまき一族\n|romaji=Uzumaki Ichizoku\n|affiliations=Uzushiogakure, Konohagakure,\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Uzumaki Clan|うずまき一族|Uzumaki Ichizoku}} was a formerly prominent clan in Uzushiogakure. Its members are renown for having bright, red hair, possessing incredibly strong life-forces and chakra, and their prowess in fūinjutsu. Despite the fall of Uzushiogakure and decline of the clan, it never quite went extinct as most of its known members have since resided",
+    "id": "uzumaki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Uzumaki",
+    "sources": [
+      "narutopedia:Uzumaki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Kyūroku Wagarashi.png\n|english=Wagarashi Family\n|unnamed clan=No\n|kanji=ワガラシ一家\n|romaji=Wagarashi Ikka\n|affiliations=Land of Tea\n|media=Anime, Game\n}}\nThe {{translation|Wagarashi Family|ワガラシ一家|Wagarashi Ikka}} is a clan in the Land of Tea. They are one of two clans who wants ownership over the Degarashi Port.",
+    "id": "wagarashi_family",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Wagarashi Family",
+    "sources": [
+      "narutopedia:Wagarashi_Family"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{looking for|the family|the character|Wasabi Izuno}}\n|image name=Wasabi Symbol.svg:200px\n|english=Wasabi Family\n|unnamed clan=No\n|kanji=ワサビ一家\n|romaji=Wasabi Ikka\n|affiliations=Land of Tea\n|media=Anime\n}}\nThe {{translation|Wasabi Family|ワサビ一家|Wasabi Ikka}} is a clan from the Land of Tea. They are one of two clans who want ownership over the Degarashi Port.",
+    "id": "wasabi_family",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Wasabi Family",
+    "sources": [
+      "narutopedia:Wasabi_Family"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Yamanaka Symbol.svg:200px\n|english=Yamanaka Clan\n|unnamed clan=No\n|kanji=山中一族\n|romaji=Yamanaka Ichizoku\n|affiliations=Konohagakure\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Yamanaka Clan|山中一族|Yamanaka Ichizoku}} is a family of shinobi found in Konohagakure. They specialise in mind related techniques, and they own and run a flower shop in the village. They traditionally lead the Konoha Barrier Team.",
+    "id": "yamanaka",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Yamanaka",
+    "sources": [
+      "narutopedia:Yamanaka_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|english=Yoimura Clan\n|unnamed clan=No\n|kanji=宵村家\n|romaji=Yoimura-ke\n|ref=\n|affiliations=Daidai Village\n|media=Anime\n}}\nThe {{translation|Yoimura Clan|宵村家|Yoimura-ke}} is a clan that resides in Daidai Village.",
+    "id": "yoimura",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Yoimura",
+    "sources": [
+      "narutopedia:Yoimura_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Yota's clan.png\n|unnamed clan=Yes\n|media=Anime\n}}\nThis travelling clan had the ability to manipulate weather, which they used for their trades. Yota was especially good at manipulating the weather among his clan despite of his young age.",
+    "id": "yotas",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Yota's",
+    "sources": [
+      "narutopedia:Yota's_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|image name=Yotsuki Symbol.svg:200px\n|english=Yotsuki Clan\n|unnamed clan=No\n|kanji=夜月一族\n|romaji=Yotsuki Ichizoku\n|affiliations=Kumogakure\n|media=Anime, Manga, Game\n}}\nThe {{translation|Yotsuki Clan|夜月一族|Yotsuki Ichizoku}} is a clan from Kumogakure. During the First Raikage's reign, they were given land in the Valley of Clouds and Lightning after swearing their loyalty to the village.\nIn Taka's attempt to capture Killer B, they confront Kiyoi Yotsuki. When he proved unwilling to sell out his allies, Sasuke used genjutsu to make him reveal Killer B's location and identifyin",
+    "id": "yotsuki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Yotsuki",
+    "sources": [
+      "narutopedia:Yotsuki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  },
+  {
+    "canonicity": "manga",
+    "history_summary_fr": "{{Infobox/Naruto/Clan\n|top={{Looking for|the clan|disambig=Yuki (disambiguation)}}\n|image name=Haku's Mom and Dad.png\n|english=Yuki Clan\n|unnamed clan=No\n|kanji=雪一族\n|romaji=Yuki Ichizoku\n|affiliations=Land of Water\n|Kekkei Genkai=Ice Release\n|media=Anime, Manga, Novel, Game\n}}\nThe {{translation|Yuki Clan|雪一族|Yuki Ichizoku}} lived in the Land of Water. Some time ago, the country was in the midst of a civil war. In this war, different sides battled each other using ninja in combat, some of whom possessed kekkei genkai. After the war ended, memories of the gruesome battles still lingered in the m",
+    "id": "yuki",
+    "key_kekkei_genkai": [],
+    "key_natures": [],
+    "key_techniques": [],
+    "name_kanji": null,
+    "name_romaji": "Yuki",
+    "sources": [
+      "narutopedia:Yuki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "village_of_origin": null
+  }
+]

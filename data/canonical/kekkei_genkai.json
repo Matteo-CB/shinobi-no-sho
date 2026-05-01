@@ -1,0 +1,450 @@
+[
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Skilled Mist.png\n|unnamed=No\n|kanji=沸遁\n|romaji=Futton\n|literal english=Boil Release\n|jutsu type=Fire Release, Water Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=466\n|boruto=No\n|debut anime=204\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Sasuke Shinden: Book of Sunrise\n|debut game=Naruto Shippūden 3D: The New Era\n|media=Anime, Manga, Novel, Game\n|kekkeimora=No\n|english tv=Vapour Style\n}}\n{{translation|Boil Release|沸遁|Futton|viz=Vapour Style}} is a nature transformation kekkei genkai, a combination of fire and water. Whereas most kekkei genk",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "boil_release",
+    "name_kanji": null,
+    "name_romaji": "Boil Release",
+    "sources": [
+      "narutopedia:Boil_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Byakugan.svg:200px\n|unnamed=No\n|kanji=白眼\n|romaji=Byakugan\n|literal english=White Eye\n|viz manga=All Seeing White Eye\n|ref=\n|jutsu classification=Kekkei Mōra, Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan, Hyūga Clan\n|debut manga=41\n|boruto=No\n|debut anime=24\n|shippuden=No\n|boruto anime=No\n|novel debut=The Last: Naruto the Movie\n|debut game=Naruto: Ultimate Ninja\n|debut movie=Naruto Shippūden the Movie\n|ova debut=Finally a clash! Jōnin vs. Genin!! Indiscriminate Grand Melee Tournament Meeting!!\n|media=Anime, Manga, Novel, Game, Movie\n}}\nThe {{translation|Byakugan|白",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "byakugan",
+    "name_kanji": null,
+    "name_romaji": "Byakugan",
+    "sources": [
+      "narutopedia:Byakugan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Jade Crystal Prison.png\n|unnamed=No\n|kanji=晶遁\n|romaji=Shōton\n|literal english=Crystal Release\n|jutsu type=Earth Release~Presumed,\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|boruto=No\n|debut anime=89\n|shippuden=Yes\n|boruto anime=No\n|debut game=Naruto: Ultimate Ninja Online\n|media=Anime, Game\n}}\n{{translation|Crystal Release|晶遁|Shōton|engtv=Crystal Style}} is a rare nature that is seen only in the anime. The actual natures that comprise the element is unknown. However, when Kiba Inuzuka first sees a Crystal Release structure, he mistakes it for Earth Release.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "crystal_release",
+    "name_kanji": null,
+    "name_romaji": "Crystal Release",
+    "sources": [
+      "narutopedia:Crystal_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Dark release mark.png\n|unnamed=No\n|kanji=冥遁\n|romaji=Meiton\n|literal english=Dark Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|debut game=Naruto Mobile\n|debut movie=Naruto Shippūden the Movie: The Will of Fire\n|media=Game, Movie\n|english tv=Shade Style\n|kekkeimora=No\n}}\n{{translation|Dark Release|冥遁|Meiton|viz=Shade Style}} is a combined nature transformation kekkei genkai that can be used to absorb, manipulate, and release chakra taken from an opponent. Hiruko used techniques of this nature through a mark on hi",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "dark_release",
+    "name_kanji": null,
+    "name_romaji": "Dark Release",
+    "sources": [
+      "narutopedia:Dark_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Landmine Fist.png\n|english=Explosion Release\n|unnamed=No\n|kanji=爆遁\n|romaji=Bakuton\n|literal english=Explosion Release\n|jutsu type=Lightning Release, Earth Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=247\n|boruto=No\n|debut anime=3\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Sasuke Shinden: Book of Sunrise\n|debut game=Naruto Shippūden: Gekitō Ninja Taisen! EX\n|debut movie=Road to Ninja: Naruto the Movie\n|ova debut=The Creation of the Akatsuki\n|media=Anime, Manga, Novel, Game, Movie\n|english tv=Explosion Style\n|kekkeimora=No\n}}\n{{translation|",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "explosion_release",
+    "name_kanji": null,
+    "name_romaji": "Explosion Release",
+    "sources": [
+      "narutopedia:Explosion_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Smoke Transformation Technique 1.png\n|unnamed=Yes\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Iburi Clan\n|boruto=No\n|debut anime=352\n|shippuden=Yes\n|boruto anime=No\n|debut game=Naruto Shippūden: Ultimate Ninja Blazing\n|media=Anime, Game\n|kekkeimora=No\n|debut shippuden=Yes\n}}\nThis unique kekkei genkai is possessed by the members of the Iburi clan, which allows them to turn their bodies, either partially or fully, into smoke to serve various purposes. While in their smoke form the user becomes impervious to damage and can use this trait to gain an opportun",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "iburi_clans_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Iburi Clan's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Iburi_Clan's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Ice Release.png\n|english=Ice Release\n|unnamed=No\n|kanji=氷遁\n|romaji=Hyōton\n|literal english=Ice Release\n|jutsu type=Wind Release, Water Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Yuki Clan\n|debut manga=24\n|debut anime=13\n|shippuden=No\n|novel debut=Naruto: Innocent Heart, Demonic Blood\n|debut game=Naruto: Clash of Ninja\n|debut movie=Naruto the Movie: Ninja Clash in the Land of Snow\n|ova debut=Naruto: The Cross Roads\n|media=Anime, Manga, Novel, Game, Movie\n|english tv=Ice Style\n|kekkeimora=No\n}}\n{{translation|Ice Release|氷遁|Hyōton|viz=Ice Style}} i",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "ice_release",
+    "name_kanji": null,
+    "name_romaji": "Ice Release",
+    "sources": [
+      "narutopedia:Ice_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Jōgan.svg:200px\n|english=Jōgan\n|unnamed=No\n|kanji=淨眼\n|romaji=Jōgan\n|literal english=Pure Eye\n|other={{translation|Jōgan|浄眼|lit meaning=Pure Eye}}\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan\n|debut manga=1\n|boruto=Yes\n|debut anime=1\n|shippuden=No\n|boruto anime=Yes\n|novel debut=The New Leaves Soaring Through the Blue Sky!\n|debut game=Naruto: Ultimate Ninja Online\n|media=Anime, Manga, Novel, Game\n}}\nThe {{translation|Jōgan|淨眼|lit meaning=Pure Eye}} is a unique dōjutsu that is known only by the Ōtsutsuki Clan, whose members claim that it is tro",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "jogan",
+    "name_kanji": null,
+    "name_romaji": "Jōgan",
+    "sources": [
+      "narutopedia:Jōgan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Jugo's Level 2 state.png\n|unnamed=Yes\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Jūgo's Clan\n|debut manga=349\n|debut anime=117\n|shippuden=Yes\n|debut game=Naruto Shippūden: Dragon Blade Chronicles\n|media=Anime, Manga, Game\n|kekkeimora=No\n}}\nThe kekkei genkai of Jūgo's clan is an instinctual ability which allows its members to absorb and make use of natural energy without any training in senjutsu.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "jugos_clans_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Jūgo's Clan's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Jūgo's_Clan's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Ketsuryūgan Symbol.svg:200px\n|english=Ketsuryūgan\n|unnamed=No\n|kanji=血龍眼\n|romaji=Ketsuryūgan\n|literal english=Blood Dragon Eye\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|clan=Chinoike Clan,\n|boruto=No\n|debut anime=484\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Sasuke Shinden: Book of Sunrise\n|debut game=Naruto Shippūden: Ultimate Ninja Blazing\n|media=Anime, Novel, Game\n|top={{Looking for|the dōjutsu|the episode|The Ketsuryūgan}}\n}}\nThe {{translation|Ketsuryūgan|血龍眼|lit meaning=Blood Dragon Eye}}, is a dōjutsu, which appears in certain individuals of the Chi",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "ketsuryugan",
+    "name_kanji": null,
+    "name_romaji": "Ketsuryūgan",
+    "sources": [
+      "narutopedia:Ketsuryūgan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Isshiki Dōjutsu.svg:200px\n|kanji=黒眼\n|romaji=Kokugan\n|literal english=Black Eye\n|jutsu classification=Kekkei Genkai, Shinjutsu, Dōjutsu\n|clan=Ōtsutsuki Clan\n|debut manga=47\n|boruto=Yes\n|debut anime=214\n|shippuden=No\n|boruto anime=Yes\n|debut game=Naruto to Boruto: Shinobi Striker\n|media=Anime, Manga, Game\n}}\nThe Kokugan (黒眼, literally meaning: Black Eye) is a dōjutsu used by Isshiki Ōtsutsuki and later Kawaki through his Kāma. It features a black pupil which glows gold when jutsu are used, and a black wheel-like pattern with eight spokes coming out of the centre.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "kokugan",
+    "name_kanji": null,
+    "name_romaji": "Kokugan",
+    "sources": [
+      "narutopedia:Kokugan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Ido's physical form.png\n|unnamed=Yes\n|jutsu type=Yin Release\n|jutsu classification=Kekkei Genkai, Genjutsu,\n|clan=Kurama Clan\n|debut anime=203\n|shippuden=No\n|media=Anime\n|kekkeimora=No\n}}\nA rare trait of the Kurama Clan. Every few generations, a member will be born with an incredible talent for genjutsu. The clan member's prowess in that field is so absolute that even without proper training, their genjutsu is simply overwhelming. Furthermore, the genjutsu is so powerful that it causes the brain to believe anything that happens to the victim to the point where t",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "kurama_clans_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Kurama Clan's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Kurama_Clan's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Kakazan.png\n|unnamed=No\n|kanji=溶遁; 熔遁\n|romaji=Yōton\n|literal english=Lava Release\n|jutsu type=Fire Release, Earth Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=466\n|boruto=No\n|debut anime=121\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Gaara Hiden: A Sandstorm Mirage\n|debut game=Naruto Shippūden 3D: The New Era\n|debut movie=The Last: Naruto the Movie\n|media=Anime, Manga, Novel, Game, Movie\n|top={{Looking for|the kekkei genkai made up of the earth and fire natures|the nature based on physical energy that governs life|Yang Release|Yōton}}\n|en",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "lava_release",
+    "name_kanji": null,
+    "name_romaji": "Lava Release",
+    "sources": [
+      "narutopedia:Lava_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Magnet Release.png\n|unnamed=No\n|kanji=磁遁\n|romaji=Jiton\n|literal english=Magnet Release\n|ref=\n|jutsu type=Wind Release, Earth Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Kazekage Clan,\n|debut manga=268\n|boruto=No\n|debut anime=22\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Gaara Hiden: A Sandstorm Mirage\n|debut game=Naruto Shippūden: Gekitō Ninja Taisen! EX 2\n|debut movie=Boruto: Naruto the Movie\n|media=Anime, Manga, Novel, Game, Movie\n|english tv=Magnet Style\n}}\n{{translation|Magnet Release|磁遁|Jiton|viz=Magnet Style}} is a nature transformation k",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "magnet_release",
+    "name_kanji": null,
+    "name_romaji": "Magnet Release",
+    "sources": [
+      "narutopedia:Magnet_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|ref=\n|image=Mangekyō Sharingan Itachi.svg:200px\n|unnamed=No\n|kanji=万華鏡写輪眼\n|romaji=Mangekyō Sharingan\n|literal english=Kaleidoscope Copy Wheel Eye\n|other={{translation|Legendary Dōjutsu|伝説の瞳術|Densetsu no Dōjutsu|lit meaning=Legendary Pupil Technique}}\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan, Uchiha Clan\n|debut manga=142\n|boruto=No\n|debut anime=82\n|shippuden=No\n|boruto anime=No\n|novel debut=Naruto Jinraiden: The Day the Wolf Howled\n|debut game=Naruto: Ultimate Ninja 2\n|debut movie=Naruto Shippūden the Movie: The Will of Fire\n|ova debut=Naruto x",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "mangekyo_sharingan",
+    "name_kanji": null,
+    "name_romaji": "Mangekyō Sharingan",
+    "sources": [
+      "narutopedia:Mangekyō_Sharingan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Nature Icon Mud.svg:200px\n|unnamed=No\n|kanji=泥遁\n|romaji=Deiton\n|jutsu type=Earth Release, Water Release\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|novel debut=Akatsuki Hiden: Evil Flowers in Full Bloom\n|media=Novel\n}}\n{{translation|Mud Release|泥遁|Deiton}} is a nature transformation kekkei genkai, a combination of water and earth, the same natures used to create Wood Release. Few people have ever heard of Mud Release, to the point that Hidan was surprised it exists. In addition to the persecution experienced by most kekkei genkai users, Mud Release users are stuc",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "mud_release",
+    "name_kanji": null,
+    "name_romaji": "Mud Release",
+    "sources": [
+      "narutopedia:Mud_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Ranmaru's Kekkei Genkai.svg:200px\n|unnamed=Yes\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|boruto=No\n|debut anime=152\n|shippuden=No\n|boruto anime=No\n|media=Anime\n}}\nRanmaru uniquely possessed a dōjutsu kekkei genkai which, when activated, causes his eyes to glow red in colour. It grants him abilities similar to those of the Byakugan, which his own dōjutsu has been likened to.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "ranmarus_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Ranmaru's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Ranmaru's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|unnamed=Yes\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Rinha Clan\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|debut game=Naruto Shippūden 3D: The New Era\n|media=Game\n}}\nThe kekkei genkai of the Rinha clan allows them to absorb a person's chakra and duplicate their appearance and memories.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "rinha_clans_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Rinha Clan's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Rinha_Clan's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Rinnegan.svg:200px\n|english=Rinnegan\n|unnamed=No\n|kanji=輪廻眼\n|romaji=Rinnegan\n|literal english=Saṃsāra Eye\n|other={{translation|Eye of Six Paths|六道の眼|Rikudō no Me}}, {{translation|Rinnegan of Six Paths|六道の輪廻眼|Rikudō no Rinnegan}}\n|ref=\n|jutsu classification=Kekkei Mōra, Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan\n|debut manga=238\n|boruto=No\n|debut anime=135\n|shippuden=No\n|boruto anime=No\n|novel debut=Boruto: Naruto the Movie\n|debut game=Naruto Shippūden: Ultimate Ninja 5\n|debut movie=Naruto the Movie: Blood Prison\n|ova debut=Naruto x UT\n|media=Anime, Manga, Novel",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "rinnegan",
+    "name_kanji": null,
+    "name_romaji": "Rinnegan",
+    "sources": [
+      "narutopedia:Rinnegan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Dragon Life Reincarnation.png\n|unnamed=Yes\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|shippuden=No\n|debut movie=Naruto the Movie: Blood Prison\n|media=Movie\n}}\nThis unnamed kekkei genkai apparently allows the user to perform Reincarnation Ninjutsu as it allowed Ryūzetsu to perform the Dragon Life Reincarnation technique. It was seen only in Naruto the Movie: Blood Prison and Ryūzetsu was the only known user. Other details, such as whether it was common or rare and whether any other technique could be performed using it, are unknown.\n{{DEFAULTSORT:Ryuzetsu's K",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "ryuzetsus_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Ryūzetsu's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Ryūzetsu's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Kiba vs Ukon.png\n|unnamed=Yes\n|kekkeimora=No\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=203\n|debut anime=120\n|shippuden=No\n|debut game=Naruto: Ultimate Ninja 3\n|media=Anime, Manga, Game\n}}\nSakon and Ukon's unnamed kekkei genkai gives them the unique ability to break their bodies down to a molecular level. The two brothers usually use this ability to share the same body by fusing their cells but can also use it to merge with the bodies of others and destroy the host's cells from the inside. When Sakon is in need of assistance, Ukon can bring out s",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "sakon_and_ukons_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Sakon and Ukon's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Sakon_and_Ukon's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Scorch Release.png\n|english=Scorch Release\n|unnamed=No\n|kanji=灼遁\n|romaji=Shakuton\n|literal english=Scorch Release\n|jutsu type=Fire Release, Wind Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=522\n|boruto=No\n|debut anime=265\n|shippuden=Yes\n|boruto anime=No\n|debut game=Naruto: Ultimate Ninja Online\n|media=Anime, Manga, Game\n|english tv=Scorch Style\n}}\n{{translation|Scorch Release|灼遁|Shakuton|viz=Scorch Style}} is a nature transformation kekkei genkai. When Sasuke Uchiha and Naruto Uzumaki combine their fire and wind-natured techniques, the resu",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "scorch_release",
+    "name_kanji": null,
+    "name_romaji": "Scorch Release",
+    "sources": [
+      "narutopedia:Scorch_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Senrigan.svg:200px\n|english=Senrigan\n|unnamed=No\n|kanji=千里眼\n|romaji=Senrigan\n|literal english=Clairvoyance\n|other=Thousand Li/Ri Eye\n|jutsu classification=Kekkei Genkai, Shinjutsu, Dōjutsu\n|clan=Ōtsutsuki Clan\n|debut manga=57\n|boruto=Yes\n|debut anime=288\n|shippuden=No\n|boruto anime=Yes\n|media=Anime, Manga\n}}\nThe {{translation|Senrigan|千里眼|lit meaning=Clairvoyance}} is a dōjutsu awakened by some members of the Ōtsutsuki Clan, which grants vast clairvoyant abilities. Appearance-wise, it is distinguished by a bright-blue iris, a white-glowing pupil surrounded by a",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "senrigan",
+    "name_kanji": null,
+    "name_romaji": "Senrigan",
+    "sources": [
+      "narutopedia:Senrigan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Sharingan Triple.svg:200px\n|english=Sharingan\n|unnamed=No\n|kanji=写輪眼\n|romaji=Sharingan\n|literal english=Copy Wheel Eye\n|viz manga=Mirror Wheel Eye\n|other={{translation|Heaven's Eye|天眼|Tengan}}\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan, Uchiha Clan\n|debut manga=12\n|boruto=No\n|debut anime=5\n|shippuden=No\n|boruto anime=No\n|novel debut=Naruto: Innocent Heart, Demonic Blood\n|debut game=Naruto: Clash of Ninja\n|debut movie=Naruto the Movie: Ninja Clash in the Land of Snow\n|ova debut=Mission: Protect the Waterfall Village!\n|media=Anime, Manga, No",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "sharingan",
+    "name_kanji": null,
+    "name_romaji": "Sharingan",
+    "sources": [
+      "narutopedia:Sharingan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Kimimaro's_Shikotsumyaku.png\n|unnamed=No\n|kanji=屍骨脈\n|romaji=Shikotsumyaku\n|literal english=Dead Bone Pulse\n|viz manga=Corpse Bone Chain\n|ref=\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Kaguya Clan\n|debut manga=201\n|boruto=No\n|debut anime=119\n|shippuden=No\n|boruto anime=No\n|debut game=Naruto: Ultimate Ninja 3\n|media=Anime, Manga, Game\n|english tv=Macabre Bone Pulse\n|game names=Skeletal Control\n|kekkeimora=No\n}}\n{{translation|Shikotsumyaku|屍骨脈|lit meaning=Dead Bone Pulse|viz meaning=Macabre Bone Pulse}} is a kekkei genkai which gives its wielder the abili",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "shikotsumyaku",
+    "name_kanji": null,
+    "name_romaji": "Shikotsumyaku",
+    "sources": [
+      "narutopedia:Shikotsumyaku"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Steel_armour.png\n|unnamed=No\n|kanji=鋼遁\n|romaji=Kōton\n|literal english=Steel Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|novel debut=Gaara Hiden: A Sandstorm Mirage\n|debut game=Naruto Mobile\n|debut movie=Naruto Shippūden the Movie: The Will of Fire\n|media=Novel, Game, Movie\n|english tv=Steel Style\n|kekkeimora=No\n}}\nThe {{translation|Steel Release|鋼遁|Kōton|viz=Steel Style}} is a combined nature transformation kekkei genkai. It is unknown what elements this nature entails.",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "steel_release",
+    "name_kanji": null,
+    "name_romaji": "Steel Release",
+    "sources": [
+      "narutopedia:Steel_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Ranton Reizā Sākasu.png\n|unnamed=No\n|kanji=嵐遁\n|romaji=Ranton\n|literal english=Storm Release\n|viz manga=Storm Style\n|jutsu type=Lightning Release, Water Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|debut manga=464\n|debut anime=203\n|shippuden=Yes\n|debut game=Naruto Shippūden 3D: The New Era\n|debut movie=Naruto Shippūden the Movie: The Will of Fire\n|media=Anime, Manga, Game, Movie\n|kekkeimora=No\n|english tv=Gale Style\n}}\n{{translation|Storm Release|嵐遁|Ranton|viz=\"Gale Style\" or \"Storm Style\"}}  is a nature transformation kekkei genkai, a combination of li",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "storm_release",
+    "name_kanji": null,
+    "name_romaji": "Storm Release",
+    "sources": [
+      "narutopedia:Storm_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=jinton.png\n|english=Swift Release\n|unnamed=No\n|kanji=迅遁\n|romaji=Jinton\n|literal english=Swift Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|debut game=Naruto Mobile\n|debut movie=Naruto Shippūden the Movie: The Will of Fire\n|media=Game, Movie\n|english tv=Quick Style\n|kekkeimora=No\n}}\n{{translation|Swift Release|迅遁|Jinton|viz=Quick Style}} is a combined nature transformation kekkei genkai that can be used to move with incredible speed, becoming nothing more than a blur when in motion. Therefore, taijutsu becomes i",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "swift_release",
+    "name_kanji": null,
+    "name_romaji": "Swift Release",
+    "sources": [
+      "narutopedia:Swift_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|top={{Looking for|the dōjutsu|the energy vessel|Tenseigan (Energy Vessel)|Tenseigan}}\n|image=Tenseigan Symbol.svg:200px\n|english=Tenseigan\n|unnamed=No\n|kanji=転生眼\n|romaji=Tenseigan\n|literal english=Reincarnation Eye\n|jutsu classification=Kekkei Genkai, Dōjutsu\n|clan=Ōtsutsuki Clan\n|shippuden=No\n|novel debut=The Last: Naruto the Movie\n|debut movie=The Last: Naruto the Movie\n|media=Novel, Movie canon\n}}\nThe {{translation|Tenseigan|転生眼|lit meaning=Reincarnation Eye}} is a dōjutsu introduced in The Last: Naruto the Movie. The movie's novelisation explains that the Tenseiga",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "tenseigan",
+    "name_kanji": null,
+    "name_romaji": "Tenseigan",
+    "sources": [
+      "narutopedia:Tenseigan"
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Great Consecutive Bursting Extreme Winds.png\n|english=Typhoon Release\n|unnamed=No\n|kanji=颱遁\n|romaji=Taiton\n|literal english=Typhoon Release\n|jutsu type=Wind Release\n|jutsu classification=Kekkei Genkai, Ninjutsu,\n|boruto=No\n|debut anime=487\n|shippuden=Yes\n|boruto anime=No\n|novel debut=Sasuke Shinden: Book of Sunrise\n|debut game=Naruto: Ultimate Ninja Online\n|media=Anime, Novel, Game\n|english tv=Typhoon Style\n}}\n{{translation|Typhoon Release|颱遁|Taiton|engtv=Typhoon Style}} is a nature transformation kekkei genkai, which consists of at least the wind nature transfo",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "typhoon_release",
+    "name_kanji": null,
+    "name_romaji": "Typhoon Release",
+    "sources": [
+      "narutopedia:Typhoon_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|image=Mokuton no Tenzo.png\n|english=Wood Release\n|unnamed=No\n|kanji=木遁\n|romaji=Mokuton\n|literal english=Wood Release\n|jutsu type=Earth Release, Water Release\n|jutsu classification=Kekkei Genkai, Ninjutsu\n|clan=Ōtsutsuki Clan, Senju Clan\n|debut manga=120\n|boruto=No\n|debut anime=71\n|shippuden=No\n|boruto anime=No\n|debut game=Naruto: Ultimate Ninja\n|debut movie=Naruto Shippūden the Movie: The Lost Tower\n|ova debut=Naruto Shippūden: UNSG anime cutscenes\n|media=Anime, Manga, Game, Movie\n|english tv=Wood Style\n}}\n{{translation|Wood Release|木遁|Mokuton|viz=Wood Style}} is a na",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "wood_release",
+    "name_kanji": null,
+    "name_romaji": "Wood Release",
+    "sources": [
+      "narutopedia:Wood_Release"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  },
+  {
+    "activation_conditions_fr": "{{Infobox/Naruto/Genetic\n|unnamed=Yes\n|boruto=No\n|shippuden=No\n|boruto anime=No\n|novel debut=Naruto Retsuden: Naruto Uzumaki and the Spiral Destiny\n|media=Novel\n}}\nYanaru possesses a unique Kekkei Genkai, allowing him to mentally exchange information with his shadow clones, just as clones are able to transmit information to the main body. Yanara employs it to coordinate his clones for assassinations, while disguising himself as a member of his target's inner circle, where he acquires the necessary information to carry out the assassination, relaying it to his clones.\npt-br:Kekkei Genkai de Yan",
+    "canonicity": "manga",
+    "carrier_clans": [],
+    "category": "kekkei_genkai",
+    "id": "yanarus_kekkei_genkai",
+    "name_kanji": null,
+    "name_romaji": "Yanaru's Kekkei Genkai",
+    "sources": [
+      "narutopedia:Yanaru's_Kekkei_Genkai"
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02"
+  }
+]
