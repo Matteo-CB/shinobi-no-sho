@@ -53,6 +53,23 @@ STAT_KEYWORDS: dict[str, str] = {
     "fuinjutsu": "fuinjutsu_knowledge",
     "fuin": "fuinjutsu_knowledge",
     "senjutsu": "senjutsu_aptitude",
+    # Natures de chakra : entrainement direct = ninjutsu (les natures
+    # specifiques se debloquent via les techniques apprises, pas via stat).
+    "katon": "ninjutsu",
+    "suiton": "ninjutsu",
+    "fuuton": "ninjutsu",
+    "futon": "ninjutsu",
+    "doton": "ninjutsu",
+    "raiton": "ninjutsu",
+    "mokuton": "ninjutsu",
+    "hyouton": "ninjutsu",
+    "youton": "ninjutsu",
+    "feu": "ninjutsu",
+    "eau": "ninjutsu",
+    "vent": "ninjutsu",
+    "terre": "ninjutsu",
+    "foudre": "ninjutsu",
+    "glace": "ninjutsu",
     # Stats intangibles (entrainables mais lentes + necessitent activites specifiques)
     "beaute": "beauty",
     "beauty": "beauty",
@@ -78,10 +95,24 @@ TRAIN_PATTERNS = [
 LEARN_PATTERNS = [
     r"\bj[' ]apprends\b",
     r"\bapprendre\b",
-    r"\betudier?\b",
-    r"\bj[' ]etudie\b",
     r"\bmaitriser?\b",
     r"\blearn\b",
+]
+# Etudier / suivre des cours : entrainement passif (theorie), gain x0.5
+STUDY_PATTERNS = [
+    r"\betudier?\b",
+    r"\bj[' ]etudie\b",
+    r"\bj[' ]ecoute (?:les |des |un |le )?cours\b",
+    r"\becouter (?:les |des |un |le )?cours\b",
+    r"\b(?:suivre|suis|reprendre|reprends|continuer|continue) (?:les |des |un |le )?cours\b",
+    r"\b(?:rester|reste) en classe\b",
+    r"\bj[' ]assiste (?:au|aux|a un|a des) (?:cours|leco?ns?|seminaires?)\b",
+    r"\bje lis (?:un livre|le livre|des livres|des manuels|le manuel|un parchemin|des parchemins)\b",
+    r"\bje revise\b",
+    r"\bje reviser?\b",
+    r"\bj[' ]observe (?:un|le|les|mon) (?:sensei|maitre|jonin|chunin|professeur)\b",
+    r"\btheorie\b",
+    r"\bcours (?:de|sur|d['' ])\b",
 ]
 REST_PATTERNS = [r"\bdor(?:s|t|mir|mait|mais)\b", r"\bsommeil\b", r"\bsleep\b"]
 RELAX_PATTERNS = [
@@ -235,10 +266,25 @@ def interpret(text: str) -> ParsedIntent:
             parameters={"duration_hours": duration_hours or 1},
             summary=summary,
         )
+    # STUDY (cours, lecture, theorie) : train_stat avec quality_modifier 0.5
+    # On le check AVANT learn_technique car "etudier" est dans les deux,
+    # et avant train pour eviter le faux positif "j'etudie" -> learn.
+    if _matches_any(lower, STUDY_PATTERNS):
+        stat = _detect_stat(lower)
+        return ParsedIntent(
+            action_type=ActionType.train_stat,
+            parameters={
+                "stat": stat or "intelligence",
+                "duration_hours": duration_hours or 4,
+                "quality_modifier": 0.5,  # theorie = moitie d'efficacite vs pratique
+                "_study_mode": True,
+            },
+            summary=summary,
+        )
     if _matches_any(lower, LEARN_PATTERNS):
         # tentative d'extraction du nom de technique apres "apprendre"
         m = re.search(
-            r"(?:apprends|apprendre|etudie|etudier|maitrise|maitriser)\s+(?:le |la |les |l['' ])?([^.,;]+)",
+            r"(?:apprends|apprendre|maitrise|maitriser)\s+(?:le |la |les |l['' ])?([^.,;]+)",
             lower,
         )
         target = m.group(1).strip() if m else ""

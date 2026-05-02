@@ -287,8 +287,14 @@ def apply_action_to_state(
                 }
             )
             return new_char, world, new_result
+        # Si l'action est en mode "etude" (cours / theorie), le quality_modifier
+        # passe en parametre prend la priorite sur le quality derive de l'outcome.
+        study_quality = action.parameters.get("quality_modifier")
+        effective_quality = (
+            float(study_quality) * quality if study_quality is not None else quality
+        )
         new_char, change = train_stat(
-            new_char, stat_name, hours=duration_hours, quality_modifier=quality
+            new_char, stat_name, hours=duration_hours, quality_modifier=effective_quality
         )
         if change:
             stat_changes.append(change)
@@ -359,6 +365,26 @@ def apply_action_to_state(
 
     elif action.action_type == ActionType.rest:
         sleep = bool(action.parameters.get("sleep", False))
+        # No-op signal : si deja repose ET HP plein ET chakra plein, le sommeil n'apporte rien
+        already_rested = (
+            character.health.fatigue == 0
+            and character.health.hp_current >= character.health.hp_max
+            and character.chakra.current >= character.chakra.max
+        )
+        if already_rested and sleep:
+            new_result = result.model_copy(
+                update={
+                    "summary_fr": (
+                        "Tu te poses pour dormir, mais tu es deja parfaitement repose. "
+                        "Le sommeil n'apporte rien de plus. Le temps passe, c'est tout."
+                    ),
+                    "stat_changes": [],
+                    "money_delta": 0,
+                    "hp_delta": 0,
+                    "fatigue_delta": 0,
+                }
+            )
+            return new_char, world, new_result
         new_char = (
             apply_sleep(new_char, hours=duration_hours)
             if sleep

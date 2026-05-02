@@ -191,11 +191,25 @@ def action_menu(console: Console, options: list[dict]) -> None:
     table.add_column("Difficulte", style=COLOR_DIM, justify="right")
     table.add_column("Duree", style=COLOR_DIM, justify="right")
     for i, opt in enumerate(options, start=1):
+        # Cherche dans plusieurs cles possibles (LLM peut emettre difficulty_fr,
+        # estimated_difficulty, ou rien) ; le narrator backfill avec heuristique.
+        difficulty = (
+            opt.get("difficulty_fr")
+            or opt.get("estimated_difficulty")
+            or opt.get("difficulty")
+            or "modere"
+        )
+        duration = (
+            opt.get("duration_fr")
+            or opt.get("estimated_duration")
+            or opt.get("duration")
+            or "1h"
+        )
         table.add_row(
             str(i),
             opt.get("label_fr", "?"),
-            opt.get("estimated_difficulty", "?"),
-            opt.get("estimated_duration", "?"),
+            difficulty,
+            duration,
         )
     console.print(table)
 

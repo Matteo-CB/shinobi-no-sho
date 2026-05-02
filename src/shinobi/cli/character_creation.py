@@ -128,11 +128,7 @@ def run_character_creation() -> str | None:
     natures = _pick_natures(clan_id)
 
     # Age + stats
-    age_years = int(
-        Prompt.ask(
-            "[bold cyan]Age de depart[/bold cyan] [dim](annees, 1 = naissance)[/dim]", default="6"
-        )
-    )
+    age_years = _pick_age_years()
     stats, extended, chakra_state = _roll_stats(name, starting_year, clan_id, kekkei, natures)
 
     # Famille
@@ -159,7 +155,7 @@ def run_character_creation() -> str | None:
         return None
 
     char_id = slugify(name) or "shinobi"
-    rank = "academy_student" if age_years < 12 else "genin"
+    rank = _rank_from_age(age_years)
 
     character = Character(
         id=char_id,
@@ -506,6 +502,46 @@ def _roll_rare_gifts(canon, seed_text: str, year: int) -> tuple[list[str], str |
                 tailed_beast = chosen_beast
 
     return kekkei_mora, tailed_beast
+
+
+def _pick_age_years() -> int:
+    """Choix d'age avec warning si choix narrativement absurde (<6 = avant l'academie)."""
+    while True:
+        raw = Prompt.ask(
+            "[bold cyan]Age de depart[/bold cyan] "
+            "[dim](annees ; canon : academie a partir de 6 ans, genin 8+, chunin 11+)[/dim]",
+            default="8",
+        ).strip()
+        try:
+            age = int(raw)
+        except ValueError:
+            console.print(f"[red]Age invalide : {raw}[/red]")
+            continue
+        if age < 0 or age > 100:
+            console.print("[red]Age irrealiste (0-100).[/red]")
+            continue
+        if age < 6:
+            console.print(
+                Panel.fit(
+                    f"[yellow]A {age} an{'s' if age > 1 else ''}, ton personnage est encore "
+                    "trop jeune pour entrer a l'academie. Il sera classe comme [bold]civilian[/bold] "
+                    "ou [bold]infant[/bold]. La plupart des actions seront limitees jusqu'a 6 ans.[/yellow]",
+                    title="Choix narratif inhabituel",
+                    border_style="yellow",
+                )
+            )
+            if not typer.confirm("Confirmer ce choix ?", default=False):
+                continue
+        return age
+
+
+def _rank_from_age(age_years: int) -> str:
+    """Rang canonique impose par l'age. Le joueur monte ensuite via les missions."""
+    if age_years < 6:
+        return "civilian"
+    if age_years < 12:
+        return "academy_student"
+    return "genin"
 
 
 def _pick_natures(clan_id: str | None) -> list[str]:

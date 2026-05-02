@@ -166,8 +166,12 @@ def play_session(save_id: str) -> None:
             if 0 <= idx < len(last_proposed):
                 intent_text = last_proposed[idx].get("label_fr", intent_text)
 
-        # Interpretation de l'intention
+        # Interpretation de l'intention. Si l'heuristique tombe en custom,
+        # on tente une re-interpretation par le LLM character_interpreter
+        # (qui maitrise mieux les phrases complexes ou non-canoniques).
         parsed = interpret(intent_text)
+        if parsed.action_type == ActionType.custom and not parsed.parameters.get("_desert"):
+            parsed = _llm_reinterpret_if_custom(parsed, intent_text, character, world)
 
         # Routes special : /buy /sell /use sont declenches via interpreter aussi
         if parsed.action_type == ActionType.buy:
@@ -1547,6 +1551,56 @@ def _invoke_flow(character, contract_name: str):
             )
         )
     return new_char
+
+
+def _llm_reinterpret_if_custom(parsed, intent_text: str, character, world):
+    """Si l'heuristique tombe en custom, demande au LLM character_interpreter de classifier.
+
+    Permet de transformer 'je m'occupe de mes affaires' / 'je flane au marche' etc.
+    en train_stat / move / talk / etc. au lieu de tomber en fallback inerte.
+    Si le LLM est down ou retourne aussi custom, on garde le parsed original.
+    """
+    from shinobi.engine.interpreter import ParsedIntent
+
+    try:
+        from shinobi.llm.client import LLMClient
+        from shinobi.llm.narration import CharacterInterpreter
+
+        async def _do() -> ParsedIntent | None:
+            async with LLMClient() as client:
+                if not await client.health():
+                    return None
+                interp = CharacterInterpreter(client)
+                ctx = (
+                    f"{character.name}, {character.age_years} ans, {character.rank} "
+                    f"a {character.current_village}. Date in-game : an {world.current_year}."
+                )
+                result = await interp.interpret(intent_text, context_summary=ctx)
+                # Convertit string -> ActionType si valide
+                try:
+                    new_type = ActionType(result.action_type)
+                except ValueError:
+                    return None
+                if new_type == ActionType.custom:
+                    return None
+                params = dict(result.parameters or {})
+                if result.target_id and "target_id" not in params:
+                    params["target_id"] = result.target_id
+                return ParsedIntent(
+                    action_type=new_type,
+                    parameters=params,
+                    summary=result.summary or intent_text,
+                )
+
+        new_parsed = asyncio.run(_do())
+        if new_parsed is not None:
+            console.print(
+                f"  [dim italic]Action interpretee comme : {new_parsed.action_type.value}[/dim italic]"
+            )
+            return new_parsed
+    except Exception as exc:
+        console.print(f"[dim]Re-interpretation LLM ignoree ({type(exc).__name__})[/dim]")
+    return parsed
 
 
 def _maybe_auto_desert(character, world):

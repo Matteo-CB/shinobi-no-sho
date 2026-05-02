@@ -26,6 +26,60 @@ from shinobi.utils.text import (
     sanitize_narrative,
 )
 
+# Estimations heuristiques pour combler les "?" dans le tableau d'actions proposees.
+# Le LLM ne fournit pas systematiquement difficulty/duration ; on les derive du label.
+_DIFFICULTY_KEYWORDS_FR: dict[str, str] = {
+    "combat": "difficile", "attaque": "difficile", "tuer": "tres difficile",
+    "voler": "difficile", "espionner": "difficile",
+    "intimider": "difficile", "seduire": "difficile",
+    "entrain": "modere", "entraine": "modere", "pratique": "modere",
+    "etudier": "facile", "lire": "facile", "ecouter": "facile",
+    "suivre les cours": "facile", "discuter": "facile", "parler": "facile",
+    "demander": "facile", "se reposer": "trivial", "dormir": "trivial",
+    "mediter": "trivial", "manger": "trivial",
+    "voyager": "modere", "se rendre": "modere", "aller": "facile",
+}
+_DURATION_KEYWORDS_FR: dict[str, str] = {
+    "dormir": "8h", "se reposer": "1h", "mediter": "1h",
+    "entrain": "4h", "pratique": "4h",
+    "etudier": "2h", "lire": "2h", "ecouter": "1h",
+    "suivre les cours": "2h",
+    "voyager": "1j+", "se rendre": "1j+",
+    "discuter": "30min", "parler": "30min", "demander": "15min",
+    "manger": "30min",
+    "combat": "1h", "attaque": "30min",
+}
+
+
+def _guess_difficulty(label: str) -> str:
+    low = label.lower()
+    for kw, diff in _DIFFICULTY_KEYWORDS_FR.items():
+        if kw in low:
+            return diff
+    return "modere"
+
+
+def _guess_duration(label: str) -> str:
+    low = label.lower()
+    for kw, dur in _DURATION_KEYWORDS_FR.items():
+        if kw in low:
+            return dur
+    return "1h"
+
+
+def _enrich_proposed_actions(actions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Remplit difficulty/duration cote Python si le LLM les a omises."""
+    out: list[dict[str, Any]] = []
+    for a in actions:
+        label = a.get("label_fr", "") or a.get("label", "")
+        new = dict(a)
+        if not new.get("difficulty_fr") and not new.get("difficulty"):
+            new["difficulty_fr"] = _guess_difficulty(label)
+        if not new.get("duration_fr") and not new.get("duration"):
+            new["duration_fr"] = _guess_duration(label)
+        out.append(new)
+    return out
+
 
 @dataclass
 class NarrationRequest:
@@ -132,6 +186,32 @@ class Narrator:
                 if d.get("character_id", "") in allowed
                 or looks_like_generic_role(d.get("character_id", ""))
             ]
+        # Post-filter : rejette tout dialogue de PNJ canon non vivant a l'annee courante.
+        # Capte les cas ou le LLM invente "Kabuto" / "Itachi" / etc. en pleine ere prehistorique.
+        if request.scene_context is not None:
+            current_year = request.scene_context.current_year
+            filtered = []
+            for d in npc_dialogue:
+                cid = d.get("character_id", "")
+                # Generic role (sensei_academie, marchand_taverne...) toujours OK
+                if looks_like_generic_role(cid):
+                    filtered.append(d)
+                    continue
+                canon_npc = self.canon.characters.get(cid)
+                if canon_npc is None:
+                    # Id inconnu, on le garde (peut etre un OC mais le LLM doit l'avoir invente)
+                    filtered.append(d)
+                    continue
+                if canon_npc.birth_year is not None and current_year < canon_npc.birth_year:
+                    continue  # pas encore ne
+                if canon_npc.death_year is not None and current_year > canon_npc.death_year:
+                    continue  # deja mort
+                filtered.append(d)
+            npc_dialogue = filtered
+
+        # Enrichit les proposed_actions avec difficulty + duration calcules cote Python
+        # (le LLM ne fournit que le label, le moteur calcule le reste pour eviter les "?").
+        proposed_actions = _enrich_proposed_actions(proposed_actions)
 
         return NarrationResponse(
             narrative=narrative,
