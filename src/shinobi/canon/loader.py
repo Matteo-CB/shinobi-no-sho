@@ -93,6 +93,13 @@ def load_canon(
     if not world_rules_path.exists() and "world_rules" not in optional:
         raise CanonLoadError(f"Fichier requis manquant: {world_rules_path}")
 
+    characters = _safe_indexed(base, "characters.json", Character, optional)
+    # Patch des birth_year/death_year manquants pour les NPCs canon majeurs.
+    # Permet aux fact sheets et au filter temporel de fonctionner pour Naruto, Sasuke,
+    # Sakura, Konohamaru, Itachi, Kakashi, Tsunade, etc. meme si le scraping initial
+    # ne les a pas extraits.
+    characters = _apply_birth_years_patch(base, characters)
+
     bundle = CanonBundle(
         world_rules=_load_world_rules(world_rules_path),
         natures=_safe_indexed(base, "natures.json", Nature, optional),
@@ -101,7 +108,7 @@ def load_canon(
         villages=_safe_indexed(base, "villages.json", Village, optional),
         clans=_safe_indexed(base, "clans.json", Clan, optional),
         organizations=_safe_indexed(base, "organizations.json", Organization, optional),
-        characters=_safe_indexed(base, "characters.json", Character, optional),
+        characters=characters,
         tailed_beasts=_safe_indexed(base, "tailed_beasts.json", TailedBeast, optional),
         kekkei_genkai=_safe_indexed(base, "kekkei_genkai.json", KekkeiGenkai, optional),
         kekkei_mora=_safe_indexed(base, "kekkei_mora.json", KekkeiGenkai, optional),
@@ -131,6 +138,47 @@ def load_canon(
         events=len(bundle.timeline_events),
     )
     return bundle
+
+
+def _apply_birth_years_patch(
+    base: Path, characters: dict[str, Character]
+) -> dict[str, Character]:
+    """Applique character_birth_years_patch.json sur le dict de personnages.
+
+    Le patch corrige uniquement les champs birth_year/death_year manquants ;
+    il ne remplace jamais des valeurs deja presentes dans characters.json.
+    """
+    patch_path = base / "character_birth_years_patch.json"
+    if not patch_path.exists():
+        return characters
+    try:
+        patch_data = load_json(patch_path)
+    except Exception as exc:
+        logger.warning("birth_years_patch_load_failed", error=str(exc))
+        return characters
+    patches = patch_data.get("patches", {}) if isinstance(patch_data, dict) else {}
+    if not patches:
+        return characters
+    patched_count = 0
+    out = dict(characters)
+    for cid, data in patches.items():
+        char = out.get(cid)
+        if char is None:
+            continue
+        update: dict[str, Any] = {}
+        if char.birth_year is None and "birth_year" in data:
+            update["birth_year"] = data["birth_year"]
+        if char.death_year is None and "death_year" in data:
+            update["death_year"] = data["death_year"]
+        if update:
+            try:
+                out[cid] = char.model_copy(update=update)
+                patched_count += 1
+            except Exception:
+                pass
+    if patched_count:
+        logger.info("birth_years_patched", count=patched_count)
+    return out
 
 
 def _safe_indexed(

@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from shinobi.canon.fact_sheet import fact_sheets_for
 from shinobi.canon.models import CanonBundle
 from shinobi.engine.scene_context import (
     SceneContext,
@@ -81,6 +82,84 @@ def _enrich_proposed_actions(actions: list[dict[str, Any]]) -> list[dict[str, An
     return out
 
 
+def _is_canon_npc_invalid(canon: CanonBundle, name_or_id: str, current_year: int) -> bool:
+    """True si name_or_id correspond a un NPC canon non vivant a current_year."""
+    char = canon.characters.get(name_or_id)
+    if char is None:
+        # Tente une recherche par nom_romaji (sensible aux variantes)
+        target = name_or_id.lower().strip()
+        for c in canon.characters.values():
+            full = (c.name_romaji or "").lower()
+            if full == target or full.replace(" ", "_") == target:
+                char = c
+                break
+            # Match nom de famille seul (uchiha sasuke -> "uchiha")
+            parts = full.split()
+            if len(parts) >= 2 and (parts[0] == target or parts[-1] == target):
+                if len(target) >= 4:
+                    char = c
+                    break
+    if char is None:
+        return False
+    if char.birth_year is not None and current_year < char.birth_year:
+        return True
+    return bool(char.death_year is not None and current_year > char.death_year)
+
+
+def _scan_text_for_invalid_npcs(canon: CanonBundle, text: str, current_year: int) -> list[str]:
+    """Retourne la liste des NPCs canon non vivants mentionnes dans le texte."""
+    if not text:
+        return []
+    lower = text.lower()
+    bad: list[str] = []
+    for cid, char in canon.characters.items():
+        full = (char.name_romaji or "").lower()
+        if not full:
+            continue
+        # Match seulement si non vivant a cette date
+        if char.birth_year is not None and current_year < char.birth_year:
+            pass  # pas encore ne
+        elif char.death_year is not None and current_year > char.death_year:
+            pass  # mort
+        else:
+            continue
+        # Match nom complet ou prenom long (>=5 chars pour eviter faux positifs)
+        if full in lower:
+            bad.append(cid)
+            continue
+        parts = full.split()
+        for p in parts:
+            if len(p) >= 5 and f" {p} " in f" {lower} ":
+                bad.append(cid)
+                break
+    return bad
+
+
+def _filter_observations(
+    canon: CanonBundle, observations: list[str], current_year: int
+) -> list[str]:
+    """Rejette les observations qui mentionnent un NPC non vivant a cette date."""
+    out = []
+    for obs in observations:
+        bad = _scan_text_for_invalid_npcs(canon, obs, current_year)
+        if not bad:
+            out.append(obs)
+    return out
+
+
+def _filter_proposed_actions_by_canon(
+    canon: CanonBundle, actions: list[dict[str, Any]], current_year: int
+) -> list[dict[str, Any]]:
+    """Rejette les actions qui mentionnent un NPC canon non vivant."""
+    out = []
+    for a in actions:
+        label = a.get("label_fr", "") or a.get("label", "")
+        bad = _scan_text_for_invalid_npcs(canon, label, current_year)
+        if not bad:
+            out.append(a)
+    return out
+
+
 @dataclass
 class NarrationRequest:
     """Donnees necessaires pour narrer un tour."""
@@ -127,9 +206,23 @@ class Narrator:
         )
         voices = compose_voice_section(self.canon, request.present_npcs)
 
+        # Fact sheets canoniques pour les NPCs presents : etat exact a l'annee in-game.
+        # Empeche le LLM d'inventer des relations/situations contraires au canon.
+        current_year = (
+            request.scene_context.current_year if request.scene_context is not None else None
+        )
+        fact_sheets = ""
+        if current_year is not None and request.present_npcs:
+            fact_sheets = fact_sheets_for(
+                self.canon, request.present_npcs, current_year=current_year
+            )
+
         user_blocks = []
         if request.scene_context is not None:
             user_blocks.append(format_scene_context_for_prompt(request.scene_context))
+            user_blocks.append("")
+        if fact_sheets:
+            user_blocks.append(fact_sheets)
             user_blocks.append("")
         user_blocks.append("[ETAT DU PERSONNAGE]")
         user_blocks.append(request.character_state_summary)
@@ -145,7 +238,9 @@ class Narrator:
         user_blocks.append(
             "\n[INSTRUCTION]\n"
             "Narre ce tour en respectant strictement les regles ET le CONTEXTE FACTUEL "
-            "DE LA SCENE. Reponds en JSON conforme."
+            "DE LA SCENE. Si un FAITS CANONIQUES NPC est fourni, tu DOIS coherer avec lui "
+            "(age, statut, situation psychologique). N'invente AUCUN ami, parent, ennemi ou "
+            "relation sociale qui n'est pas explicitement liste. Reponds en JSON conforme."
         )
         user_message = "\n".join(user_blocks)
 
@@ -213,11 +308,30 @@ class Narrator:
         # (le LLM ne fournit que le label, le moteur calcule le reste pour eviter les "?").
         proposed_actions = _enrich_proposed_actions(proposed_actions)
 
+        # Filter canon strict sur tout le contenu LLM : observations + proposed_actions
+        # ne doivent pas mentionner de NPCs canon non vivants a current_year.
+        observations = data.get("world_observations", [])
+        if current_year is not None:
+            observations = _filter_observations(self.canon, observations, current_year)
+            proposed_actions = _filter_proposed_actions_by_canon(
+                self.canon, proposed_actions, current_year
+            )
+            # Sanitize narrative : si elle mentionne un NPC non vivant, ajoute un avertissement
+            # tag visible plutot que de tout rejeter (preserve la narration utile).
+            bad_in_narrative = _scan_text_for_invalid_npcs(self.canon, narrative, current_year)
+            if bad_in_narrative:
+                narrative += (
+                    "\n\n[Note interne : le narrateur a mentionne "
+                    + ", ".join(bad_in_narrative)
+                    + " mais ces personnages ne sont pas vivants/presents a cette date. "
+                    "A ignorer.]"
+                )
+
         return NarrationResponse(
             narrative=narrative,
             npc_dialogue=npc_dialogue,
             proposed_actions=proposed_actions,
-            world_observations=data.get("world_observations", []),
+            world_observations=observations,
             clarification_request=data.get("clarification_request"),
         )
 
