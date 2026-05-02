@@ -63,6 +63,14 @@ META_HELP = {
     "/use <item_id>": "Consomme un item (soldier_pill, ramen_bowl, antidote, ...)",
     "/active_missions": "Liste les missions acceptees",
     "/reputation": "Affiche ta reputation par village",
+    "/biography": "Affiche le journal biographique (rank-ups, techniques apprises, traumas)",
+    "/knowledge": "Affiche ce que tu sais (events canon, secrets reveles)",
+    "/rumors": "Affiche les rumeurs entendues",
+    "/breadcrumbs": "Affiche les sous-objectifs reveles non encore accomplis",
+    "/weapons": "Liste tes armes equipees",
+    "/summons": "Liste tes contrats d'invocation",
+    "/sign_contract <name>": "Signe un contrat d'invocation (toad, snake, slug, hawk, etc.)",
+    "/invoke <name>": "Tente d'invoquer une creature (consomme 30 chakra)",
     "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
     "/journal": "Indique ou se trouve le journal",
     "/help": "Affiche cette aide",
@@ -550,7 +558,7 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
     elif command == "/inventory":
         from shinobi.engine.shop import ITEM_CATALOG, get_inventory_summary
 
-        items = get_inventory_summary(character.inventory)
+        items = get_inventory_summary(character.inventory, character.weapons)
         if not items:
             console.print(Panel("Inventaire vide.", title="Inventaire"))
         else:
@@ -568,6 +576,30 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
             console.print(Panel("\n".join(lines), title="Reputation par village"))
     elif command == "/missions":
         character, world = _missions_flow(character, world, save_id, canon)
+    elif command == "/biography":
+        _print_biography(character)
+    elif command == "/knowledge":
+        _print_knowledge(character)
+    elif command == "/rumors":
+        _print_rumors(world, canon)
+    elif command == "/breadcrumbs":
+        _print_breadcrumbs(save_id)
+    elif command == "/weapons":
+        _print_weapons(character)
+    elif command == "/summons":
+        _print_summons(character)
+    elif command.startswith("/sign_contract"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2:
+            console.print("[red]Usage : /sign_contract <name> (ex: toad, snake, slug, hawk)[/red]")
+        else:
+            character = _sign_contract_flow(character, parts[1].strip().lower())
+    elif command.startswith("/invoke"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2:
+            console.print("[red]Usage : /invoke <name>[/red]")
+        else:
+            character = _invoke_flow(character, parts[1].strip().lower())
     elif command.startswith("/skip"):
         character, world = _skip_time(command, character, world)
     elif command == "/journal":
@@ -777,10 +809,10 @@ def _shop_buy_flow(character):
 
 
 def _shop_sell_flow(character):
-    """Propose la revente d'items de l'inventaire."""
+    """Propose la revente d'items de l'inventaire (et des armes)."""
     from shinobi.engine.shop import ITEM_CATALOG, SELL_RATIO, get_inventory_summary, sell_item
 
-    items = get_inventory_summary(character.inventory)
+    items = get_inventory_summary(character.inventory, character.weapons)
     if not items:
         console.print("[yellow]Inventaire vide.[/yellow]")
         return character
@@ -1308,6 +1340,214 @@ def _desertion_flow(character, world):
     new_rep = new_char.reputation.model_copy(update={"bingo_book_entry": True})
     new_char = new_char.model_copy(update={"reputation": new_rep})
     return new_char, world
+
+
+def _print_biography(character) -> None:
+    """Affiche le journal biographique du personnage."""
+    if not character.biography_log:
+        console.print(Panel("Aucun evenement biographique enregistre.", title="Biographie"))
+        return
+    lines = []
+    for ev in character.biography_log[-50:]:
+        cat_color = {
+            "rank_promotion": "bold green",
+            "technique_learned": "cyan",
+            "trauma": "red",
+            "achievement": "yellow",
+            "key_relationship": "magenta",
+            "encounter": "blue",
+            "birth": "dim",
+        }.get(ev.category, "white")
+        lines.append(f"  [dim]An {ev.year} (a {ev.age} ans)[/dim] [{cat_color}]{ev.summary}[/{cat_color}]")
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title=f"Biographie de {character.name} ({len(character.biography_log)} evenements)",
+            border_style="cyan",
+        )
+    )
+
+
+def _print_knowledge(character) -> None:
+    """Affiche ce que le joueur sait : events canon, secrets, techniques connues."""
+    sections = []
+    if character.knowledge.known_events:
+        items = sorted(character.knowledge.known_events.items(), key=lambda kv: kv[0])
+        body = "\n".join(f"  [dim]{eid}[/dim] : {desc}" for eid, desc in items[-30:])
+        sections.append(("[bold]Events canon connus[/bold]", body))
+    if character.knowledge.secrets_uncovered:
+        body = "\n".join(f"  [magenta]*[/magenta] {s}" for s in character.knowledge.secrets_uncovered[-20:])
+        sections.append(("[bold magenta]Secrets reveles[/bold magenta]", body))
+    if character.knowledge.known_techniques_existence:
+        body = ", ".join(character.knowledge.known_techniques_existence[-15:])
+        sections.append(("[bold cyan]Techniques entendues[/bold cyan]", body))
+    if character.knowledge.known_locations:
+        body = ", ".join(character.knowledge.known_locations[-15:])
+        sections.append(("[bold blue]Lieux visites/connus[/bold blue]", body))
+    if not sections:
+        console.print(Panel("Tu ne sais encore rien d'important.", title="Connaissances"))
+        return
+    body = "\n\n".join(f"{title}\n{content}" for title, content in sections)
+    console.print(Panel(body, title="Connaissances", border_style="blue"))
+
+
+def _print_rumors(world, canon) -> None:
+    """Affiche les rumeurs reçues par le joueur."""
+    received = [r for r in world.rumors if r.received_by_player]
+    if not received:
+        console.print(Panel("Aucune rumeur entendue pour le moment.", title="Rumeurs"))
+        return
+    lines = []
+    for r in received[-20:]:
+        ev = canon.timeline_events.get(r.source_event_id) if r.source_event_id else None
+        canon_label = f" [dim]({ev.name_fr})[/dim]" if ev else ""
+        lines.append(
+            f"  [yellow]An {r.born_at_year}[/yellow]{canon_label} : {r.content} "
+            f"[dim](fid {r.fidelity:.2f}, {r.diffusion_radius})[/dim]"
+        )
+    console.print(
+        Panel("\n".join(lines), title=f"Rumeurs ({len(received)})", border_style="yellow")
+    )
+
+
+def _print_breadcrumbs(save_id: str) -> None:
+    """Affiche les sous-objectifs reveles non encore accomplis."""
+    bcs = save_module.load_breadcrumbs(save_id)
+    if not bcs:
+        console.print(Panel("Aucun sous-objectif revele.", title="Pistes"))
+        return
+    revealed = [b for b in bcs if b.revealed]
+    pending = [b for b in revealed if not b.completed]
+    completed = [b for b in revealed if b.completed]
+    blocks = []
+    if pending:
+        block = "\n".join(
+            f"  [yellow]>[/yellow] {b.description} [dim]({b.canonical_basis})[/dim]"
+            for b in pending[-15:]
+        )
+        blocks.append(f"[bold yellow]En cours ({len(pending)})[/bold yellow]\n{block}")
+    if completed:
+        block = "\n".join(f"  [green]v[/green] [dim]{b.description}[/dim]" for b in completed[-10:])
+        blocks.append(f"[bold green]Accomplis ({len(completed)})[/bold green]\n{block}")
+    if not blocks:
+        console.print(Panel("Aucun sous-objectif revele.", title="Pistes"))
+        return
+    console.print(Panel("\n\n".join(blocks), title="Pistes", border_style="magenta"))
+
+
+def _print_weapons(character) -> None:
+    """Affiche les armes equipees."""
+    if not character.weapons:
+        console.print(
+            Panel(
+                "Aucune arme equipee. Achete-en au shop ou recupere-en sur des adversaires.",
+                title="Armes",
+            )
+        )
+        return
+    lines = []
+    for w in character.weapons:
+        marker = " [dim](x" + str(w.quantity) + ")[/dim]" if w.quantity > 1 else ""
+        lines.append(f"  [cyan]{w.weapon_id}[/cyan] [dim]({w.quality})[/dim]{marker}")
+    console.print(Panel("\n".join(lines), title=f"Armes ({len(character.weapons)})", border_style="cyan"))
+
+
+def _print_summons(character) -> None:
+    """Affiche les contrats d'invocation signes."""
+    if not character.summons:
+        console.print(
+            Panel(
+                "Aucun contrat d'invocation signe. Cherche un sannin ou un sage pour en obtenir un.",
+                title="Invocations",
+            )
+        )
+        return
+    lines = [f"  [magenta]*[/magenta] {s}" for s in character.summons]
+    console.print(
+        Panel("\n".join(lines), title=f"Contrats d'invocation ({len(character.summons)})", border_style="magenta")
+    )
+
+
+CANONICAL_SUMMONS = {
+    "toad": "Crapauds du Mont Myoboku (lignee Jiraiya/Naruto/Minato)",
+    "snake": "Serpents du Mont Ryuchi (lignee Orochimaru/Sasuke)",
+    "slug": "Limaces du Mont Shikkotsu (lignee Tsunade/Sakura)",
+    "hawk": "Faucons (lignee Sasuke post-revolt)",
+    "monkey": "Singes (Hiruzen Sarutobi)",
+    "ninken": "Meute de chiens ninja (lignee Hatake)",
+    "weasel": "Belettes (Temari)",
+    "crow": "Corbeaux (Itachi, Shisui)",
+    "dragon": "Dragons (Kakuzu, lignee rare)",
+}
+
+
+def _sign_contract_flow(character, contract_name: str):
+    """Signe un contrat d'invocation. Heuristique : ouvert a tout nom canonique connu."""
+    canonical = CANONICAL_SUMMONS.get(contract_name)
+    if canonical is None:
+        console.print(
+            f"[yellow]Contrat '{contract_name}' inconnu. "
+            f"Liste : {', '.join(CANONICAL_SUMMONS.keys())}[/yellow]"
+        )
+        return character
+    if contract_name in character.summons:
+        console.print(f"[dim]Tu as deja signe le contrat des {contract_name}.[/dim]")
+        return character
+    new_summons = [*character.summons, contract_name]
+    new_char = character.model_copy(update={"summons": new_summons})
+    console.print(
+        Panel.fit(
+            f"[bold magenta]Contrat signe : {contract_name}[/bold magenta]\n"
+            f"[dim]{canonical}[/dim]\n"
+            "[dim]Tu peux desormais invoquer une creature de cette lignee avec /invoke <name>.[/dim]",
+            title="Kuchiyose no Jutsu",
+            border_style="magenta",
+        )
+    )
+    return new_char
+
+
+def _invoke_flow(character, contract_name: str):
+    """Invocation : consomme 30 chakra, succes selon ninjutsu + chakra_control."""
+    if contract_name not in character.summons:
+        console.print(f"[red]Tu n'as pas signe le contrat des {contract_name}.[/red]")
+        return character
+    if character.chakra.current < 30:
+        console.print(
+            f"[red]Pas assez de chakra ({character.chakra.current}/30 requis pour Kuchiyose).[/red]"
+        )
+        return character
+    new_chakra = character.chakra.model_copy(update={"current": character.chakra.current - 30})
+    new_char = character.with_chakra(new_chakra)
+    skill = (character.stats.ninjutsu + character.extended_stats.chakra_control) / 2
+    if skill < 1.5:
+        console.print(
+            Panel(
+                "Ton invocation rate. Le chakra se dissipe. Tes mains tremblent.",
+                title="Kuchiyose echoue",
+                border_style="red",
+            )
+        )
+        return new_char
+    if skill < 3.0:
+        console.print(
+            Panel(
+                f"Une petite creature de la lignee des {contract_name} apparait. "
+                "Modeste mais fidele.",
+                title="Kuchiyose mineur",
+                border_style="cyan",
+            )
+        )
+    else:
+        console.print(
+            Panel(
+                f"Une creature majeure de la lignee des {contract_name} apparait dans un nuage de fumee. "
+                "Elle attend tes ordres.",
+                title="Kuchiyose majeur",
+                border_style="magenta",
+            )
+        )
+    return new_char
 
 
 def _maybe_auto_desert(character, world):

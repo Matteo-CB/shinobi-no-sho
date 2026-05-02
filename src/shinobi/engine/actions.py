@@ -141,12 +141,26 @@ def _stat_label_fr(stat_name: str) -> str:
     return _STAT_LABELS_FR.get(stat_name, stat_name)
 
 
+_WEAPON_COMBAT_BONUS: dict[str, float] = {
+    "kunai": 0.15,
+    "shuriken": 0.1,
+    "fuma_shuriken": 0.4,
+}
+
+
+def _weapon_combat_bonus(character: Character) -> float:
+    """Bonus de combat (en points de stat) si le perso possede des armes equipees."""
+    if not character.weapons:
+        return 0.0
+    return min(0.6, sum(_WEAPON_COMBAT_BONUS.get(w.weapon_id, 0.05) for w in character.weapons))
+
+
 def relevant_stat(action: Action, character: Character) -> float:
     """Choix de la stat principale selon l'action."""
     s = character.stats
     es = character.extended_stats
     if action.action_type == ActionType.fight:
-        return average_combat_stat(s)
+        return average_combat_stat(s) + _weapon_combat_bonus(character)
     if action.action_type in (
         ActionType.train_stat,
         ActionType.train_technique,

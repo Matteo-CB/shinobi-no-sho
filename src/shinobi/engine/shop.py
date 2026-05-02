@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from shinobi.engine.character import Character, Inventory
+from shinobi.engine.character import Character, Inventory, OwnedWeapon
 
 
 @dataclass(frozen=True)
@@ -185,10 +185,23 @@ def list_shop_inventory(village_id: str) -> list[tuple[ShopItem, int]]:
 
 
 def buy_item(character: Character, item: ShopItem, price: int) -> tuple[Character, str]:
-    """Achete un item si possible. Retourne (character, message)."""
+    """Achete un item si possible. Retourne (character, message).
+
+    Les items de categorie 'weapon' sont ajoutes a character.weapons (OwnedWeapon).
+    Les autres vont dans inventory.scrolls ou inventory.misc.
+    """
     if character.money < price:
         return character, f"Pas assez de ryos ({character.money} / {price} requis)."
     new_money = character.money - price
+    if item.category == "weapon":
+        existing = next((w for w in character.weapons if w.weapon_id == item.id), None)
+        if existing:
+            updated = existing.model_copy(update={"quantity": existing.quantity + 1})
+            new_weapons = [updated if w.weapon_id == item.id else w for w in character.weapons]
+        else:
+            new_weapons = [*character.weapons, OwnedWeapon(weapon_id=item.id, quantity=1)]
+        new_char = character.model_copy(update={"money": new_money, "weapons": new_weapons})
+        return new_char, f"Achete : {item.name_fr} pour {price} ryos. (arme equipee)"
     new_inv_misc = dict(character.inventory.misc)
     if item.category == "scroll":
         new_scrolls = list(character.inventory.scrolls)
@@ -202,11 +215,24 @@ def buy_item(character: Character, item: ShopItem, price: int) -> tuple[Characte
 
 
 def sell_item(character: Character, item_id: str) -> tuple[Character, str]:
-    """Vend un item de l'inventaire. Retourne (character, message)."""
+    """Vend un item de l'inventaire ou d'arme equipee. Retourne (character, message)."""
     item = ITEM_CATALOG.get(item_id)
     if item is None:
         return character, f"Item inconnu : {item_id}"
     sell_price = int(item.base_price_ryos * SELL_RATIO)
+    if item.category == "weapon":
+        existing = next((w for w in character.weapons if w.weapon_id == item_id), None)
+        if existing is None or existing.quantity <= 0:
+            return character, "Tu n'as pas cette arme."
+        if existing.quantity > 1:
+            updated = existing.model_copy(update={"quantity": existing.quantity - 1})
+            new_weapons = [updated if w.weapon_id == item_id else w for w in character.weapons]
+        else:
+            new_weapons = [w for w in character.weapons if w.weapon_id != item_id]
+        new_char = character.model_copy(
+            update={"money": character.money + sell_price, "weapons": new_weapons}
+        )
+        return new_char, f"Vendu : {item.name_fr} pour {sell_price} ryos."
     if item.category == "scroll":
         if item_id not in character.inventory.scrolls:
             return character, "Tu n'as pas ce parchemin."
@@ -227,11 +253,16 @@ def sell_item(character: Character, item_id: str) -> tuple[Character, str]:
     return new_char, f"Vendu : {item.name_fr} pour {sell_price} ryos."
 
 
-def get_inventory_summary(inventory: Inventory) -> list[tuple[str, int]]:
-    """Liste les items detenus avec leurs quantites."""
+def get_inventory_summary(
+    inventory: Inventory, weapons: list[OwnedWeapon] | None = None
+) -> list[tuple[str, int]]:
+    """Liste les items detenus avec leurs quantites (inventaire + armes)."""
     out: list[tuple[str, int]] = []
     for scroll_id in inventory.scrolls:
         out.append((scroll_id, 1))
     for item_id, qty in inventory.misc.items():
         out.append((item_id, qty))
+    if weapons:
+        for w in weapons:
+            out.append((w.weapon_id, w.quantity))
     return out
