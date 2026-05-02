@@ -5,6 +5,7 @@ from __future__ import annotations
 from shinobi.engine.actions import ActionResult
 from shinobi.engine.character import Character
 from shinobi.goals.breadcrumbs import Breadcrumb, CompletionCondition
+from shinobi.goals.declaration import Goal
 
 
 def check_breadcrumb_completion(
@@ -68,4 +69,49 @@ def _check_condition(
         )
     if t == "survive_event":
         return not character.is_dead
+    return False
+
+
+def check_goal_completion(goal: Goal, breadcrumbs: list[Breadcrumb]) -> bool:
+    """Un Goal est accompli si tous ses breadcrumbs reveles non-optionnels sont completes.
+
+    Si aucun breadcrumb n'a ete revele, le Goal n'est pas considere accompli :
+    le joueur n'a pas encore explore le chemin.
+    """
+    own = [b for b in breadcrumbs if b.parent_goal_id == goal.id]
+    if not own:
+        return False
+    required = [b for b in own if not b.optional and b.revealed]
+    if not required:
+        return False
+    return all(b.completed for b in required)
+
+
+def check_goal_by_target(goal: Goal, character: Character) -> bool:
+    """Verification heuristique selon target_type, sans breadcrumbs.
+
+    Permet de fermer un Goal meme si le pathfinder n'a jamais ete invoque,
+    quand l'objectif est mecaniquement verifiable (ex: apprendre une technique
+    dont l'id est connu).
+    """
+    if goal.target_type == "learn_technique" and goal.target_id:
+        return any(t.technique_id == goal.target_id for t in character.techniques_known)
+    if goal.target_type == "achieve_rank" and goal.target_id:
+        return character.rank == goal.target_id
+    if goal.target_type == "befriend_character" and goal.target_id:
+        for rel in character.relationships:
+            if rel.with_character_id == goal.target_id and rel.affinity >= 60:
+                return True
+        return False
+    if goal.target_type == "join_organization" and goal.target_id:
+        return goal.target_id in character.affiliations
+    if goal.target_type == "leave_village":
+        return character.is_missing_nin or character.current_village != character.village_of_origin
+    if goal.target_type == "obtain_object" and goal.target_id:
+        return (
+            goal.target_id in character.inventory.misc
+            or goal.target_id in character.inventory.scrolls
+        )
+    if goal.target_type == "master_nature" and goal.target_id:
+        return goal.target_id in character.chakra.natures_unlocked
     return False

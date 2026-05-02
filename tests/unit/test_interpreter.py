@@ -51,3 +51,28 @@ def test_interpret_extracts_duration() -> None:
 def test_interpret_unknown_falls_back_to_custom() -> None:
     parsed = interpret("je rumine en regardant les nuages")
     assert parsed.action_type == ActionType.custom
+
+
+@pytest.mark.parametrize(
+    "text,expected",
+    [
+        ("je decide de devenir Hokage", ActionType.declare_goal),
+        ("mon objectif est de retrouver mon clan", ActionType.declare_goal),
+        ("je m'engage a maitriser le rasengan", ActionType.declare_goal),
+        ("je cherche le chemin pour devenir Hokage", ActionType.request_objective_path),
+        ("comment atteindre la maitrise du sharingan", ActionType.request_objective_path),
+        ("je paie pour des informations", ActionType.pay_for_information),
+        ("je demande un indice sur Itachi", ActionType.pay_for_information),
+        ("je defie Sasuke en duel", ActionType.challenge),
+        ("je prie devant l'autel", ActionType.pray),
+    ],
+)
+def test_interpret_meta_actions(text: str, expected: ActionType) -> None:
+    parsed = interpret(text)
+    assert parsed.action_type == expected
+
+
+def test_interpret_pay_extracts_amount() -> None:
+    parsed = interpret("je paie pour des informations 250 ryos")
+    assert parsed.action_type == ActionType.pay_for_information
+    assert parsed.parameters.get("amount_ryos") == 250

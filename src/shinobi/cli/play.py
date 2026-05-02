@@ -31,8 +31,12 @@ from shinobi.engine.actions import (
 from shinobi.engine.events import tick_scheduler
 from shinobi.engine.interpreter import interpret
 from shinobi.engine.missions import list_available_missions
+from shinobi.engine.progression import advance_age
+from shinobi.engine.relations import decay_affinities, touch_relationship
 from shinobi.engine.rng import next_seed
+from shinobi.engine.rumors import player_can_hear, receive_rumor
 from shinobi.engine.time import advance_time
+from shinobi.engine.world import NPCState
 from shinobi.llm.client import LLMClient
 from shinobi.llm.narration import NarrationRequest, Narrator
 from shinobi.persistence import saves as save_module
@@ -175,6 +179,47 @@ def play_session(save_id: str) -> None:
             turn -= 1
             continue
 
+        # Route declare_goal via texte libre (raccourci sans /declare)
+        if parsed.action_type == ActionType.declare_goal:
+            from shinobi.goals.declaration import declare_goal as _declare
+
+            description = parsed.parameters.get("description") or intent_text
+            goal = _declare(
+                description_player=description,
+                interpretation_canonical=description,
+                declared_at_year=world.current_year,
+                declared_at_age=character.age_years,
+            )
+            save_module.save_goal(save_id, goal)
+            console.print(f"[green]Objectif declare : {goal.id[:8]} — {description}[/green]")
+            turn -= 1
+            continue
+
+        # Route request_objective_path via texte libre : interroge le pathfinder sur le dernier goal actif
+        if parsed.action_type == ActionType.request_objective_path:
+            goals = [g for g in save_module.load_goals(save_id) if g.status.value == "declared"]
+            if not goals:
+                console.print("[yellow]Aucun objectif declare. Utilise /declare ou tape \"je declare un objectif: ...\".[/yellow]")
+                turn -= 1
+                continue
+            target_goal = goals[-1]
+            console.print(f"[cyan]Pathfinder pour : {target_goal.description_player}[/cyan]")
+            try:
+                asyncio.run(_pathfinder_flow(target_goal, character, world, canon, retriever, save_id))
+            except Exception as exc:
+                console.print(f"[dim]Pathfinder LLM indisponible ({type(exc).__name__})[/dim]")
+            turn -= 1
+            continue
+
+        # Route pay_for_information : tente de reveler un breadcrumb cache du goal le plus prioritaire
+        if parsed.action_type == ActionType.pay_for_information:
+            amount = int(parsed.parameters.get("amount_ryos") or 100)
+            character, world = _pay_for_information_flow(
+                character, world, save_id, amount=amount
+            )
+            turn -= 1
+            continue
+
         # Choix de duree pour les actions longues
         duration_param = parsed.parameters.get("duration_hours")
         if isinstance(duration_param, int) and parsed.action_type in {
@@ -239,8 +284,26 @@ def play_session(save_id: str) -> None:
                 except Exception:
                     pass
 
-        last_proposed = []
+        # Annonce des rumeurs nouvellement nees que le joueur peut entendre
+        world = _announce_new_rumors(world, character, fired_event_ids={f.event_id for f in fired}, canon=canon)
+
+        # Vieillissement : si l'annee a change, remettre l'age en phase et appliquer aging_decay/growth
+        character = _age_character_if_needed(character, world)
+
+        # Decay des relations non entretenues (lent, juste a chaque changement d'annee)
+        character = decay_affinities(character, current_year=world.current_year)
+
+        # Mise a jour npc_states + touch_relationship pour les PNJ canon mentionnes ce tour
         present_npcs = _detect_present_npcs(intent_text, canon)
+        if present_npcs:
+            world, character = _touch_present_npcs(world, character, present_npcs, canon)
+
+        # Verification automatique des Goals declares
+        completed_goals = _check_goal_completions(save_id, character, world.current_year)
+        for goal_desc in completed_goals:
+            console.print(f"  [bold magenta]>>> Objectif accompli :[/bold magenta] {goal_desc}")
+
+        last_proposed = []
         try:
             narration = asyncio.run(
                 _attempt_narration(
@@ -261,8 +324,11 @@ def play_session(save_id: str) -> None:
                 last_proposed = narration.proposed_actions or []
                 for obs in narration.world_observations:
                     console.print(f"  [dim cyan]Observation :[/dim cyan] {obs}")
+            else:
+                _render_mechanical_narration(result, parsed, character, world)
         except Exception as exc:
             console.print(f"[dim]Narration LLM indisponible ({type(exc).__name__})[/dim]")
+            _render_mechanical_narration(result, parsed, character, world)
 
         try:
             save_module.save_turn(
@@ -759,12 +825,8 @@ def _skip_time(command: str, character, world):
     new_world = world.with_time(
         year=new_date.year, date=new_date.date_str, hour=new_date.hour, minute=new_date.minute
     )
-    # Le perso vieillit si on saute beaucoup
-    if minutes > 30 * 24 * 60:
-        years_passed = minutes // (365 * 24 * 60)
-        if years_passed > 0:
-            new_age = character.age_years + years_passed
-            character = character.with_age(new_age)
+    # Le perso vieillit avec aging_decay/growth (pas juste +N ans naif)
+    character = _age_character_if_needed(character, new_world)
     console.print(
         f"[green]Temps avance de {n}{unit}. Nouvelle date : an {new_date.year}, jour {new_date.date_str}[/green]"
     )
@@ -830,3 +892,176 @@ async def _attempt_narration(
             duration_str=f"{result.duration_minutes // 60}h{result.duration_minutes % 60:02d}",
         )
         return await narrator.narrate(request)
+
+
+def _announce_new_rumors(world, character, *, fired_event_ids: set[str], canon):
+    """Affiche les rumeurs nouvellement nees que le joueur peut entendre.
+
+    Marque chaque rumeur affichee comme received_by_player pour eviter le doublon.
+    """
+    if not world.rumors:
+        return world
+    new_world = world
+    for rumor in world.rumors:
+        if rumor.received_by_player:
+            continue
+        if rumor.born_at_year != world.current_year:
+            # On ne propage que les rumeurs fraiches (sinon on deverserait tout au load).
+            continue
+        # Localise l'evenement pour determiner le radius effectif
+        event_location = character.current_location  # fallback : meme lieu
+        if rumor.source_event_id:
+            ev = canon.timeline_events.get(rumor.source_event_id)
+            if ev and ev.location:
+                event_location = ev.location
+        if not player_can_hear(
+            rumor,
+            player_location=character.current_location,
+            event_location=event_location,
+            current_year=world.current_year,
+        ):
+            continue
+        is_canon_fired = rumor.source_event_id in fired_event_ids
+        prefix = "[bold yellow]Rumeur" + (" canon" if is_canon_fired else "") + " :[/bold yellow]"
+        console.print(
+            Panel(
+                f"{prefix} {rumor.content}\n[dim](fidelite {rumor.fidelity:.2f}, diffusion {rumor.diffusion_radius})[/dim]",
+                border_style="yellow",
+            )
+        )
+        new_world = receive_rumor(new_world, rumor.id, year=world.current_year)
+    return new_world
+
+
+def _age_character_if_needed(character, world):
+    """Aligne age_years sur birth_year vs current_year et applique aging_decay/growth.
+
+    Appele apres chaque tour : si le tour a fait passer un anniversaire,
+    le personnage vieillit d'une annee et ses stats sont ajustees.
+    """
+    expected_age = world.current_year - character.birth_year
+    if expected_age <= character.age_years:
+        return character
+    # advance_age applique aging_decay/growth interne
+    return advance_age(character, expected_age)
+
+
+def _check_goal_completions(save_id: str, character, current_year: int) -> list[str]:
+    """Verifie tous les goals declares et marque ceux qui sont accomplis.
+
+    Renvoie la liste des descriptions accomplies ce tour.
+    """
+    from shinobi.goals.completion import check_goal_by_target, check_goal_completion
+    from shinobi.goals.declaration import complete_goal
+
+    goals = save_module.load_goals(save_id)
+    breadcrumbs = save_module.load_breadcrumbs(save_id)
+    completed_now: list[str] = []
+    for goal in goals:
+        if goal.status.value != "declared":
+            continue
+        is_done = check_goal_completion(goal, breadcrumbs) or check_goal_by_target(goal, character)
+        if is_done:
+            updated = complete_goal(goal, current_year)
+            save_module.save_goal(save_id, updated)
+            completed_now.append(goal.description_player)
+    return completed_now
+
+
+def _touch_present_npcs(world, character, present_npcs: list[str], canon):
+    """Met a jour npc_states + touche les relations correspondantes."""
+    new_world = world
+    for npc_id in present_npcs:
+        canon_npc = canon.characters.get(npc_id)
+        if canon_npc is None:
+            continue
+        # Determine localisation et rang courant a partir du canon
+        loc = character.current_location
+        rank = "unknown"
+        if canon_npc.rank_progression:
+            rank = canon_npc.rank_progression[-1].rank
+        existing = new_world.npc_states.get(npc_id)
+        is_alive = True
+        if canon_npc.death_year is not None and world.current_year >= canon_npc.death_year:
+            is_alive = False
+        npc_age = (
+            world.current_year - canon_npc.birth_year if canon_npc.birth_year else 25
+        )
+        new_world = new_world.with_npc_state(
+            NPCState(
+                character_id=npc_id,
+                is_alive=is_alive if existing is None else existing.is_alive,
+                current_location=loc,
+                current_year=world.current_year,
+                current_age=max(0, npc_age),
+                current_rank=rank,
+                last_updated_year=world.current_year,
+            )
+        )
+        character = touch_relationship(character, with_id=npc_id, year=world.current_year)
+    return new_world, character
+
+
+def _render_mechanical_narration(result, parsed, character, world):
+    """Fallback : affiche un Panel narratif mecanique quand le LLM est indisponible."""
+    bits = [result.summary_fr]
+    duration_str = f"{result.duration_minutes // 60}h{result.duration_minutes % 60:02d}"
+    bits.append(f"\n[dim]Action : {parsed.action_type.value} ({duration_str})[/dim]")
+    if result.stat_changes:
+        bits.append("\n[dim]Effets : " + ", ".join(
+            f"{ch['stat']} {ch['old']:.2f}→{ch['new']:.2f}" for ch in result.stat_changes[:3]
+        ) + "[/dim]")
+    bits.append(
+        f"\n[dim]Lieu : {character.current_location} | An {world.current_year}, jour {world.current_date}[/dim]"
+    )
+    console.print(
+        Panel(
+            "\n".join(bits),
+            title="Narration (mode mecanique)",
+            border_style="dim cyan",
+        )
+    )
+
+
+def _pay_for_information_flow(character, world, save_id: str, *, amount: int):
+    """Le joueur paie pour reveler le prochain breadcrumb cache d'un objectif actif."""
+    if character.money < amount:
+        console.print(
+            f"[red]Tu n'as pas {amount} ryos en poche (tu as {character.money}).[/red]"
+        )
+        return character, world
+    goals = [g for g in save_module.load_goals(save_id) if g.status.value == "declared"]
+    if not goals:
+        console.print("[yellow]Aucun objectif declare. Personne n'a rien a te vendre.[/yellow]")
+        return character, world
+    target_goal = goals[-1]
+    breadcrumbs = save_module.load_breadcrumbs(save_id, parent_goal_id=target_goal.id)
+    hidden = [bc for bc in breadcrumbs if not bc.revealed]
+    if not hidden:
+        console.print(
+            "[yellow]Le contact te repond qu'il n'a rien de plus a t'apprendre pour cet objectif.[/yellow]"
+        )
+        return character, world
+    next_bc = hidden[0]
+    from shinobi.goals.breadcrumbs import BreadcrumbPrice, mark_revealed
+
+    price = BreadcrumbPrice(
+        type="money",
+        description=f"information payee {amount} ryos",
+        amount=float(amount),
+        paid=True,
+        paid_at_year=world.current_year,
+    )
+    revealed = mark_revealed(next_bc, year=world.current_year, price_paid=price)
+    save_module.save_breadcrumb(save_id, revealed)
+    new_char = character.with_money(-amount)
+    console.print(
+        Panel(
+            f"[bold]Information acquise :[/bold] {revealed.description}\n"
+            f"  [dim]Base canonique : {revealed.canonical_basis}[/dim]\n"
+            f"  [dim]Cout : {amount} ryos[/dim]",
+            title=f"Indice debloque pour '{target_goal.description_player[:40]}'",
+            border_style="magenta",
+        )
+    )
+    return new_char, world

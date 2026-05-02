@@ -122,6 +122,30 @@ RESEARCH_PATTERNS = [r"\brecherch[er]\b", r"\benquet[er]\b", r"\binvestiguer?\b"
 BUY_PATTERNS = [r"\bj[' ]ach[ea]te[r]?\b", r"\bachet[er]\b", r"\bbuy\b"]
 SELL_PATTERNS = [r"\bje vends\b", r"\bvendre\b", r"\bsell\b"]
 USE_ITEM_PATTERNS = [r"\bje (?:bois|mange|consomme|utilise|avale)\b", r"\butilise[r]?\b"]
+DECLARE_GOAL_PATTERNS = [
+    r"\bje (?:decide|declare|m[' ]engage|veux devenir|veux maitriser|jure)\b",
+    r"\bmon objectif\b",
+    r"\bje me fixe (?:l[' ]objectif|comme but)\b",
+    r"\bdeclare?r? un objectif\b",
+]
+PATH_REQUEST_PATTERNS = [
+    r"\bje cherche (?:le |un )?chemin\b",
+    r"\bcomment (?:atteindre|parvenir|y arriver)\b",
+    r"\bje demande (?:la voie|le chemin)\b",
+    r"\bquelle (?:est la|voie) (?:meilleure )?(?:methode|approche|strategie)\b",
+]
+INFO_PAYMENT_PATTERNS = [
+    r"\bje paie pour (?:des |un )?(?:info|renseignement|indice|tuyau)\w*",
+    r"\bje (?:demande|cherche|achete) (?:un|des) (?:indice|info|renseignement|tuyau)\w*",
+    r"\bje soudoie (?:pour|afin de)\b",
+    r"\bje glisse (?:un peu d[' ])?argent\b",
+]
+PRAY_PATTERNS = [r"\bje prie\b", r"\bprier\b", r"\bpriere\b", r"\bje me recueille\b"]
+CHALLENGE_PATTERNS = [
+    r"\bje defi(?:e|er|es)\b",
+    r"\bje provoque (?:en duel|en combat)\b",
+    r"\blancer? un defi\b",
+]
 
 
 def _matches_any(text: str, patterns: list[str]) -> bool:
@@ -159,15 +183,44 @@ def interpret(text: str) -> ParsedIntent:
 
     duration_hours = _detect_duration_hours(lower)
 
-    # Ordre prioritaire : mission > combat > learn > train > rest/sleep/meditate > work > talk > move > custom
+    # Ordre prioritaire : declare/path/info > mission > combat > learn > train > rest > work > talk > move > custom
+    if _matches_any(lower, DECLARE_GOAL_PATTERNS):
+        return ParsedIntent(
+            action_type=ActionType.declare_goal,
+            parameters={"description": text.strip()},
+            summary=summary,
+        )
+    if _matches_any(lower, PATH_REQUEST_PATTERNS):
+        return ParsedIntent(
+            action_type=ActionType.request_objective_path,
+            parameters={},
+            summary=summary,
+        )
+    if _matches_any(lower, INFO_PAYMENT_PATTERNS):
+        # Detection grossiere d'un montant en ryos.
+        amount_match = re.search(r"(\d+)\s*(?:ryos|r)\b", lower)
+        amount = int(amount_match.group(1)) if amount_match else 100
+        return ParsedIntent(
+            action_type=ActionType.pay_for_information,
+            parameters={"amount_ryos": amount},
+            summary=summary,
+        )
     if _matches_any(lower, MISSION_PATTERNS):
         return ParsedIntent(
             action_type=ActionType.accept_mission,
             parameters={},
             summary=summary,
         )
+    if _matches_any(lower, CHALLENGE_PATTERNS):
+        return ParsedIntent(action_type=ActionType.challenge, parameters={}, summary=summary)
     if _matches_any(lower, COMBAT_PATTERNS):
         return ParsedIntent(action_type=ActionType.fight, parameters={}, summary=summary)
+    if _matches_any(lower, PRAY_PATTERNS):
+        return ParsedIntent(
+            action_type=ActionType.pray,
+            parameters={"duration_hours": duration_hours or 1},
+            summary=summary,
+        )
     if _matches_any(lower, LEARN_PATTERNS):
         # tentative d'extraction du nom de technique apres "apprendre"
         m = re.search(
