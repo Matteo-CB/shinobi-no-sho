@@ -130,6 +130,28 @@ $pipDeps = "fastapi>=0.115","uvicorn[standard]>=0.30","pydantic>=2.8","pydantic-
 & $venvPython -m pip install --quiet -e .
 Write-Ok "Dependances installees + projet en mode editable (commande shinobi disponible)"
 
+# Etape 2b : PyTorch avec CUDA si GPU NVIDIA ----------------------------------
+if (-not $cpuOnlyMode) {
+    Write-Step "PyTorch avec support CUDA (pour embeddings sur GPU)"
+    $cudaCheck = & $venvPython -c "import torch; print(torch.cuda.is_available())" 2>$null
+    $smCheck = & $venvPython -c "import torch; print(torch.cuda.get_device_capability(0)[0]) if torch.cuda.is_available() else print(0)" 2>$null
+    $needsNightly = $false
+    try { if ([int]$smCheck -ge 12) { $needsNightly = $true } } catch {}
+    if ($cudaCheck -eq "True" -and -not $needsNightly) {
+        Write-Skip "PyTorch CUDA deja compatible avec cette GPU"
+    } else {
+        if ($needsNightly) {
+            Write-Host "  GPU Blackwell (sm_120+) detectee : PyTorch nightly cu128 requis..."
+            & $venvPython -m pip uninstall torch -y --quiet 2>&1 | Out-Null
+            & $venvPython -m pip install --pre torch --index-url https://download.pytorch.org/whl/nightly/cu128 --quiet
+        } else {
+            Write-Host "  Installation PyTorch stable cu124..."
+            & $venvPython -m pip install torch --index-url https://download.pytorch.org/whl/cu124 --upgrade --quiet
+        }
+        Write-Ok "PyTorch avec CUDA installe (embeddings GPU disponibles)"
+    }
+}
+
 # Etape 3 : llama.cpp ----------------------------------------------------------
 if (-not $SkipLlama) {
     if ($cpuOnlyMode) {
