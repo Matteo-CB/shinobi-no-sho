@@ -51,9 +51,17 @@ cd shinobi-no-sho
 .\scripts\setup.bat -GitRemote <url>        # configurer un remote git
 ```
 
-### Jouer
+### Jouer (le plus simple : double-clic)
 
-Apres setup, **ouvre un nouveau PowerShell** (pour que le PATH se rafraichisse) :
+Apres setup, **double-clic sur `play.bat`** depuis l'Explorateur. Le launcher :
+- Lance setup automatiquement si le venv n'existe pas
+- Repare le package si besoin
+- Telecharge l'index RAG depuis GitHub Releases au premier lancement (~30 Mo)
+- Affiche le menu
+
+Sur Linux/macOS : `./play.sh` au lieu de `play.bat`.
+
+### Jouer (en ligne de commande)
 
 ```powershell
 # Terminal 1 : serveur LLM
@@ -63,7 +71,25 @@ Apres setup, **ouvre un nouveau PowerShell** (pour que le PATH se rafraichisse) 
 shinobi
 ```
 
-Le menu propose : nouvelle partie, continuer, gerer les saves, configuration. La commande `shinobi` est disponible globalement apres setup, sans avoir a activer le venv.
+La commande `shinobi` est disponible globalement apres setup, sans activer le venv.
+
+### Index RAG : telechargement automatique
+
+L'index vectoriel ChromaDB (~30 Mo) est **pre-build et publie sur GitHub Releases**. Au premier lancement, le launcher le telecharge automatiquement. Le fingerprint du canon est verifie a chaque demarrage : si tu modifies les datasets, l'index sera invalide et reconstruit en local (1-3 min).
+
+Pour forcer un rebuild local sans telechargement :
+```powershell
+.\.venv\Scripts\python.exe scripts\rebuild_embeddings.py rebuild --reset
+```
+
+Pour les contributeurs qui veulent **publier une nouvelle version de l'index** :
+```powershell
+# Build + cree dist/rag_index.tar.gz
+.\.venv\Scripts\python.exe scripts\build_rag_index.py build --reset
+
+# Upload sur GitHub Releases
+gh release create vX.Y --title "RAG index vX.Y" dist/rag_index.tar.gz
+```
 
 ## Demarrage rapide (Linux / macOS)
 

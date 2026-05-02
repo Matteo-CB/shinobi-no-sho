@@ -27,6 +27,14 @@ console = Console()
 def root(ctx: typer.Context) -> None:
     """Si appele sans sous-commande, lance la boucle de menu (jamais quitte sauf demande)."""
     if ctx.invoked_subcommand is None:
+        # Bootstrap RAG : si l'index est manquant ou desynchronise du canon, telecharge
+        # depuis GitHub Releases (fallback build local). No-op si l'index est deja OK.
+        try:
+            from shinobi.rag.bootstrap import bootstrap_index
+
+            bootstrap_index(console=console)
+        except Exception as exc:
+            console.print(f"[dim]Bootstrap RAG ignore : {type(exc).__name__}[/dim]")
         main_loop()
 
 

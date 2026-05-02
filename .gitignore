@@ -13,6 +13,8 @@ __pycache__/
 htmlcov/
 dist/
 build/
+_rag_index_download.tar.gz
+data/_rag_index_download.tar.gz
 
 # Environnement
 .env

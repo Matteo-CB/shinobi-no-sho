@@ -105,23 +105,15 @@ def play_session(save_id: str) -> None:
         profile=profile,
     )
 
-    store = ChromaStore()
-    # Auto-indexation au premier lancement si l'index ChromaDB est vide
+    # Bootstrap RAG : telecharge l'index pre-build depuis GitHub Releases si manquant
+    # ou desynchronise du canon. Fallback : build local.
     try:
-        if store.count("crossdomain") == 0:
-            console.print("[dim]Premiere utilisation : indexation RAG en cours...[/dim]")
-            from shinobi.rag.chunker import chunk_all
-            from shinobi.rag.embedder import embed_texts
+        from shinobi.rag.bootstrap import bootstrap_index
 
-            chunks = chunk_all(canon)
-            total = len(chunks)
-            for i in range(0, total, 64):
-                batch = chunks[i : i + 64]
-                vecs = embed_texts([c.text for c in batch], batch_size=64)
-                store.add_chunks(batch, vecs)
-            console.print(f"[green]RAG indexe : {total} chunks.[/green]")
+        bootstrap_index(console=console)
     except Exception as exc:
-        console.print(f"[dim]Indexation RAG echouee : {type(exc).__name__}[/dim]")
+        console.print(f"[dim]Bootstrap RAG echoue : {type(exc).__name__}[/dim]")
+    store = ChromaStore()
 
     retriever = Retriever(store, canon)
     turn = meta.total_turns
