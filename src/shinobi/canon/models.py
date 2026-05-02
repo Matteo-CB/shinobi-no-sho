@@ -156,6 +156,8 @@ class Clan(_Frozen):
     status_by_era: list[ClanStatusEntry] = Field(default_factory=list)
     notable_members_by_era: list[ClanMembersByEra] = Field(default_factory=list)
     social_structure_fr: str | None = None
+    key_advantages_fr: str | None = None
+    key_disadvantages_fr: str | None = None
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str

@@ -5,7 +5,10 @@
     "country_name_fr": "Amegakure",
     "geography_fr": "{{Infobox/Village\n|image=Amegakure.png\n|kanji=雨隠れの里\n|romaji=Amegakure no Sato\n|literal english=Village Hidden by Rain\n|english tv=The Village Hidden in the Rain\n|leader=Hanzō, Pain, Konan\n|symbol=Amegakure Symbol.svg\n}}\n{{translation|Amegakure|雨隠れの里|Amegakure no Sato|lit meaning=Village Hidden by Rain}} is a small but highly industrialised hidden village located in an unnamed country. As its name suggests, it rains almost constantly in Amegakure and the surrounding area. All the water seemingly ends in a large lake that surrounds the village.\nAme ninja are said to be notoriously short tempered",
     "id": "amegakure",
-    "main_clans": [],
+    "main_clans": [
+      "fuma",
+      "uzumaki"
+    ],
     "name_fr": "Amegakure",
     "name_kanji": null,
     "name_romaji": "Amegakure",
@@ -181,7 +184,9 @@
     "country_name_fr": "Iwagakure",
     "geography_fr": "{{Infobox/Village\n|image=Iwagakure no Sato.png\n|kanji=岩隠れの里\n|romaji=Iwagakure no Sato\n|literal english=Village Hidden by Rocks\n|english tv=The Village Hidden in the Stones\n|country=Land of Earth\n|leader=Tsuchikage\n|symbol=Iwagakure Symbol.svg\n|population=4/5\n|military=4/5\n|economy=2/5\n}}\n{{translation|Iwagakure|岩隠れの里|Iwagakure no Sato|lit meaning=Village Hidden by Rocks|engtv=Hidden Stone Village}} is the hidden village of the Land of Earth. As the village of one of the Five Great Shinobi Countries, Iwagakure has a Kage as its leader known as the Tsuchikage, of which there have been four in it",
     "id": "iwagakure",
-    "main_clans": [],
+    "main_clans": [
+      "kamizuru"
+    ],
     "name_fr": "Iwagakure",
     "name_kanji": null,
     "name_romaji": "Iwagakure",
@@ -229,7 +234,11 @@
     "country_name_fr": "Kirigakure",
     "geography_fr": "{{Infobox/Village\n|top={{Looking for|the village|disambig=Kiri (disambiguation)}}\n|image=Current Kirigakure.png\n|kanji=霧隠れの里\n|romaji=Kirigakure no Sato\n|literal english=Village Hidden by Mist\n|english tv= The Village Hidden in the Mist\n|country=Land of Water\n|leader=Mizukage\n|symbol=Kirigakure Symbol.svg\n|population=2/5\n|military=3/5\n|economy=2/5\n}}\n{{translation|Kirigakure|霧隠れの里|Kirigakure no Sato|lit meaning=Village Hidden by Mist|engtv=Village Hidden in the Mist}} is the hidden village of the Land of Water. As the village of one of the Five Great Shinobi Countries, Kiri has a Kage as its le",
     "id": "kirigakure",
-    "main_clans": [],
+    "main_clans": [
+      "hozuki",
+      "kaguya",
+      "yuki"
+    ],
     "name_fr": "Kirigakure",
     "name_kanji": null,
     "name_romaji": "Kirigakure",
@@ -261,7 +270,25 @@
     "country_name_fr": "Konohagakure",
     "geography_fr": "{{Infobox/Village\n|image=Konohagakure.png\n|kanji=木ノ葉隠れの里\n|romaji=Konohagakure no Sato\n|literal english=Village Hidden by Tree Leaves\n|english tv=The Village Hidden in the Leaves\n|country=Land of Fire\n|leader=Hokage\n|symbol=Konohagakure Symbol.svg\n|population=5/5\n|military=3/5\n|economy=2/5\n}}\n{{translation|Konohagakure|木ノ葉隠れの里|Konohagakure no Sato|lit meaning=Village Hidden by Tree Leaves|engtv=\"Village Hidden in the Leaves\" or \"Hidden Leaf Village\"}} is the hidden village of the Land of Fire. As the village of one of the Five Great Shinobi Countries, Konohagakure has a Kage as its leader known",
     "id": "konohagakure",
-    "main_clans": [],
+    "main_clans": [
+      "aburame",
+      "akimichi",
+      "fuma",
+      "hagoromo",
+      "hatake",
+      "hyuga",
+      "inuzuka",
+      "kohaku",
+      "kurama",
+      "lee",
+      "nara",
+      "sarutobi",
+      "senju",
+      "shimura",
+      "uchiha",
+      "uzumaki",
+      "yamanaka"
+    ],
     "name_fr": "Konohagakure",
     "name_kanji": null,
     "name_romaji": "Konohagakure",
@@ -277,7 +304,9 @@
     "country_name_fr": "Kumogakure",
     "geography_fr": "{{Infobox/Village\n|image=Kumogakure.png\n|kanji=雲隠れの里\n|romaji=Kumogakure no Sato\n|literal english=Village Hidden by Clouds\n|english tv=The Village Hidden in the Clouds\n|country=Land of Lightning\n|leader=Raikage\n|symbol=Kumogakure Symbol.svg\n|population=3/5\n|military=4/5\n|economy=5/5\n}}\n{{translation|Kumogakure|雲隠れの里|Kumogakure no Sato|lit meaning=Village Hidden by Clouds|engtv=Hidden Cloud Village}} is the hidden village of the Land of Lightning and was founded by the First Raikage. As the village of one of the Five Great Shinobi Countries, Kumogakure has a Kage as its leader known as the Raika",
     "id": "kumogakure",
-    "main_clans": [],
+    "main_clans": [
+      "yotsuki"
+    ],
     "name_fr": "Kumogakure",
     "name_kanji": null,
     "name_romaji": "Kumogakure",
@@ -453,7 +482,10 @@
     "country_name_fr": "Sunagakure",
     "geography_fr": "{{Infobox/Village\n|top={{Looking for|the ninja village|the sand used by Gaara and other shinobi|Sand}}\n|image=Sunagakure.png\n|kanji=砂隠れの里\n|romaji=Sunagakure no Sato\n|literal english=Village Hidden by Sand\n|english tv= The Village Hidden in the Sand\n|country=Land of Wind\n|leader=Kazekage\n|symbol=Sunagakure Symbol.svg\n|population=2/5\n|military=2/5\n|economy=2/5\n}}\n{{translation|Sunagakure|砂隠れの里|Sunagakure no Sato|lit meaning=Village Hidden by Sand}} is the hidden village of the Land of Wind. As the village of one of the Five Great Shinobi Countries, Sunagakure has a Kage as its leader known as th",
     "id": "sunagakure",
-    "main_clans": [],
+    "main_clans": [
+      "fuma",
+      "kazekage"
+    ],
     "name_fr": "Sunagakure",
     "name_kanji": null,
     "name_romaji": "Sunagakure",
@@ -581,7 +613,9 @@
     "country_name_fr": "Uzushiogakure",
     "geography_fr": "{{Infobox/Village\n|image=Uzushio.png\n|kanji=渦潮隠れの里\n|romaji=Uzushiogakure no Sato\n|literal english=Village Hidden by Whirling Tides\n|english tv=Hidden Eddy Village\n|country=Land of Whirlpools\n|symbol=Uzushiogakure Symbol.svg\n}}\n{{translation|Uzushiogakure|渦潮隠れの里|Uzushiogakure no Sato|lit meaning=Village Hidden by Whirling Tides|engtv=Hidden Eddy Village}} was the shinobi village of the Land of Whirlpools. The people of Uzushiogakure were noted to have notoriously long lives, so it gained the epithet {{translation|\"The Village of Longevity\"|長寿の里|Chōju no Sato}}.\nThe ninja of Uzushiogakure were f",
     "id": "uzushiogakure",
-    "main_clans": [],
+    "main_clans": [
+      "uzumaki"
+    ],
     "name_fr": "Uzushiogakure",
     "name_kanji": null,
     "name_romaji": "Uzushiogakure",

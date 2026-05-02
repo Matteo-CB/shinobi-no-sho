@@ -434,10 +434,285 @@ def map_weapon(parsed: dict) -> dict[str, Any] | None:
 # CLI --------------------------------------------------------------------------
 
 
+CLAN_ADVANTAGES_FR: dict[str, str] = {
+    "uchiha": "Sharingan : vision aiguisee, hypnose, copie de techniques, eveil sous choc emotionnel. Affinite katon dominante. Tradition de la police militaire de Konoha.",
+    "hyuga": "Byakugan : vision a 360 degres, voit les tenketsu (points de chakra), distingue le chakra ennemi. Maitrise du Juuken (Poing souple) qui ferme les meridiens.",
+    "senju": "Mokuton (Bois) : controle des arbres, creation de constructions vivantes. Vitalite exceptionnelle, chakra immense, regeneration. Lignee du Premier Hokage.",
+    "uzumaki": "Reserves de chakra immenses, vitalite tres au-dessus de la normale, fuinjutsu (sceaux) tres avance. Compatibilite naturelle avec les bijuu.",
+    "nara": "Manipulation des ombres (Kage Mane no Jutsu). Intelligence remarquable, esprit strategique. Ils pratiquent souvent l'apothicairerie.",
+    "akimichi": "Manipulation de la masse corporelle (Baika no Jutsu). Force decuplee. Reserve de chakra liee a la matiere grasse.",
+    "yamanaka": "Techniques mentales (Shintenshin no Jutsu : echange de corps), sensorialite, infiltration cognitive.",
+    "inuzuka": "Lien empathique avec les chiens-nin partenaires (ninken), sens olfactif et auditif developpes, taijutsu animal en duo.",
+    "aburame": "Symbiose avec les insectes kikaichu : surveillance, drainage de chakra, interception silencieuse.",
+    "sarutobi": "Techniques katon avancees, Enma le roi des singes en kuchiyose. Tradition de leadership a Konoha.",
+    "hatake": "Lignee de combattants au sabre blanc (Hatake Sakumo), chakra raiton elevee, fideles serviteurs de Konoha.",
+    "yuki": "Hyouton (Glace) : combinaison suiton + fuuton. Cree barrieres et miroirs glacaux, lignee de Haku.",
+    "hozuki": "Hydrification : transformation corporelle en eau. Resistance aux blessures physiques, fluidite, suiton avance.",
+    "kaguya": "Shikotsumyaku : controle absolu de la structure osseuse, creation d'armes osseuses tranchantes (lignee Kimimaro).",
+    "kurama": "Genjutsu hereditaire de tres haut niveau, illusion devorant le pratiquant si elle echoue.",
+    "chinoike": "Ketsuryugan : dojutsu permettant de manipuler le sang dans tous les corps presents, hypnose des fluides.",
+    "fuma": "Techniques de shuriken (fuma shuriken legendaire), ninjutsu d'illusion.",
+    "kohaku": "Tradition d'epeistes du Pays de la Riziere.",
+    "shimura": "Lignee politique influente a Konoha, tradition de leadership militaire (Anbu Roto).",
+    "lee": "Lignee axee sur le taijutsu pur et l'ouverture des Huit Portes.",
+    "namikaze": "Ascendance liee au Yondaime Hokage, talent rare en fuinjutsu et Hiraishin.",
+    "kazekage": "Lignee politique de Sunagakure, dominance jiton (magnetisme) et controle du sable.",
+    "raikage": "Lignee politique de Kumogakure, raiton ultra-rapide et armure de chakra.",
+    "tsuchikage": "Lignee politique d'Iwagakure, doton et techniques de leviation.",
+    "yotsuki": "Clan Kumogakure aux capacites physiques surhumaines (super-strength).",
+    "kamizuru": "Clan d'Iwagakure utilisant les techniques d'abeilles, rivalise historiquement avec les Aburame.",
+    "explosion_corps": "Specialistes du Bakuton (explosion), tradition d'Iwagakure.",
+    "yagura": "Lignee jinchuuriki d'Isobu (3 queues), chef historique de Kirigakure.",
+    "terumi": "Lignee Mei Terumi : Yoton (lave) et Futton (vapeur), chefs de Kirigakure post-Yagura.",
+    "karatachi": "Clan kirigakure des Sept Epees (Hoshigaki Kisame, Karatachi Yagura).",
+}
+
+CLAN_DISADVANTAGES_FR: dict[str, str] = {
+    "uchiha": "Maledictions de la haine : trauma necessaire pour eveiller le Mangekyou. Risque de cecite progressive. Mefiance de Konoha apres l'incident de Kyuubi.",
+    "hyuga": "Angle mort dans le champ visuel pres de la nuque. Division Souke/Bunke avec le sceau de l'oiseau en cage qui controle la branche secondaire.",
+    "senju": "Quasi-extinction apres la Deuxieme Guerre. Mokuton tres rare, ne se transmet presque plus.",
+    "uzumaki": "Decimes a Uzushiogakure. Ils sont la cible historique des autres villages a cause de leur fuinjutsu.",
+    "nara": "Faible reserve de chakra par rapport a leur taille, taijutsu mediocre, sensibles a la luminosite quand leur ombre est captive.",
+    "akimichi": "Les pilules de chakra ont des effets secondaires graves (rouge tue le pratiquant). Vulnerables au feu et a la perte de masse corporelle.",
+    "yamanaka": "Le corps est sans defense pendant que l'esprit est en transposition. Echec critique = esprit perdu definitivement.",
+    "inuzuka": "Si le ninken est tue, le combattant est diminue de moitie. Sens hyper-developpes vulnerables aux attaques sonores et olfactives.",
+    "aburame": "Vulnerables au feu (les insectes brulent), aux insecticides et aux genjutsu de degout. Peu socialises.",
+    "yuki": "Persecutes a Kirigakure, presque eteints. Vulnerables au katon avance.",
+    "hozuki": "Tres vulnerables aux raiton (electricite + eau). Necessitent une source d'eau a proximite pour l'efficacite maximale.",
+    "kaguya": "Eteints apres la rebellion contre Kiri. Maledictions liees a leur ascendance Otsutsuki.",
+    "kurama": "Peu de membres maitrisent l'illusion ; la plupart en deviennent fous a force de l'utiliser.",
+    "fuma": "Histoire de fragmentation, allegeances divisees entre Konoha et Otogakure.",
+    "lee": "Aucune aptitude a manipuler le chakra pour le ninjutsu et le genjutsu (cas de Rock Lee).",
+}
+
+
+CLAN_KEKKEI_FR: dict[str, list[str]] = {
+    "uchiha": ["sharingan"],
+    "hyuga": ["byakugan"],
+    "senju": ["mokuton"],
+    "kaguya": ["shikotsumyaku"],
+    "yuki": ["hyouton"],
+    "hozuki": ["hydrification"],
+    "chinoike": ["ketsuryugan"],
+    "kurama": ["genjutsu_kekkei"],
+    "shimura": [],
+    "uzumaki": [],
+    "namikaze": [],
+}
+
+CLAN_NATURES_FR: dict[str, list[str]] = {
+    "uchiha": ["katon"],
+    "hyuga": [],
+    "senju": ["mokuton", "suiton", "doton"],
+    "uzumaki": ["fuuton", "youton_yang"],
+    "namikaze": ["fuuton", "raiton"],
+    "sarutobi": ["katon"],
+    "hatake": ["raiton"],
+    "yuki": ["hyouton"],
+    "hozuki": ["suiton"],
+    "yamanaka": ["inton"],
+    "nara": ["inton"],
+    "akimichi": ["doton"],
+    "kazekage": ["jiton", "fuuton"],
+    "raikage": ["raiton"],
+    "tsuchikage": ["doton", "jinton"],
+}
+
+
+def _post_process_links(canon_dir: Path) -> None:
+    """Phase 2 : connecte les datasets entre eux apres production initiale."""
+    clans_path = canon_dir / "clans.json"
+    villages_path = canon_dir / "villages.json"
+    chars_path = canon_dir / "characters.json"
+
+    if not clans_path.exists() or not villages_path.exists():
+        return
+
+    clans = json.loads(clans_path.read_text(encoding="utf-8"))
+    villages = json.loads(villages_path.read_text(encoding="utf-8"))
+    clans_by_id = {c["id"]: c for c in clans}
+    village_ids = {v["id"] for v in villages}
+
+    # 0. Augmenter les clans avec connaissance canon hardcodee.
+    for clan in clans:
+        cid = clan["id"]
+        if cid in CLAN_KEKKEI_FR and not clan.get("key_kekkei_genkai"):
+            clan["key_kekkei_genkai"] = list(CLAN_KEKKEI_FR[cid])
+        if cid in CLAN_NATURES_FR and not clan.get("key_natures"):
+            clan["key_natures"] = list(CLAN_NATURES_FR[cid])
+        if cid in CLAN_ADVANTAGES_FR and not clan.get("key_advantages_fr"):
+            clan["key_advantages_fr"] = CLAN_ADVANTAGES_FR[cid]
+        if cid in CLAN_DISADVANTAGES_FR and not clan.get("key_disadvantages_fr"):
+            clan["key_disadvantages_fr"] = CLAN_DISADVANTAGES_FR[cid]
+
+    # 1. Pour chaque village, populer main_clans avec les clans dont village_of_origin matche
+    village_to_clans: dict[str, set[str]] = {vid: set() for vid in village_ids}
+    for clan in clans:
+        v = clan.get("village_of_origin")
+        if v and v in village_ids:
+            village_to_clans[v].add(clan["id"])
+
+    # 2. Fallback canonique pour les 5 grands villages : clans connus mais pas auto-detectes
+    known_villages: dict[str, tuple[str, ...]] = {
+        "konohagakure": (
+            "uchiha",
+            "senju",
+            "hyuga",
+            "nara",
+            "akimichi",
+            "yamanaka",
+            "inuzuka",
+            "aburame",
+            "sarutobi",
+            "uzumaki",
+            "hatake",
+            "yuhi",
+            "mitarashi",
+            "kurama",
+            "kohaku",
+            "fuma",
+            "shimura",
+            "lee",
+            "kazama",
+            "hagoromo",
+            "izumo",
+        ),
+        "sunagakure": ("kazekage", "fuma", "kazama"),
+        "kirigakure": ("yuki", "hozuki", "kaguya", "yagura", "terumi", "karatachi"),
+        "kumogakure": ("yotsuki", "raikage"),
+        "iwagakure": ("kamizuru", "explosion_corps", "tsuchikage"),
+        "amegakure": ("uzumaki", "fuma"),
+        "uzushiogakure": ("uzumaki",),
+    }
+    for vid, ids in known_villages.items():
+        if vid in village_to_clans:
+            for cid in ids:
+                if cid in clans_by_id:
+                    village_to_clans[vid].add(cid)
+
+    for v in villages:
+        existing = set(v.get("main_clans") or [])
+        existing.update(village_to_clans.get(v["id"], set()))
+        v["main_clans"] = sorted(existing)
+
+    villages_path.write_text(
+        json.dumps(villages, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    logger.info(
+        "postprocess_villages", villages_with_clans=sum(1 for v in villages if v["main_clans"])
+    )
+
+    # 3. Pour chaque character, detecter le clan depuis le nom et le village du clan
+    chars: list[dict[str, Any]] = []
+    if chars_path.exists():
+        chars = json.loads(chars_path.read_text(encoding="utf-8"))
+        clan_tokens = {cid.replace("_", " "): cid for cid in clans_by_id}
+        clan_to_village = {c["id"]: c.get("village_of_origin") for c in clans}
+        adjusted = 0
+        for ch in chars:
+            name = ch.get("name_romaji", "").lower()
+            # Detecter le clan depuis le nom meme si un clan a deja ete assigne (override
+            # quand un nom contient un id de clan canonique connu = priorite haute).
+            best_match: str | None = None
+            for token, cid in clan_tokens.items():
+                if token and len(token) >= 3 and f" {token}" in f" {name} ":
+                    best_match = cid
+                    break
+            if best_match and ch.get("clan") != best_match:
+                ch["clan"] = best_match
+                adjusted += 1
+            cid = ch.get("clan")
+            if cid:
+                new_village = clan_to_village.get(cid)
+                if new_village:
+                    ch["village_of_origin"] = new_village
+        chars_path.write_text(
+            json.dumps(chars, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        logger.info("postprocess_characters", clan_assigned=adjusted)
+
+    # 4. Reverse-resolve techniques par clan via :
+    #    - canonical_users explicites du JSON technique
+    #    - heuristique : tokens de clans presents dans le titre OU les wiki_links de la technique page
+    techniques_path = canon_dir / "techniques.json"
+    parsed_techs_dir = canon_dir.parent / "raw" / "narutopedia" / "parsed" / "technique"
+    if techniques_path.exists() and chars:
+        techniques = json.loads(techniques_path.read_text(encoding="utf-8"))
+        char_to_clan: dict[str, str] = {c["id"]: c["clan"] for c in chars if c.get("clan")}
+        clan_tokens = {cid.replace("_", " "): cid for cid in clans_by_id}
+        clan_to_techniques: dict[str, set[str]] = {cid: set() for cid in clans_by_id}
+        tech_users_to_add: dict[str, set[str]] = {t["id"]: set() for t in techniques}
+
+        # 4a. via canonical_users explicites
+        for tech in techniques:
+            for user_id in tech.get("canonical_users") or []:
+                clan = char_to_clan.get(user_id)
+                if clan and clan in clan_to_techniques:
+                    clan_to_techniques[clan].add(tech["id"])
+
+        # 4b. via wiki_links des pages techniques scrapees
+        if parsed_techs_dir.exists():
+            char_name_to_id = {
+                c.get("name_romaji", "").lower(): c["id"] for c in chars if c.get("name_romaji")
+            }
+            for parsed_file in parsed_techs_dir.glob("*.json"):
+                try:
+                    parsed = json.loads(parsed_file.read_text(encoding="utf-8"))
+                except json.JSONDecodeError:
+                    continue
+                title = parsed.get("title", "")
+                tech_id = slug_technique(title)
+                if tech_id not in tech_users_to_add:
+                    continue
+                # Scanner le titre pour token de clan
+                lower_title = title.lower()
+                for token, cid in clan_tokens.items():
+                    if token and len(token) >= 3 and f" {token}" in f" {lower_title} ":
+                        clan_to_techniques[cid].add(tech_id)
+                # Scanner les wiki_links pour des noms de characters
+                for link in parsed.get("wiki_links") or []:
+                    char_id = char_name_to_id.get(link.lower())
+                    if char_id:
+                        tech_users_to_add[tech_id].add(char_id)
+                        clan = char_to_clan.get(char_id)
+                        if clan and clan in clan_to_techniques:
+                            clan_to_techniques[clan].add(tech_id)
+
+        # Mettre a jour techniques.canonical_users avec les nouveaux liens
+        for tech in techniques:
+            new_users = sorted(
+                set(tech.get("canonical_users") or []) | tech_users_to_add.get(tech["id"], set())
+            )
+            tech["canonical_users"] = new_users
+        techniques_path.write_text(
+            json.dumps(techniques, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+
+        for c in clans:
+            existing = set(c.get("key_techniques") or [])
+            existing.update(clan_to_techniques.get(c["id"], set()))
+            c["key_techniques"] = sorted(existing)[:80]
+
+        clans_path.write_text(
+            json.dumps(clans, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        techniques_count = sum(len(c.get("key_techniques") or []) for c in clans)
+        logger.info(
+            "postprocess_clans",
+            techniques_attached=techniques_count,
+            techniques_users_filled=sum(1 for t in techniques if t["canonical_users"]),
+        )
+
+
 @cli.command()
 def build(
     types: str = typer.Option("all", help="CSV des types a produire."),
     raw_dir: str = typer.Option("data/raw/narutopedia", help="Repertoire raw."),
+    skip_postprocess: bool = typer.Option(False, help="Ne pas relier les datasets entre eux."),
 ) -> None:
     """Produit les datasets canoniques."""
     base = (
@@ -511,6 +786,9 @@ def build(
             count=len(rows),
             file=str(out_path),
         )
+
+    if not skip_postprocess:
+        _post_process_links(canon_dir)
 
     print("Datasets produits :")
     for k, v in sorted(counts.items()):

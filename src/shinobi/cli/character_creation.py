@@ -28,7 +28,7 @@ console = Console()
 # Liens clan -> kekkei genkai canoniques.
 CLAN_KEKKEI: dict[str, list[str]] = {
     "uchiha": ["sharingan"],
-    "hyuuga": ["byakugan"],
+    "hyuga": ["byakugan"],
     "senju": ["mokuton"],
     "kaguya": ["shikotsumyaku"],
     "yuki": ["hyouton"],
@@ -53,7 +53,7 @@ CLAN_KEKKEI: dict[str, list[str]] = {
 # Liens clan -> natures privilegiees.
 CLAN_NATURES: dict[str, list[str]] = {
     "uchiha": ["katon"],
-    "hyuuga": [],
+    "hyuga": [],
     "senju": ["mokuton"],
     "yuki": ["hyouton"],
     "hozuki": ["suiton"],
@@ -114,8 +114,9 @@ def run_character_creation() -> str | None:
     else:
         village_id = "konohagakure"
 
-    # Clan filtre par village + ere
-    clan_id = _pick_clan(canon, village_id, starting_year)
+    # Clan filtre par village + ere ; auto-detection depuis le nom si possible
+    clan_hint = _detect_clan_from_name(canon, name)
+    clan_id = _pick_clan(canon, village_id, starting_year, hint=clan_hint)
 
     # Kekkei genkai (si clan en a, sinon optionnel rare)
     kekkei = _pick_kekkei_genkai(clan_id)
@@ -314,7 +315,19 @@ def _pick_village(villages) -> str:
         console.print(f"[red]Choix invalide : {choice}[/red]")
 
 
-def _pick_clan(canon, village_id: str, starting_year: int) -> str | None:
+def _detect_clan_from_name(canon, name: str) -> str | None:
+    """Si le nom contient un nom de clan canonique, le retourne."""
+    lower = name.lower()
+    for clan_id in canon.clans:
+        token = clan_id.replace("_", " ")
+        if token in lower:
+            return clan_id
+    return None
+
+
+def _pick_clan(
+    canon, village_id: str, starting_year: int, *, hint: str | None = None
+) -> str | None:
     """Selection de clan dans le village a cette ere."""
     clans = sorted(
         list_active_clans_in_village_at(canon, village_id, starting_year), key=lambda c: c.id
@@ -325,6 +338,15 @@ def _pick_clan(canon, village_id: str, starting_year: int) -> str | None:
         )
         return None
 
+    if hint:
+        console.print(f"[dim]Indice : ton nom suggere le clan [magenta]{hint}[/magenta][/dim]")
+    default_choice = "0"
+    if hint:
+        for i, c in enumerate(clans, start=1):
+            if c.id == hint:
+                default_choice = str(i)
+                break
+
     table = Table(
         title=f"Clans actifs a {village_id} (an {starting_year})", header_style=COLOR_TITLE
     )
@@ -333,9 +355,10 @@ def _pick_clan(canon, village_id: str, starting_year: int) -> str | None:
     table.add_column("Kekkei genkai cle", style="magenta")
     table.add_column("Natures", style="cyan")
     for i, c in enumerate(clans, start=1):
+        marker = " [yellow](*)[/yellow]" if c.id == hint else ""
         table.add_row(
             str(i),
-            c.id,
+            c.id + marker,
             ", ".join(c.key_kekkei_genkai) if c.key_kekkei_genkai else "(aucun)",
             ", ".join(c.key_natures) if c.key_natures else "(aucune)",
         )
@@ -344,11 +367,19 @@ def _pick_clan(canon, village_id: str, starting_year: int) -> str | None:
 
     while True:
         choice = Prompt.ask(
-            "[bold cyan]Clan[/bold cyan] [dim](numero ou id, 0 pour civil)[/dim]",
-            default="0",
+            "[bold cyan]Clan[/bold cyan] [dim](numero, id, 0 pour civil, '?<n>' pour details)[/dim]",
+            default=default_choice,
         ).strip()
         if choice in ("0", ""):
             return None
+        if choice.startswith("?"):
+            try:
+                idx = int(choice[1:]) - 1
+                if 0 <= idx < len(clans):
+                    _show_clan_details(clans[idx])
+                    continue
+            except ValueError:
+                pass
         try:
             idx = int(choice) - 1
             if 0 <= idx < len(clans):
@@ -358,6 +389,34 @@ def _pick_clan(canon, village_id: str, starting_year: int) -> str | None:
         if any(c.id == choice for c in clans):
             return choice
         console.print(f"[red]Choix invalide : {choice}[/red]")
+
+
+def _show_clan_details(clan) -> None:
+    """Affiche un panneau detaille avec avantages, inconvenients, techniques cles."""
+    body_lines: list[str] = []
+    if clan.history_summary_fr:
+        excerpt = clan.history_summary_fr[:400]
+        body_lines.append(f"[dim]{excerpt}{'...' if len(clan.history_summary_fr) > 400 else ''}[/dim]")
+        body_lines.append("")
+    if clan.key_kekkei_genkai:
+        body_lines.append(f"[magenta]Kekkei genkai :[/magenta] {', '.join(clan.key_kekkei_genkai)}")
+    if clan.key_natures:
+        body_lines.append(f"[cyan]Natures :[/cyan] {', '.join(clan.key_natures)}")
+    if clan.key_advantages_fr:
+        body_lines.append("")
+        body_lines.append(f"[green]Avantages :[/green] {clan.key_advantages_fr}")
+    if clan.key_disadvantages_fr:
+        body_lines.append("")
+        body_lines.append(f"[red]Inconvenients :[/red] {clan.key_disadvantages_fr}")
+    if clan.key_techniques:
+        body_lines.append("")
+        sample = clan.key_techniques[:8]
+        more = len(clan.key_techniques) - len(sample)
+        body_lines.append(
+            f"[yellow]Techniques cles :[/yellow] {', '.join(sample)}"
+            + (f" [dim](et {more} autres)[/dim]" if more > 0 else "")
+        )
+    console.print(Panel("\n".join(body_lines), title=f"Clan {clan.name_romaji}", border_style="magenta"))
 
 
 def _pick_kekkei_genkai(clan_id: str | None) -> list[str]:

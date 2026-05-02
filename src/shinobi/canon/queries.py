@@ -25,17 +25,63 @@ def get_village(canon: CanonBundle, village_id: str) -> Village | None:
     return canon.villages.get(village_id)
 
 
+# Mapping de fallback : grands villages -> clans canoniques majeurs.
+# Utilise quand village.main_clans est vide (scrape incomplet).
+KNOWN_VILLAGE_CLANS: dict[str, tuple[str, ...]] = {
+    "konohagakure": (
+        "uchiha",
+        "senju",
+        "hyuga",
+        "nara",
+        "akimichi",
+        "yamanaka",
+        "inuzuka",
+        "aburame",
+        "sarutobi",
+        "uzumaki",
+        "hatake",
+        "yuhi",
+        "mitarashi",
+        "kurama",
+        "kohaku",
+        "fuma",
+        "shimura",
+        "lee",
+        "kazama",
+        "hagoromo",
+    ),
+    "sunagakure": ("kazekage", "fuma", "kazama"),
+    "kirigakure": ("yuki", "hozuki", "kaguya", "yagura", "terumi", "karatachi"),
+    "kumogakure": ("yotsuki", "raikage"),
+    "iwagakure": ("kamizuru", "explosion_corps", "tsuchikage"),
+    "amegakure": ("uzumaki",),
+    "uzushiogakure": ("uzumaki",),
+}
+
+
 def list_active_clans_in_village_at(
     canon: CanonBundle,
     village_id: str,
     year: int,
 ) -> list[Clan]:
-    """Clans actifs dans un village donne a une date donnee."""
+    """Clans actifs dans un village donne a une date donnee.
+
+    Strategie de selection :
+    - clan_ids dans village.main_clans (priorite haute, scrape direct)
+    - clans dont village_of_origin == village_id
+    - clans dans KNOWN_VILLAGE_CLANS (fallback canonique)
+    """
     village = canon.villages.get(village_id)
-    if village is None:
-        return []
+    candidate_ids: set[str] = set()
+    if village is not None:
+        candidate_ids.update(village.main_clans)
+    for clan in canon.clans.values():
+        if clan.village_of_origin == village_id:
+            candidate_ids.add(clan.id)
+    candidate_ids.update(KNOWN_VILLAGE_CLANS.get(village_id, ()))
+
     out: list[Clan] = []
-    for clan_id in village.main_clans:
+    for clan_id in sorted(candidate_ids):
         clan = canon.clans.get(clan_id)
         if clan is None:
             continue

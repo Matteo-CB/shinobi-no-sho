@@ -162,7 +162,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "kamizuru",
+    "clan": "aburame",
     "current_village_by_era": [],
     "gender": "male",
     "id": "aburame_shino",
@@ -800,7 +800,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "nara_medical_encyclopaedia",
+    "clan": "akimichi",
     "current_village_by_era": [],
     "gender": "male",
     "id": "akimichi_choji",
@@ -6227,7 +6227,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": null,
+    "clan": "funato",
     "current_village_by_era": [],
     "gender": "male",
     "id": "funato_isari",
@@ -9081,7 +9081,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "iburi",
+    "clan": "hatake",
     "current_village_by_era": [],
     "gender": "male",
     "id": "hatake_kakashi",
@@ -11884,7 +11884,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "inuzuka",
+    "clan": "izuno",
     "current_village_by_era": [],
     "gender": "male",
     "id": "izuno_wasabi",
@@ -14809,7 +14809,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": null,
+    "clan": "kazekage",
     "current_village_by_era": [],
     "gender": "male",
     "id": "kazekage_third",
@@ -15760,7 +15760,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "sendo",
+    "clan": "kodon",
     "current_village_by_era": [],
     "gender": "male",
     "id": "kodon_reishi",
@@ -16888,7 +16888,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "wandering_ninja",
+    "clan": "kurama",
     "current_village_by_era": [],
     "gender": "male",
     "id": "kurama",
@@ -16940,7 +16940,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "kuramas_kekkei_genkai",
+    "clan": "kurama",
     "current_village_by_era": [],
     "gender": "male",
     "id": "kurama_murakumo",
@@ -16985,7 +16985,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "kuramas_kekkei_genkai",
+    "clan": "kurama",
     "current_village_by_era": [],
     "gender": "male",
     "id": "kurama_uroko",
@@ -17644,7 +17644,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "funato",
+    "clan": "lee",
     "current_village_by_era": [],
     "gender": "male",
     "id": "lee_metal",
@@ -17677,7 +17677,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "kohaku",
+    "clan": "lee",
     "current_village_by_era": [],
     "gender": "male",
     "id": "lee_rock",
@@ -21050,7 +21050,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "yamanaka_nara_and_akimichi_memorial",
+    "clan": "nara",
     "current_village_by_era": [],
     "gender": "male",
     "id": "nara_shikadai",
@@ -21096,7 +21096,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "nara_medical_encyclopaedia",
+    "clan": "nara",
     "current_village_by_era": [],
     "gender": "male",
     "id": "nara_shikaku",
@@ -21132,7 +21132,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "yamanaka_nara_and_akimichi_memorial",
+    "clan": "nara",
     "current_village_by_era": [],
     "gender": "male",
     "id": "nara_shikamaru",
@@ -22665,7 +22665,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "senju",
+    "clan": "hagoromo",
     "current_village_by_era": [],
     "gender": "male",
     "id": "otsutsuki_hagoromo",
@@ -22805,7 +22805,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "kaguya",
     "current_village_by_era": [],
     "gender": "male",
     "id": "otsutsuki_kaguya",
@@ -25321,7 +25321,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "sarutobi",
     "current_village_by_era": [],
     "gender": "male",
     "id": "sarutobi_hiruzen",
@@ -26054,7 +26054,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha",
+    "clan": "senju",
     "current_village_by_era": [],
     "gender": "male",
     "id": "senju_itama",
@@ -26073,7 +26073,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "hagoromo",
+    "clan": "senju",
     "current_village_by_era": [],
     "gender": "male",
     "id": "senju_kawarama",
@@ -26092,7 +26092,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "senju",
     "current_village_by_era": [],
     "gender": "male",
     "id": "senju_tobirama",
@@ -26832,7 +26832,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "shimura",
     "current_village_by_era": [],
     "gender": "male",
     "id": "shimura_danzo",
@@ -29727,7 +29727,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "tenro",
+    "clan": "ryu",
     "current_village_by_era": [],
     "gender": "male",
     "id": "tenro_ryuka",
@@ -31387,7 +31387,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_itachi",
@@ -31529,7 +31529,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_madara",
@@ -31747,7 +31747,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_sarada",
@@ -31802,7 +31802,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_sasuke",
@@ -31883,7 +31883,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_shin",
@@ -31913,7 +31913,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_shisui",
@@ -31947,7 +31947,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": null,
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_taiko",
@@ -32026,7 +32026,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "uchiha_downfall",
+    "clan": "uchiha",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uchiha_teyaki",
@@ -32551,7 +32551,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "fr_chef_du_uzumaki",
+    "clan": "uzumaki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uzumaki_ashina",
@@ -32579,7 +32579,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "uzumaki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uzumaki_boruto",
@@ -32634,7 +32634,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "hyuga",
+    "clan": "uzumaki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uzumaki_himawari",
@@ -32700,7 +32700,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": null,
+    "clan": "uzumaki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uzumaki_menma",
@@ -32756,7 +32756,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "otsutsuki",
+    "clan": "uzumaki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "uzumaki_naruto",
@@ -33283,7 +33283,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "kohaku",
+    "clan": "yamanaka",
     "current_village_by_era": [],
     "gender": "male",
     "id": "yamanaka_ino",
@@ -34370,7 +34370,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": "tenzo_iburi",
+    "clan": "yuki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "yukimi",
@@ -34397,7 +34397,7 @@
   {
     "birth_year": null,
     "canonicity": "manga",
-    "clan": null,
+    "clan": "yuki",
     "current_village_by_era": [],
     "gender": "male",
     "id": "yukiwari_kae",
