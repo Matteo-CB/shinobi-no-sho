@@ -31,7 +31,10 @@ TRAINABLE_EXT = {
     "fuinjutsu_knowledge",
     "senjutsu_aptitude",
 }
-NON_TRAINABLE_EXT = {"luck", "beauty", "lineage_value", "chakra_reserves"}
+INTANGIBLE_EXT = {"beauty", "luck"}  # entrainables mais soft cap 4.0 + 5x plus dur
+NON_TRAINABLE_EXT = {"lineage_value", "chakra_reserves"}  # genetique pure
+HOURS_PER_INTANGIBLE_POINT_BASE = 4000.0
+INTANGIBLE_SOFT_CAP = 4.0
 
 # Calibrage : a genie 1.0, il faut ~1000h de focus pour passer une stat de 1.0 a 2.0.
 # Diminishing returns : plus la stat est haute, plus la progression ralentit.
@@ -60,23 +63,32 @@ def train_stat(
 ) -> tuple[Character, StatChange | None]:
     """Entraine une stat avec rendements decroissants, retourne (character, delta).
 
-    Beauty, luck, lineage ne sont PAS entrainables.
+    Lineage_value et chakra_reserves ne sont PAS entrainables (genetique).
+    Beauty et luck sont entrainables mais tres lentement (5x plus dur, soft cap 4.0).
     """
     if stat_name in NON_TRAINABLE_EXT:
         return character, None
 
+    is_intangible = stat_name in INTANGIBLE_EXT
     if stat_name in TRAINABLE_CORE:
         current = float(getattr(character.stats, stat_name))
-    elif stat_name in TRAINABLE_EXT:
+    elif stat_name in TRAINABLE_EXT or is_intangible:
         current = float(getattr(character.extended_stats, stat_name))
     else:
         return character, None
 
+    cap = INTANGIBLE_SOFT_CAP if is_intangible else 5.0
+    if current >= cap:
+        return character, None
+
+    base = HOURS_PER_INTANGIBLE_POINT_BASE if is_intangible else HOURS_PER_STAT_POINT_BASE
     new_value = _progress_value(
         current=current,
         hours=hours,
         learning_genius=character.extended_stats.learning_genius,
         quality_modifier=quality_modifier,
+        cost_per_point_base=base,
+        max_value=cap,
     )
     if new_value <= current:
         return character, None
@@ -92,20 +104,37 @@ def train_stat(
 
 
 def _progress_value(
-    *, current: float, hours: int, learning_genius: float, quality_modifier: float
+    *,
+    current: float,
+    hours: int,
+    learning_genius: float,
+    quality_modifier: float,
+    cost_per_point_base: float = HOURS_PER_STAT_POINT_BASE,
+    max_value: float = 5.0,
 ) -> float:
-    """Formule de progression a rendements decroissants :
-    - effort_brut = hours * (genie / 3.0) * quality
-    - resistance = (current / 5.0) ^ 2  augmente vite quand on approche 5.0
-    - gain = effort_brut / (HOURS_PER_STAT_POINT_BASE * (1 + 5 * resistance))
-    """
-    if current >= 5.0:
-        return current  # plafond brut
+    """Formule de progression a rendements decroissants."""
+    if current >= max_value:
+        return current
     effort = hours * max(0.3, learning_genius / 3.0) * quality_modifier
-    resistance = (current / 5.0) ** 2
-    cost_per_point = HOURS_PER_STAT_POINT_BASE * (1.0 + 5.0 * resistance)
+    resistance = (current / max_value) ** 2
+    cost_per_point = cost_per_point_base * (1.0 + 5.0 * resistance)
     gain = effort / cost_per_point
-    return min(5.0, current + gain)
+    return min(max_value, current + gain)
+
+
+def fatigue_for_duration(hours: int) -> int:
+    """Fatigue accumulee pour une duree d'activite.
+
+    Plateau au-dela de 8h pour modeliser les pauses et le sommeil incompressible.
+    """
+    if hours <= 0:
+        return 0
+    if hours <= 8:
+        return hours * 3
+    if hours <= 24:
+        return min(75, 24 + (hours - 8) * 2)
+    long_factor = min(40, (hours - 24) // 24)
+    return min(95, 56 + long_factor)
 
 
 def apply_rest(character: Character, *, hours: int) -> Character:

@@ -56,10 +56,20 @@ def test_train_stat_caps_at_5() -> None:
 
 
 def test_train_non_trainable_returns_none() -> None:
+    """lineage_value et chakra_reserves sont strictement non entrainables."""
     char = _make()
-    new, change = train_stat(char, "luck", hours=1000)
+    new, change = train_stat(char, "lineage_value", hours=1000)
     assert change is None
-    assert new.extended_stats.luck == char.extended_stats.luck
+    assert new.extended_stats.lineage_value == char.extended_stats.lineage_value
+
+
+def test_train_intangible_progresses_slowly() -> None:
+    """Beauty et luck sont entrainables mais ~5x plus lentement."""
+    char = _make()
+    _, fast = train_stat(char, "stamina", hours=200)
+    _, slow = train_stat(char, "beauty", hours=200)
+    assert fast is not None and slow is not None
+    assert fast.delta > slow.delta * 3
 
 
 def test_rest_recovers_chakra() -> None:

@@ -53,7 +53,17 @@ STAT_KEYWORDS: dict[str, str] = {
     "fuinjutsu": "fuinjutsu_knowledge",
     "fuin": "fuinjutsu_knowledge",
     "senjutsu": "senjutsu_aptitude",
+    # Stats intangibles (entrainables mais lentes + necessitent activites specifiques)
+    "beaute": "beauty",
+    "beauty": "beauty",
+    "apparence": "beauty",
+    "physique": "beauty",
+    "luck": "luck",
+    "chance": "luck",
 }
+
+# Stats absolument non entrainables (genetique pure).
+LINEAGE_STATS = {"lineage_value", "chakra_reserves"}
 
 # Mots-cles pour identifier le type d'action.
 TRAIN_PATTERNS = [

@@ -17,6 +17,8 @@ from shinobi.constants import (
 from shinobi.engine.character import Character
 from shinobi.engine.missions import Mission
 from shinobi.engine.progression import (
+    INTANGIBLE_EXT,
+    NON_TRAINABLE_EXT,
     StatChange,
     add_money,
     apply_chakra_cost,
@@ -25,6 +27,7 @@ from shinobi.engine.progression import (
     apply_meditation,
     apply_rest,
     apply_sleep,
+    fatigue_for_duration,
     train_stat,
 )
 from shinobi.engine.rng import roll
@@ -100,6 +103,34 @@ def difficulty_for(action: Action, character: Character) -> int:
     if action.action_type == ActionType.challenge:
         return DIFFICULTY_VERY_HARD
     return DIFFICULTY_MODERATE
+
+
+_STAT_LABELS_FR = {
+    "ninjutsu": "ton ninjutsu",
+    "taijutsu": "ton taijutsu",
+    "genjutsu": "ton genjutsu",
+    "intelligence": "ton intelligence",
+    "strength": "ta force physique",
+    "speed": "ta vitesse",
+    "stamina": "ton endurance",
+    "hand_seals": "ta dexterite aux mudras",
+    "chakra_control": "ton controle du chakra",
+    "willpower": "ta volonte",
+    "perception": "ta perception",
+    "social_charisma": "ton charisme",
+    "leadership": "ton leadership",
+    "medical_knowledge": "tes connaissances medicales",
+    "fuinjutsu_knowledge": "ton fuinjutsu",
+    "senjutsu_aptitude": "ton senjutsu",
+    "beauty": "ton apparence",
+    "luck": "ta fortune",
+    "lineage_value": "ton sang",
+    "chakra_reserves": "ta reserve de chakra naturelle",
+}
+
+
+def _stat_label_fr(stat_name: str) -> str:
+    return _STAT_LABELS_FR.get(stat_name, stat_name)
 
 
 def relevant_stat(action: Action, character: Character) -> float:
@@ -217,17 +248,47 @@ def apply_action_to_state(
 
     if action.action_type == ActionType.train_stat:
         stat_name = str(action.parameters.get("stat", "stamina"))
+        if stat_name in NON_TRAINABLE_EXT:
+            label = _stat_label_fr(stat_name)
+            new_result = result.model_copy(
+                update={
+                    "outcome": ActionOutcome.contextual_impossibility,
+                    "summary_fr": (
+                        f"Tu te prends en main et essaies de changer {label}, mais cela ne "
+                        f"vient pas de ta volonte. C'est dans ton sang, dans tes ancetres. "
+                        f"Aucun effort ne modifiera ce que la naissance t'a donne."
+                    ),
+                    "stat_changes": [],
+                    "money_delta": 0,
+                    "hp_delta": 0,
+                    "fatigue_delta": 0,
+                }
+            )
+            return new_char, world, new_result
         new_char, change = train_stat(
             new_char, stat_name, hours=duration_hours, quality_modifier=quality
         )
         if change:
             stat_changes.append(change)
-        # Cout de fatigue proportionnel
-        new_char = apply_fatigue(new_char, duration_hours * 2)
-        fatigue_delta = duration_hours * 2
+        elif stat_name in INTANGIBLE_EXT:
+            label = _stat_label_fr(stat_name)
+            new_result = result.model_copy(
+                update={
+                    "outcome": ActionOutcome.partial_success,
+                    "summary_fr": (
+                        f"Tu consacres du temps a {label}. Le miroir te renvoie une image "
+                        f"presque identique a celle d'avant. Ce genre de chose ne se forge pas "
+                        f"par la volonte seule : il te faudrait une rencontre, une epreuve, ou "
+                        f"un evenement marquant pour qu'un vrai changement opere."
+                    ),
+                }
+            )
+            stat_changes = []
+        fatigue_delta = fatigue_for_duration(duration_hours)
+        if fatigue_delta > 0:
+            new_char = apply_fatigue(new_char, fatigue_delta)
 
     elif action.action_type == ActionType.train_technique:
-        # Sans technique target connue, on entraine intelligence + chakra_control
         new_char, c1 = train_stat(
             new_char, "intelligence", hours=duration_hours // 2, quality_modifier=quality
         )
@@ -237,8 +298,9 @@ def apply_action_to_state(
         for c in (c1, c2):
             if c:
                 stat_changes.append(c)
-        new_char = apply_fatigue(new_char, duration_hours * 3)
-        fatigue_delta = duration_hours * 3
+        fatigue_delta = fatigue_for_duration(duration_hours)
+        if fatigue_delta > 0:
+            new_char = apply_fatigue(new_char, fatigue_delta)
 
     elif action.action_type == ActionType.rest:
         sleep = bool(action.parameters.get("sleep", False))
