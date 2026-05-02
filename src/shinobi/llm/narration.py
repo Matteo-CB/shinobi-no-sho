@@ -107,7 +107,7 @@ def _is_canon_npc_invalid(canon: CanonBundle, name_or_id: str, current_year: int
 
 
 def _scan_text_for_invalid_npcs(canon: CanonBundle, text: str, current_year: int) -> list[str]:
-    """Retourne la liste des NPCs canon non vivants mentionnes dans le texte."""
+    """Retourne la liste des NPCs canon non vivants (pas encore nes / morts) mentionnes."""
     if not text:
         return []
     lower = text.lower()
@@ -116,7 +116,6 @@ def _scan_text_for_invalid_npcs(canon: CanonBundle, text: str, current_year: int
         full = (char.name_romaji or "").lower()
         if not full:
             continue
-        # Match seulement si non vivant a cette date
         if char.birth_year is not None and current_year < char.birth_year:
             pass  # pas encore ne
         elif char.death_year is not None and current_year > char.death_year:
@@ -133,6 +132,31 @@ def _scan_text_for_invalid_npcs(canon: CanonBundle, text: str, current_year: int
                 bad.append(cid)
                 break
     return bad
+
+
+def _scan_text_for_canon_npcs(canon: CanonBundle, text: str) -> list[str]:
+    """Retourne TOUS les NPCs canon mentionnes dans le texte (vivants ou non).
+
+    Permet d'enrichir les fact sheets pour le narrator avec n'importe quel NPC
+    nomme par le joueur OU par le LLM (pour validation du tour suivant).
+    """
+    if not text:
+        return []
+    lower = text.lower()
+    found: list[str] = []
+    for cid, char in canon.characters.items():
+        full = (char.name_romaji or "").lower()
+        if not full:
+            continue
+        if full in lower:
+            found.append(cid)
+            continue
+        parts = full.split()
+        for p in parts:
+            if len(p) >= 5 and f" {p} " in f" {lower} ":
+                found.append(cid)
+                break
+    return found
 
 
 def _filter_observations(
@@ -218,11 +242,22 @@ class Narrator:
             )
 
         user_blocks = []
+        # PRIORITE 1 : fact sheets canon (verite absolue) en TETE pour qu'aucun
+        # autre contexte ne puisse les eclipser.
+        if fact_sheets:
+            user_blocks.append("############### LIRE EN PREMIER ###############")
+            user_blocks.append(fact_sheets)
+            user_blocks.append(
+                "\nIMPORTANT : ces faits ci-dessus sont la verite ABSOLUE pour ce tour. "
+                "Tu ne dois JAMAIS contredire un fact sheet. Si la situation dit 'seul, "
+                "pas d'amis', tu n'invites AUCUN autre PNJ canon a interagir socialement "
+                "avec lui (pas d'amis, pas de bande, pas de groupe). Si tu mentionnes un "
+                "PNJ canon non liste ci-dessus en relation positive avec le joueur OU avec "
+                "un PNJ liste, ta sortie sera REJETEE."
+            )
+            user_blocks.append("###############################################\n")
         if request.scene_context is not None:
             user_blocks.append(format_scene_context_for_prompt(request.scene_context))
-            user_blocks.append("")
-        if fact_sheets:
-            user_blocks.append(fact_sheets)
             user_blocks.append("")
         user_blocks.append("[ETAT DU PERSONNAGE]")
         user_blocks.append(request.character_state_summary)
@@ -236,11 +271,13 @@ class Narrator:
             f"Duree ecoulee : {request.duration_str}"
         )
         user_blocks.append(
-            "\n[INSTRUCTION]\n"
-            "Narre ce tour en respectant strictement les regles ET le CONTEXTE FACTUEL "
-            "DE LA SCENE. Si un FAITS CANONIQUES NPC est fourni, tu DOIS coherer avec lui "
-            "(age, statut, situation psychologique). N'invente AUCUN ami, parent, ennemi ou "
-            "relation sociale qui n'est pas explicitement liste. Reponds en JSON conforme."
+            "\n[INSTRUCTION FINALE]\n"
+            "1. Relis les FAITS CANONIQUES NPC ci-dessus.\n"
+            "2. Narre ce tour SANS contredire un seul de ces faits.\n"
+            "3. Tout PNJ que tu nommes doit etre soit dans le fact sheet, soit un role "
+            "generique snake_case (sensei_academie, marchand_taverne).\n"
+            "4. world_observations et proposed_actions sont SOUMIS aux memes regles.\n"
+            "5. Reponds en JSON conforme."
         )
         user_message = "\n".join(user_blocks)
 

@@ -917,29 +917,146 @@ def _skip_time(command: str, character, world):
     return character, new_world
 
 
+# Mapping des noms courts/usuels vers l'id canonique principal. Resout les
+# ambiguites entre Naruto (uzumaki_naruto) et "Naruto Musasabi" ou "Nine-Tailed
+# Naruto Clone", entre Itachi (uchiha_itachi) et un autre Itachi mineur, etc.
+PRIMARY_NPC_NAMES: dict[str, str] = {
+    "naruto": "uzumaki_naruto",
+    "sasuke": "uchiha_sasuke",
+    "sakura": "haruno_sakura",
+    "hinata": "hyuga_hinata",
+    "ino": "yamanaka_ino",
+    "shikamaru": "nara_shikamaru",
+    "choji": "akimichi_choji",
+    "kiba": "inuzuka_kiba",
+    "shino": "aburame_shino",
+    "tenten": "tenten",
+    "lee": "rock_lee",
+    "neji": "hyuga_neji",
+    "sai": "sai",
+    "konohamaru": "sarutobi_konohamaru",
+    "itachi": "uchiha_itachi",
+    "shisui": "uchiha_shisui",
+    "kakashi": "hatake_kakashi",
+    "iruka": "umino_iruka",
+    "kurenai": "yuhi_kurenai",
+    "asuma": "sarutobi_asuma",
+    "gai": "maito_gai",
+    "guy": "maito_gai",
+    "minato": "namikaze_minato",
+    "kushina": "uzumaki_kushina",
+    "obito": "uchiha_obito",
+    "rin": "nohara_rin",
+    "yamato": "yamato",
+    "kabuto": "yakushi_kabuto",
+    "tsunade": "tsunade",
+    "jiraiya": "jiraiya",
+    "orochimaru": "orochimaru",
+    "hiruzen": "sarutobi_hiruzen",
+    "danzo": "shimura_danzo",
+    "hashirama": "senju_hashirama",
+    "tobirama": "senju_tobirama",
+    "madara": "uchiha_madara",
+    "fugaku": "uchiha_fugaku",
+    "mikoto": "uchiha_mikoto",
+    "hiashi": "hyuga_hiashi",
+    "hizashi": "hyuga_hizashi",
+    "shikaku": "nara_shikaku",
+    "inoichi": "yamanaka_inoichi",
+    "choza": "akimichi_choza",
+    "gaara": "subaku_no_gaara",
+    "temari": "temari",
+    "kankuro": "kankuro",
+    "killer bee": "b_killer",
+    "ay": "ay_yondaime_raikage",
+    "onoki": "onoki",
+    "mei": "mei_terumi",
+    "yagura": "yagura",
+    "zabuza": "zabuza_momochi",
+    "haku": "haku",
+    "deidara": "deidara",
+    "sasori": "sasori",
+    "kakuzu": "kakuzu",
+    "hidan": "hidan",
+    "kisame": "kisame_hoshigaki",
+    "pain": "pain_nagato",
+    "nagato": "pain_nagato",
+    "konan": "konan",
+    "tobi": "tobi_obito",
+    "kaguya": "kaguya_otsutsuki",
+    "hagoromo": "hagoromo_otsutsuki",
+    "boruto": "uzumaki_boruto",
+    "sarada": "uchiha_sarada",
+    "mitsuki": "mitsuki",
+    "himawari": "uzumaki_himawari",
+    "kawaki": "kawaki",
+    "ibiki": "morino_ibiki",
+    "anko": "anko_mitarashi",
+    "ebisu": "ebisu",
+}
+
+
 def _detect_present_npcs(intent_text: str, canon) -> list[str]:
     """Detecte les PNJ canon mentionnes dans l'intention du joueur.
 
-    Cherche les noms exacts dans la description. Match insensible a la casse.
-    Retourne max 5 PNJ pour ne pas surcharger le contexte.
+    Strategie :
+    1. Tokenise l'intent en mots (word boundaries).
+    2. Match prioritaire via PRIMARY_NPC_NAMES (noms canoniques usuels) -> id
+       principal direct, evite les ambiguites (Naruto, Sasuke, etc.).
+    3. Fallback : scan generique avec word boundary stricte. Si un nom court
+       comme 'naruto' a deja matche un primary, on skip les variants
+       (Naruto Musasabi, Nine-Tailed Naruto Clone) qui contiendraient le meme.
     """
+    import re as _re
+
     lower = intent_text.lower()
+    # Tokenise pour des matches mot-a-mot reels
+    tokens = set(_re.findall(r"[a-z]+(?:[\'-][a-z]+)*", lower))
     matches: list[str] = []
+    primary_short_names_used: set[str] = set()
+
+    # Passe 1 : noms canoniques usuels (strict, mot complet)
+    for short, canonical_id in PRIMARY_NPC_NAMES.items():
+        # Match si le short est present comme mot/groupe dans les tokens
+        # (gere "killer bee" en deux mots aussi)
+        if " " in short:
+            if short in lower:
+                matched = True
+            else:
+                matched = False
+        else:
+            matched = short in tokens
+        if matched and canonical_id in canon.characters and canonical_id not in matches:
+            matches.append(canonical_id)
+            primary_short_names_used.add(short)
+            if len(matches) >= 5:
+                return matches
+
+    # Passe 2 : fallback generique (filtre les NPCs courts ou auxiliaires)
+    banned_as_name = {"sensei", "maitre", "sage", "ami", "amis", "anko"}
     for char_id, char in canon.characters.items():
+        if char_id in matches:
+            continue
         if not char.name_romaji:
             continue
         full_name = char.name_romaji.lower()
-        if full_name in lower:
-            matches.append(char_id)
+        # Skip noms trop courts (C, J, K, Emi, Sen) qui generent faux positifs
+        if len(full_name) < 5:
             continue
-        # Premier nom ou nom de famille separement (au moins 4 lettres)
-        parts = full_name.split()
-        for p in parts:
-            if len(p) >= 4 and f" {p} " in f" {lower} ":
-                matches.append(char_id)
+        # Skip si le nom contient un primary deja matche (variants/clones)
+        if any(s in full_name for s in primary_short_names_used):
+            continue
+        # Skip noms communs (sensei_kabutos, etc.)
+        if any(bw in full_name.split() for bw in banned_as_name):
+            continue
+        # Match strict mot-a-mot
+        full_tokens = set(_re.findall(r"[a-z]+(?:[' -][a-z]+)*", full_name))
+        # Le nom complet doit avoir au moins un token de >= 5 chars en commun
+        common_long = {t for t in full_tokens & tokens if len(t) >= 5}
+        if common_long:
+            matches.append(char_id)
+            if len(matches) >= 5:
                 break
-        if len(matches) >= 5:
-            break
     return matches
 
 
