@@ -1,0 +1,132 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "description": "Notes psychologiques canoniques editoriales par tranche d'age. Complete les data scrapees pour les NPCs majeurs avec des nuances 'qu'aurait un fan' (ostracisme, traumas, evolutions psychos cles). Le fact_sheet utilise ces notes en complement de personality_fr du canon.",
+    "format": "{ npc_id: [{from_age, to_age, note}, ...] }"
+  },
+  "notes": {
+    "uzumaki_naruto": [
+      {"from_age": 0, "to_age": 5, "note": "Petit enfant solitaire. Le village le craint sans raison apparente pour lui. Vit seul depuis ses premieres annees, l'orphelinat l'a expulse."},
+      {"from_age": 6, "to_age": 11, "note": "Ostracise par le village (jinchuuriki kyuubi cache). Seul a l'academie. Pas d'amis, evite par les enfants, deteste par les adultes. Iruka est le seul adulte qui le tolere. Compense par des farces."},
+      {"from_age": 12, "to_age": 12, "note": "Forme l'equipe 7 avec Sasuke et Sakura. Premier vrai cercle social. Toujours rejete par la majorite du village mais commence a etre reconnu par ses pairs."},
+      {"from_age": 13, "to_age": 15, "note": "Voyage avec Jiraiya. Devient plus mature mais reste exclu socialement a Konoha. Apprend le rasenshuriken, controle partiel du kyuubi."},
+      {"from_age": 16, "to_age": 16, "note": "Retour a Konoha. Reconnu apres avoir vaincu Pain. Heros du village. Maitrise du mode senjutsu/kyuubi."},
+      {"from_age": 17, "to_age": 99, "note": "Heros et eventuellement Hokage. Marie a Hinata, pere de Boruto et Himawari."}
+    ],
+    "uchiha_sasuke": [
+      {"from_age": 0, "to_age": 7, "note": "Dans l'ombre de son frere Itachi, deja tres talentueux. Famille intacte, recoit affection limitee de son pere obsede par le clan."},
+      {"from_age": 8, "to_age": 11, "note": "Massacre du clan recent. Survivant traumatise. Solitaire, obsede par la vengeance contre Itachi."},
+      {"from_age": 12, "to_age": 12, "note": "Equipe 7 avec Naruto et Sakura. Tient ses distances mais developpe une rivalite/amitie avec Naruto."},
+      {"from_age": 13, "to_age": 15, "note": "Deserteur, eleve d'Orochimaru a Otogakure. Missing-nin recherche par Konoha."},
+      {"from_age": 16, "to_age": 16, "note": "Tue Itachi, decouvre la verite, rejoint puis quitte Akatsuki. Maitrise du mangekyou sharingan."},
+      {"from_age": 17, "to_age": 99, "note": "Quete de redemption autour du monde. Pere de Sarada, allie de Naruto."}
+    ],
+    "haruno_sakura": [
+      {"from_age": 0, "to_age": 5, "note": "Petite fille timide, complexee par son grand front. Sa mere la rassure."},
+      {"from_age": 6, "to_age": 11, "note": "Eleve studieuse a l'academie. Amie d'Ino qui la sort de sa coquille. Rivalite naissante autour de Sasuke."},
+      {"from_age": 12, "to_age": 12, "note": "Equipe 7. Inutile au combat au debut, complexee par Naruto et Sasuke."},
+      {"from_age": 13, "to_age": 15, "note": "Eleve de Tsunade, devient medic-nin et acquiert une force physique enorme."},
+      {"from_age": 16, "to_age": 99, "note": "Medic-nin de Konoha. Marie a Sasuke, mere de Sarada."}
+    ],
+    "uchiha_itachi": [
+      {"from_age": 0, "to_age": 6, "note": "Prodige du clan Uchiha. Tres jeune mais deja exceptionnel, traumatise par la guerre."},
+      {"from_age": 7, "to_age": 12, "note": "Genin a 7 ans, chunin a 10, jonin a 11. Anbu a 13. Ambivalent face aux ordres du village. Aime profondement son frere Sasuke."},
+      {"from_age": 13, "to_age": 13, "note": "Massacre le clan Uchiha sur ordre du village. Devient missing-nin pour proteger Sasuke et Konoha."},
+      {"from_age": 14, "to_age": 24, "note": "Akatsuki avec Kisame. Joue le terroriste mais protege Sasuke en secret. Maladie progressive."}
+    ],
+    "hatake_kakashi": [
+      {"from_age": 0, "to_age": 5, "note": "Prodige, fils de Sakumo le Croc Blanc. Sakumo se suicide a cause de sa disgrace."},
+      {"from_age": 6, "to_age": 12, "note": "Chunin a 6 ans, jonin a 12. Eleve de Minato. Mort de Obito (Kannabi Bridge) puis de Rin."},
+      {"from_age": 13, "to_age": 25, "note": "Anbu (capitaine), puis enseignant. Connu comme Kakashi du Sharingan. Lit constamment Icha Icha."},
+      {"from_age": 26, "to_age": 30, "note": "Sensei de l'equipe 7 (Naruto/Sasuke/Sakura). Toujours en retard, masque permanent."},
+      {"from_age": 31, "to_age": 99, "note": "Sixieme Hokage de Konoha apres la 4e guerre."}
+    ],
+    "yakushi_kabuto": [
+      {"from_age": 0, "to_age": 9, "note": "Orphelin de guerre adopte par Nono Yakushi a l'orphelinat de Konoha (geree par Root)."},
+      {"from_age": 10, "to_age": 18, "note": "Eleve de Nono puis espion d'Orochimaru depuis ses 10 ans. Apparait comme medic-nin loyal a Konoha."},
+      {"from_age": 19, "to_age": 99, "note": "Bras droit d'Orochimaru. Deserteur officiel apres l'invasion de Konoha. Cherche son identite."}
+    ],
+    "sarutobi_konohamaru": [
+      {"from_age": 0, "to_age": 3, "note": "Tres jeune enfant. Vit dans le palais du Hokage sous la protection de son grand-pere Hiruzen. Pas a l'academie, pas autonome."},
+      {"from_age": 4, "to_age": 7, "note": "Petit-fils du Sandaime Hokage. Aspirant Hokage des l'enfance. Frustre d'etre traite comme 'le petit-fils' et non comme une personne."},
+      {"from_age": 8, "to_age": 11, "note": "Disciple informel de Naruto. Apprend le rasengan."},
+      {"from_age": 12, "to_age": 99, "note": "Genin puis jonin. Sensei de l'equipe Boruto."}
+    ],
+    "uchiha_madara": [
+      {"from_age": 0, "to_age": 99, "note": "Mort officiellement vers an -40 (combat contre Hashirama a la Vallee de la Fin). Reapparait via Edo Tensei dans la 4e guerre. Avant : co-fondateur de Konoha."}
+    ],
+    "senju_hashirama": [
+      {"from_age": 0, "to_age": 99, "note": "Premier Hokage de Konoha, mort vers an -40. Mokuton legendaire. Reapparait via Edo Tensei."}
+    ],
+    "namikaze_minato": [
+      {"from_age": 0, "to_age": 24, "note": "Vivant. Yondaime Hokage. Pere biologique de Naruto. Mort en l'an 0 lors de l'attaque du Kyuubi (scelle le bijuu dans son fils nouveau-ne)."},
+      {"from_age": 25, "to_age": 99, "note": "Mort. Sceau partiel dans Naruto. Reapparait via Edo Tensei en 4e guerre."}
+    ],
+    "uzumaki_kushina": [
+      {"from_age": 0, "to_age": 24, "note": "Vivante. Jinchuuriki du Kyuubi avant Naruto. Femme de Minato, mere de Naruto. Morte en l'an 0 en accouchant pendant l'attaque."},
+      {"from_age": 25, "to_age": 99, "note": "Morte. Apparait brievement a Naruto via le sceau."}
+    ],
+    "orochimaru": [
+      {"from_age": 0, "to_age": 35, "note": "Sannin de Konoha, eleve de Hiruzen. Experimente sur des humains en secret."},
+      {"from_age": 36, "to_age": 99, "note": "Missing-nin a Otogakure. Obsede par l'immortalite via reincarnation. Cherche un corps Uchiha (Sasuke)."}
+    ],
+    "jiraiya": [
+      {"from_age": 0, "to_age": 50, "note": "Sannin. Voyage et collecte d'information. Auteur de romans 'pervers'. Sensei de Minato puis Naruto."},
+      {"from_age": 51, "to_age": 53, "note": "Mentor de Naruto pendant 2.5 ans de voyage. Mort en l'an 14 a Amegakure contre Pain."}
+    ],
+    "tsunade": [
+      {"from_age": 0, "to_age": 50, "note": "Sannin. Petite-fille de Hashirama. Voyage, jeu, alcool apres la mort de son frere et de son fiance."},
+      {"from_age": 51, "to_age": 99, "note": "Devient Godaime Hokage en l'an 12 apres la mort de Hiruzen. Medic-nin legendaire."}
+    ],
+    "uchiha_obito": [
+      {"from_age": 0, "to_age": 13, "note": "Coequipier de Kakashi sous Minato. Maladroit, gentil, amoureux de Rin. 'Mort' a Kannabi Bridge en realite enleve par Madara."},
+      {"from_age": 14, "to_age": 99, "note": "Bascule cote sombre apres la mort de Rin (par la main de Kakashi). Devient 'Tobi' / Madara, manipule Akatsuki, declenche la 4e guerre."}
+    ],
+    "umino_iruka": [
+      {"from_age": 0, "to_age": 11, "note": "Orphelin de l'attaque du Kyuubi (parents tues). Devient instable, fait des farces pour attirer l'attention."},
+      {"from_age": 12, "to_age": 99, "note": "Devient enseignant a l'academie de Konoha. Premiere figure paternelle de Naruto."}
+    ],
+    "sarutobi_hiruzen": [
+      {"from_age": 0, "to_age": 99, "note": "Sandaime Hokage de Konoha. Sage, paternel, eleve d'Hashirama et Tobirama. Sensei des Sannin. Mort en l'an 12 contre Orochimaru lors de l'invasion."}
+    ],
+    "shimura_danzo": [
+      {"from_age": 0, "to_age": 99, "note": "Rival de Hiruzen. Chef de Root (Anbu secret). Manipulateur, prone une approche brutale et clandestine. Implique dans le massacre Uchiha. Mort en l'an 16 contre Sasuke."}
+    ],
+    "uchiha_fugaku": [
+      {"from_age": 0, "to_age": 38, "note": "Chef du clan Uchiha. Pere d'Itachi et Sasuke. Prepare un coup d'etat contre Konoha. Tue par Itachi en l'an 8."}
+    ],
+    "uchiha_mikoto": [
+      {"from_age": 0, "to_age": 36, "note": "Mere d'Itachi et Sasuke. Amie de Kushina. Tuee par Itachi en l'an 8."}
+    ],
+    "subaku_no_gaara": [
+      {"from_age": 0, "to_age": 11, "note": "Jinchuuriki du Shukaku (Ichibi). Ostracise a Sunagakure. Tue son oncle a 6 ans. Solitaire, sanguinaire."},
+      {"from_age": 12, "to_age": 13, "note": "Combat Naruto pendant l'examen chunin (an 12). Defaite spirituelle, commence sa redemption."},
+      {"from_age": 14, "to_age": 99, "note": "Godaime Kazekage. Sauve par Naruto et le village apres sa capture par Akatsuki."}
+    ],
+    "killer_bee": [
+      {"from_age": 0, "to_age": 99, "note": "Jinchuuriki du Hachibi (Gyuki). Frere adoptif du Raikage Ay. Rappeur, manie 7 sabres. Maitrise totale de son bijuu, contrairement a la plupart des jinchuuriki."}
+    ],
+    "zabuza_momochi": [
+      {"from_age": 0, "to_age": 25, "note": "Demon de la Brume. Membre des 7 Epeistes de Kirigakure. Tue 100 etudiants a l'examen. Devient missing-nin."},
+      {"from_age": 26, "to_age": 26, "note": "Mort en l'an 12 lors du Pays des Vagues, sauve par Haku."}
+    ],
+    "haku": [
+      {"from_age": 0, "to_age": 14, "note": "Orphelin du Pays de l'Eau. Hyouton (kekkei genkai glace). Recueilli par Zabuza, devient son outil. Mort en l'an 12."}
+    ],
+    "pain_nagato": [
+      {"from_age": 0, "to_age": 36, "note": "Orphelin d'Amegakure. Rinnegan (don de Madara). Avec Yahiko et Konan, fonde Akatsuki originale. Apres la mort de Yahiko, devient Pain et bascule extreme."},
+      {"from_age": 37, "to_age": 37, "note": "Mort en l'an 14 apres son combat contre Naruto a Konoha. Sacrifie sa vie pour ressusciter ses victimes."}
+    ],
+    "konan": [
+      {"from_age": 0, "to_age": 99, "note": "Orpheline d'Amegakure, partenaire de Nagato. Maitre du papier (kekkei genkai). Garde l'ile d'Akatsuki. Morte en l'an 16 contre Tobi."}
+    ],
+    "deidara": [
+      {"from_age": 0, "to_age": 16, "note": "Eleve d'Onoki, deserteur d'Iwa. Akatsuki, partenaire de Sasori puis Tobi. Maitrise l'argile explosive (kekkei genkai)."},
+      {"from_age": 17, "to_age": 17, "note": "Mort en l'an 15 contre Sasuke (s'auto-detruit avec C0)."}
+    ],
+    "sasori": [
+      {"from_age": 0, "to_age": 32, "note": "Petit-fils de Chiyo. Marionnettiste de Sunagakure. Akatsuki. Transforme son corps en marionnette."},
+      {"from_age": 33, "to_age": 33, "note": "Mort en l'an 14 contre Sakura et Chiyo (laisse volontairement gagner)."}
+    ]
+  }
+}
