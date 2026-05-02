@@ -385,26 +385,98 @@ def looks_like_generic_role(character_id: str) -> bool:
     return any(lower.startswith(p) for p in _GENERIC_ROLE_PREFIXES)
 
 
+def build_inaccessible_canon_tokens(canon: CanonBundle, ctx: SceneContext) -> set[str]:
+    """Construit l'ensemble des tokens de noms de PNJ canon NON accessibles.
+
+    Un token = mot du nom (au moins 5 caracteres) qui n'est pas un nom de clan,
+    village, ou mot generique. Sert a detecter dans les labels les references a
+    des persos hors scene.
+
+    Exclus :
+    - tous les noms de clan (Uchiha, Senju, Hyuga...) qui apparaissent dans plein
+      de noms et dans des contextes legitimes (quartier Uchiha, clan Hyuga...)
+    - tous les noms de village
+    - les mots generiques (sensei, hokage, ninja...)
+    - les noms de PNJ accessibles (sinon on bloquerait des actions valides)
+    """
+    accessible_ids = ctx.npc_ids()
+    clan_names = {cid.lower() for cid in canon.clans}
+    village_names = {vid.lower() for vid in canon.villages}
+    village_names |= {vid.lower().replace("gakure", "") for vid in canon.villages}
+    accessible_name_parts: set[str] = set()
+    for npc in ctx.accessible_npcs:
+        for part in (npc.name or "").lower().split():
+            if len(part) >= 4:
+                accessible_name_parts.add(part.strip(".,;:!?'\"()-"))
+    common_words = {
+        "shinobi", "ninja", "hokage", "kage", "sensei", "clan", "village",
+        "sannin", "anbu", "genin", "chunin", "jonin", "kunoichi", "academie",
+        "academy", "konoha", "naruto",  # naruto = nom de la serie + perso, ambigu
+        "quartier", "domaine", "complexe", "famille", "frere", "soeur",
+        "pere", "mere", "fils", "fille", "ami", "rival", "voisin", "marchand",
+    }
+    excluded = clan_names | village_names | common_words | accessible_name_parts
+
+    tokens: set[str] = set()
+    for char_id, char in canon.characters.items():
+        if char_id in accessible_ids:
+            continue
+        full = (char.name_romaji or "").lower()
+        if len(full) < 5:
+            continue
+        # Nom complet (ex: "uchiha itachi") : tres specifique, on l'ajoute si suffisamment long
+        if " " in full and len(full) >= 8:
+            tokens.add(full)
+        # Composantes uniques de 5+ chars
+        for part in full.split():
+            p = part.strip(".,;:!?'\"()-")
+            if len(p) >= 5 and p not in excluded:
+                tokens.add(p)
+    return tokens
+
+
+def action_references_inaccessible_npc(
+    action: dict,
+    ctx: SceneContext,
+    inaccessible_tokens: set[str],
+) -> bool:
+    """Detecte si une action proposee mentionne un PNJ canon hors scene."""
+    accessible_ids = ctx.npc_ids()
+    params = action.get("parameters") or {}
+    cid = params.get("character_id") or params.get("target_id")
+    if cid:
+        if cid not in accessible_ids and not looks_like_generic_role(cid):
+            return True
+    label = (action.get("label_fr") or "").lower()
+    if not label:
+        return False
+    # Scanner pour des tokens inaccessibles
+    label_padded = " " + label + " "
+    for token in inaccessible_tokens:
+        if " " in token:
+            if token in label:
+                return True
+        else:
+            if f" {token} " in label_padded or f" {token}." in label or f" {token}," in label:
+                return True
+    return False
+
+
 def filter_proposed_actions(
     actions: list[dict],
     ctx: SceneContext,
+    *,
+    canon: CanonBundle | None = None,
 ) -> list[dict]:
-    """Retire les proposed_actions qui referencent des PNJ canon inaccessibles.
+    """Retire les proposed_actions qui referencent des PNJ canon hors scene.
 
-    Strategie :
-    - Si character_id est un PNJ accessible : ok.
-    - Si character_id ressemble a un role generique (mere_du_perso, marchand_taverne) : ok.
-    - Sinon : rejette (PNJ canon hors scene).
+    Strategie en 2 couches :
+    - parameters.character_id : doit etre accessible, ou un id role-based generique
+    - label_fr : ne doit pas contenir de nom de PNJ canon non accessible
+      (necessite que canon soit fourni)
     """
-    accessible_ids = ctx.npc_ids()
-    out: list[dict] = []
-    for action in actions:
-        params = action.get("parameters") or {}
-        cid = params.get("character_id") or params.get("target_id")
-        if cid:
-            if cid in accessible_ids or looks_like_generic_role(cid):
-                out.append(action)
-            # sinon on rejette silencieusement
-            continue
-        out.append(action)
-    return out
+    inaccessible = build_inaccessible_canon_tokens(canon, ctx) if canon is not None else set()
+    return [
+        a for a in actions
+        if not action_references_inaccessible_npc(a, ctx, inaccessible)
+    ]

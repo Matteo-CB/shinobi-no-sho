@@ -119,7 +119,9 @@ class Narrator:
 
         proposed_actions = data.get("proposed_actions", [])
         if request.scene_context is not None:
-            proposed_actions = filter_proposed_actions(proposed_actions, request.scene_context)
+            proposed_actions = filter_proposed_actions(
+                proposed_actions, request.scene_context, canon=self.canon
+            )
         npc_dialogue = data.get("npc_dialogue", [])
         if request.scene_context is not None:
             allowed = request.scene_context.npc_ids()

@@ -101,8 +101,51 @@ def test_filter_blocks_inaccessible_npc(canon) -> None:
             "parameters": {"character_id": "mere_du_perso"},
         },
     ]
-    filtered = filter_proposed_actions(actions, ctx)
+    filtered = filter_proposed_actions(actions, ctx, canon=canon)
     labels = [a["label_fr"] for a in filtered]
     assert "Ne rien faire" in labels
-    assert "Parler a maman" in labels  # PNJ generique = ok
-    assert "Demander conseil a Kabuto" not in labels  # PNJ canon inaccessible = rejette
+    assert "Parler a maman" in labels
+    assert "Demander conseil a Kabuto" not in labels
+
+
+def test_filter_general_blocks_label_only_references(canon) -> None:
+    """Le filtre doit detecter le nom canon dans le label meme sans character_id."""
+    char = _make(age=1)
+    world = create_default_world(profile=CanonicityProfile.default(), starting_year=1)
+    ctx = compute_scene_context(char, world, canon)
+    # Cas reels d'incoherences typiques pour un bebe a Konoha en l'an 1 :
+    actions = [
+        {"label_fr": "Aller voir Orochimaru pour des conseils", "action_type": "talk", "parameters": {}},
+        {"label_fr": "Demander a Madara comment maitriser le Sharingan", "action_type": "talk", "parameters": {}},
+        {"label_fr": "Suivre l'entrainement de Hashirama", "action_type": "talk", "parameters": {}},
+        {"label_fr": "Parler avec Kakashi qui passe par hasard", "action_type": "talk", "parameters": {}},
+        {"label_fr": "M'entrainer avec papa au quartier Uchiha", "action_type": "train_stat", "parameters": {}},
+        {"label_fr": "Apprendre a marcher", "action_type": "train_stat", "parameters": {}},
+    ]
+    filtered = filter_proposed_actions(actions, ctx, canon=canon)
+    labels = [a["label_fr"] for a in filtered]
+    # Tous les noms canon de persos morts/absents/inaccessibles a l'an 1 doivent etre rejetes
+    assert not any("Orochimaru" in lb for lb in labels), labels
+    assert not any("Madara" in lb for lb in labels), labels
+    assert not any("Hashirama" in lb for lb in labels), labels
+    assert not any("Kakashi" in lb for lb in labels), labels
+    # Les actions generiques sans nom de canon doivent passer
+    assert any(lb == "Apprendre a marcher" for lb in labels)
+    assert any("M'entrainer avec papa" in lb for lb in labels)
+
+
+def test_filter_keeps_accessible_canon_npcs(canon) -> None:
+    """Si un perso canon est dans accessible_npcs, son nom dans label ne doit PAS etre rejete."""
+    char = _make(age=12, rank="genin")
+    world = create_default_world(profile=CanonicityProfile.default(), starting_year=12)
+    ctx = compute_scene_context(char, world, canon)
+    accessible_names = [n.name for n in ctx.accessible_npcs]
+    if not accessible_names:
+        return  # nothing to test
+    target_name = accessible_names[0]
+    actions = [
+        {"label_fr": f"Saluer {target_name}", "action_type": "talk", "parameters": {}},
+    ]
+    filtered = filter_proposed_actions(actions, ctx, canon=canon)
+    assert any(target_name in a["label_fr"] for a in filtered), \
+        f"PNJ accessible {target_name} a ete rejete a tort"
