@@ -15,6 +15,7 @@ from shinobi.cli.display import (
     COLOR_TITLE,
     action_menu,
     outcome_color,
+    print_dialogue,
     print_objectives,
     print_status,
     print_techniques,
@@ -185,17 +186,18 @@ def play_session(save_id: str) -> None:
             console.print(f"  [red]>>> Evenement canon annule : {c.event_id}[/red]")
 
         last_proposed = []
+        present_npcs = _detect_present_npcs(intent_text, canon)
         try:
             narration = asyncio.run(
-                _attempt_narration(character, world, canon, retriever, result, intent_text, parsed)
+                _attempt_narration(
+                    character, world, canon, retriever, result, intent_text, parsed,
+                    present_npcs=present_npcs,
+                )
             )
             if narration is not None:
                 console.print(Panel(narration.narrative, title="Narration", border_style="cyan"))
-                for d in narration.npc_dialogue:
-                    console.print(
-                        f"  [bold magenta]{d.get('character_id', '?')}[/bold magenta] : "
-                        f"[italic]{d.get('line', '')}[/italic]"
-                    )
+                if narration.npc_dialogue:
+                    print_dialogue(console, canon, narration.npc_dialogue)
                 last_proposed = narration.proposed_actions or []
                 for obs in narration.world_observations:
                     console.print(f"  [dim cyan]Observation :[/dim cyan] {obs}")
@@ -452,17 +454,52 @@ def _skip_time(command: str, character, world):
     return character, new_world
 
 
-async def _attempt_narration(character, world, canon, retriever, result, intent: str, parsed):
+def _detect_present_npcs(intent_text: str, canon) -> list[str]:
+    """Detecte les PNJ canon mentionnes dans l'intention du joueur.
+
+    Cherche les noms exacts dans la description. Match insensible a la casse.
+    Retourne max 5 PNJ pour ne pas surcharger le contexte.
+    """
+    lower = intent_text.lower()
+    matches: list[str] = []
+    for char_id, char in canon.characters.items():
+        if not char.name_romaji:
+            continue
+        full_name = char.name_romaji.lower()
+        if full_name in lower:
+            matches.append(char_id)
+            continue
+        # Premier nom ou nom de famille separement (au moins 4 lettres)
+        parts = full_name.split()
+        for p in parts:
+            if len(p) >= 4 and f" {p} " in f" {lower} ":
+                matches.append(char_id)
+                break
+        if len(matches) >= 5:
+            break
+    return matches
+
+
+async def _attempt_narration(
+    character, world, canon, retriever, result, intent: str, parsed, *, present_npcs: list[str]
+):
     async with LLMClient() as client:
         if not await client.health():
             return None
         narrator = Narrator(client, canon, retriever)
+        npc_summary = (
+            f"PNJ canon presents : {', '.join(present_npcs)}"
+            if present_npcs
+            else "Aucun PNJ canon nomme dans la scene. Si la situation implique des"
+                 " interlocuteurs (sensei, parent, marchand, etc.), invente leur id role-based"
+                 " (snake_case, ex: sensei_academie, marchand_taverne) et fais-les parler."
+        )
         request = NarrationRequest(
             turn_summary=intent,
             action_text=intent,
             action_result_summary=result.summary_fr,
             location_id=character.current_location,
-            present_npcs=[],
+            present_npcs=present_npcs,
             active_breadcrumb_descriptions=[],
             character_state_summary=(
                 f"{character.name}, {character.age_years} ans, "
@@ -470,7 +507,8 @@ async def _attempt_narration(character, world, canon, retriever, result, intent:
                 f"chakra {character.chakra.current}/{character.chakra.max}, "
                 f"clan {character.clan or 'civil'}, "
                 f"natures {', '.join(character.natures) or 'aucune'}, "
-                f"action interpretee : {parsed.action_type.value}"
+                f"action interpretee : {parsed.action_type.value}\n"
+                f"{npc_summary}"
             ),
             duration_str=f"{result.duration_minutes // 60}h{result.duration_minutes % 60:02d}",
         )

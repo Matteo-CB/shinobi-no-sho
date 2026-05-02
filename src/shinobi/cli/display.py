@@ -210,3 +210,33 @@ def outcome_color(outcome: str) -> str:
     if "impossibility" in outcome:
         return COLOR_DIM
     return "white"
+
+
+def format_speaker(canon, character_id: str) -> str:
+    """Compose un libelle de locuteur : 'Nom (Clan, Village)' ou role generique.
+
+    Si character_id correspond a un personnage canon, on utilise nom + clan + village.
+    Sinon on traite l'id comme un role (ex: marchand_taverne -> 'Marchand Taverne').
+    """
+    char = canon.characters.get(character_id) if canon is not None else None
+    if char is None:
+        return character_id.replace("_", " ").title()
+    parts: list[str] = []
+    if char.clan:
+        parts.append(char.clan.title())
+    if char.village_of_origin:
+        parts.append(char.village_of_origin.replace("gakure", "").title())
+    role = ", ".join(parts) if parts else "civil"
+    return f"{char.name_romaji} ({role})"
+
+
+def print_dialogue(console: Console, canon, dialogue_entries: list[dict]) -> None:
+    """Affiche les repliques avec le nom complet du locuteur (ou role)."""
+    for d in dialogue_entries:
+        cid = d.get("character_id", "?")
+        line = d.get("line", "")
+        tone = d.get("tone", "")
+        speaker = format_speaker(canon, cid)
+        tone_part = f" [dim]({tone})[/dim]" if tone else ""
+        console.print(f"  [bold magenta]{speaker}[/bold magenta]{tone_part}")
+        console.print(f"     [italic]{line}[/italic]")

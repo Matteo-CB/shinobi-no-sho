@@ -38,7 +38,15 @@ NARRATOR_SYSTEM_PROMPT = dedent(
     REGLES DE SORTIE :
     - Tu reponds toujours en JSON conforme au schema fourni.
     - Le champ narrative contient la description du tour, en francais propre.
-    - Le champ npc_dialogue contient les eventuelles repliques de PNJ presents.
+    - Le champ npc_dialogue est OBLIGATOIRE des qu'un PNJ apparait dans la scene
+      (sensei, parent, marchand, garde, ami, ennemi, etc.). Au moins une replique
+      par PNJ present qui peut raisonnablement parler.
+        - character_id : si le PNJ est un personnage canon connu (ex: hatake_kakashi),
+          utilise son id slug. Si c'est un PNJ anonyme, invente un id role-based en
+          snake_case (ex: marchand_taverne, garde_porte_konoha, sensei_academie,
+          mere_du_perso, etranger_encapuchonne).
+        - line : la replique en francais, fidele au voice_profile si fourni.
+        - tone : un mot decrivant le ton (calme, ironique, autoritaire, hesitant, etc.).
     - Le champ proposed_actions contient 3 a 7 propositions d'actions pour le tour suivant.
       Chacune est une formulation en francais, plus un type structure pour le moteur.
     - Le champ world_observations contient les observations du joueur sur le monde (rumeurs
