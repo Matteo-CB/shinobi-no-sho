@@ -191,9 +191,21 @@ def fact_sheet_for(canon: CanonBundle, character_id: str, *, current_year: int) 
         )
 
     # ========== NOTES PSYCHOLOGIQUES EDITORIALES (optionnel, JSON externe) ==========
-    psycho = _psycho_at(character_id, age)
-    if psycho:
-        lines.append(f"  Situation editoriale: {psycho}")
+    psycho_entry = _psycho_entry_at(character_id, age)
+    if psycho_entry:
+        if psycho_entry.get("note"):
+            lines.append(f"  Situation editoriale: {psycho_entry['note']}")
+        allowed = psycho_entry.get("allowed_relations") or []
+        if allowed:
+            lines.append(
+                f"  RELATIONS CANON AUTORISEES a cet age: {', '.join(allowed[:8])}"
+            )
+        forbidden = psycho_entry.get("forbidden_relations") or []
+        if forbidden:
+            lines.append(
+                f"  >>> RELATIONS CANON INTERDITES a cet age (n'invente JAMAIS d'interaction "
+                f"sociale entre ce NPC et les suivants) : {', '.join(forbidden[:8])}"
+            )
     elif age is not None and not char.personality_fr:
         # Fallback generique seulement si AUCUNE info perso n'est disponible
         fallback = _generic_age_situation(age)
@@ -242,6 +254,62 @@ def fact_sheets_for(
         "(personnalite, parcours, techniques, relations). Tu DOIS les respecter en TOTALITE.\n\n"
         + "\n\n".join(blocks)
     )
+
+
+def find_contextual_npcs(
+    canon: CanonBundle,
+    *,
+    current_year: int,
+    player_village: str | None,
+    player_age: int | None,
+    extra_ids: list[str] | None = None,
+    max_count: int = 8,
+) -> list[str]:
+    """Trouve les NPCs canon plausiblement presents dans la scene du joueur.
+
+    Critere : meme village courant + age compatible (joueur enfant -> camarades
+    enfants ; joueur adulte -> autres adultes). Toujours inclut extra_ids
+    (les NPCs explicitement mentionnes dans l'intent ou le label).
+    """
+    selected: list[str] = list(extra_ids or [])
+
+    if player_age is None or player_village is None:
+        return selected[:max_count]
+
+    # Plage d'age plausible pour camarades : +/- 4 ans pour enfants, +/- 8 pour adultes
+    age_window = 4 if player_age < 14 else 8
+
+    candidates: list[tuple[int, str]] = []
+    for cid, char in canon.characters.items():
+        if cid in selected:
+            continue
+        if char.birth_year is None:
+            continue
+        age = current_year - char.birth_year
+        if age < 0:
+            continue  # pas encore ne
+        if char.death_year is not None and current_year > char.death_year:
+            continue  # deja mort
+        # Meme village a cette date
+        village = _village_at(char, current_year)
+        if village != player_village:
+            continue
+        # Filtre d'age
+        if abs(age - player_age) > age_window:
+            continue
+        # Score : proche en age + a une note psycho (= NPC majeur)
+        psycho = _load_psycho_notes().get(cid)
+        score = abs(age - player_age) - (3 if psycho else 0)
+        candidates.append((score, cid))
+
+    candidates.sort()
+    for _score, cid in candidates:
+        if cid in selected:
+            continue
+        selected.append(cid)
+        if len(selected) >= max_count:
+            break
+    return selected[:max_count]
 
 
 # Helpers internes : extraction temporelle des donnees canon -----------------
@@ -311,8 +379,8 @@ def _stats_at(char: Character, year: int):
     return max(valid, key=lambda s: s.year)
 
 
-def _psycho_at(character_id: str, age: int | None) -> str | None:
-    """Note psychologique editoriale optionnelle (depuis psycho_notes.json)."""
+def _psycho_entry_at(character_id: str, age: int | None) -> dict | None:
+    """Entree complete (note + allowed_relations + forbidden_relations) pour un NPC a un age."""
     if age is None:
         return None
     notes = _load_psycho_notes().get(character_id)
@@ -323,7 +391,7 @@ def _psycho_at(character_id: str, age: int | None) -> str | None:
             low = int(entry.get("from_age", 0))
             high = int(entry.get("to_age", 99))
             if low <= age <= high:
-                return entry.get("note")
+                return entry
         except (TypeError, ValueError):
             continue
     return None

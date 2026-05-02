@@ -344,6 +344,21 @@ def play_session(save_id: str) -> None:
         # Auto-trigger : si reputation village trop basse, propose la desertion
         character, world = _maybe_auto_desert(character, world)
 
+        # Pre-injecte les NPCs majeurs plausibles dans la scene (meme village,
+        # plage d'age compatible) en plus de ceux nommes dans l'intent. Le LLM
+        # recoit ainsi les fact sheets de TOUS les NPCs qu'il pourrait inventer,
+        # sait leurs ages et situations, et ne peut plus les sortir n'importe ou.
+        from shinobi.canon.fact_sheet import find_contextual_npcs
+
+        scene_npcs = find_contextual_npcs(
+            canon,
+            current_year=world.current_year,
+            player_village=character.current_village,
+            player_age=character.age_years,
+            extra_ids=present_npcs,
+            max_count=8,
+        )
+
         last_proposed = []
         try:
             narration = asyncio.run(
@@ -355,7 +370,7 @@ def play_session(save_id: str) -> None:
                     result,
                     intent_text,
                     parsed,
-                    present_npcs=present_npcs,
+                    present_npcs=scene_npcs,
                 )
             )
             if narration is not None:
