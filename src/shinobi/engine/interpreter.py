@@ -146,6 +146,14 @@ CHALLENGE_PATTERNS = [
     r"\bje provoque (?:en duel|en combat)\b",
     r"\blancer? un defi\b",
 ]
+DESERT_PATTERNS = [
+    r"\bje deserte\b",
+    r"\bje fuis (?:le|mon) village\b",
+    r"\bje quitte (?:le|mon) village (?:pour de bon|definitivement)\b",
+    r"\bje deviens nukenin\b",
+    r"\bje renonce a (?:mon|ce) village\b",
+    r"\bje brise (?:mon |le )?bandeau\b",
+]
 
 
 def _matches_any(text: str, patterns: list[str]) -> bool:
@@ -209,6 +217,12 @@ def interpret(text: str) -> ParsedIntent:
         return ParsedIntent(
             action_type=ActionType.accept_mission,
             parameters={},
+            summary=summary,
+        )
+    if _matches_any(lower, DESERT_PATTERNS):
+        return ParsedIntent(
+            action_type=ActionType.custom,
+            parameters={"_desert": True},
             summary=summary,
         )
     if _matches_any(lower, CHALLENGE_PATTERNS):
@@ -301,5 +315,45 @@ def interpret(text: str) -> ParsedIntent:
     if _matches_any(lower, TALK_PATTERNS):
         return ParsedIntent(action_type=ActionType.talk, parameters={}, summary=summary)
     if _matches_any(lower, MOVE_PATTERNS):
-        return ParsedIntent(action_type=ActionType.move, parameters={}, summary=summary)
+        target = _extract_destination(lower)
+        params: dict[str, object] = {}
+        if target:
+            params["target_location"] = target
+        return ParsedIntent(action_type=ActionType.move, parameters=params, summary=summary)
     return ParsedIntent(action_type=ActionType.custom, parameters={}, summary=summary)
+
+
+_KNOWN_VILLAGES = {
+    "konoha": "konohagakure",
+    "konohagakure": "konohagakure",
+    "suna": "sunagakure",
+    "sunagakure": "sunagakure",
+    "kiri": "kirigakure",
+    "kirigakure": "kirigakure",
+    "kumo": "kumogakure",
+    "kumogakure": "kumogakure",
+    "iwa": "iwagakure",
+    "iwagakure": "iwagakure",
+    "ame": "amegakure",
+    "amegakure": "amegakure",
+    "oto": "otogakure",
+    "otogakure": "otogakure",
+    "taki": "takigakure",
+    "takigakure": "takigakure",
+    "kusa": "kusagakure",
+    "kusagakure": "kusagakure",
+    "yuki": "yukigakure",
+    "yukigakure": "yukigakure",
+}
+
+
+def _extract_destination(lower: str) -> str | None:
+    """Cherche un nom de village connu apres 'vers' / 'a' / 'pour'."""
+    m = re.search(r"(?:vers|a|pour|jusqu['' ]a)\s+([a-z]+)", lower)
+    if m:
+        token = m.group(1)
+        return _KNOWN_VILLAGES.get(token)
+    for token, vid in _KNOWN_VILLAGES.items():
+        if f" {token}" in f" {lower}":
+            return vid
+    return None

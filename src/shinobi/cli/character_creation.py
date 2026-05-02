@@ -121,6 +121,9 @@ def run_character_creation() -> str | None:
     # Kekkei genkai (si clan en a, sinon optionnel rare)
     kekkei = _pick_kekkei_genkai(clan_id)
 
+    # Tirage rare : kekkei mora ou jinchuuriki (chances tres faibles)
+    kekkei_mora, tailed_beast = _roll_rare_gifts(canon, name, starting_year)
+
     # Natures
     natures = _pick_natures(clan_id)
 
@@ -147,6 +150,8 @@ def run_character_creation() -> str | None:
         natures,
         stats,
         extended,
+        kekkei_mora=kekkei_mora,
+        tailed_beast=tailed_beast,
     )
 
     if not typer.confirm("Confirmer la creation ?", default=True):
@@ -171,6 +176,8 @@ def run_character_creation() -> str | None:
         rank=rank,
         natures=natures,
         kekkei_genkai=kekkei,
+        kekkei_mora=kekkei_mora,
+        tailed_beast=tailed_beast,
         stats=stats,
         extended_stats=extended,
         chakra=chakra_state,
@@ -448,6 +455,59 @@ def _pick_kekkei_genkai(clan_id: str | None) -> list[str]:
     return candidates if inherit else []
 
 
+def _roll_rare_gifts(canon, seed_text: str, year: int) -> tuple[list[str], str | None]:
+    """Tirage extremement rare : kekkei mora (~0.3%) ou jinchuuriki (~0.5% si bijuu libre).
+
+    Si tirage favorable, propose au joueur d'accepter le don avec sa malediction.
+    """
+    rng = random.Random(f"rare|{seed_text}|{year}")
+    kekkei_mora: list[str] = []
+    tailed_beast: str | None = None
+
+    mora_pool = list(canon.kekkei_mora.keys()) if canon.kekkei_mora else []
+    if mora_pool and rng.random() < 0.003:
+        candidate = rng.choice(mora_pool)
+        console.print(
+            Panel.fit(
+                f"[bold magenta]Don exceptionnel detecte :[/bold magenta] [magenta]{candidate}[/magenta]\n"
+                "[dim]Un kekkei mora extremement rare. Tu portes en toi un fragment d'heritage divin.[/dim]",
+                title="Tirage rarissime",
+                border_style="magenta",
+            )
+        )
+        if typer.confirm("Accepter ce don (et ses risques) ?", default=True):
+            kekkei_mora = [candidate]
+
+    if canon.tailed_beasts and rng.random() < 0.005:
+        # Cherche un bijuu libre (pas de jinchuuriki canon assigne a cette annee)
+        free_beasts: list[str] = []
+        for beast_id, beast in canon.tailed_beasts.items():
+            held = False
+            for entry in beast.current_jinchuuriki_by_era:
+                if entry.from_year <= year and (
+                    entry.to_year is None or year < entry.to_year
+                ):
+                    if entry.jinchuuriki:
+                        held = True
+                        break
+            if not held:
+                free_beasts.append(beast_id)
+        if free_beasts:
+            chosen_beast = rng.choice(free_beasts)
+            console.print(
+                Panel.fit(
+                    f"[bold red]Tu nais jinchuuriki :[/bold red] [magenta]{chosen_beast}[/magenta]\n"
+                    "[dim]Une bete a queues est scellee en toi. Le village te craindra. Tu auras a maitriser sa rage.[/dim]",
+                    title="Destin lourd",
+                    border_style="red",
+                )
+            )
+            if typer.confirm("Accepter ce destin ?", default=True):
+                tailed_beast = chosen_beast
+
+    return kekkei_mora, tailed_beast
+
+
 def _pick_natures(clan_id: str | None) -> list[str]:
     """Tirage des natures de chakra (1 ou 2 maximum a la naissance)."""
     pool = ["katon", "suiton", "fuuton", "doton", "raiton"]
@@ -603,6 +663,9 @@ def _show_summary(
     natures: list[str],
     stats: CoreStats,
     extended: ExtendedStats,
+    *,
+    kekkei_mora: list[str] | None = None,
+    tailed_beast: str | None = None,
 ) -> None:
     """Recap de la creation avant validation."""
     table = Table.grid(padding=(0, 2))
@@ -617,6 +680,10 @@ def _show_summary(
         table.add_row("Clan", clan)
     if kekkei:
         table.add_row("Kekkei genkai", ", ".join(kekkei))
+    if kekkei_mora:
+        table.add_row("Kekkei mora", ", ".join(kekkei_mora))
+    if tailed_beast:
+        table.add_row("Tailed beast", tailed_beast)
     table.add_row("Natures", ", ".join(natures))
     table.add_row(
         "Stats",

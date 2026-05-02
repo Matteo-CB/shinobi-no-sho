@@ -28,11 +28,13 @@ from shinobi.engine.actions import (
     apply_mission_result,
     resolve_action,
 )
+from shinobi.engine.economy import cost_of_living_for_period, format_ryos
 from shinobi.engine.events import tick_scheduler
 from shinobi.engine.interpreter import interpret
+from shinobi.engine.locations import travel_minutes
 from shinobi.engine.missions import list_available_missions
-from shinobi.engine.progression import advance_age
-from shinobi.engine.relations import decay_affinities, touch_relationship
+from shinobi.engine.progression import advance_age, apply_damage, apply_fatigue
+from shinobi.engine.relations import add_reputation, decay_affinities, touch_relationship
 from shinobi.engine.rng import next_seed
 from shinobi.engine.rumors import player_can_hear, receive_rumor
 from shinobi.engine.time import advance_time
@@ -220,6 +222,18 @@ def play_session(save_id: str) -> None:
             turn -= 1
             continue
 
+        # Route desert : abandon du village
+        if parsed.parameters.get("_desert"):
+            character, world = _desertion_flow(character, world)
+            turn -= 1
+            continue
+
+        # Route move avec destination : voyage inter-villages
+        if parsed.action_type == ActionType.move and parsed.parameters.get("target_location"):
+            character, world = _travel_flow(character, world, str(parsed.parameters["target_location"]))
+            turn -= 1
+            continue
+
         # Choix de duree pour les actions longues
         duration_param = parsed.parameters.get("duration_hours")
         if isinstance(duration_param, int) and parsed.action_type in {
@@ -253,14 +267,15 @@ def play_session(save_id: str) -> None:
         for bc_desc in completed_now:
             console.print(f"  [bold green]>>> Sous-objectif accompli :[/bold green] {bc_desc}")
 
-        new_date = GameDate(
+        prev_date = GameDate(
             year=world.current_year,
             month=int(world.current_date.split("-")[0]),
             day=int(world.current_date.split("-")[1]),
             hour=world.current_hour,
             minute=world.current_minute,
         )
-        new_date = advance_time(new_date, result.duration_minutes)
+        new_date = advance_time(prev_date, result.duration_minutes)
+        days_passed = max(0, result.duration_minutes // (24 * 60))
         world = world.with_time(
             year=new_date.year,
             date=new_date.date_str,
@@ -270,6 +285,13 @@ def play_session(save_id: str) -> None:
         seed_after = next_seed(result.seed_after) & 0x7FFFFFFFFFFFFFFF
         world = world.model_copy(update={"seed": seed_after})
         world, fired, cancelled = tick_scheduler(world, canon, turn_number=turn)
+
+        # Cout de vie : prelevement quotidien si l'action a couvert au moins une journee
+        character_pre_living = character
+        character = _charge_living_cost(character, world, days_passed=days_passed)
+
+        # Knowledge : les events fired ce tour deviennent connus du joueur
+        character = _record_fired_events_as_known(character, fired, canon, world.current_year)
 
         _print_result(result, parsed.action_type, turn)
         for f in fired:
@@ -302,6 +324,14 @@ def play_session(save_id: str) -> None:
         completed_goals = _check_goal_completions(save_id, character, world.current_year)
         for goal_desc in completed_goals:
             console.print(f"  [bold magenta]>>> Objectif accompli :[/bold magenta] {goal_desc}")
+
+        # Biographie : detecte rank-up, technique apprise, blessure grave, mort frolee
+        character = _log_biography_milestones(
+            character_pre_living, character, world, parsed.action_type, result
+        )
+
+        # Auto-trigger : si reputation village trop basse, propose la desertion
+        character, world = _maybe_auto_desert(character, world)
 
         last_proposed = []
         try:
@@ -550,7 +580,11 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
 def _missions_flow(character, world, save_id: str, canon):
     """Affiche les missions disponibles, propose d'en accepter une."""
     missions = list_available_missions(
-        player_rank=character.rank, count=5, seed=int(world.seed) % 100000
+        player_rank=character.rank,
+        count=5,
+        seed=int(world.seed) % 100000,
+        global_tension=world.political_climate.global_tension,
+        inflation_factor=world.economy.inflation_factor,
     )
     table = Table(title=f"Missions disponibles (rang {character.rank})", header_style=COLOR_TITLE)
     table.add_column("#", style="bold cyan", justify="right")
@@ -601,6 +635,21 @@ def _missions_flow(character, world, save_id: str, canon):
     success = r.total >= mission.difficulty_dc
     new_char, ryos, mission_changes = apply_mission_result(character, mission, success=success)
     save_module.mark_mission_completed(save_id, mission.id, year=world.current_year, success=success)
+    # Trace la mission dans la biographie (succes ou echec significatif)
+    from shinobi.engine.character import BiographyEvent
+
+    summary = (
+        f"Mission {mission.rank} reussie : {mission.title}"
+        if success
+        else f"Mission {mission.rank} echouee : {mission.title}"
+    )
+    bio = BiographyEvent(
+        year=world.current_year,
+        age=new_char.age_years,
+        summary=summary,
+        category="achievement" if success else "trauma",
+    )
+    new_char = new_char.add_biography_event(bio)
 
     # Construit les lignes de stat changes avec justification
     consequence_lines = []
@@ -1055,6 +1104,10 @@ def _pay_for_information_flow(character, world, save_id: str, *, amount: int):
     revealed = mark_revealed(next_bc, year=world.current_year, price_paid=price)
     save_module.save_breadcrumb(save_id, revealed)
     new_char = character.with_money(-amount)
+    # Le secret revele entre dans la connaissance du joueur
+    new_secrets = [*new_char.knowledge.secrets_uncovered, revealed.description]
+    new_knowledge = new_char.knowledge.model_copy(update={"secrets_uncovered": new_secrets})
+    new_char = new_char.model_copy(update={"knowledge": new_knowledge})
     console.print(
         Panel(
             f"[bold]Information acquise :[/bold] {revealed.description}\n"
@@ -1065,3 +1118,216 @@ def _pay_for_information_flow(character, world, save_id: str, *, amount: int):
         )
     )
     return new_char, world
+
+
+def _charge_living_cost(character, world, *, days_passed: int):
+    """Prelevement quotidien : nourriture + logement modeste, ajuste pour l'inflation."""
+    if days_passed <= 0:
+        return character
+    cost = cost_of_living_for_period(
+        days=days_passed, inflation_factor=world.economy.inflation_factor
+    )
+    if cost <= 0:
+        return character
+    if character.money >= cost:
+        new_char = character.with_money(-cost)
+        console.print(
+            f"  [dim]Cout de vie ({days_passed}j) : {format_ryos(cost)} preleve.[/dim]"
+        )
+        return new_char
+    # Pas assez d'argent : -fatigue, -hp, mais pas de dette negative
+    short = cost - character.money
+    new_char = character.with_money(-character.money)
+    fatigue_penalty = min(40, short // 20)
+    if fatigue_penalty > 0:
+        new_char = apply_fatigue(new_char, fatigue_penalty)
+    if short > 200:
+        new_char = apply_damage(new_char, min(15, short // 100), description="malnutrition")
+    console.print(
+        f"  [yellow]Pas assez de ryos pour vivre ({short} ryos manquants). "
+        f"Tu dors dehors, mal nourri.[/yellow]"
+    )
+    return new_char
+
+
+def _record_fired_events_as_known(character, fired, canon, current_year: int):
+    """Ajoute les events declenches ce tour a knowledge.known_events."""
+    if not fired:
+        return character
+    new_known = dict(character.knowledge.known_events)
+    added = False
+    for ev in fired:
+        canon_ev = canon.timeline_events.get(ev.event_id)
+        if canon_ev is None or ev.event_id in new_known:
+            continue
+        new_known[ev.event_id] = (
+            f"an {current_year} : {canon_ev.name_fr} ({canon_ev.narrative_summary_fr[:120]})"
+        )
+        added = True
+    if not added:
+        return character
+    new_knowledge = character.knowledge.model_copy(update={"known_events": new_known})
+    return character.model_copy(update={"knowledge": new_knowledge})
+
+
+def _log_biography_milestones(char_before, char_after, world, action_type, result):
+    """Detecte transitions notables (rank, learn, near-death) et ajoute des BiographyEvent."""
+    from shinobi.engine.character import BiographyEvent
+
+    events: list[BiographyEvent] = []
+    year = world.current_year
+    age = char_after.age_years
+
+    if char_before.rank != char_after.rank:
+        events.append(
+            BiographyEvent(
+                year=year,
+                age=age,
+                summary=f"Promotion : {char_before.rank} -> {char_after.rank}",
+                category="rank_promotion",
+            )
+        )
+
+    before_techs = {t.technique_id for t in char_before.techniques_known}
+    after_techs = {t.technique_id for t in char_after.techniques_known}
+    for tid in after_techs - before_techs:
+        events.append(
+            BiographyEvent(
+                year=year,
+                age=age,
+                summary=f"Technique apprise : {tid}",
+                category="technique_learned",
+            )
+        )
+
+    if not char_before.is_dead and char_after.is_dead:
+        events.append(
+            BiographyEvent(
+                year=year,
+                age=age,
+                summary=char_after.death_circumstances or "Mort",
+                category="trauma",
+            )
+        )
+    else:
+        # Frole la mort : descend sous 20% des HP
+        ratio_after = char_after.health.hp_current / max(1, char_after.health.hp_max)
+        ratio_before = char_before.health.hp_current / max(1, char_before.health.hp_max)
+        if ratio_after < 0.2 <= ratio_before:
+            events.append(
+                BiographyEvent(
+                    year=year,
+                    age=age,
+                    summary=f"Blessure grave (hp {char_after.health.hp_current}/{char_after.health.hp_max})",
+                    category="trauma",
+                )
+            )
+
+    if not char_before.is_missing_nin and char_after.is_missing_nin:
+        events.append(
+            BiographyEvent(
+                year=year,
+                age=age,
+                summary=f"Devient nukenin de {char_before.current_village}",
+                category="other",
+            )
+        )
+
+    if not events:
+        return char_after
+    log = [*char_after.biography_log, *events]
+    return char_after.model_copy(update={"biography_log": log})
+
+
+def _travel_flow(character, world, target_village: str):
+    """Voyage inter-village : consomme du temps reel + fatigue, peut declencher des events au passage."""
+    if target_village == character.current_village:
+        console.print("[yellow]Tu es deja a destination.[/yellow]")
+        return character, world
+    minutes = travel_minutes(character.current_village, target_village)
+    days = max(1, minutes // (24 * 60))
+    fatigue_cost = min(80, 8 * days)
+    console.print(
+        Panel.fit(
+            f"Tu pars de [cyan]{character.current_village}[/cyan] vers [cyan]{target_village}[/cyan].\n"
+            f"Voyage estime : [yellow]{days} jours[/yellow]. Fatigue accumulee : +{fatigue_cost}.",
+            title="Voyage",
+            border_style="cyan",
+        )
+    )
+    new_date = GameDate(
+        year=world.current_year,
+        month=int(world.current_date.split("-")[0]),
+        day=int(world.current_date.split("-")[1]),
+        hour=world.current_hour,
+        minute=world.current_minute,
+    )
+    new_date = advance_time(new_date, minutes)
+    new_world = world.with_time(
+        year=new_date.year, date=new_date.date_str, hour=new_date.hour, minute=new_date.minute
+    )
+    new_char = apply_fatigue(character, fatigue_cost)
+    new_char = new_char.model_copy(
+        update={"current_village": target_village, "current_location": target_village}
+    )
+    # Cout de vie en route
+    new_char = _charge_living_cost(new_char, new_world, days_passed=days)
+    return new_char, new_world
+
+
+def _desertion_flow(character, world):
+    """Le joueur abandonne son village. Reputation chute, status nukenin, location = wilderness."""
+    if character.is_missing_nin:
+        console.print("[yellow]Tu es deja un nukenin. Inutile de redecla la fuite.[/yellow]")
+        return character, world
+    if not Prompt.ask(
+        "[bold red]Tu vas tout abandonner et devenir nukenin. Confirmer ? (oui/non)[/bold red]",
+        default="non",
+    ).strip().lower().startswith("o"):
+        console.print("[dim]Abandonne. Tu restes loyal.[/dim]")
+        return character, world
+    village = character.current_village
+    new_char = character.model_copy(
+        update={
+            "is_missing_nin": True,
+            "rank": "missing_nin",
+            "current_location": "wilderness",
+            "current_village": "wilderness",
+        }
+    )
+    new_char = add_reputation(new_char, village, -100)
+    console.print(
+        Panel.fit(
+            f"[bold red]Tu desertes {village}.[/bold red]\n"
+            "[dim]Tu brises ton bandeau. Le village te traque desormais. "
+            "Le bingo book va parler de toi.[/dim]",
+            title="Nukenin",
+            border_style="red",
+        )
+    )
+    new_rep = new_char.reputation.model_copy(update={"bingo_book_entry": True})
+    new_char = new_char.model_copy(update={"reputation": new_rep})
+    return new_char, world
+
+
+def _maybe_auto_desert(character, world):
+    """Si la reputation village descend tres bas, propose la fuite."""
+    if character.is_missing_nin:
+        return character, world
+    village = character.current_village
+    score = 0
+    for entry in character.reputation.by_village:
+        if entry.village_id == village:
+            score = entry.score
+            break
+    if score > -100:
+        return character, world
+    console.print(
+        Panel.fit(
+            f"[bold yellow]Ta reputation a {village} est devenue intenable ({score}). "
+            "Tu peux choisir de fuir avant que la garde ne t'arrete.[/bold yellow]",
+            title="Mise en garde",
+            border_style="yellow",
+        )
+    )
+    return _desertion_flow(character, world)

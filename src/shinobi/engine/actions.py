@@ -369,6 +369,20 @@ def apply_action_to_state(
             damage = 30 + duration_hours * 5
             new_char = apply_damage(new_char, damage, description="blessure de combat")
             hp_delta = -damage
+            # Risque d'empoisonnement par arme adverse (kunai enduit, senbon, crochet de bete)
+            r_poison = roll(result.seed_after, "1d10")
+            if r_poison.total >= 7:
+                from shinobi.engine.character import Poison
+
+                poison = Poison(
+                    name="toxine inconnue",
+                    severity="severe",
+                    rounds_remaining=3,
+                )
+                new_health = new_char.health.model_copy(
+                    update={"poison_status": [*new_char.health.poison_status, poison]}
+                )
+                new_char = new_char.with_health(new_health)
         elif result.outcome == ActionOutcome.minor_failure:
             damage = 10
             new_char = apply_damage(new_char, damage)
@@ -404,6 +418,47 @@ def apply_action_to_state(
         if character.money >= cost:
             new_char = add_money(new_char, -cost)
             money_delta = -cost
+
+    elif action.action_type == ActionType.pray:
+        # Recueillement : willpower + chakra recovery + reduit la fatigue mentale
+        new_char, c = train_stat(
+            new_char, "willpower", hours=duration_hours, quality_modifier=0.4 * quality
+        )
+        if c:
+            stat_changes.append(c)
+        chakra_gain = duration_hours * 8
+        new_chakra = new_char.chakra.model_copy(
+            update={"current": min(new_char.chakra.max, new_char.chakra.current + chakra_gain)}
+        )
+        new_char = new_char.with_chakra(new_chakra)
+        fatigue_reduction = duration_hours * 2
+        new_health = new_char.health.model_copy(
+            update={"fatigue": max(0, new_char.health.fatigue - fatigue_reduction)}
+        )
+        new_char = new_char.with_health(new_health)
+        fatigue_delta = -fatigue_reduction
+
+    elif action.action_type == ActionType.spy:
+        # Espionnage : perception + petit gain d'info si succes
+        new_char, c = train_stat(
+            new_char, "perception", hours=max(1, duration_hours // 2), quality_modifier=quality
+        )
+        if c:
+            stat_changes.append(c)
+        new_char = apply_fatigue(new_char, max(2, duration_hours))
+        fatigue_delta = max(2, duration_hours)
+        if result.outcome == ActionOutcome.catastrophic_failure:
+            # Repere : penalite reputation + petite blessure
+            new_char = apply_damage(new_char, 5, description="repere lors d'une filature")
+            hp_delta = -5
+
+    elif action.action_type == ActionType.submit_mission:
+        # Rapport de fin de mission : minor willpower training, reset chakra leger
+        new_char, c = train_stat(
+            new_char, "willpower", hours=max(1, duration_hours // 2), quality_modifier=0.3
+        )
+        if c:
+            stat_changes.append(c)
 
     # Affinity / reputation : modifications passives selon action sociale
     target_npc = action.parameters.get("target_id") or action.parameters.get("character_id")

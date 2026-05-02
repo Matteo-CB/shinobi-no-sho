@@ -1,4 +1,4 @@
-"""Economie : prix, missions, paie."""
+"""Economie : prix, missions, paie, cout de vie."""
 
 from __future__ import annotations
 
@@ -30,3 +30,17 @@ def can_afford(money: int, price: int) -> bool:
 def format_ryos(amount: int) -> str:
     """Format lisible avec separateurs."""
     return f"{amount:,} ryos".replace(",", " ")
+
+
+def apply_inflation(price: int, inflation_factor: float) -> int:
+    """Ajuste un prix selon l'inflation courante du monde."""
+    if inflation_factor <= 0:
+        return price
+    return max(1, int(price * inflation_factor))
+
+
+def cost_of_living_for_period(*, days: int, inflation_factor: float = 1.0) -> int:
+    """Cout cumule de subsistance pour N jours, ajuste pour l'inflation."""
+    if days <= 0:
+        return 0
+    return apply_inflation(daily_living_cost() * days, inflation_factor)
