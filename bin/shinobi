@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Launcher bash pour shinobi : marche dans Git Bash, WSL, Linux, macOS
+# sans necessiter l'activation prealable du venv.
+set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [[ -f "$PROJECT_ROOT/.venv/Scripts/python.exe" ]]; then
+    PY="$PROJECT_ROOT/.venv/Scripts/python.exe"
+elif [[ -f "$PROJECT_ROOT/.venv/bin/python" ]]; then
+    PY="$PROJECT_ROOT/.venv/bin/python"
+else
+    echo "venv introuvable a $PROJECT_ROOT/.venv. Lance d'abord scripts/setup.sh" >&2
+    exit 1
+fi
+exec "$PY" -m shinobi "$@"

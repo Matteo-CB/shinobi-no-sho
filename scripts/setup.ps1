@@ -136,7 +136,22 @@ if (-not $SkipModel) {
     Write-Skip "Telechargement du modele ignore (-SkipModel)"
 }
 
-# Etape 6 : .env ----------------------------------------------------------------
+# Etape 6 : Launchers globaux dans bin/ et ajout au PATH ----------------------
+Write-Step "Launcher global shinobi (utilisable dans cmd, PowerShell, bash)"
+$binDir = Join-Path $ProjectRoot "bin"
+if (-not (Test-Path $binDir)) { New-Item -ItemType Directory -Path $binDir -Force | Out-Null }
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ";") -notcontains $binDir) {
+    $newPath = if ([string]::IsNullOrEmpty($userPath)) { $binDir } else { "$userPath;$binDir" }
+    [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
+    Write-Ok "$binDir ajoute au PATH utilisateur"
+    Write-Ok "Ouvre un NOUVEAU shell pour que la commande 'shinobi' soit disponible globalement"
+} else {
+    Write-Skip "$binDir deja dans le PATH utilisateur"
+}
+$env:Path = "$env:Path;$binDir"
+
+# Etape 7 : .env ----------------------------------------------------------------
 Write-Step "Fichier de configuration .env"
 if (-not (Test-Path ".env")) {
     if (Test-Path ".env.example") {
@@ -149,7 +164,7 @@ if (-not (Test-Path ".env")) {
     Write-Skip ".env deja present"
 }
 
-# Etape 7 : Git -----------------------------------------------------------------
+# Etape 8 : Git -----------------------------------------------------------------
 Write-Step "Configuration Git"
 $gitCmd = Get-Command git -ErrorAction SilentlyContinue
 if (-not $gitCmd) {
@@ -205,7 +220,7 @@ if ([string]::IsNullOrWhiteSpace($head)) {
     Write-Skip "Repo a deja un historique"
 }
 
-# Etape 8 : Smoke tests --------------------------------------------------------
+# Etape 9 : Smoke tests --------------------------------------------------------
 Write-Step "Tests de fumee"
 & $venvPython -m pytest tests/ -q 2>&1 | Select-Object -Last 3
 if ($LASTEXITCODE -ne 0) {
