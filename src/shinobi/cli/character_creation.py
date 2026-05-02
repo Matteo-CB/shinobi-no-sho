@@ -396,7 +396,9 @@ def _show_clan_details(clan) -> None:
     body_lines: list[str] = []
     if clan.history_summary_fr:
         excerpt = clan.history_summary_fr[:400]
-        body_lines.append(f"[dim]{excerpt}{'...' if len(clan.history_summary_fr) > 400 else ''}[/dim]")
+        body_lines.append(
+            f"[dim]{excerpt}{'...' if len(clan.history_summary_fr) > 400 else ''}[/dim]"
+        )
         body_lines.append("")
     if clan.key_kekkei_genkai:
         body_lines.append(f"[magenta]Kekkei genkai :[/magenta] {', '.join(clan.key_kekkei_genkai)}")
@@ -416,7 +418,9 @@ def _show_clan_details(clan) -> None:
             f"[yellow]Techniques cles :[/yellow] {', '.join(sample)}"
             + (f" [dim](et {more} autres)[/dim]" if more > 0 else "")
         )
-    console.print(Panel("\n".join(body_lines), title=f"Clan {clan.name_romaji}", border_style="magenta"))
+    console.print(
+        Panel("\n".join(body_lines), title=f"Clan {clan.name_romaji}", border_style="magenta")
+    )
 
 
 def _pick_kekkei_genkai(clan_id: str | None) -> list[str]:

@@ -6,6 +6,12 @@ from dataclasses import dataclass
 from typing import Any
 
 from shinobi.canon.models import CanonBundle
+from shinobi.engine.scene_context import (
+    SceneContext,
+    filter_proposed_actions,
+    format_scene_context_for_prompt,
+    looks_like_generic_role,
+)
 from shinobi.errors import LLMSchemaError, LLMStyleError
 from shinobi.llm.client import LLMClient, Message
 from shinobi.llm.prompts import NARRATOR_SYSTEM_PROMPT
@@ -33,6 +39,7 @@ class NarrationRequest:
     active_breadcrumb_descriptions: list[str]
     character_state_summary: str
     duration_str: str
+    scene_context: SceneContext | None = None
 
 
 @dataclass
@@ -66,10 +73,12 @@ class Narrator:
         )
         voices = compose_voice_section(self.canon, request.present_npcs)
 
-        user_blocks = [
-            "[ETAT DU PERSONNAGE]",
-            request.character_state_summary,
-        ]
+        user_blocks = []
+        if request.scene_context is not None:
+            user_blocks.append(format_scene_context_for_prompt(request.scene_context))
+            user_blocks.append("")
+        user_blocks.append("[ETAT DU PERSONNAGE]")
+        user_blocks.append(request.character_state_summary)
         if voices:
             user_blocks.append("\n" + voices)
         user_blocks.append("\n" + rag_context)
@@ -81,7 +90,8 @@ class Narrator:
         )
         user_blocks.append(
             "\n[INSTRUCTION]\n"
-            "Narre ce tour en respectant strictement les regles. Reponds en JSON conforme."
+            "Narre ce tour en respectant strictement les regles ET le CONTEXTE FACTUEL "
+            "DE LA SCENE. Reponds en JSON conforme."
         )
         user_message = "\n".join(user_blocks)
 
@@ -107,10 +117,26 @@ class Narrator:
                 raise LLMStyleError("Argot otaku detecte dans la narration")
             narrative = cleaned
 
+        proposed_actions = data.get("proposed_actions", [])
+        if request.scene_context is not None:
+            proposed_actions = filter_proposed_actions(proposed_actions, request.scene_context)
+        npc_dialogue = data.get("npc_dialogue", [])
+        if request.scene_context is not None:
+            allowed = request.scene_context.npc_ids()
+            # Garde les dialogues des PNJ accessibles + des PNJ generiques (id role-based)
+            npc_dialogue = [
+                d
+                for d in npc_dialogue
+                if d.get("character_id", "") in allowed
+                or looks_like_generic_role(d.get("character_id", ""))
+            ]
+
         return NarrationResponse(
             narrative=narrative,
-            npc_dialogue=data.get("npc_dialogue", []),
-            proposed_actions=data.get("proposed_actions", []),
+            npc_dialogue=npc_dialogue,
+            proposed_actions=proposed_actions,
             world_observations=data.get("world_observations", []),
             clarification_request=data.get("clarification_request"),
         )
+
+

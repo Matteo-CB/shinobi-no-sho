@@ -74,14 +74,36 @@ LEARN_PATTERNS = [
     r"\blearn\b",
 ]
 REST_PATTERNS = [r"\bdor(?:s|t|mir|mait|mais)\b", r"\bsommeil\b", r"\bsleep\b"]
-RELAX_PATTERNS = [r"\bje (?:me )?repose\b", r"\bme repose[r]?\b", r"\brest(?:e|er|es)\b", r"\bpause\b"]
+RELAX_PATTERNS = [
+    r"\bje (?:me )?repose\b",
+    r"\bme repose[r]?\b",
+    r"\brest(?:e|er|es)\b",
+    r"\bpause\b",
+]
 MEDITATE_PATTERNS = [r"\bje medite\b", r"\bmediter\b", r"\bmeditation\b", r"\bmeditate\b"]
 WAIT_PATTERNS = [r"\bj[' ]attends\b", r"\battendre\b", r"\bpasser le temps\b", r"\bwait\b"]
-WORK_PATTERNS = [r"\btravaill(?:e|er|es|ons|ent)\b", r"\bbosser\b", r"\bgagner.*ryos\b", r"\bwork\b"]
+WORK_PATTERNS = [
+    r"\btravaill(?:e|er|es|ons|ent)\b",
+    r"\bbosser\b",
+    r"\bgagner.*ryos\b",
+    r"\bwork\b",
+]
 MISSION_PATTERNS = [r"\bmission\b", r"\bquete\b", r"\bquest\b", r"\baccept.*mission\b"]
-COMBAT_PATTERNS = [r"\bcombat(?:s|tre|tu|tons)?\b", r"\battaqu(?:e|er|es)\b", r"\bbattle\b", r"\bje me bats\b", r"\bj[' ]affronte\b"]
+COMBAT_PATTERNS = [
+    r"\bcombat(?:s|tre|tu|tons)?\b",
+    r"\battaqu(?:e|er|es)\b",
+    r"\bbattle\b",
+    r"\bje me bats\b",
+    r"\bj[' ]affronte\b",
+]
 TALK_PATTERNS = [r"\bje parle\b", r"\bdemand[er]\b", r"\bquestion\b", r"\bdiscut[er]\b"]
-MOVE_PATTERNS = [r"\bvoyag[er]\b", r"\bme rends?\b", r"\baller a\b", r"\bje vais a\b", r"\bje pars\b"]
+MOVE_PATTERNS = [
+    r"\bvoyag[er]\b",
+    r"\bme rends?\b",
+    r"\baller a\b",
+    r"\bje vais a\b",
+    r"\bje pars\b",
+]
 INTIMIDATE_PATTERNS = [r"\bintimid[er]\b", r"\bmenac[er]\b"]
 SEDUCE_PATTERNS = [r"\bseduire\b", r"\bdraguer?\b"]
 STEAL_PATTERNS = [r"\bvol[er]\b", r"\bderober?\b", r"\bsubtilis[er]\b"]
@@ -135,7 +157,10 @@ def interpret(text: str) -> ParsedIntent:
         return ParsedIntent(action_type=ActionType.fight, parameters={}, summary=summary)
     if _matches_any(lower, LEARN_PATTERNS):
         # tentative d'extraction du nom de technique apres "apprendre"
-        m = re.search(r"(?:apprends|apprendre|etudie|etudier|maitrise|maitriser)\s+(?:le |la |les |l['' ])?([^.,;]+)", lower)
+        m = re.search(
+            r"(?:apprends|apprendre|etudie|etudier|maitrise|maitriser)\s+(?:le |la |les |l['' ])?([^.,;]+)",
+            lower,
+        )
         target = m.group(1).strip() if m else ""
         return ParsedIntent(
             action_type=ActionType.train_technique,

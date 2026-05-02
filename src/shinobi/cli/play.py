@@ -137,10 +137,12 @@ def play_session(save_id: str) -> None:
 
         # Choix de duree pour les actions longues
         duration_param = parsed.parameters.get("duration_hours")
-        if (
-            isinstance(duration_param, int)
-            and parsed.action_type in {ActionType.train_stat, ActionType.train_technique, ActionType.research, ActionType.work}
-        ):
+        if isinstance(duration_param, int) and parsed.action_type in {
+            ActionType.train_stat,
+            ActionType.train_technique,
+            ActionType.research,
+            ActionType.work,
+        }:
             chosen = _pick_duration(default_hours=duration_param)
             parsed.parameters["duration_hours"] = chosen
 
@@ -190,7 +192,13 @@ def play_session(save_id: str) -> None:
         try:
             narration = asyncio.run(
                 _attempt_narration(
-                    character, world, canon, retriever, result, intent_text, parsed,
+                    character,
+                    world,
+                    canon,
+                    retriever,
+                    result,
+                    intent_text,
+                    parsed,
                     present_npcs=present_npcs,
                 )
             )
@@ -282,10 +290,14 @@ def _pick_duration(default_hours: int) -> int:
         table.add_row(str(i), label)
     table.add_row("c", "Duree personnalisee (en heures)")
     console.print(Panel(table, title="Duree d'engagement", border_style="cyan"))
-    choice = Prompt.ask(
-        "[bold cyan]Duree[/bold cyan]",
-        default=str(_default_duration_index(default_hours)),
-    ).strip().lower()
+    choice = (
+        Prompt.ask(
+            "[bold cyan]Duree[/bold cyan]",
+            default=str(_default_duration_index(default_hours)),
+        )
+        .strip()
+        .lower()
+    )
     if choice in ("c", "custom"):
         try:
             return int(Prompt.ask("[bold cyan]Heures[/bold cyan]", default=str(default_hours)))
@@ -339,7 +351,9 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
 
 def _missions_flow(character, world, save_id: str, canon):
     """Affiche les missions disponibles, propose d'en accepter une."""
-    missions = list_available_missions(player_rank=character.rank, count=5, seed=int(world.seed) % 100000)
+    missions = list_available_missions(
+        player_rank=character.rank, count=5, seed=int(world.seed) % 100000
+    )
     table = Table(title=f"Missions disponibles (rang {character.rank})", header_style=COLOR_TITLE)
     table.add_column("#", style="bold cyan", justify="right")
     table.add_column("Rang")
@@ -450,7 +464,9 @@ def _skip_time(command: str, character, world):
         if years_passed > 0:
             new_age = character.age_years + years_passed
             character = character.with_age(new_age)
-    console.print(f"[green]Temps avance de {n}{unit}. Nouvelle date : an {new_date.year}, jour {new_date.date_str}[/green]")
+    console.print(
+        f"[green]Temps avance de {n}{unit}. Nouvelle date : an {new_date.year}, jour {new_date.date_str}[/green]"
+    )
     return character, new_world
 
 
@@ -491,8 +507,8 @@ async def _attempt_narration(
             f"PNJ canon presents : {', '.join(present_npcs)}"
             if present_npcs
             else "Aucun PNJ canon nomme dans la scene. Si la situation implique des"
-                 " interlocuteurs (sensei, parent, marchand, etc.), invente leur id role-based"
-                 " (snake_case, ex: sensei_academie, marchand_taverne) et fais-les parler."
+            " interlocuteurs (sensei, parent, marchand, etc.), invente leur id role-based"
+            " (snake_case, ex: sensei_academie, marchand_taverne) et fais-les parler."
         )
         request = NarrationRequest(
             turn_summary=intent,

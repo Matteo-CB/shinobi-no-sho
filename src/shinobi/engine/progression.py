@@ -11,8 +11,26 @@ from shinobi.engine.character import (
 from shinobi.engine.stats import CoreStats, ExtendedStats, aging_decay, aging_growth
 
 # Stats entrainables et la classe a laquelle elles appartiennent (core ou ext).
-TRAINABLE_CORE = {"ninjutsu", "taijutsu", "genjutsu", "intelligence", "strength", "speed", "stamina", "hand_seals"}
-TRAINABLE_EXT = {"chakra_control", "willpower", "perception", "social_charisma", "leadership", "medical_knowledge", "fuinjutsu_knowledge", "senjutsu_aptitude"}
+TRAINABLE_CORE = {
+    "ninjutsu",
+    "taijutsu",
+    "genjutsu",
+    "intelligence",
+    "strength",
+    "speed",
+    "stamina",
+    "hand_seals",
+}
+TRAINABLE_EXT = {
+    "chakra_control",
+    "willpower",
+    "perception",
+    "social_charisma",
+    "leadership",
+    "medical_knowledge",
+    "fuinjutsu_knowledge",
+    "senjutsu_aptitude",
+}
 NON_TRAINABLE_EXT = {"luck", "beauty", "lineage_value", "chakra_reserves"}
 
 # Calibrage : a genie 1.0, il faut ~1000h de focus pour passer une stat de 1.0 a 2.0.
@@ -73,7 +91,9 @@ def train_stat(
     return new_char, StatChange(stat_name=stat_name, old=current, new=new_value)
 
 
-def _progress_value(*, current: float, hours: int, learning_genius: float, quality_modifier: float) -> float:
+def _progress_value(
+    *, current: float, hours: int, learning_genius: float, quality_modifier: float
+) -> float:
     """Formule de progression a rendements decroissants :
     - effort_brut = hours * (genie / 3.0) * quality
     - resistance = (current / 5.0) ^ 2  augmente vite quand on approche 5.0

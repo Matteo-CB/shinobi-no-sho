@@ -108,7 +108,11 @@ def relevant_stat(action: Action, character: Character) -> float:
     es = character.extended_stats
     if action.action_type == ActionType.fight:
         return average_combat_stat(s)
-    if action.action_type in (ActionType.train_stat, ActionType.train_technique, ActionType.research):
+    if action.action_type in (
+        ActionType.train_stat,
+        ActionType.train_technique,
+        ActionType.research,
+    ):
         return es.learning_genius
     if action.action_type in (ActionType.talk, ActionType.seduce, ActionType.bribe):
         return es.social_charisma
@@ -171,7 +175,9 @@ def resolve_action(inputs: ResolutionInputs) -> ActionResult:
     if duration_hours > 0:
         duration = duration_hours * 60
     else:
-        duration = estimate_duration(action.action_type, action.parameters.get("duration_minutes_override"))
+        duration = estimate_duration(
+            action.action_type, action.parameters.get("duration_minutes_override")
+        )
     chakra_cost = int(action.parameters.get("chakra_cost", 0))
 
     return ActionResult(
@@ -201,13 +207,19 @@ def apply_action_to_state(
     chakra_cost = result.chakra_cost
 
     success = result.outcome in (ActionOutcome.full_success, ActionOutcome.partial_success)
-    quality = 1.0 if result.outcome == ActionOutcome.full_success else (0.6 if result.outcome == ActionOutcome.partial_success else 0.2)
+    quality = (
+        1.0
+        if result.outcome == ActionOutcome.full_success
+        else (0.6 if result.outcome == ActionOutcome.partial_success else 0.2)
+    )
 
     new_char = character
 
     if action.action_type == ActionType.train_stat:
         stat_name = str(action.parameters.get("stat", "stamina"))
-        new_char, change = train_stat(new_char, stat_name, hours=duration_hours, quality_modifier=quality)
+        new_char, change = train_stat(
+            new_char, stat_name, hours=duration_hours, quality_modifier=quality
+        )
         if change:
             stat_changes.append(change)
         # Cout de fatigue proportionnel
@@ -216,8 +228,12 @@ def apply_action_to_state(
 
     elif action.action_type == ActionType.train_technique:
         # Sans technique target connue, on entraine intelligence + chakra_control
-        new_char, c1 = train_stat(new_char, "intelligence", hours=duration_hours // 2, quality_modifier=quality)
-        new_char, c2 = train_stat(new_char, "chakra_control", hours=duration_hours // 2, quality_modifier=quality)
+        new_char, c1 = train_stat(
+            new_char, "intelligence", hours=duration_hours // 2, quality_modifier=quality
+        )
+        new_char, c2 = train_stat(
+            new_char, "chakra_control", hours=duration_hours // 2, quality_modifier=quality
+        )
         for c in (c1, c2):
             if c:
                 stat_changes.append(c)
@@ -226,7 +242,11 @@ def apply_action_to_state(
 
     elif action.action_type == ActionType.rest:
         sleep = bool(action.parameters.get("sleep", False))
-        new_char = apply_sleep(new_char, hours=duration_hours) if sleep else apply_rest(new_char, hours=duration_hours)
+        new_char = (
+            apply_sleep(new_char, hours=duration_hours)
+            if sleep
+            else apply_rest(new_char, hours=duration_hours)
+        )
         fatigue_delta = -(character.health.fatigue - new_char.health.fatigue)
 
     elif action.action_type == ActionType.meditate:
@@ -261,7 +281,9 @@ def apply_action_to_state(
             chakra_cost = 25
 
     elif action.action_type == ActionType.research:
-        new_char, c = train_stat(new_char, "intelligence", hours=duration_hours, quality_modifier=quality * 0.5)
+        new_char, c = train_stat(
+            new_char, "intelligence", hours=duration_hours, quality_modifier=quality * 0.5
+        )
         if c:
             stat_changes.append(c)
 

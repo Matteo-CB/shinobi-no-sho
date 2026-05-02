@@ -8,9 +8,9 @@ from typing import Literal
 
 # Nombre d'heures typiques de la mission par rang.
 MISSION_DURATION_HOURS = {
-    "D": 8,    # 1 jour
-    "C": 48,   # 2 jours
-    "B": 96,   # 4 jours
+    "D": 8,  # 1 jour
+    "C": 48,  # 2 jours
+    "B": 96,  # 4 jours
     "A": 168,  # 7 jours
     "S": 336,  # 14 jours
 }
@@ -67,35 +67,95 @@ def _rank_for_player(player_rank: str) -> str:
 # Mini-pool de missions par rang. Le LLM peut en generer d'autres.
 _MISSION_POOL = {
     "D": [
-        ("Retrouver le chat egare de Madame Shijimi", "Le chat Tora s'est echappe pour la N-ieme fois. Mission classique des genins de Konoha."),
-        ("Aider a la moisson chez les fermiers", "Les paysans ont besoin de mains supplementaires pendant la recolte."),
-        ("Escorter un marchand jusqu'au village voisin", "Un marchand veut atteindre le village suivant en securite."),
-        ("Garder un sanctuaire pendant la nuit", "Veiller sur un petit sanctuaire local jusqu'a l'aube."),
-        ("Reparer la cloture d'un eleveur", "Travail manuel basique mais essentiel pour la securite des animaux."),
+        (
+            "Retrouver le chat egare de Madame Shijimi",
+            "Le chat Tora s'est echappe pour la N-ieme fois. Mission classique des genins de Konoha.",
+        ),
+        (
+            "Aider a la moisson chez les fermiers",
+            "Les paysans ont besoin de mains supplementaires pendant la recolte.",
+        ),
+        (
+            "Escorter un marchand jusqu'au village voisin",
+            "Un marchand veut atteindre le village suivant en securite.",
+        ),
+        (
+            "Garder un sanctuaire pendant la nuit",
+            "Veiller sur un petit sanctuaire local jusqu'a l'aube.",
+        ),
+        (
+            "Reparer la cloture d'un eleveur",
+            "Travail manuel basique mais essentiel pour la securite des animaux.",
+        ),
     ],
     "C": [
-        ("Escorter un marchand entre deux pays", "Voyage d'une semaine, risque de bandits sur la route."),
-        ("Demanteler un petit gang de bandits", "Un groupe de 3 ou 4 bandits sevit sur une route commerciale."),
-        ("Recuperer un artefact vole", "Un objet de famille noble a ete vole, le retrouver et le ramener."),
-        ("Proteger une caravane pendant 3 jours", "Voyage avec marchandises de valeur a travers une zone fragile."),
+        (
+            "Escorter un marchand entre deux pays",
+            "Voyage d'une semaine, risque de bandits sur la route.",
+        ),
+        (
+            "Demanteler un petit gang de bandits",
+            "Un groupe de 3 ou 4 bandits sevit sur une route commerciale.",
+        ),
+        (
+            "Recuperer un artefact vole",
+            "Un objet de famille noble a ete vole, le retrouver et le ramener.",
+        ),
+        (
+            "Proteger une caravane pendant 3 jours",
+            "Voyage avec marchandises de valeur a travers une zone fragile.",
+        ),
     ],
     "B": [
-        ("Eliminer un deserteur de rang chunin", "Un nukenin a fui le village avec des secrets sensibles."),
-        ("Infiltrer un fief mineur d'Otogakure", "Mission d'espionnage prolongee, contact avec sources locales."),
+        (
+            "Eliminer un deserteur de rang chunin",
+            "Un nukenin a fui le village avec des secrets sensibles.",
+        ),
+        (
+            "Infiltrer un fief mineur d'Otogakure",
+            "Mission d'espionnage prolongee, contact avec sources locales.",
+        ),
         ("Escorter un seigneur pendant une mission diplomatique", "Risque d'attentat eleve."),
-        ("Detruire un repaire de bandits organise", "Une trentaine d'hommes armes, certains avec ninjutsu."),
+        (
+            "Detruire un repaire de bandits organise",
+            "Une trentaine d'hommes armes, certains avec ninjutsu.",
+        ),
     ],
     "A": [
-        ("Assassiner un ninja deserteur de rang jonin", "Cible dangereuse, possede des techniques avancees."),
-        ("Prevenir un complot contre le Kage", "Mission politique sensible avec risque de trahison interne."),
-        ("Escorter une delegation diplomatique a un sommet", "Plusieurs villages ennemis pourraient saboter la rencontre."),
-        ("Recuperer un parchemin de technique interdite", "Le parchemin est dans le repaire d'un sannin disgracie."),
+        (
+            "Assassiner un ninja deserteur de rang jonin",
+            "Cible dangereuse, possede des techniques avancees.",
+        ),
+        (
+            "Prevenir un complot contre le Kage",
+            "Mission politique sensible avec risque de trahison interne.",
+        ),
+        (
+            "Escorter une delegation diplomatique a un sommet",
+            "Plusieurs villages ennemis pourraient saboter la rencontre.",
+        ),
+        (
+            "Recuperer un parchemin de technique interdite",
+            "Le parchemin est dans le repaire d'un sannin disgracie.",
+        ),
     ],
     "S": [
-        ("Eliminer un sannin renegat", "Cible legendaire, plusieurs gardes du corps ninjas, repaire fortifie."),
-        ("Saboter une operation d'invasion en cours", "Plusieurs jours derriere les lignes ennemies."),
-        ("Capturer un jinchuuriki vivant", "Mission moralement difficile, cible probablement nationale."),
-        ("Voler les plans de bataille du Hokage rival", "Infiltration d'un quartier general adverse."),
+        (
+            "Eliminer un sannin renegat",
+            "Cible legendaire, plusieurs gardes du corps ninjas, repaire fortifie.",
+        ),
+        (
+            "Saboter une operation d'invasion en cours",
+            "Plusieurs jours derriere les lignes ennemies.",
+        ),
+        (
+            "Capturer un jinchuuriki vivant",
+            "Mission moralement difficile, cible probablement nationale.",
+        ),
+        (
+            "Voler les plans de bataille du Hokage rival",
+            "Infiltration d'un quartier general adverse.",
+        ),
     ],
 }
 

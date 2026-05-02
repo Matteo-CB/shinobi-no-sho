@@ -12,8 +12,12 @@ from shinobi.cli.display import format_speaker
 def canon():
     return load_canon(
         optional=(
-            "organizations", "tailed_beasts", "kekkei_mora", "hiden",
-            "timeline_events", "voice_profiles",
+            "organizations",
+            "tailed_beasts",
+            "kekkei_mora",
+            "hiden",
+            "timeline_events",
+            "voice_profiles",
         )
     )
 
