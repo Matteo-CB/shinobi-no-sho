@@ -158,6 +158,7 @@ class Clan(_Frozen):
     social_structure_fr: str | None = None
     key_advantages_fr: str | None = None
     key_disadvantages_fr: str | None = None
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -235,6 +236,7 @@ class Village(_Frozen):
     geography_fr: str | None = None
     districts: list[VillageDistrict] = Field(default_factory=list)
     diplomatic_relations_by_era: list[dict[str, Any]] = Field(default_factory=list)
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -270,6 +272,7 @@ class Organization(_Frozen):
     members_by_era: list[OrganizationMembersByEra] = Field(default_factory=list)
     ideology_fr: str
     headquarters: list[str] = Field(default_factory=list)
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -367,6 +370,10 @@ class Character(_Frozen):
     teachable_techniques: list[str] = Field(default_factory=list)
     teaching_conditions_fr: str | None = None
     knowledge_domains: list[str] = Field(default_factory=list)
+    # Sections wiki brutes : Background, Personality, Appearance, Abilities,
+    # Part I, Part II, Boruto, Trivia, Quotes, etc. Cle = titre de section.
+    # Permet d'exposer 100% du contenu Narutopedia au narrator.
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -423,6 +430,7 @@ class Technique(_Frozen):
     canonical_users: list[str] = Field(default_factory=list)
     first_appearance: TechniqueFirstAppearance | None = None
     description_fr: str
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -515,6 +523,7 @@ class Location(_Frozen):
     near_village: str | None = None
     geography_fr: str | None = None
     canonical_events: list[str] = Field(default_factory=list)
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str

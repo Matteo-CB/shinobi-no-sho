@@ -40,6 +40,7 @@ from shinobi.canon.models import (  # noqa: E402
     Village,
     WeaponTool,
 )
+from shinobi.canon.wikitext import strip_wiki_markup  # noqa: E402
 from shinobi.config import settings  # noqa: E402
 from shinobi.logging_setup import configure_logging, get_logger  # noqa: E402
 from shinobi.types import Canonicity, Gender, TechniqueCategory, TechniqueRank  # noqa: E402
@@ -166,6 +167,62 @@ def _intro_text(parsed: dict, max_chars: int = 600) -> str:
     return intro
 
 
+# Sections a ignorer (meta, navigation, listes plates).
+_BORING_SECTIONS = {
+    "see also", "references", "external links", "navigation",
+    "in other media", "trivia footer", "gallery",
+}
+# Limite par section pour eviter d'exploser les fichiers JSON (1300 NPCs * 8 sections * 5KB = 50MB).
+_MAX_CHARS_PER_SECTION = 4000
+_MAX_SECTIONS_PER_ENTITY = 20
+
+
+def _extract_all_sections(parsed: dict) -> dict[str, str]:
+    """Extrait TOUTES les sections wiki sous forme dict {titre: texte_nettoye}.
+
+    Concatene les sous-sections sous le titre de leur parent direct (ex: 'Abilities'
+    inclut 'Chakra', 'Taijutsu', 'Ninjutsu' indents). Tronque chaque section a
+    _MAX_CHARS_PER_SECTION pour eviter les fichiers JSON gigantesques.
+    """
+    sections = parsed.get("sections", [])
+    if not sections:
+        return {}
+    out: dict[str, list[str]] = {}
+    current_h2: str | None = None
+    for sec in sections:
+        title = (sec.get("title") or "").strip()
+        text = (sec.get("text") or "").strip()
+        level = sec.get("level", 0)
+        if not title or title == "(intro)":
+            continue
+        title_low = title.lower()
+        if title_low in _BORING_SECTIONS:
+            continue
+        # H2 = nouvelle section principale, H3+ = sous-section a aplatir
+        if level <= 2:
+            current_h2 = title
+            out.setdefault(current_h2, [])
+            if text:
+                out[current_h2].append(strip_wiki_markup(text))
+        else:
+            target = current_h2 or title
+            out.setdefault(target, [])
+            if text:
+                out[target].append(f"[{title}] " + strip_wiki_markup(text))
+    # Joint les morceaux + tronque
+    final: dict[str, str] = {}
+    for title, parts in out.items():
+        joined = "\n".join(p for p in parts if p).strip()
+        if not joined:
+            continue
+        if len(joined) > _MAX_CHARS_PER_SECTION:
+            joined = joined[: _MAX_CHARS_PER_SECTION - 3] + "..."
+        final[title] = joined
+        if len(final) >= _MAX_SECTIONS_PER_ENTITY:
+            break
+    return final
+
+
 # Mappers par entite -----------------------------------------------------------
 
 
@@ -273,6 +330,7 @@ def map_character(parsed: dict) -> dict[str, Any] | None:
         "gender": sex.value,
         "birth_year": birth_year,
         "current_village_by_era": [],
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 
@@ -304,6 +362,7 @@ def map_technique(parsed: dict) -> dict[str, Any] | None:
         "rank": rank.value,
         "sources": [f"narutopedia:{title.replace(' ', '_')}"],
         "updated_at": "2026-05-02",
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 
@@ -331,6 +390,7 @@ def map_clan(parsed: dict) -> dict[str, Any] | None:
         "sources": [f"narutopedia:{title.replace(' ', '_')}"],
         "updated_at": "2026-05-02",
         "village_of_origin": slugify(village) if village else None,
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 
@@ -359,6 +419,7 @@ def map_village(parsed: dict) -> dict[str, Any] | None:
         "sources": [f"narutopedia:{title.replace(' ', '_')}"],
         "specialties": [],
         "updated_at": "2026-05-02",
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 
@@ -406,6 +467,7 @@ def map_location(parsed: dict) -> dict[str, Any] | None:
         "near_village": slugify(_first_link(params.get("affiliation")) or ""),
         "sources": [f"narutopedia:{title.replace(' ', '_')}"],
         "updated_at": "2026-05-02",
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 

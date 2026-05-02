@@ -312,7 +312,67 @@ def fact_sheet_for(canon: CanonBundle, character_id: str, *, current_year: int) 
             parcours_parts.append(f"{entry.village} (an {entry.from_year} a {end})")
         lines.append(f"  Parcours village: {' -> '.join(parcours_parts[:4])}")
 
+    # ========== SECTIONS WIKI BRUTES (Background, Personality, Abilities, etc.) ==========
+    if char.wiki_sections:
+        wiki_block = _format_wiki_sections(char.wiki_sections, max_total_chars=2400)
+        if wiki_block:
+            lines.append(wiki_block)
+
     return "\n".join(lines)
+
+
+# Sections wiki considerees comme prioritaires pour la narration (ordre).
+_PRIORITY_SECTIONS = [
+    "Personality", "Background", "Appearance", "Abilities",
+    "Part I", "Part II", "Blank Period", "New Era: Part I", "New Era: Part II",
+    "Quotes", "Trivia",
+]
+_SECTION_TRUNC_CHARS = 600
+
+
+def _format_wiki_sections(sections: dict[str, str], *, max_total_chars: int = 2400) -> str:
+    """Formatte les sections wiki en bloc lisible pour le LLM, par priorite.
+
+    Strategie : sections prioritaires en premier (Personality > Background > ...),
+    chaque section tronquee a 600 chars, total cap a max_total_chars.
+    """
+    if not sections:
+        return ""
+    ordered: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    # D'abord les prioritaires dans l'ordre canonique
+    for prio in _PRIORITY_SECTIONS:
+        if prio in sections:
+            ordered.append((prio, sections[prio]))
+            seen.add(prio)
+    # Puis le reste alphabetique
+    for title in sorted(sections):
+        if title not in seen:
+            ordered.append((title, sections[title]))
+
+    out_lines = ["  --- Wiki Narutopedia (sections cles) ---"]
+    used = 0
+    for title, text in ordered:
+        if used >= max_total_chars:
+            break
+        # Tronque le texte de la section
+        snippet = text.strip()
+        if len(snippet) > _SECTION_TRUNC_CHARS:
+            snippet = snippet[: _SECTION_TRUNC_CHARS - 3] + "..."
+        # Si l'ajout depasse le budget, tronque encore plus
+        budget_left = max_total_chars - used
+        if len(snippet) > budget_left:
+            snippet = snippet[: budget_left - 3] + "..."
+        out_lines.append(f"  [{title}]")
+        # Indente chaque ligne du snippet pour lisibilite dans le bloc fact_sheet
+        for line in snippet.split("\n"):
+            out_lines.append(f"    {line}")
+        used += len(snippet) + len(title) + 10
+    if len(sections) > len(ordered):
+        out_lines.append(
+            f"  ({len(sections) - len(ordered)} autres sections non-incluses faute de place)"
+        )
+    return "\n".join(out_lines)
 
 
 def fact_sheets_for(
