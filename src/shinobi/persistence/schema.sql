@@ -122,3 +122,14 @@ CREATE TABLE IF NOT EXISTS save_meta (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS active_missions (
+    id TEXT PRIMARY KEY,
+    rank TEXT NOT NULL,
+    title TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    accepted_at_year INTEGER NOT NULL,
+    completed_at_year INTEGER,
+    success INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_missions_open ON active_missions(completed_at_year);

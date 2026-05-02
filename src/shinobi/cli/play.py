@@ -54,6 +54,8 @@ META_HELP = {
     "/buy": "Ouvrir la boutique du village",
     "/sell": "Vendre un item de ton inventaire",
     "/inventory": "Affiche ton inventaire",
+    "/use <item_id>": "Consomme un item (soldier_pill, ramen_bowl, antidote, ...)",
+    "/active_missions": "Liste les missions acceptees",
     "/reputation": "Affiche ta reputation par village",
     "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
     "/journal": "Indique ou se trouve le journal",
@@ -154,6 +156,25 @@ def play_session(save_id: str) -> None:
         # Interpretation de l'intention
         parsed = interpret(intent_text)
 
+        # Routes special : /buy /sell /use sont declenches via interpreter aussi
+        if parsed.action_type == ActionType.buy:
+            character = _shop_buy_flow(character)
+            turn -= 1
+            continue
+        if parsed.action_type == ActionType.sell:
+            character = _shop_sell_flow(character)
+            turn -= 1
+            continue
+        use_item_id = parsed.parameters.get("_use_item")
+        if use_item_id:
+            from shinobi.engine.items import use_item
+
+            character, effect = use_item(character, use_item_id)
+            color = "green" if effect.success else "yellow"
+            console.print(f"  [{color}]{effect.summary_fr}[/{color}]")
+            turn -= 1
+            continue
+
         # Choix de duree pour les actions longues
         duration_param = parsed.parameters.get("duration_hours")
         if isinstance(duration_param, int) and parsed.action_type in {
@@ -210,6 +231,13 @@ def play_session(save_id: str) -> None:
             console.print(f"  [yellow]>>> Evenement canon declenche : {f.event_id}[/yellow]")
         for c in cancelled:
             console.print(f"  [red]>>> Evenement canon annule : {c.event_id}[/red]")
+            # WorldResolver auto si strategy=narrative_resolution
+            canon_ev = canon.timeline_events.get(c.event_id)
+            if canon_ev and canon_ev.cancellation_strategy.type == "narrative_resolution":
+                try:
+                    asyncio.run(_world_resolve_cancellation(canon_ev, c.reason, world.current_year, canon))
+                except Exception:
+                    pass
 
         last_proposed = []
         present_npcs = _detect_present_npcs(intent_text, canon)
@@ -400,6 +428,29 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
         character = _shop_buy_flow(character)
     elif command == "/sell":
         character = _shop_sell_flow(character)
+    elif command.startswith("/use"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2:
+            console.print("[red]Usage : /use <item_id>[/red]")
+        else:
+            from shinobi.engine.items import use_item
+
+            character, effect = use_item(character, parts[1].strip())
+            color = "green" if effect.success else "yellow"
+            console.print(f"  [{color}]{effect.summary_fr}[/{color}]")
+    elif command == "/active_missions":
+        items = save_module.load_active_missions(save_id)
+        if not items:
+            console.print(Panel("Aucune mission acceptee.", title="Missions"))
+        else:
+            lines = []
+            for m in items:
+                status = (
+                    "[green]reussi[/green]" if m["success"]
+                    else ("[red]echoue[/red]" if m["success"] is False else "[yellow]en cours[/yellow]")
+                )
+                lines.append(f"  [{m['rank']}] {m['title']} ({status})")
+            console.print(Panel("\n".join(lines), title=f"Missions ({len(items)})"))
     elif command == "/inventory":
         from shinobi.engine.shop import ITEM_CATALOG, get_inventory_summary
 
@@ -465,6 +516,7 @@ def _missions_flow(character, world, save_id: str, canon):
         return character, world
 
     mission = missions[idx]
+    save_module.save_active_mission(save_id, mission, year=world.current_year)
     console.print(
         Panel(
             f"[bold]{mission.title}[/bold]\n[dim]{mission.description_fr}[/dim]\n\n"
@@ -482,6 +534,7 @@ def _missions_flow(character, world, save_id: str, canon):
     r = roll(world.seed & 0x7FFFFFFFFFFFFFFF, "1d20", modifier=int(stat * 4))
     success = r.total >= mission.difficulty_dc
     new_char, ryos, mission_changes = apply_mission_result(character, mission, success=success)
+    save_module.mark_mission_completed(save_id, mission.id, year=world.current_year, success=success)
 
     # Construit les lignes de stat changes avec justification
     consequence_lines = []
@@ -547,6 +600,31 @@ def _check_breadcrumb_completions(save_id: str, character, action_result, curren
             save_module.save_breadcrumb(save_id, updated)
             completed_descriptions.append(bc.description)
     return completed_descriptions
+
+
+async def _world_resolve_cancellation(canon_ev, reason: str, current_year: int, canon):
+    """Appelle WorldResolver LLM quand un event canon est annule narrativement."""
+    from shinobi.llm.client import LLMClient
+    from shinobi.llm.narration import WorldResolver
+
+    async with LLMClient() as client:
+        if not await client.health():
+            return
+        resolver = WorldResolver(client, canon)
+        resolution = await resolver.resolve_cancelled_event(
+            event_id=canon_ev.id,
+            cancellation_reason=reason,
+            current_year=current_year,
+        )
+        console.print(
+            Panel(
+                f"[bold]A la place :[/bold] {resolution.substitute_event_summary}\n"
+                + ("\nConsequences :\n" + "\n".join(f"  - {c.get('description', '')}" for c in resolution.consequences) if resolution.consequences else "")
+                + (f"\n\nRumeur qui circule : [italic]{resolution.rumor_template}[/italic]" if resolution.rumor_template else ""),
+                title=f"Resolution narrative : {canon_ev.name_fr}",
+                border_style="yellow",
+            )
+        )
 
 
 def _shop_buy_flow(character):

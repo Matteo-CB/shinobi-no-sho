@@ -271,6 +271,71 @@ def save_breadcrumb(save_id: str, breadcrumb: Breadcrumb) -> None:
         close(conn)
 
 
+def save_active_mission(save_id: str, mission, *, year: int) -> None:
+    """Persiste une mission acceptee (status: en cours)."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        # Mission est un dataclass frozen, on serialise en dict via dataclasses.asdict
+        from dataclasses import asdict
+
+        cur.execute(
+            "INSERT OR REPLACE INTO active_missions (id, rank, title, payload, accepted_at_year, completed_at_year, success) "
+            "VALUES (?, ?, ?, ?, ?, NULL, NULL)",
+            (
+                mission.id,
+                mission.rank,
+                mission.title,
+                encode_json(asdict(mission)),
+                year,
+            ),
+        )
+        conn.commit()
+    finally:
+        close(conn)
+
+
+def mark_mission_completed(save_id: str, mission_id: str, *, year: int, success: bool) -> None:
+    """Marque une mission comme accomplie ou echouee."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "UPDATE active_missions SET completed_at_year = ?, success = ? WHERE id = ?",
+            (year, int(success), mission_id),
+        )
+        conn.commit()
+    finally:
+        close(conn)
+
+
+def load_active_missions(save_id: str) -> list[dict]:
+    """Liste les missions acceptees (en cours ou completees)."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id, rank, title, payload, accepted_at_year, completed_at_year, success "
+            "FROM active_missions ORDER BY accepted_at_year DESC"
+        )
+        out = []
+        for row in cur.fetchall():
+            out.append(
+                {
+                    "id": row[0],
+                    "rank": row[1],
+                    "title": row[2],
+                    "payload": json.loads(row[3]),
+                    "accepted_at_year": row[4],
+                    "completed_at_year": row[5],
+                    "success": bool(row[6]) if row[6] is not None else None,
+                }
+            )
+        return out
+    finally:
+        close(conn)
+
+
 def load_breadcrumbs(save_id: str, *, parent_goal_id: str | None = None) -> list[Breadcrumb]:
     """Charge les breadcrumbs (filtres optionnellement par goal parent)."""
     conn = open_connection(_state_path(save_id))

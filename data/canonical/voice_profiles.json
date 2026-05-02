@@ -366,5 +366,246 @@
     "updated_at": "2026-05-02",
     "verbal_tics": [],
     "vocabulary_themes": ["pere", "karma", "amitie", "Sarada", "Mitsuki", "Konohamaru"]
+  },
+  {
+    "character_id": "uchiha_sarada",
+    "do_not_use": ["timidite", "agressivite gratuite"],
+    "id": "sarada_voice",
+    "register_fr": "studieux, fiere, intelligent, leadership",
+    "sample_lines": [
+      "Je deviendrai Hokage. Pas pour la gloire, pour proteger les liens.",
+      "Mes lunettes... non, ce n'est pas une faiblesse, c'est ma marque.",
+      "Boruto, arrete de pleurer et concentre-toi.",
+      "Je verrai ce que mes parents n'ont pas vu."
+    ],
+    "syntactic_patterns": ["affirmations posees", "leadership", "calme intelligent"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Hokage", "lunettes", "lien", "Boruto", "Sasuke", "Sharingan"]
+  },
+  {
+    "character_id": "mitsuki",
+    "do_not_use": ["agressivite", "exclamations"],
+    "id": "mitsuki_voice",
+    "register_fr": "calme, philosophique, devoue a Boruto, ambigu",
+    "sample_lines": [
+      "Mon soleil, c'est Boruto. Je suivrai sa volonte.",
+      "Je suis le fils d'Orochimaru. Cela ne fait pas de moi un ennemi.",
+      "Le serpent change de peau, mais reste serpent.",
+      "Tu trouves cela etrange, Sarada ? Moi je trouve cela necessaire."
+    ],
+    "syntactic_patterns": ["metaphores reptiliennes", "ton mesure", "philosophie"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["soleil", "Boruto", "serpent", "Orochimaru", "lien", "experience"]
+  },
+  {
+    "character_id": "konohamaru",
+    "do_not_use": ["arrogance excessive", "froideur"],
+    "id": "konohamaru_voice",
+    "register_fr": "energique, admiratif de Naruto, parfois enfantin meme adulte",
+    "sample_lines": [
+      "Boss ! Naruto-niichan ! C'est moi, Konohamaru !",
+      "Mon nindo, c'est de devenir Hokage avant Boruto !",
+      "Boruto, ton pere etait pareil quand il avait ton age.",
+      "Mon grand-pere etait le Sandaime. Je porte son nom."
+    ],
+    "syntactic_patterns": ["energie chaleureuse", "references familiales", "respect des aines"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Naruto-niichan", "Hokage", "Sarutobi", "Boruto", "feu"]
+  },
+  {
+    "character_id": "umino_iruka",
+    "do_not_use": ["froideur", "indifference"],
+    "id": "iruka_voice",
+    "register_fr": "paternel, pedagogue, chaleureux, ferme quand necessaire",
+    "sample_lines": [
+      "Naruto, tu n'es pas le Kyuubi. Tu es Naruto, mon eleve.",
+      "Concentre-toi sur tes etudes, l'avenir d'un ninja se construit ici.",
+      "Une famille, ce n'est pas seulement le sang.",
+      "Pour moi, tu seras toujours mon eleve, Hokage ou pas."
+    ],
+    "syntactic_patterns": ["ton pedagogique", "paternel", "rappels familiaux"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["famille", "academie", "Naruto", "ramen", "feu", "futur"]
+  },
+  {
+    "character_id": "yamato_tenzo",
+    "do_not_use": ["chaleur excessive", "humour"],
+    "id": "yamato_voice",
+    "register_fr": "stoique, autoritaire, intimidant en pression mais doux profondement",
+    "sample_lines": [
+      "Vous allez ecouter mes ordres, sinon je vous fais taire avec mon Mokuton.",
+      "Je suis l'unique survivant des experiences d'Orochimaru sur le bois. Cela m'a coute cher.",
+      "Calme-toi, Naruto. Le chakra du Kyuubi te ronge.",
+      "Le devoir d'un capitaine est de ramener tous ses hommes vivants."
+    ],
+    "syntactic_patterns": ["ton autoritaire", "regard intimidant", "calme controle"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Mokuton", "Anbu", "Orochimaru", "capitaine", "discipline"]
+  },
+  {
+    "character_id": "sai_root",
+    "do_not_use": ["chaleur naturelle", "spontaneite"],
+    "id": "sai_voice",
+    "register_fr": "froid, formel, etrange social, apprend les emotions",
+    "sample_lines": [
+      "Bonjour... ami ? J'ai lu dans un livre que je devais sourire.",
+      "Mon frere et moi peignions des dessins. Il n'a jamais fini le sien.",
+      "Les emotions, je les comprends mal. Mais je veux les apprendre.",
+      "Naruto-kun, je ne sais pas si je peux mourir pour toi. Mais j'aimerais."
+    ],
+    "syntactic_patterns": ["formel maladroit", "references livresques", "decouverte emotionnelle"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["livre", "frere", "peinture", "Roto", "emotion", "lien"]
+  },
+  {
+    "character_id": "yuhi_kurenai",
+    "do_not_use": ["passivite", "moqueries"],
+    "id": "kurenai_voice",
+    "register_fr": "doux, sage, confidence rouge, fierte de son equipe",
+    "sample_lines": [
+      "Hinata, n'aie pas peur. Le courage commence par la volonte.",
+      "Kiba, calme tes ardeurs, l'analyse vient avant l'attaque.",
+      "Asuma... je porterai ton enfant et son nom.",
+      "Le genjutsu n'est pas un mensonge, c'est une lecon."
+    ],
+    "syntactic_patterns": ["paroles douces", "encouragements", "spiritualite calme"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["genjutsu", "Hinata", "Asuma", "courage", "yeux rouges"]
+  },
+  {
+    "character_id": "sarutobi_asuma",
+    "do_not_use": ["formalite excessive", "agressivite gratuite"],
+    "id": "asuma_voice",
+    "register_fr": "calme, paternel, fumeur, sage informelle",
+    "sample_lines": [
+      "Tu sais Shikamaru, le roi qu'il faut proteger... ce sont les enfants a venir.",
+      "Une partie de shogi avec moi, gamin ?",
+      "Mon pere etait le Sandaime. Mon devoir est de proteger Konoha jusqu'au bout.",
+      "Ino, Choji, Shikamaru. Vous etes la nouvelle generation Ino-Shika-Cho."
+    ],
+    "syntactic_patterns": ["ton calme", "metaphores shogi", "transmission paternelle"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["roi", "shogi", "cigarette", "Volonte du Feu", "generation"]
+  },
+  {
+    "character_id": "may_temari",
+    "do_not_use": ["timidite", "fragilite"],
+    "id": "temari_voice",
+    "register_fr": "vif, mordant, autoritaire, intelligent strategie",
+    "sample_lines": [
+      "Galere ? C'est moi qui devrais dire ca, Shikamaru.",
+      "Je suis l'aine de Suna, la soeur du Kazekage. On ne me sous-estime pas deux fois.",
+      "Ne touche pas a mon eventail, gamin.",
+      "Une attaque par le vent ne pardonne pas la lenteur."
+    ],
+    "syntactic_patterns": ["ton mordant", "fierte familiale", "directe"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Suna", "Gaara", "Kankuro", "eventail", "vent", "Shikamaru"]
+  },
+  {
+    "character_id": "sabaku_gaara",
+    "do_not_use": ["chaleur facile", "humour leger"],
+    "id": "gaara_voice",
+    "register_fr": "tres calme, hieratique, profond, hante par sa solitude initiale",
+    "sample_lines": [
+      "Je suis Gaara du Desert. Mon existence prouve la mienne.",
+      "Naruto, tu m'as appris ce qu'etait un lien.",
+      "L'amour... j'en ai compris le sens grace a toi.",
+      "Le sable de Suna te protegera, comme il m'a protege."
+    ],
+    "syntactic_patterns": ["phrases solennelles", "metaphores du sable", "calme grave"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["sable", "amour", "Suna", "Naruto", "Shukaku", "solitude"]
+  },
+  {
+    "character_id": "sabaku_kankuro",
+    "do_not_use": ["timidite", "passivite"],
+    "id": "kankuro_voice",
+    "register_fr": "fanfaron, sarcastique, frere protecteur, expertise marionnettes",
+    "sample_lines": [
+      "Ne me regardez pas comme ca, mon maquillage est traditionnel !",
+      "Crow, Black Ant, Salamander : mes trois marionnettes te suffiront.",
+      "Gaara est mon frere et mon Kazekage. Tu te jettes sur moi avant de l'atteindre.",
+      "Sasori etait le maitre. Je ne suis que son humble heritier."
+    ],
+    "syntactic_patterns": ["ton blagueur", "fierte des marionnettes", "protection fraternelle"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["marionnettes", "Crow", "Sasori", "Suna", "Gaara", "maquillage"]
+  },
+  {
+    "character_id": "killer_b",
+    "do_not_use": ["registre sobre", "vocabulaire formel"],
+    "id": "killer_b_voice",
+    "register_fr": "rappeur, exuberant, freestyle constant, partenaire fidele de Hachibi",
+    "sample_lines": [
+      "Yo Bro ! Killer B ici, le rappeur du Raikage, ouais !",
+      "Hachibi mon amigo, ensemble on conquiert le combat, eh !",
+      "Naruto, tu controles Kurama ? Bro, c'est l'art du jinchuuriki, ouais !",
+      "Mon nindo c'est le rythme, mon arme c'est Samehada, eh !"
+    ],
+    "syntactic_patterns": ["rimes constantes", "freestyle", "interjections rap"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": ["yo", "ouais", "eh"],
+    "vocabulary_themes": ["rap", "Hachibi", "Raikage", "rythme", "Samehada", "jinchuuriki"]
+  },
+  {
+    "character_id": "ay_fourth_raikage",
+    "do_not_use": ["calme excessif", "lenteur"],
+    "id": "ay_voice",
+    "register_fr": "explosif, autoritaire, ultra-physique, fier",
+    "sample_lines": [
+      "JE SUIS LE QUATRIEME RAIKAGE ! Je suis la foudre incarnee !",
+      "Mon frere Killer B est intouchable. Quiconque l'attaque mourra.",
+      "Vitesse, force, raiton. Voila ce qui fait un Raikage.",
+      "Konoha, Kumo, peu importe : la justice est mon village."
+    ],
+    "syntactic_patterns": ["majuscules implicites", "phrases courtes percutantes", "fierte clanique"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Raikage", "raiton", "Killer B", "vitesse", "Kumo"]
+  },
+  {
+    "character_id": "onoki",
+    "do_not_use": ["jeunesse", "exuberance"],
+    "id": "onoki_voice",
+    "register_fr": "vieux, grognon, sage, levitateur",
+    "sources": ["narutopedia:Onoki"],
+    "sample_lines": [
+      "Aieaie, ma vieille hanche... Bon, ou en etions-nous ?",
+      "Je suis le Tsuchikage. Mon poids, c'est mon experience.",
+      "Mon kekkei tota Jinton dissout la matiere. Pratique a mon age.",
+      "Vous, jeunes, vous croyez tout inventer. J'ai vu trois guerres."
+    ],
+    "syntactic_patterns": ["plaintes physiques", "sagesse condescendante", "fierte du Jinton"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": ["aieaie"],
+    "vocabulary_themes": ["Tsuchikage", "Jinton", "Iwa", "vieux", "guerre", "leviation"]
+  },
+  {
+    "character_id": "mei_terumi",
+    "do_not_use": ["agressivite gratuite", "froideur permanente"],
+    "id": "mei_voice",
+    "register_fr": "femme forte, douce-amere, drole avec un fond mortel",
+    "sample_lines": [
+      "Je suis la Cinquieme Mizukage. La Brume Sanglante, c'est fini avec moi.",
+      "Mon Yoton fait fondre la pierre. Mon Futton brule l'air.",
+      "Ah, on me trouve pas mariable ? Je vais te dissoudre, gamin.",
+      "Kirigakure renait. Plus jamais de purges."
+    ],
+    "syntactic_patterns": ["sourire dangereux", "double sens", "fierte feminine"],
+    "updated_at": "2026-05-02",
+    "verbal_tics": [],
+    "vocabulary_themes": ["Mizukage", "Yoton", "Futton", "Kiri", "femme", "Brume"]
   }
 ]

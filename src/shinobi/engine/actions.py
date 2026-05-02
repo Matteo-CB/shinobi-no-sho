@@ -37,6 +37,7 @@ from shinobi.engine.progression import (
     fatigue_for_duration,
     train_stat,
 )
+from shinobi.engine.relations import add_reputation, update_affinity
 from shinobi.engine.rng import roll
 from shinobi.engine.stats import average_combat_stat
 from shinobi.engine.time import estimate_duration
@@ -404,6 +405,34 @@ def apply_action_to_state(
             new_char = add_money(new_char, -cost)
             money_delta = -cost
 
+    # Affinity / reputation : modifications passives selon action sociale
+    target_npc = action.parameters.get("target_id") or action.parameters.get("character_id")
+    if target_npc:
+        if action.action_type == ActionType.talk:
+            delta = 3 if success else -1
+            new_char = update_affinity(new_char, with_id=target_npc, delta=delta)
+        elif action.action_type == ActionType.seduce:
+            delta = 8 if result.outcome == ActionOutcome.full_success else (
+                4 if result.outcome == ActionOutcome.partial_success else -3
+            )
+            new_char = update_affinity(new_char, with_id=target_npc, delta=delta)
+        elif action.action_type == ActionType.intimidate:
+            new_char = update_affinity(new_char, with_id=target_npc, delta=-5)
+        elif action.action_type == ActionType.bribe:
+            delta = 5 if success else -3
+            new_char = update_affinity(new_char, with_id=target_npc, delta=delta)
+        elif action.action_type == ActionType.fight:
+            new_char = update_affinity(new_char, with_id=target_npc, delta=-15)
+
+    # Reputation village pour actions visibles
+    village = character.current_village
+    if action.action_type == ActionType.steal and result.outcome == ActionOutcome.catastrophic_failure:
+        new_char = add_reputation(new_char, village, -10)
+    elif action.action_type == ActionType.work and success:
+        new_char = add_reputation(new_char, village, 1)
+    elif action.action_type == ActionType.fight and result.outcome == ActionOutcome.catastrophic_failure:
+        new_char = add_reputation(new_char, village, -3)
+
     if chakra_cost > 0:
         new_char = apply_chakra_cost(new_char, chakra_cost)
 
@@ -452,16 +481,18 @@ def apply_mission_result(
     mission: Mission,
     *,
     success: bool,
-) -> tuple[Character, int, list[StatChange]]:
+) -> tuple[Character, int, list]:
     """Applique le resultat d'une mission. Retourne (char, ryos_gagnes, stat_changes)."""
     from shinobi.engine.consequences import mission_consequences
 
     if not success:
         new_char = apply_damage(character, 15, description=f"echec de mission {mission.title}")
         new_char = apply_fatigue(new_char, 30)
+        new_char = add_reputation(new_char, character.current_village, -mission.reputation_delta // 2)
         new_char, changes = mission_consequences(new_char, mission, success=False)
         return new_char, 0, changes
     new_char = add_money(character, mission.reward_ryos)
     new_char = apply_fatigue(new_char, 20)
+    new_char = add_reputation(new_char, character.current_village, mission.reputation_delta)
     new_char, changes = mission_consequences(new_char, mission, success=True)
     return new_char, mission.reward_ryos, changes

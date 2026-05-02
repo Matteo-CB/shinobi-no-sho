@@ -30,6 +30,7 @@ logs/
 *.gguf
 *.bin
 *.safetensors
+models/
 
 # Editeurs
 .vscode/

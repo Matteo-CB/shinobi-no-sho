@@ -119,6 +119,9 @@ SEDUCE_PATTERNS = [r"\bseduire\b", r"\bdraguer?\b"]
 STEAL_PATTERNS = [r"\bvol[er]\b", r"\bderober?\b", r"\bsubtilis[er]\b"]
 SPY_PATTERNS = [r"\bespionner?\b", r"\bsuivre.*discret\b", r"\bobserver?.*discret\b"]
 RESEARCH_PATTERNS = [r"\brecherch[er]\b", r"\benquet[er]\b", r"\binvestiguer?\b"]
+BUY_PATTERNS = [r"\bj[' ]ach[ea]te[r]?\b", r"\bachet[er]\b", r"\bbuy\b"]
+SELL_PATTERNS = [r"\bje vends\b", r"\bvendre\b", r"\bsell\b"]
+USE_ITEM_PATTERNS = [r"\bje (?:bois|mange|consomme|utilise|avale)\b", r"\butilise[r]?\b"]
 
 
 def _matches_any(text: str, patterns: list[str]) -> bool:
@@ -212,6 +215,20 @@ def interpret(text: str) -> ParsedIntent:
         return ParsedIntent(
             action_type=ActionType.work,
             parameters={"duration_hours": duration_hours or 6},
+            summary=summary,
+        )
+    if _matches_any(lower, BUY_PATTERNS):
+        return ParsedIntent(action_type=ActionType.buy, parameters={}, summary=summary)
+    if _matches_any(lower, SELL_PATTERNS):
+        return ParsedIntent(action_type=ActionType.sell, parameters={}, summary=summary)
+    if _matches_any(lower, USE_ITEM_PATTERNS):
+        item_match = re.search(
+            r"(?:utilise[r]?|bois|mange|consomme|avale)\s+(?:un\s+|une\s+|le\s+|la\s+|du\s+|de\s+la\s+|mon\s+|ma\s+)?([a-z_]+)",
+            lower,
+        )
+        return ParsedIntent(
+            action_type=ActionType.custom,
+            parameters={"_use_item": item_match.group(1) if item_match else ""},
             summary=summary,
         )
     if _matches_any(lower, INTIMIDATE_PATTERNS):
