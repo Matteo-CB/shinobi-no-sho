@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import gc
 import json
+import os
 import shutil
 import sqlite3
+import stat
 import tarfile
 import time
 from dataclasses import dataclass
@@ -213,11 +216,40 @@ def append_divergence(save_id: str, payload: dict[str, Any]) -> None:
 
 
 def delete_save(save_id: str) -> None:
-    """Supprime entierement une save."""
+    """Supprime entierement une save (robuste vs Windows file locks)."""
     sd = _save_dir(save_id)
     if not sd.exists():
         raise SaveNotFoundError(save_id)
-    shutil.rmtree(sd)
+    _robust_rmtree(sd)
+
+
+def _robust_rmtree(path: Path, *, retries: int = 6, base_delay: float = 0.3) -> None:
+    """Supprime un dossier avec retry et permissions reset (resiste aux locks Windows)."""
+    gc.collect()  # libere les handles SQLite eventuellement non fermes
+
+    def _on_error(func, target, exc_info):
+        try:
+            os.chmod(target, stat.S_IWRITE)
+        except OSError:
+            pass
+        try:
+            func(target)
+        except OSError:
+            pass
+
+    last_exc: Exception | None = None
+    for attempt in range(retries):
+        try:
+            shutil.rmtree(path, onerror=_on_error)
+            if not path.exists():
+                return
+        except PermissionError as exc:
+            last_exc = exc
+        except FileNotFoundError:
+            return
+        time.sleep(base_delay * (2**attempt))
+    if path.exists() and last_exc is not None:
+        raise last_exc
 
 
 def duplicate_save(save_id: str, new_label: str) -> str:
