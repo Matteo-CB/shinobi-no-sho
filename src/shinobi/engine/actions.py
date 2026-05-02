@@ -15,6 +15,7 @@ from shinobi.constants import (
     DIFFICULTY_VERY_HARD,
 )
 from shinobi.engine.character import Character
+from shinobi.engine.consequences import apply_action_consequences
 from shinobi.engine.missions import Mission
 from shinobi.engine.progression import (
     INTANGIBLE_EXT,
@@ -57,7 +58,7 @@ class ActionResult(BaseModel):
     action: Action
     outcome: ActionOutcome
     summary_fr: str
-    consequences: list[str] = Field(default_factory=list)
+    consequences: list[dict[str, Any]] = Field(default_factory=list)
     chakra_cost: int = 0
     duration_minutes: int = 0
     seed_after: int = 0
@@ -372,6 +373,26 @@ def apply_action_to_state(
         passive_chakra = max(1, duration_hours // 2)
         new_char = apply_chakra_cost(new_char, passive_chakra)
 
+    # Consequences emergentes : l'action elle-meme apprend des stats indirectes
+    # (ex: combat -> taijutsu+strength+willpower meme si train_stat n'a pas ete appele)
+    new_char, side_changes, applied_consequences = apply_action_consequences(
+        new_char,
+        action_type=action.action_type,
+        outcome=result.outcome,
+        duration_hours=duration_hours,
+    )
+    stat_changes.extend(side_changes)
+    consequences_payload = [
+        {
+            "stat": ac.change.stat_name,
+            "old": ac.change.old,
+            "new": ac.change.new,
+            "delta": ac.change.delta,
+            "why_fr": ac.why_fr,
+        }
+        for ac in applied_consequences
+    ]
+
     new_result = result.model_copy(
         update={
             "stat_changes": [
@@ -381,6 +402,7 @@ def apply_action_to_state(
             "money_delta": money_delta,
             "hp_delta": hp_delta,
             "fatigue_delta": fatigue_delta,
+            "consequences": consequences_payload,
         }
     )
     return new_char, world, new_result
@@ -391,12 +413,16 @@ def apply_mission_result(
     mission: Mission,
     *,
     success: bool,
-) -> tuple[Character, int]:
-    """Applique le resultat d'une mission. Retourne (char, ryos_gagnes)."""
+) -> tuple[Character, int, list[StatChange]]:
+    """Applique le resultat d'une mission. Retourne (char, ryos_gagnes, stat_changes)."""
+    from shinobi.engine.consequences import mission_consequences
+
     if not success:
         new_char = apply_damage(character, 15, description=f"echec de mission {mission.title}")
         new_char = apply_fatigue(new_char, 30)
-        return new_char, 0
+        new_char, changes = mission_consequences(new_char, mission, success=False)
+        return new_char, 0, changes
     new_char = add_money(character, mission.reward_ryos)
     new_char = apply_fatigue(new_char, 20)
-    return new_char, mission.reward_ryos
+    new_char, changes = mission_consequences(new_char, mission, success=True)
+    return new_char, mission.reward_ryos, changes

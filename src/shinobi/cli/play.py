@@ -242,19 +242,24 @@ def play_session(save_id: str) -> None:
 
 
 def _print_result(result: ActionResult, action_type: ActionType, turn: int) -> None:
-    """Affiche le panneau de resultat avec stat changes + recompenses."""
+    """Affiche le panneau de resultat avec stat changes + consequences justifiees."""
     body_lines = [Text(result.summary_fr, style=outcome_color(result.outcome.value))]
+
+    # Index : stat -> justification (pour annoter les stat_changes)
+    why_by_stat: dict[str, str] = {}
+    for cons in result.consequences or []:
+        why_by_stat[cons.get("stat", "")] = cons.get("why_fr", "")
 
     if result.stat_changes:
         body_lines.append(Text(""))
         for ch in result.stat_changes:
             sign = "+" if ch["delta"] > 0 else ""
-            body_lines.append(
-                Text(
-                    f"  {ch['stat']:<20} {ch['old']:.2f} -> {ch['new']:.2f} ({sign}{ch['delta']:.3f})",
-                    style="bold green" if ch["delta"] > 0 else "dim",
-                )
-            )
+            line = f"  {ch['stat']:<20} {ch['old']:.2f} -> {ch['new']:.2f} ({sign}{ch['delta']:.3f})"
+            text = Text(line, style="bold green" if ch["delta"] > 0 else "dim")
+            why = why_by_stat.get(ch["stat"], "")
+            if why:
+                text.append(f"   [{why}]", style="dim italic")
+            body_lines.append(text)
     if result.money_delta:
         sign = "+" if result.money_delta > 0 else ""
         body_lines.append(
@@ -400,12 +405,24 @@ def _missions_flow(character, world, save_id: str, canon):
     stat = average_combat_stat(character.stats)
     r = roll(world.seed & 0x7FFFFFFFFFFFFFFF, "1d20", modifier=int(stat * 4))
     success = r.total >= mission.difficulty_dc
-    new_char, ryos = apply_mission_result(character, mission, success=success)
+    new_char, ryos, mission_changes = apply_mission_result(character, mission, success=success)
+
+    # Construit les lignes de stat changes avec justification
+    consequence_lines = []
+    for ac in mission_changes:
+        sign = "+" if ac.change.delta > 0 else ""
+        consequence_lines.append(
+            f"  [bold green]{ac.change.stat_name}[/bold green] "
+            f"{ac.change.old:.2f} -> {ac.change.new:.2f} ({sign}{ac.change.delta:.3f}) "
+            f"[dim italic][{ac.why_fr}][/dim italic]"
+        )
+    consequences_block = ("\n\n" + "\n".join(consequence_lines)) if consequence_lines else ""
+
     if success:
         console.print(
             Panel(
                 f"[bold green]Mission accomplie ![/bold green]\n"
-                f"Recompense : [yellow]+{ryos:,}[/yellow] ryos.".replace(",", " "),
+                f"Recompense : [yellow]+{ryos:,}[/yellow] ryos.".replace(",", " ") + consequences_block,
                 title="Succes",
                 border_style="green",
             )
@@ -414,7 +431,7 @@ def _missions_flow(character, world, save_id: str, canon):
         console.print(
             Panel(
                 "[bold red]Mission echouee.[/bold red]\n"
-                "Tu rentres blesse au village. Reputation legerement entamee.",
+                "Tu rentres blesse au village. Reputation legerement entamee." + consequences_block,
                 title="Echec",
                 border_style="red",
             )
