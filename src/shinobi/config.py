@@ -32,13 +32,13 @@ class Settings(BaseSettings):
 
     # LLM
     llm_backend_url: str = "http://127.0.0.1:8080"
-    llm_model_name: str = "qwen3-8b-instruct"
-    llm_model_path: str = "models/llm/Qwen3-8B-UD-Q5_K_XL.gguf"
+    llm_model_name: str = "qwen3-4b-instruct"
+    llm_model_path: str = "models/llm/Qwen3-4B-UD-Q4_K_XL.gguf"
     llm_temperature: float = 0.7
     llm_temperature_structured: float = 0.3
-    llm_max_tokens: int = 2048
-    llm_context_size: int = 16384
-    llm_timeout_seconds: int = 180
+    llm_max_tokens: int = 800
+    llm_context_size: int = 8192
+    llm_timeout_seconds: int = 120
     llm_gpu_layers: int = 99
     llm_disable_thinking: bool = True
 

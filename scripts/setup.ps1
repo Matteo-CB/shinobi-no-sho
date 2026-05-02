@@ -95,11 +95,12 @@ function Detect-Gpu {
 }
 
 function Get-OptimalGpuLayers([int]$vramMib) {
-    # Pour Qwen3-8B Q5_K_XL (~6 Go base + 1 Go KV cache 16k)
-    if ($vramMib -ge 8000) { return 99 }   # full GPU
-    if ($vramMib -ge 6000) { return 32 }   # offload partiel
-    if ($vramMib -ge 4000) { return 16 }
-    if ($vramMib -ge 2000) { return 8 }
+    # Pour Qwen3-4B Q4_K_XL (~2.5 Go base + ~1 Go KV cache 8k) : tient en 4-5 Go.
+    # Si Qwen3-8B Q5 est utilise (~5.5 Go) : il faut 8 Go+ pour full offload.
+    if ($vramMib -ge 6000) { return 99 }   # full GPU avec marge confortable
+    if ($vramMib -ge 4000) { return 99 }   # full GPU (ok pour 4B)
+    if ($vramMib -ge 2500) { return 32 }   # offload partiel
+    if ($vramMib -ge 1500) { return 16 }
     return 0  # full CPU
 }
 
@@ -119,49 +120,61 @@ function Resolve-EmbeddingsDevice($gpu, $cudaWorks) {
 }
 
 function Resolve-ModelChoice([int]$vramMib, [bool]$forceCpu, [string]$override) {
-    # Retourne hashtable : name, file, url, size_gb, ctx_default, layers_full
+    # Retourne hashtable : name, file, url, size_gb, ctx_default, max_tokens
+    # Le defaut est equilibre vitesse/qualite. Le user peut forcer via -ModelSize.
     $catalog = @{
         tiny = @{
-            name = "Qwen3 1.7B Q4 (CPU / 2 Go VRAM)"
+            name = "Qwen3 1.7B Q4 (CPU ou 2 Go VRAM, ultra-rapide ~80 tok/s)"
             file = "Qwen3-1.7B-Q4_K_M.gguf"
             url = "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf"
             size_gb = 1.1
             ctx_default = 8192
+            max_tokens = 600
         }
         small = @{
-            name = "Qwen3 4B Q4 (4 Go VRAM)"
-            file = "Qwen3-4B-Q4_K_M.gguf"
-            url = "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf"
+            name = "Qwen3 4B UD-Q4_K_XL (4-8 Go VRAM, equilibre ~50 tok/s)"
+            file = "Qwen3-4B-UD-Q4_K_XL.gguf"
+            url = "https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-UD-Q4_K_XL.gguf"
             size_gb = 2.5
-            ctx_default = 16384
+            ctx_default = 8192
+            max_tokens = 800
         }
         medium = @{
-            name = "Qwen3 8B UD-Q5_K_XL (recommande, 8 Go VRAM)"
+            name = "Qwen3 8B UD-Q5_K_XL (10+ Go VRAM, qualite max ~15 tok/s)"
             file = "Qwen3-8B-UD-Q5_K_XL.gguf"
             url = "https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-UD-Q5_K_XL.gguf"
             size_gb = 5.5
             ctx_default = 16384
+            max_tokens = 2048
         }
         large = @{
-            name = "Qwen3 14B Q5_K_M (12+ Go VRAM)"
+            name = "Qwen3 14B Q5_K_M (16+ Go VRAM, premium)"
             file = "Qwen3-14B-Q5_K_M.gguf"
             url = "https://huggingface.co/Qwen/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q5_K_M.gguf"
             size_gb = 10
             ctx_default = 16384
+            max_tokens = 2048
         }
         xlarge = @{
-            name = "Qwen3 32B Q4_K_M (24+ Go VRAM)"
+            name = "Qwen3 32B Q4_K_M (24+ Go VRAM, RP profond)"
             file = "Qwen3-32B-Q4_K_M.gguf"
             url = "https://huggingface.co/Qwen/Qwen3-32B-GGUF/resolve/main/Qwen3-32B-Q4_K_M.gguf"
             size_gb = 19
             ctx_default = 16384
+            max_tokens = 2048
         }
     }
     if ($override -ne "auto") { return $catalog[$override] }
-    if ($forceCpu -or $vramMib -lt 2500) { return $catalog["tiny"] }
-    if ($vramMib -lt 5000) { return $catalog["small"] }
-    if ($vramMib -lt 9000) { return $catalog["medium"] }
-    if ($vramMib -lt 15000) { return $catalog["large"] }
+    # Defauts equilibres :
+    # - <3 Go VRAM ou CPU only : 1.7B (acceptable, ultra-rapide)
+    # - 3-9 Go VRAM (cas RTX 3060/3070/4060/5060 Ti) : 4B (equilibre, sweet spot)
+    # - 10-15 Go VRAM : 8B (qualite max sans deborder)
+    # - 16-23 Go VRAM : 14B
+    # - 24+ Go VRAM : 32B
+    if ($forceCpu -or $vramMib -lt 3000) { return $catalog["tiny"] }
+    if ($vramMib -lt 10000) { return $catalog["small"] }
+    if ($vramMib -lt 16000) { return $catalog["medium"] }
+    if ($vramMib -lt 24000) { return $catalog["large"] }
     return $catalog["xlarge"]
 }
 
@@ -436,13 +449,16 @@ if (-not (Test-Path ".env")) {
 if (Test-Path ".env") {
     $embDevice = Resolve-EmbeddingsDevice $gpu $cudaWorks
     $modelPath = "models/llm/$($model.file)"
+    $modelName = ($model.file -replace '\.gguf$','').ToLower()
     $envContent = Get-Content ".env" -Raw
     $envContent = [regex]::Replace($envContent, 'EMBEDDINGS_DEVICE=\S+', "EMBEDDINGS_DEVICE=$embDevice")
     $envContent = [regex]::Replace($envContent, 'LLM_GPU_LAYERS=\d+', "LLM_GPU_LAYERS=$gpuLayers")
     $envContent = [regex]::Replace($envContent, 'LLM_MODEL_PATH=\S+', "LLM_MODEL_PATH=$modelPath")
+    $envContent = [regex]::Replace($envContent, 'LLM_MODEL_NAME=\S+', "LLM_MODEL_NAME=$modelName")
     $envContent = [regex]::Replace($envContent, 'LLM_CONTEXT_SIZE=\d+', "LLM_CONTEXT_SIZE=$($model.ctx_default)")
+    $envContent = [regex]::Replace($envContent, 'LLM_MAX_TOKENS=\d+', "LLM_MAX_TOKENS=$($model.max_tokens)")
     Set-Content ".env" $envContent -NoNewline
-    Write-Ok ".env mis a jour : modele=$($model.file), embeddings=$embDevice, layers=$gpuLayers, ctx=$($model.ctx_default)"
+    Write-Ok ".env mis a jour : modele=$($model.file), embeddings=$embDevice, layers=$gpuLayers, ctx=$($model.ctx_default), max_tokens=$($model.max_tokens)"
 }
 
 # ----------------------------------------------------------------------------
