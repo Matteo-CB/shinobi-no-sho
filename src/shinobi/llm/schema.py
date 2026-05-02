@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 from typing import Any
 
 NARRATOR_SCHEMA: dict[str, Any] = {
@@ -35,6 +36,7 @@ NARRATOR_SCHEMA: dict[str, Any] = {
                     "label_fr": {"type": "string"},
                     "action_type": {"type": "string"},
                     "parameters": {"type": "object"},
+                    "target_id": {"type": "string"},
                     "estimated_difficulty": {"type": "string"},
                     "estimated_duration": {"type": "string"},
                 },
@@ -45,6 +47,85 @@ NARRATOR_SCHEMA: dict[str, Any] = {
             "items": {"type": "string"},
         },
         "clarification_request": {"type": "string"},
+    },
+}
+
+
+def build_narrator_schema_with_enum(allowed_npc_ids: list[str]) -> dict[str, Any]:
+    """Construit dynamiquement le NARRATOR_SCHEMA avec npc_dialogue.character_id
+    et proposed_actions.target_id RESTREINTS aux NPCs presents dans la scene.
+
+    Permet a llama.cpp d'appliquer la grammar au sampling : impossible que le
+    LLM emette un NPC hors liste (filtre des tokens incompatibles avant generation).
+
+    Pour preserver les role-based generic IDs, on autorise toujours quelques
+    suffixes communs (sensei_*, marchand_*, garde_*).
+    """
+    schema = copy.deepcopy(NARRATOR_SCHEMA)
+    if not allowed_npc_ids:
+        return schema
+    # Inclut quelques generic role IDs pour PNJ anonymes plausibles
+    extras = [
+        "sensei_academie",
+        "sensei_jonin",
+        "marchand_taverne",
+        "marchand_armes",
+        "garde_porte_konoha",
+        "garde_porte_village",
+        "patron_ramen",
+        "passant_anonyme",
+        "parent_du_perso",
+        "mere_du_perso",
+        "pere_du_perso",
+        "etranger_encapuchonne",
+    ]
+    enum_values = list(dict.fromkeys(list(allowed_npc_ids) + extras))
+
+    # Restreint character_id dans npc_dialogue
+    schema["properties"]["npc_dialogue"]["items"]["properties"]["character_id"] = {
+        "type": "string",
+        "enum": enum_values,
+    }
+    # Restreint target_id dans proposed_actions
+    schema["properties"]["proposed_actions"]["items"]["properties"]["target_id"] = {
+        "type": "string",
+        "enum": [*enum_values, ""],
+    }
+    return schema
+
+
+JUDGE_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "required": ["ok", "violations"],
+    "additionalProperties": False,
+    "properties": {
+        "ok": {"type": "boolean"},
+        "violations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["type", "description"],
+                "properties": {
+                    "type": {
+                        "enum": [
+                            "forbidden_relation",
+                            "non_existent_npc",
+                            "wrong_age",
+                            "wrong_location",
+                            "anachronism",
+                            "contradiction_personality",
+                            "other",
+                        ],
+                    },
+                    "description": {"type": "string"},
+                    "involved_npcs": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
+                },
+            },
+        },
+        "summary": {"type": "string"},
     },
 }
 

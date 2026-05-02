@@ -9,14 +9,18 @@ from shinobi.canon.fact_sheet import fact_sheets_for
 from shinobi.canon.models import CanonBundle
 from shinobi.engine.scene_context import (
     SceneContext,
-    filter_proposed_actions,
     format_scene_context_for_prompt,
     looks_like_generic_role,
 )
 from shinobi.errors import LLMSchemaError, LLMStyleError
+from shinobi.llm.claim_validator import (
+    format_violations_for_retry,
+    validate_narration_claims,
+)
 from shinobi.llm.client import LLMClient, Message
+from shinobi.llm.judge import CanonJudge, format_judge_violations_for_retry
 from shinobi.llm.prompts import NARRATOR_SYSTEM_PROMPT
-from shinobi.llm.schema import NARRATOR_SCHEMA
+from shinobi.llm.schema import NARRATOR_SCHEMA, build_narrator_schema_with_enum
 from shinobi.llm.voices import compose_voice_section
 from shinobi.rag.contextualize import TurnContextRequest, build_turn_context
 from shinobi.rag.retriever import Retriever
@@ -219,6 +223,13 @@ class Narrator:
         self.retriever = retriever
 
     async def narrate(self, request: NarrationRequest) -> NarrationResponse:
+        """Narration robuste avec retry x2 :
+
+        1. Premier appel : grammar JSON dynamique + claim validator + LLM-as-judge
+        2. Si violations -> retry avec corrections explicites
+        3. Si encore violations -> retry x2
+        4. Apres x2 echecs : retourne la meilleure narration disponible (ne lance pas)
+        """
         rag_context = build_turn_context(
             self.retriever,
             TurnContextRequest(
@@ -231,7 +242,6 @@ class Narrator:
         voices = compose_voice_section(self.canon, request.present_npcs)
 
         # Fact sheets canoniques pour les NPCs presents : etat exact a l'annee in-game.
-        # Empeche le LLM d'inventer des relations/situations contraires au canon.
         current_year = (
             request.scene_context.current_year if request.scene_context is not None else None
         )
@@ -241,9 +251,115 @@ class Narrator:
                 self.canon, request.present_npcs, current_year=current_year
             )
 
-        user_blocks = []
-        # PRIORITE 1 : fact sheets canon (verite absolue) en TETE pour qu'aucun
-        # autre contexte ne puisse les eclipser.
+        # Construit le user_message de base (reutilise pour tous les retries)
+        base_user_message = self._build_user_message(
+            request=request,
+            fact_sheets=fact_sheets,
+            voices=voices,
+            rag_context=rag_context,
+        )
+
+        # Grammar dynamique : restreint character_id et target_id aux NPCs des fact sheets
+        dynamic_schema = (
+            build_narrator_schema_with_enum(request.present_npcs)
+            if request.present_npcs
+            else NARRATOR_SCHEMA
+        )
+
+        judge = CanonJudge(self.client)
+        last_response: NarrationResponse | None = None
+        retry_correction = ""
+        max_attempts = 3  # 1 essai + 2 retries
+
+        for attempt in range(max_attempts):
+            user_message = base_user_message
+            if retry_correction:
+                user_message += "\n\n[CORRECTION REQUISE]\n" + retry_correction
+
+            response = await self.client.generate(
+                messages=[
+                    Message(role="system", content=NARRATOR_SYSTEM_PROMPT),
+                    Message(role="user", content=user_message),
+                ],
+                schema=dynamic_schema,
+            )
+            if response.parsed_json is None:
+                raise LLMSchemaError("Reponse narrator vide")
+
+            # Post-process raw response (style + filters)
+            parsed = self._post_process_response(response.parsed_json, current_year)
+            last_response = parsed
+
+            if current_year is None:
+                return parsed
+
+            # ===== VALIDATION ETAGEE =====
+            # Etape 1 : claim validator deterministe (rapide, pas d'appel LLM)
+            claim_violations = validate_narration_claims(
+                self.canon,
+                narrative=parsed.narrative,
+                observations=parsed.world_observations,
+                npc_dialogue=parsed.npc_dialogue,
+                proposed_actions=parsed.proposed_actions,
+                current_year=current_year,
+            )
+
+            # Etape 2 : LLM-as-judge (filet de secours pour nuances)
+            judge_verdict = await judge.judge(
+                fact_sheets=fact_sheets,
+                narrative=parsed.narrative,
+                observations=parsed.world_observations,
+                npc_dialogue=parsed.npc_dialogue,
+                proposed_actions=parsed.proposed_actions,
+            )
+
+            if not claim_violations and judge_verdict.ok:
+                return parsed  # SUCCES
+
+            # Sinon : compose la correction pour le prochain retry
+            corrections: list[str] = []
+            if claim_violations:
+                corrections.append(format_violations_for_retry(claim_violations))
+            if not judge_verdict.ok and judge_verdict.violations:
+                corrections.append(format_judge_violations_for_retry(judge_verdict.violations))
+            retry_correction = "\n\n".join(corrections)
+
+            if attempt == max_attempts - 1:
+                # Dernier retry : on retourne la meilleure narration meme imparfaite,
+                # avec un tag d'avertissement dans la narrative.
+                tags = []
+                if claim_violations:
+                    tags.append(
+                        f"violations validator: {len(claim_violations)}"
+                    )
+                if not judge_verdict.ok:
+                    tags.append(f"violations judge: {len(judge_verdict.violations)}")
+                parsed = NarrationResponse(
+                    narrative=parsed.narrative + (
+                        f"\n\n[Note interne : narration retournee apres {max_attempts} "
+                        f"tentatives, {' / '.join(tags)} non resolues. A lire avec recul.]"
+                    ),
+                    npc_dialogue=parsed.npc_dialogue,
+                    proposed_actions=parsed.proposed_actions,
+                    world_observations=parsed.world_observations,
+                    clarification_request=parsed.clarification_request,
+                )
+                return parsed
+
+        # Defensif : ne devrait jamais arriver (le loop retourne toujours)
+        assert last_response is not None
+        return last_response
+
+    def _build_user_message(
+        self,
+        *,
+        request: NarrationRequest,
+        fact_sheets: str,
+        voices: str,
+        rag_context: str,
+    ) -> str:
+        """Compose le user_message du narrator (extrait pour reutilisation aux retries)."""
+        user_blocks: list[str] = []
         if fact_sheets:
             user_blocks.append("############### LIRE EN PREMIER ###############")
             user_blocks.append(fact_sheets)
@@ -279,19 +395,12 @@ class Narrator:
             "4. world_observations et proposed_actions sont SOUMIS aux memes regles.\n"
             "5. Reponds en JSON conforme."
         )
-        user_message = "\n".join(user_blocks)
+        return "\n".join(user_blocks)
 
-        response = await self.client.generate(
-            messages=[
-                Message(role="system", content=NARRATOR_SYSTEM_PROMPT),
-                Message(role="user", content=user_message),
-            ],
-            schema=NARRATOR_SCHEMA,
-        )
-        if response.parsed_json is None:
-            raise LLMSchemaError("Reponse narrator vide")
-
-        data = response.parsed_json
+    def _post_process_response(
+        self, data: dict[str, Any], current_year: int | None
+    ) -> NarrationResponse:
+        """Post-traitement de la reponse LLM : style, filtres, enrichissement."""
         narrative = data.get("narrative", "")
         if (
             contains_em_dash(narrative)
@@ -303,66 +412,25 @@ class Narrator:
                 raise LLMStyleError("Argot otaku detecte dans la narration")
             narrative = cleaned
 
-        proposed_actions = data.get("proposed_actions", [])
-        if request.scene_context is not None:
-            proposed_actions = filter_proposed_actions(
-                proposed_actions, request.scene_context, canon=self.canon
-            )
-        npc_dialogue = data.get("npc_dialogue", [])
-        if request.scene_context is not None:
-            allowed = request.scene_context.npc_ids()
-            # Garde les dialogues des PNJ accessibles + des PNJ generiques (id role-based)
+        proposed_actions = data.get("proposed_actions", []) or []
+        npc_dialogue = data.get("npc_dialogue", []) or []
+        observations = data.get("world_observations", []) or []
+
+        if current_year is not None:
+            # Filter NPCs non vivants
             npc_dialogue = [
                 d
                 for d in npc_dialogue
-                if d.get("character_id", "") in allowed
-                or looks_like_generic_role(d.get("character_id", ""))
+                if looks_like_generic_role(d.get("character_id", ""))
+                or self._npc_is_alive(d.get("character_id", ""), current_year)
             ]
-        # Post-filter : rejette tout dialogue de PNJ canon non vivant a l'annee courante.
-        # Capte les cas ou le LLM invente "Kabuto" / "Itachi" / etc. en pleine ere prehistorique.
-        if request.scene_context is not None:
-            current_year = request.scene_context.current_year
-            filtered = []
-            for d in npc_dialogue:
-                cid = d.get("character_id", "")
-                # Generic role (sensei_academie, marchand_taverne...) toujours OK
-                if looks_like_generic_role(cid):
-                    filtered.append(d)
-                    continue
-                canon_npc = self.canon.characters.get(cid)
-                if canon_npc is None:
-                    # Id inconnu, on le garde (peut etre un OC mais le LLM doit l'avoir invente)
-                    filtered.append(d)
-                    continue
-                if canon_npc.birth_year is not None and current_year < canon_npc.birth_year:
-                    continue  # pas encore ne
-                if canon_npc.death_year is not None and current_year > canon_npc.death_year:
-                    continue  # deja mort
-                filtered.append(d)
-            npc_dialogue = filtered
-
-        # Enrichit les proposed_actions avec difficulty + duration calcules cote Python
-        # (le LLM ne fournit que le label, le moteur calcule le reste pour eviter les "?").
-        proposed_actions = _enrich_proposed_actions(proposed_actions)
-
-        # Filter canon strict sur tout le contenu LLM : observations + proposed_actions
-        # ne doivent pas mentionner de NPCs canon non vivants a current_year.
-        observations = data.get("world_observations", [])
-        if current_year is not None:
             observations = _filter_observations(self.canon, observations, current_year)
             proposed_actions = _filter_proposed_actions_by_canon(
                 self.canon, proposed_actions, current_year
             )
-            # Sanitize narrative : si elle mentionne un NPC non vivant, ajoute un avertissement
-            # tag visible plutot que de tout rejeter (preserve la narration utile).
-            bad_in_narrative = _scan_text_for_invalid_npcs(self.canon, narrative, current_year)
-            if bad_in_narrative:
-                narrative += (
-                    "\n\n[Note interne : le narrateur a mentionne "
-                    + ", ".join(bad_in_narrative)
-                    + " mais ces personnages ne sont pas vivants/presents a cette date. "
-                    "A ignorer.]"
-                )
+
+        # Enrichit difficulty + duration cote Python
+        proposed_actions = _enrich_proposed_actions(proposed_actions)
 
         return NarrationResponse(
             narrative=narrative,
@@ -371,6 +439,17 @@ class Narrator:
             world_observations=observations,
             clarification_request=data.get("clarification_request"),
         )
+
+    def _npc_is_alive(self, character_id: str, year: int) -> bool:
+        """True si le NPC canon est vivant a l'annee donnee."""
+        if not character_id:
+            return True
+        char = self.canon.characters.get(character_id)
+        if char is None:
+            return True  # NPC inconnu : on le laisse passer
+        if char.birth_year is not None and year < char.birth_year:
+            return False
+        return not (char.death_year is not None and year > char.death_year)
 
 
 # ---------------------------------------------------------------------------
