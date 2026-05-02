@@ -51,6 +51,9 @@ META_HELP = {
     "/declare": "Declare un nouvel objectif (texte libre)",
     "/path <goal_id>": "Demande au pathfinder LLM le prochain pas vers un objectif",
     "/missions": "Liste les missions disponibles",
+    "/buy": "Ouvrir la boutique du village",
+    "/sell": "Vendre un item de ton inventaire",
+    "/inventory": "Affiche ton inventaire",
     "/reputation": "Affiche ta reputation par village",
     "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
     "/journal": "Indique ou se trouve le journal",
@@ -72,22 +75,18 @@ DURATION_PRESETS = [
 def play_session(save_id: str) -> None:
     """Charge une save et lance la boucle de jeu."""
     character, world, meta = save_module.load_save(save_id)
+    # Filtre canon selon le profil de canonicite de la save
+    from shinobi.canon.profiles import CanonicityProfile
+
+    profile_csv = ",".join(world.canonicity_profile) if world.canonicity_profile else "manga,boruto_manga,tbv,databook,movie_canon"
+    profile = CanonicityProfile.from_csv(profile_csv, label=meta.canonicity_profile)
     canon = load_canon(
         optional=(
-            "characters",
-            "techniques",
-            "clans",
-            "villages",
-            "organizations",
-            "tailed_beasts",
-            "kekkei_genkai",
-            "kekkei_mora",
-            "hiden",
-            "weapons_tools",
-            "locations",
-            "timeline_events",
-            "voice_profiles",
-        )
+            "characters", "techniques", "clans", "villages", "organizations",
+            "tailed_beasts", "kekkei_genkai", "kekkei_mora", "hiden",
+            "weapons_tools", "locations", "timeline_events", "voice_profiles",
+        ),
+        profile=profile,
     )
 
     store = ChromaStore()
@@ -182,6 +181,11 @@ def play_session(save_id: str) -> None:
             )
         )
         character, world, result = apply_action_to_state(character, world, result)
+
+        # Auto-completion des breadcrumbs : verifie si l'action complete une condition
+        completed_now = _check_breadcrumb_completions(save_id, character, result, world.current_year)
+        for bc_desc in completed_now:
+            console.print(f"  [bold green]>>> Sous-objectif accompli :[/bold green] {bc_desc}")
 
         new_date = GameDate(
             year=world.current_year,
@@ -392,6 +396,23 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
                 asyncio.run(_pathfinder_flow(target_goal, character, world, canon, retriever, save_id))
             except Exception as exc:
                 console.print(f"[dim]Pathfinder LLM indisponible ({type(exc).__name__})[/dim]")
+    elif command == "/buy":
+        character = _shop_buy_flow(character)
+    elif command == "/sell":
+        character = _shop_sell_flow(character)
+    elif command == "/inventory":
+        from shinobi.engine.shop import ITEM_CATALOG, get_inventory_summary
+
+        items = get_inventory_summary(character.inventory)
+        if not items:
+            console.print(Panel("Inventaire vide.", title="Inventaire"))
+        else:
+            lines = []
+            for item_id, qty in items:
+                item = ITEM_CATALOG.get(item_id)
+                name = item.name_fr if item else item_id
+                lines.append(f"  {name} (x{qty})")
+            console.print(Panel("\n".join(lines), title=f"Inventaire ({character.money} ryos)"))
     elif command == "/reputation":
         if not character.reputation.by_village:
             console.print(Panel("Aucune reputation enregistree.", title="Reputation"))
@@ -506,6 +527,96 @@ def _missions_flow(character, world, save_id: str, canon):
     )
     new_world = new_world.model_copy(update={"seed": next_seed(r.seed_after) & 0x7FFFFFFFFFFFFFFF})
     return new_char, new_world
+
+
+def _check_breadcrumb_completions(save_id: str, character, action_result, current_year: int) -> list[str]:
+    """Apres chaque action, verifie si des breadcrumbs reveles sont completes.
+
+    Retourne la liste des descriptions de breadcrumbs complettes ce tour.
+    """
+    from shinobi.goals.breadcrumbs import mark_completed
+    from shinobi.goals.completion import check_breadcrumb_completion
+
+    breadcrumbs = save_module.load_breadcrumbs(save_id)
+    completed_descriptions: list[str] = []
+    for bc in breadcrumbs:
+        if bc.completed or not bc.revealed:
+            continue
+        if check_breadcrumb_completion(bc, action_result=action_result, character=character):
+            updated = mark_completed(bc, current_year)
+            save_module.save_breadcrumb(save_id, updated)
+            completed_descriptions.append(bc.description)
+    return completed_descriptions
+
+
+def _shop_buy_flow(character):
+    """Affiche la boutique du village et propose un achat."""
+    from shinobi.engine.shop import buy_item, list_shop_inventory
+
+    items = list_shop_inventory(character.current_village)
+    if not items:
+        console.print(f"[yellow]Aucune boutique a {character.current_village}.[/yellow]")
+        return character
+    table = Table(title=f"Boutique de {character.current_village} ({character.money} ryos en poche)", header_style=COLOR_TITLE)
+    table.add_column("#", style="bold cyan", justify="right")
+    table.add_column("Item")
+    table.add_column("Categorie", style="dim")
+    table.add_column("Prix", justify="right", style="yellow")
+    table.add_column("Description", style="dim")
+    for i, (item, price) in enumerate(items, start=1):
+        table.add_row(str(i), item.name_fr, item.category, f"{price}", item.description_fr[:60])
+    table.add_row("0", "[ne rien acheter]", "-", "-", "-")
+    console.print(table)
+    choice = Prompt.ask("[bold cyan]Item[/bold cyan]", default="0").strip()
+    if choice in ("0", ""):
+        return character
+    try:
+        idx = int(choice) - 1
+        if not (0 <= idx < len(items)):
+            return character
+    except ValueError:
+        return character
+    item, price = items[idx]
+    new_char, msg = buy_item(character, item, price)
+    color = "green" if "Achete" in msg else "red"
+    console.print(f"[{color}]{msg}[/{color}]")
+    return new_char
+
+
+def _shop_sell_flow(character):
+    """Propose la revente d'items de l'inventaire."""
+    from shinobi.engine.shop import ITEM_CATALOG, SELL_RATIO, get_inventory_summary, sell_item
+
+    items = get_inventory_summary(character.inventory)
+    if not items:
+        console.print("[yellow]Inventaire vide.[/yellow]")
+        return character
+    table = Table(title="Revente (40% du prix d'achat)", header_style=COLOR_TITLE)
+    table.add_column("#", style="bold cyan", justify="right")
+    table.add_column("Item")
+    table.add_column("Quantite", justify="right")
+    table.add_column("Prix vente", justify="right", style="yellow")
+    for i, (item_id, qty) in enumerate(items, start=1):
+        item = ITEM_CATALOG.get(item_id)
+        name = item.name_fr if item else item_id
+        sell_price = int(item.base_price_ryos * SELL_RATIO) if item else 0
+        table.add_row(str(i), name, str(qty), f"{sell_price}")
+    table.add_row("0", "[ne rien vendre]", "-", "-")
+    console.print(table)
+    choice = Prompt.ask("[bold cyan]Item[/bold cyan]", default="0").strip()
+    if choice in ("0", ""):
+        return character
+    try:
+        idx = int(choice) - 1
+        if not (0 <= idx < len(items)):
+            return character
+    except ValueError:
+        return character
+    item_id, _qty = items[idx]
+    new_char, msg = sell_item(character, item_id)
+    color = "green" if "Vendu" in msg else "red"
+    console.print(f"[{color}]{msg}[/{color}]")
+    return new_char
 
 
 async def _pathfinder_flow(goal, character, world, canon, retriever, save_id: str) -> None:

@@ -74,12 +74,14 @@ def load_canon(
     canon_dir: Path | str | None = None,
     *,
     optional: tuple[str, ...] = (),
+    profile: object | None = None,
 ) -> CanonBundle:
     """Charge tous les datasets canoniques en memoire et retourne un bundle.
 
     Args:
         canon_dir: repertoire racine des datasets. Defaut depuis settings.
         optional: noms de datasets autorises a etre absents.
+        profile: si fourni (CanonicityProfile), filtre les entites au chargement.
     """
     base = Path(canon_dir) if canon_dir else settings.canonical_data_dir
     if not base.exists():
@@ -110,6 +112,17 @@ def load_canon(
         timeline_events=_safe_indexed(base, "timeline_events.json", TimelineEvent, optional),
         voice_profiles=_safe_indexed(base, "voice_profiles.json", VoiceProfile, optional),
     )
+    if profile is not None:
+        from shinobi.canon.profiles import filter_canon
+
+        bundle = filter_canon(bundle, profile)
+        logger.info(
+            "canon_load_filtered",
+            profile=getattr(profile, "label", "?"),
+            characters=len(bundle.characters),
+            techniques=len(bundle.techniques),
+            events=len(bundle.timeline_events),
+        )
     logger.info(
         "canon_load_ok",
         characters=len(bundle.characters),
