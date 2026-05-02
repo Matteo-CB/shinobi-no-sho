@@ -446,6 +446,7 @@ def map_kekkei_genkai(parsed: dict) -> dict[str, Any] | None:
         if "dojutsu" in title.lower() or "gan" in title.lower()
         else "non_elemental",
         "updated_at": "2026-05-02",
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 
@@ -490,6 +491,7 @@ def map_weapon(parsed: dict) -> dict[str, Any] | None:
         "type": params.get("type") or "weapon",
         "updated_at": "2026-05-02",
         "wielders_canonical": _slug_from_links(params.get("users")),
+        "wiki_sections": _extract_all_sections(parsed),
     }
 
 

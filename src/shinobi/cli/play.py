@@ -1030,6 +1030,10 @@ async def _attempt_narration(
                 f"{npc_summary}"
             ),
             duration_str=f"{result.duration_minutes // 60}h{result.duration_minutes % 60:02d}",
+            current_village=character.current_village,
+            player_clan=character.clan,
+            player_kekkei_genkai=list(character.kekkei_genkai),
+            player_tailed_beast=character.tailed_beast,
         )
         return await narrator.narrate(request)
 

@@ -375,6 +375,219 @@ def _format_wiki_sections(sections: dict[str, str], *, max_total_chars: int = 24
     return "\n".join(out_lines)
 
 
+def fact_sheet_village(canon: CanonBundle, village_id: str) -> str | None:
+    """Fact sheet d'un village avec ses sections wiki, kage, clans, geographie."""
+    v = canon.villages.get(village_id)
+    if v is None:
+        return None
+    lines = [f"VILLAGE: {village_id} ({v.name_fr or v.name_romaji})"]
+    if v.country_name_fr:
+        lines.append(f"  Pays: {v.country_name_fr}")
+    if v.kage_title:
+        lines.append(f"  Titre du chef: {v.kage_title}")
+    if v.kage_lineage:
+        kages = ", ".join(f"{k.character_id} (an {k.from_year}+)" for k in v.kage_lineage[:5])
+        lines.append(f"  Lignee de kages: {kages}")
+    if v.main_clans:
+        lines.append(f"  Clans principaux: {', '.join(v.main_clans[:8])}")
+    if v.specialties:
+        lines.append(f"  Specialites: {', '.join(v.specialties[:5])}")
+    if v.geography_fr:
+        geo = _clean_wikitext(v.geography_fr)
+        if geo:
+            lines.append(f"  Geographie: {geo[:300]}")
+    if v.wiki_sections:
+        block = _format_wiki_sections(v.wiki_sections, max_total_chars=1800)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_location(canon: CanonBundle, location_id: str) -> str | None:
+    """Fact sheet d'un lieu specifique avec ses sections wiki."""
+    loc = canon.locations.get(location_id)
+    if loc is None:
+        return None
+    lines = [f"LIEU: {location_id} ({loc.name_fr or loc.name_romaji})"]
+    if loc.country:
+        lines.append(f"  Pays: {loc.country}")
+    if loc.near_village:
+        lines.append(f"  Pres de: {loc.near_village}")
+    if loc.geography_fr:
+        geo = _clean_wikitext(loc.geography_fr)
+        if geo:
+            lines.append(f"  Geographie: {geo[:400]}")
+    if loc.canonical_events:
+        lines.append(f"  Evenements canoniques: {', '.join(loc.canonical_events[:5])}")
+    if loc.wiki_sections:
+        block = _format_wiki_sections(loc.wiki_sections, max_total_chars=1500)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_clan(canon: CanonBundle, clan_id: str) -> str | None:
+    """Fact sheet d'un clan avec techniques, kekkei, statut, parcours."""
+    c = canon.clans.get(clan_id)
+    if c is None:
+        return None
+    lines = [f"CLAN: {clan_id} ({c.name_romaji})"]
+    if c.village_of_origin:
+        lines.append(f"  Village d'origine: {c.village_of_origin}")
+    if c.founder:
+        lines.append(f"  Fondateur: {c.founder}")
+    if c.key_kekkei_genkai:
+        lines.append(f"  Kekkei genkai: {', '.join(c.key_kekkei_genkai)}")
+    if c.key_natures:
+        lines.append(f"  Natures dominantes: {', '.join(c.key_natures)}")
+    if c.key_techniques:
+        lines.append(f"  Techniques cles: {', '.join(c.key_techniques[:6])}")
+    if c.status_by_era:
+        latest = c.status_by_era[-1]
+        lines.append(f"  Statut courant: {latest.status} (depuis an {latest.from_year})")
+    if c.history_summary_fr:
+        hist = _clean_wikitext(c.history_summary_fr)
+        if hist:
+            lines.append(f"  Histoire: {hist[:400]}")
+    if c.wiki_sections:
+        block = _format_wiki_sections(c.wiki_sections, max_total_chars=1500)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_organization(canon: CanonBundle, org_id: str) -> str | None:
+    """Fact sheet d'une organisation."""
+    org = canon.organizations.get(org_id)
+    if org is None:
+        return None
+    lines = [f"ORGANISATION: {org_id} ({org.name_fr or org.name_romaji})"]
+    if org.headquarters:
+        lines.append(f"  QG: {', '.join(org.headquarters)}")
+    if org.founders:
+        lines.append(f"  Fondateurs: {', '.join(org.founders[:5])}")
+    if org.leaders_by_era:
+        leaders = ", ".join(f"{le.leader} (an {le.from_year}+)" for le in org.leaders_by_era[:3])
+        lines.append(f"  Leaders successifs: {leaders}")
+    if org.ideology_fr:
+        lines.append(f"  Ideologie: {org.ideology_fr[:300]}")
+    if org.wiki_sections:
+        block = _format_wiki_sections(org.wiki_sections, max_total_chars=1800)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_technique(canon: CanonBundle, technique_id: str) -> str | None:
+    """Fact sheet d'une technique."""
+    t = canon.techniques.get(technique_id)
+    if t is None:
+        return None
+    lines = [f"TECHNIQUE: {technique_id} ({t.name_fr or t.name_romaji})"]
+    lines.append(f"  Categorie: {t.category}, Rang: {t.rank}")
+    if t.natures:
+        lines.append(f"  Natures: {', '.join(t.natures)}")
+    if t.hand_seals:
+        lines.append(f"  Mudras: {', '.join(t.hand_seals)}")
+    if t.chakra_cost:
+        lines.append(f"  Cout chakra: {t.chakra_cost}")
+    if t.canonical_users:
+        lines.append(f"  Utilisateurs canon: {', '.join(t.canonical_users[:6])}")
+    if t.description_fr:
+        desc = _clean_wikitext(t.description_fr)
+        if desc:
+            lines.append(f"  Description: {desc[:400]}")
+    if t.wiki_sections:
+        block = _format_wiki_sections(t.wiki_sections, max_total_chars=1200)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_tailed_beast(canon: CanonBundle, beast_id: str) -> str | None:
+    """Fact sheet d'un bijuu."""
+    b = canon.tailed_beasts.get(beast_id)
+    if b is None:
+        return None
+    lines = [f"BIJUU: {beast_id} ({b.name_romaji}, {b.tails} queues)"]
+    if b.epithets:
+        lines.append(f"  Epithetes: {', '.join(b.epithets)}")
+    if b.current_jinchuuriki_by_era:
+        jins = ", ".join(
+            f"{j.jinchuuriki} (an {j.from_year}+)" for j in b.current_jinchuuriki_by_era[:3]
+        )
+        lines.append(f"  Jinchuuriki successifs: {jins}")
+    if b.personality_fr:
+        lines.append(f"  Personnalite: {_clean_wikitext(b.personality_fr)[:300]}")
+    if b.abilities_fr:
+        lines.append(f"  Pouvoirs: {_clean_wikitext(b.abilities_fr)[:300]}")
+    if b.wiki_sections:
+        block = _format_wiki_sections(b.wiki_sections, max_total_chars=1500)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def fact_sheet_kekkei(canon: CanonBundle, kekkei_id: str) -> str | None:
+    """Fact sheet d'un kekkei genkai/mora."""
+    k = canon.kekkei_genkai.get(kekkei_id) or canon.kekkei_mora.get(kekkei_id)
+    if k is None:
+        return None
+    lines = [f"KEKKEI {k.category.upper()}: {kekkei_id} ({k.name_romaji})"]
+    lines.append(f"  Type: {k.type}")
+    if k.carrier_clans:
+        lines.append(f"  Clans porteurs: {', '.join(k.carrier_clans)}")
+    if k.activation_conditions_fr:
+        cond = _clean_wikitext(k.activation_conditions_fr)
+        if cond:
+            lines.append(f"  Activation: {cond[:300]}")
+    if k.weaknesses_fr:
+        lines.append(f"  Faiblesses: {k.weaknesses_fr[:200]}")
+    if k.wiki_sections:
+        block = _format_wiki_sections(k.wiki_sections, max_total_chars=1200)
+        if block:
+            lines.append(block)
+    return "\n".join(lines)
+
+
+def context_fact_sheets(
+    canon: CanonBundle,
+    *,
+    current_village: str | None = None,
+    current_location: str | None = None,
+    player_clan: str | None = None,
+    player_kekkei_genkai: list[str] | None = None,
+    player_tailed_beast: str | None = None,
+) -> str:
+    """Compose un bloc 'CONTEXTE CANON' avec les fact sheets du village, lieu,
+    clan, kekkei et bijuu du joueur. Permet au narrator de connaitre le decor
+    et l'heritage en detail."""
+    blocks: list[str] = []
+    if current_village:
+        sheet = fact_sheet_village(canon, current_village)
+        if sheet:
+            blocks.append(sheet)
+    if current_location and current_location != current_village:
+        sheet = fact_sheet_location(canon, current_location)
+        if sheet:
+            blocks.append(sheet)
+    if player_clan:
+        sheet = fact_sheet_clan(canon, player_clan)
+        if sheet:
+            blocks.append(sheet)
+    for kek_id in player_kekkei_genkai or []:
+        sheet = fact_sheet_kekkei(canon, kek_id)
+        if sheet:
+            blocks.append(sheet)
+    if player_tailed_beast:
+        sheet = fact_sheet_tailed_beast(canon, player_tailed_beast)
+        if sheet:
+            blocks.append(sheet)
+    if not blocks:
+        return ""
+    return "[CONTEXTE CANON DE LA SCENE]\nLieu, village, clan, heritage du joueur :\n\n" + "\n\n".join(blocks)
+
+
 def fact_sheets_for(
     canon: CanonBundle, character_ids: list[str], *, current_year: int
 ) -> str:

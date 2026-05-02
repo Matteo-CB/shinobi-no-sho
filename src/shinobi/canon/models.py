@@ -184,6 +184,7 @@ class KekkeiGenkai(_Frozen):
     stages: list[KekkeiStage] = Field(default_factory=list)
     evolution_paths: list[str] = Field(default_factory=list)
     weaknesses_fr: str | None = None
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -198,6 +199,7 @@ class HidenTechnique(_Frozen):
     shareable_outside_clan: bool
     shareable_with_authorization: bool
     description_fr: str
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -456,6 +458,7 @@ class TailedBeast(_Frozen):
     personality_fr: str | None = None
     abilities_fr: str | None = None
     chakra_signature_color: str | None = None
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -493,6 +496,7 @@ class TimelineEvent(_Frozen):
     cancellation_strategy: CancellationStrategy = Field(
         default_factory=lambda: CancellationStrategy(type="hard_cancel"),
     )
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str
@@ -510,6 +514,7 @@ class WeaponTool(_Frozen):
     wielders_canonical: list[str] = Field(default_factory=list)
     abilities_fr: str | None = None
     rarity: Literal["common", "uncommon", "rare", "legendary", "unique"] = "common"
+    wiki_sections: dict[str, str] = Field(default_factory=dict)
     canonicity: Canonicity
     sources: list[str] = Field(default_factory=list)
     updated_at: str

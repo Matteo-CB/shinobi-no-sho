@@ -1,166 +1,429 @@
 [
   {
     "active_period": [
-      {"from_year": -20, "to_year": 16, "phase": "yahiko_era"},
-      {"from_year": -10, "to_year": 16, "phase": "obito_era"}
+      {
+        "from_year": -20,
+        "phase": "yahiko_era",
+        "to_year": 16
+      },
+      {
+        "from_year": -10,
+        "phase": "obito_era",
+        "to_year": 16
+      }
     ],
     "canonicity": "manga",
-    "founders": ["yahiko", "nagato", "konan"],
-    "headquarters": ["amegakure_tower", "hidden_caves"],
+    "founders": [
+      "yahiko",
+      "nagato",
+      "konan"
+    ],
+    "headquarters": [
+      "amegakure_tower",
+      "hidden_caves"
+    ],
     "id": "akatsuki",
     "ideology_fr": "Premier objectif : capturer les neuf bijuu pour invoquer le Gedo Mazo et lancer le Tsuki no Me, plan d'illusion mondiale.",
     "leaders_by_era": [
-      {"from_year": -20, "to_year": -15, "leader": "yahiko"},
-      {"from_year": -15, "to_year": 0, "leader": "nagato_puppet_pain"},
-      {"from_year": 0, "to_year": 16, "leader": "uchiha_obito_as_madara"}
+      {
+        "from_year": -20,
+        "leader": "yahiko",
+        "to_year": -15
+      },
+      {
+        "from_year": -15,
+        "leader": "nagato_puppet_pain",
+        "to_year": 0
+      },
+      {
+        "from_year": 0,
+        "leader": "uchiha_obito_as_madara",
+        "to_year": 16
+      }
     ],
     "members_by_era": [
-      {"year": 12, "members": ["nagato", "konan", "uchiha_itachi", "hoshigaki_kisame", "deidara", "sasori", "hidan", "kakuzu", "uchiha_obito", "zetsu"]}
+      {
+        "members": [
+          "nagato",
+          "konan",
+          "uchiha_itachi",
+          "hoshigaki_kisame",
+          "deidara",
+          "sasori",
+          "hidan",
+          "kakuzu",
+          "uchiha_obito",
+          "zetsu"
+        ],
+        "year": 12
+      }
     ],
     "name_fr": "Aube",
     "name_romaji": "Akatsuki",
-    "sources": ["narutopedia:Akatsuki"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Akatsuki"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Associates": "In addition to its core members, Akatsuki has several affiliates spread across multiple countries. Almost all of them associate only with specific members rather than the entire organisation.\n* Amegakure - base of operations for Pain\n* Otogakure - base of operations for Orochimaru\n* Kirigakure - previously controlled by Madara, and later Obito\n* Yūra - Sasori's underling\n* Mukade - Sasori's underling\n* Funari - Kakuzu's subordinate\n* Ginji - Kakuzu's banker\n* Kyōya - Kakuzu's accountant\n* Zangei - Kakuzu's bounty collector\n* Taka - affiliated group\n* Kabuto Yakushi - Sasori's spy, later collaborator with Obito\n* Madara Uchiha - collaborator with Obito\n* Tobi - ally of Madara, Obito, White Zetsu, and Black Zetsu\n* Merz - former ally to Pain (game only)",
+      "History": "[Yahiko's Akatsuki] thumb|left|Yahiko's Akatsuki.\nThe initial concept of Akatsuki was devised by Black Zetsu as part of its plan to revive its mother, though it pretended the idea came from Madara Uchiha, whom Black Zetsu tricked into thinking that it was a manifestation of his will. Akatsuki was originally founded by Yahiko during the Third Shinobi World War alongside his childhood friends, Nagato and Konan. As citizens of Amegakure who had been orphaned by the Second Shinobi World War, the three created Akatsuki as a way to bring peace to their home country, which too often got caught in the crossfire of the Five Great Shinobi Countries' many conflicts. In time, the three were approached by Tobi, who introduced himself as Madara Uchiha. Tobi claimed Nagato was the reincarnation of the Sage of Six Paths and offered to teach him to control the power of his Rinnegan, though Yahiko distrusted him and prompted Nagato to turn down his offer. Nevertheless, Tobi would later claim that it was he who encouraged Yahiko to form Akatsuki, unbeknownst to Konan.\nAkatsuki's desire for an end to war attracted many fellow Ame ninja to their cause and, in time, word of their exploits began to travel beyond Amegakure's borders. Akatsuki's early fame was owed largely to Yahiko's leadership and his natural charisma, which kept the group united and motivated them to persevere despite the difficulties of their goal. Yahiko, however, viewed himself as merely a facilitator for Nagato, who would ultimately be the actual source of world peace because of his Rinnegan. Ame's leader, Hanzō, also became aware of Akatsuki and although he originally believed in them, he later perceived them as a threat to his rule, a belief encouraged by Danzō Shimura in the anime who used the bodies of his Root personnel killed in an attack that had occurred as a result of Nagato summoning the Demonic Statue of the Outer Path when he saw Yahiko and Konan in danger to convince Hanzō Akatsuki were a threat to his power. Hanzō approached Akatsuki offering to help them broker peace between Konohagakure, Iwagakure, and Sunagakure by using Danzō who had disguised himself as a ninja, \"Kanzō\". When Yahiko, Nagato, and Konan arrived to meet with him, however, they were ambushed by Hanzō's men and members of Danzō's Root, who took Konan hostage (in the anime, Konan had been taken prisoner after being knocked out by gas while patrolling the Seventh Ward) and forced Yahiko to commit suicide in order to save her. Enraged by Yahiko's death, Nagato summoned the Demonic Statue of the Outer Path and used it to slaughter their attackers, though Hanzō himself escaped.\nIn the anime, the other members of Akatsuki were tipped off to Hanzō's plan via a message from one of their teams near the border to Konoha and left their headquarters, attempting to provide backup to Yahiko and the others. However, Tobi and Zetsu intercepted them and after a long battle, Tobi killed the remaining members of the group. With all the members including Yahiko dead, Nagato and Konan were the only two survivors of the original Akatsuki left.\n{| class=\"wikitable sortable\" border=\"1\"\n|+ Members\n|-\n! scope=\"col\" | Name\n! scope=\"col\" | Status\n|-\n| Daibutsu (anime only) || Deceased\n|-\n| Kie || Deceased\n|-\n| Konan || Survived to next iteration\n|-\n| Kyūsuke || Deceased\n|-\n| Nagato || Survived to next iteration\n|-\n| Yahiko || Stabbed himself on Nagato's kunai\n|-\n|}\n[Nagato's Akatsuki] With Yahiko's dying breath he entrusted the pursuit of peace to Nagato. Nagato, grieved by Yahiko's death, came to believe that the world would never willingly consent to peace and that Akatsuki's previously pacifist approaches to achieving that goal were therefore futile. He concluded that the only way the world would turn away from its constant warfare was to experience such catastrophic death and destruction that it could never again stomach the idea of conflict. Intending to be the one to show these horrors to the world, Nagato began usi...",
+      "Teams": "Under Nagato, Akatsuki members are organised into teams of two, usually paired based on perceived similarities (such as Itachi or Kisame) or advantageous combinations (such as Hidan and Kakuzu). Although some pairs get along better than others, few seem to actually like each other; Sha no Sho notes that members always have separate rooms when staying at hotels. Hostilities tend to exist even between members who aren't partners, though they so rarely meet that this is rarely an actual problem. Teams travel the world pursuing Akatsuki's goals, only convening when summoned by Nagato, typically to seal a tailed beast.\n[[[Nagato]] & [[Konan]]] thumb|Nagato and Konan.\n* Target(s): Six-Tails (Pain, Sealed, anime only), Nine-Tails (Pain, Failed)\nAs childhood friends and fellow members of the original Akatsuki, Nagato and Konan are the only members who consistently get along. Because Nagato is Akatsuki's leader, Konan tends to defer to him, doing as he instructs even when she personally disagrees. In Nagato's rule of Amegakure, Konan acts as the \"angel\" to his \"god\", communicating his will to Ame's villagers. Nagato's true identity is concealed from the rest of the organisation, and instead, the Deva Path is used as his representative.\n[[[Black Zetsu]] & [[White Zetsu]]] thumb|Black Zetsu and White Zetsu.\n* Target(s): None\nBlack Zetsu and White Zetsu are allies of Obito who helped him approach Nagato and worked behind the scenes as a high ranking member under Obito and later Nagato. Although they exist as two separate identities, most of the time they are merged together and act as the singular Akatsuki member, Zetsu. The two sometimes argue, but it never interferes with their duties: spying, evidence disposal, and resource acquisition. Zetsu is often the only member of Akatsuki other than their partners that members meet in person. Zetsu typically helps transport a jinchūriki to one of Akatsuki's hideouts for extracting the Tailed Beast.\n[[[Orochimaru]] & [[Sasori]]] thumb|Sasori and Orochimaru.\n* Target(s): Unknown\nOrochimaru and Sasori were one of the earlier Akatsuki teams to be formed. Little is known of their deeds, but they apparently were quite effective together. They also got along well enough that Orochimaru knew how Sasori's actual \"body\" looked beneath his typical Hiruko carapace, although their relationship eventually deteriorated to the point of both of them wanting to change partners. Sasori held a grudge against Orochimaru after he defected from Akatsuki and took a personal interest in his activities afterwards.\n[[[Jūzō]] & [[Itachi]] (Anime Only)] thumb|Jūzō and Itachi.\nJūzō and Itachi worked very well with each other, being involved in at least three missions together, which involved assassination and sabotage. The two partners had an unique system of formations in order to better synchronise with each other. Formation A was used when both shinobi attacked individually using whichever ability they preferred, Formation B had Itachi open up with an attack involving genjutsu or shurikenjutsu while Jūzō killed the incapacitated shinobi with his sword, Formation C was a personal request by Jūzō to be killed by Itachi if he would be captured by Kirigakure and Formation D was to be proposed by Itachi but he refused to do so. Eventually, Jūzō was killed by the Fourth Mizukage during an assassination attempt of the two Akatsuki members against a Land of Water citizen and, after severely injuring Yagura, Itachi put the remains of Kubikiribōchō into his partner's hands, showing respect to his fallen comrade.\n[[[Itachi]] & [[Kisame]]] thumb|Itachi and Kisame.\n* Target(s): Nine-Tails (Itachi, Failed), Four-Tails (Kisame, Sealed), Eight-Tails (Kisame, Failed)\nKisame thought their partnership was appropriate as both were notorious for killing their fellow countrymen. Despite conflicting personalities, Itachi and Kisame get along well: Kisame has a greater predisposition towards violence, but always follows Itachi's instructions,...",
+      "Trivia": "{{Youthwiki|Akatsuki}}\n* In Sha no Sho, Masashi Kishimoto stated that he originally planned on making Akatsuki a group of monsters with almost no human characteristics, with Zetsu emphasising that specifically.\n* In Road to Ninja: Naruto the Movie, the Akatsuki of the Genjutsu World is a well-known mercenary group.\n* In the Naruto Collectible Card Game, Suigetsu Hōzuki, Karin, and Jūgo are incorrectly listed as Akatsuki members while in their Akatsuki robes.\n* In the manga, the Three-Tails is sealed just before the Two-Tails. In the anime, the Three-Tails' capture receives its own arc, causing it to be sealed after the Two-Tails.\n* In the anime, after the sealing of the Two-Tails, Pain states there are four tailed beasts remaining. Later in the anime, after Taka joins forces with Akatsuki, Kisame states there are three tailed beasts remaining. This retcon was put in place to allow an arc featuring the Six-Tails.\n* All three survivors of the Uchiha Clan Downfall eventually work with Akatsuki.\n* In the anime, within Tsunade's Infinite Tsukuyomi dream, the Akatsuki's goal is different as they are not searching for tailed beasts for world domination. The man behind the scene is not Obito, but Sasori, and he takes over Akatsuki after Nagato's defection. Sasori's motives are also different than Obito's.\n* Despite a maximum of ten members being possible under Nagato's leadership, that number is never reached before Part I; even when Orochimaru was part of the group, they only totalled nine. Only in the game film Formation of the Akatsuki is the roster fully complete.",
+      "Wardrobe": "Members of Nagato's Akatsuki wear long, black cloaks with red clouds, a red interior, and a chin-high collar; Tobi and the members of Taka wear a similarly-marked hooded mantle. The red clouds represent the rain of blood that fell in Amegakure during its wars, and were viewed as a symbol of justice by its original members. The robes are very distinctive, allowing members of Akatsuki to be identified even from a distance. Though the robes are a standard feature throughout Nagato's tenure (with Konan even continuing to wear it after leaving Akatsuki), the robe falls out of use under Obito's leadership: Kisame stops wearing it owing to circumstances of faking his death, Obito does not replace his when it is destroyed by Konan, and Zetsu ceases using a robe once its two halves begin operating separately. During Shin's attempt to revive the organisation, he is the only individual to wear the robe, as none of his clones wear it.\nAnother trend started with Nagato is for members to cross out the symbol on their forehead protectors to symbolise the severed ties with their former villages, though some opt not to wear a forehead protector at all. All members also wear nail polish on their fingers and toenails (colours vary in the anime). When travelling, members sometimes wear conical straw hats with small ornamental torques and tassels hanging down over their faces, possibly to go unnoticed by the general population as most are S-class criminals.\n[Rings] thumb|left|The ring positions of the members.\nUnder Nagato, each member of Akatsuki is given one of ten rings, to be worn on a specific finger. Other than apparently signifying one's membership, the rings seem to have some role in sealing the tailed beasts into the Demonic Statue of the Outer Path, indicating which of the statue's finger the members should stand on. The rings are apparently important and irreplaceable: when Orochimaru defects he takes his ring with him, and for that reason he is never officially replaced; when Deidara loses the arm that his ring is on, he has greater interest in recovering the ring than the arm itself; Zetsu and Tobi specifically seek out Sasori's ring after his death, needing it for Tobi to replace him. When Tobi takes over, the rings are no longer important, as he simply discards it along with his damaged robe after battling Konan. Despite all this, the rings' exact significance is never explained.\nThe various rings are:\n* Right thumb: {{translation|\"zero\"|零|rei}}; worn by Pain. Its colour is purplish-grey.\n* Right index finger: {{translation|\"blue\", \"green\"|青|ao, shō}}; worn by Deidara. Its colour is teal.\n* Right middle finger: {{translation|\"white\"|白|byaku, haku}}; worn by Konan. Its colour is white.\n* Right ring finger: {{translation|\"vermilion\", \"scarlet\"|朱|shu}}; worn by Itachi Uchiha. Its colour is red.\n* Right little finger: {{translation|\"sign of the boar\"|亥|gai}}; worn by Black Zetsu. Its colour is green.\n* Left little finger: {{translation|\"sky\", \"void\"|空|kū}}; worn by Orochimaru. Its colour is slate blue.\n* Left ring finger: {{translation|\"south\"|南|nan}}; worn by Jūzō Biwa(anime only) and later by Kisame Hoshigaki. Its colour is yellow.\n* Left middle finger: {{translation|\"north\"|北|hoku}}; worn by Kakuzu. Its colour is dark green.\n* Left index finger: {{translation|\"three\"|三|san}}; worn by Kakuzu's fourth partner and later by Hidan. Its colour is orange.\n* Left thumb: {{translation|\"jewel\", \"ball\", also the black king in shōgi|玉|gyoku}}; worn by Sasori and later by Tobi. Its colour is purple.\nEight of the ten kanji of the rings are taken from a kuji-in, a collection of nine hand postures used in meditation. Pain's \"rei\" and Zetsu's \"gai\" are not from this kuji-in. However, the only unused kuji-in kanji, {{translation|玄|gen|\"mysterious\"}}, bears a strong resemblance to Zetsu's \"gai\", suggesting an error. It would be a consistent error, however, since the \"gai\" kanji has been used in every instance the ring's kanji has been shown."
+    }
   },
   {
-    "active_period": [{"from_year": -55, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": -55,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "manga",
-    "founders": ["senju_tobirama"],
-    "headquarters": ["konohagakure_anbu_hq"],
+    "founders": [
+      "senju_tobirama"
+    ],
+    "headquarters": [
+      "konohagakure_anbu_hq"
+    ],
     "id": "anbu",
     "ideology_fr": "Force speciale du Hokage executant les missions sensibles dans l'ombre, sous masques et noms de code.",
     "leaders_by_era": [
-      {"from_year": -38, "to_year": -7, "leader": "sarutobi_hiruzen"},
-      {"from_year": -7, "to_year": 1, "leader": "namikaze_minato"}
+      {
+        "from_year": -38,
+        "leader": "sarutobi_hiruzen",
+        "to_year": -7
+      },
+      {
+        "from_year": -7,
+        "leader": "namikaze_minato",
+        "to_year": 1
+      }
     ],
     "members_by_era": [
-      {"year": 4, "members": ["uchiha_itachi", "hatake_kakashi", "uchiha_shisui"]}
+      {
+        "members": [
+          "uchiha_itachi",
+          "hatake_kakashi",
+          "uchiha_shisui"
+        ],
+        "year": 4
+      }
     ],
     "name_fr": "Anbu",
     "name_romaji": "Anbu",
-    "sources": ["narutopedia:Anbu"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Anbu"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Overview": "Because of the darkness involved in an Anbu's career, one's personality determines their eligibility into the force, leading to exceptionally skilled shinobi whose personalities don't match the organisation to be rejected. As early as the Academy, accomplished children are scouted to eventually join. While recruiting, shinobi are hand picked by their village leader, for their individual capabilities and special skills. Age, background, gender, or previous rank bear no significance in this decision; however, in tradition, Konohagakure shinobi are not selected as Anbu unless they are at least 13 years old, with an 11-year-old Itachi Uchiha being a rare exception. Once joined, they undergo training including studying of the human body, and begin wearing masks to conceal their identity, leading to them using code names to identify each other, often using multiple to make it difficult to trace their true identity.\nAnbu nearly always make an appearance on important missions inside and in the vicinity of their village, but are mainly tasked with assassinations or disturbances in foreign countries. The assignments that they conduct to protect the village from exceptional threats include high-risk infiltration into enemy territory, dealing with extremely strong ninja, tracking, surveillance, interrogating enemy ninja to learn information and missions requiring specially trained ninja. Due to the actions of the group, one can appear changed and corrupted of kindness. Due to the often sensitive nature of their missions and the unique abilities they sometimes possess, Anbu are expected to destroy their bodies if they are too badly injured on a mission so that they can't be captured.\nthumb|left|Kirigakure Anbu members. \nIn Kirigakure, there is a special branch of Anbu known as hunter-nin: hunter-nin track down and kill missing-nin from Kiri, retrieving the head as proof and disposing of the rest of the body so as to not leave behind any information for their enemies. While Anbu are usually in squads and take orders from their captains, some elite Anbu have been handpicked by their Kage to serve directly under them. As such, any and all orders they receive come from their Kage and no one else. Anbu dislike letting anyone know their identities, and as such, most of Konoha's citizens aren't aware of who is and isn't an Anbu.\nthumb|Konoha's Root division.\nIn Konoha, Anbu alongside the Konoha Military Police Force are the two forces that maintain peace. As such, there is no clear line what is the jurisdiction of the police, and what is the subject for investigation by the Anbu. At the discretion of the Hokage, the nature of the investigation would simply shift from one to the other, leading to the two factions clashing. Because Anbu are so vital to the village's operations, they cannot be arrested by the police without a warrant. Konoha formerly had a special branch of Anbu called Root, which acted like a secret police force that maintained public order from underground. Its members were trained to abandon all forms of emotion in order to follow Danzō Shimura's orders without question, even at the consequence of the rest of the village. Root members had a seal on their tongues that prevented members from speaking about their organisation.\nAfter the Fourth Shinobi World War, in which the Five Great Shinobi Countries decided to fully unite themselves for the sake of peace, Kido Tsumiki believed that the stable peace would be inevitable for the Anbu to suffer a decrease in funding, as their services are no longer as vital. Kido had to orchestrate a few minor security incidents to ensure such funding will not be affected. He was eventually discovered and arrested for his crimes.",
+      "Trivia": "* Stemming from the secrecy surrounding the group's membership, people speculate that villagers who come and go from the village without eating are Anbu.\n* According to Naruto Mobile, the Anbu were founded by Tobirama Senju.\n* After a decade of service, Hinoko is described as now being a {{translation|company commander|中隊長|Chūtaichō}} in the Anbu, seemingly a higher position than squad leader.",
+      "Uniform": "thumb|120px|Tenzō in his fully equipped Konoha Anbu garb.\nMost Anbu wear some kind of mask to conceal their identities:\n*Konoha Anbu custom is to wear animal-styled porcelain masks, with some opting for more menacing-looking creatures.\n*Kiri Anbu wear masks with slits for eye-holes and the village's symbol etched into the forehead; these may or may not have patterns on them as well.\n*Sunagakure Anbu seem to wear pieces of cloth that resemble turbans to cover the lower-halves of their faces leaving only their eyes visible.\n*A regiment of Anbu from the Land of Woods known as the Prajñā Group wear porcelain masks as well, modelled to resemble oni.\n*In the anime, Anbu from Hoshigakure are seen using masks similar to Konoha's.\nthumb|left|50px|Konoha's Anbu tattoo.\nThey also have standard uniforms which, for Konoha Anbu, consist of black clothing, a grey flak jacket, metal arm guards and gloves, ninja sandals with spikes for travelling into mountainous regions, three ninja pouches on their back-waist and a signature spiral tattoo on their shoulder. Some Konoha Anbu wear black cloaks over their standard uniforms, and squad leaders may wear white cloaks. Most of them carry a sword, which is usually strapped to their backs.\n{{-L}}"
+    }
   },
   {
-    "active_period": [{"from_year": -38, "to_year": 4, "phase": "shadow_anbu"}],
+    "active_period": [
+      {
+        "from_year": -38,
+        "phase": "shadow_anbu",
+        "to_year": 4
+      }
+    ],
     "canonicity": "manga",
-    "founders": ["shimura_danzo"],
-    "headquarters": ["konohagakure_root_hq"],
+    "founders": [
+      "shimura_danzo"
+    ],
+    "headquarters": [
+      "konohagakure_root_hq"
+    ],
     "id": "root",
     "ideology_fr": "Section secrete des Anbu fondee par Danzo, agissant hors du commandement officiel du Hokage. Dissoute apres l'incident Uchiha.",
     "leaders_by_era": [
-      {"from_year": -38, "to_year": 4, "leader": "shimura_danzo"}
+      {
+        "from_year": -38,
+        "leader": "shimura_danzo",
+        "to_year": 4
+      }
     ],
     "members_by_era": [
-      {"year": 4, "members": ["sai", "shimura_danzo", "torune", "fu_yamanaka"]}
+      {
+        "members": [
+          "sai",
+          "shimura_danzo",
+          "torune",
+          "fu_yamanaka"
+        ],
+        "year": 4
+      }
     ],
     "name_fr": "Racine",
     "name_romaji": "Roto",
-    "sources": ["narutopedia:Root"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Root"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Known Members": "* {{Drilldown|List of Root members|Characters|q=Loyalty=Root}}",
+      "Known Missions": "[Creating Gozu Tennō] * Assigned to: Tanuki Shigaraki\n* Outcome: Success\nSeeing the great potential of Hashirama Senju's Wood Release, Danzō harvested some of his cells and entrusted Tanuki to create the Gozu Tennō, an ultimate weapon meant to harvest chakra from enemy and then manifest into a giant yōkai that will rampage in enemy territory before self-destructing. Although Danzō died prior to the project's completion, Tanuki continued the project on his own accord due to him and his family being ostracised by the village for Root's underhanded actions in a bid for revenge. Upon finishing the Gozu Tennō, he implanted it into his daughter, entrusting her to use the technique to destroy Konoha in revenge for shunning his family.\n[Infiltrate Iwagakure] * Assigned to: Nonō Yakushi\n* Outcome: Success\nDanzō had Nonō, who was regarded as an elite in the field of intelligence gathering, infiltrate Iwagakure in order to confirm intelligence they received that Iwagakure was planning to attack Konoha. Though she initially refused as she had left the organisation, she eventually accepted the mission. She successfully infiltrated the village and remained there for several years. She was critically wounded, however, after attacking Kabuto Yakushi who had also infiltrated the village as a spy.\n[Infiltrate Great Hidden Villages] * Assigned to: Kabuto Yakushi\n* Outcome: Success\nDanzō had Kabuto infiltrate all the Great Hidden Villages (and possibly other lesser villages) over the course of a few years to spy on them for Root.\n[Assassinate Kabuto/Nonō] * Assigned to: Nonō Yakushi, Orochimaru\n* Outcome: Failure/Partial Success\nViewing Kabuto and Nonō as a threat to Root, after they had become \"too good\" of spies, Danzō schemed to have both individuals kill each other. Gradually brainwashing Nonō, by switching photos of Kabuto with pictures of a different person and saying it was him, Danzō revealed that Kabuto had joined Root for the orphanage's sake and told her that they would release him once she assassinated a certain person. Unbeknownst to her when she was carrying out this mission, she was attacking the real Kabuto. Ultimately, Nonō was cut down by Kabuto who fled after she didn't remember him. This mission culminated in Nonō's death and Kabuto allying himself with the traitorous Orochimaru, who had decided to defect from Root, but had originally claimed that he was sent to kill either Kabuto or Nonō, depending who survived the ordeal.\n[Incriminate Iwagakure] * Assigned to: Multiple; Danzō led this mission\n* Outcome: Partial Success\nIn the anime, Danzō, in an effort to obstruct peace negotiations with Iwagakure, sought to incriminate the village by having a number of Root members masquerade as Iwa shinobi and attack villages along the border of Amegakure.\n[Manipulate Hanzō into an alliance] * Assigned to: Unknown, Danzō led this mission\n* Outcome: Success\nIn the anime, Danzō, after witnessing the power of the Rinnegan and wanting to use it for his own agenda, manipulated Hanzō into believing that Akatsuki was out to take over leadership of Amegakure. He did this by presenting Hanzō with corpses which he claimed were members of Hanzō's own clan.\n[Crushing the Ame Rebels] * Assigned to: Multiple\n* Outcome: Failure\nDanzō made an alliance with Amegakure's leader, Hanzō, to help him crush the rebel group led by Yahiko. In turn, Hanzō would help Danzō become Hokage. Although the joined forces did succeed in orchestrating the death of Yahiko, the mission ultimately failed when Nagato, enraged by Yahiko's death, killed practically all of Amegakure's and Root's shinobi present. Only Hanzō was shown to have escaped.\n[Assassinate Hiruzen Sarutobi] * Assigned to: Hinoe, Hinoto, Kanoe, Kanoto, Kinoe, Kinoto, Mizunoe, Mizunoto, Tsuchinoe, Tsuchinoto.\n* Outcome: Failure\nIn the anime, unable to tolerate Hiruzen's passive approach to governing Konohagakure, Danzō sought to eliminate him shortly after resuming his post following the death of the Fourth ...",
+      "Overview": "thumb|left|Root chambers.\nRoot carried out missions that Danzō believed would benefit Konoha. Because of its core view, the shared ideology known as the {{Translation|\"Will of Root\"|\"根\"の意志|Ne no Ishi|viz=Will of the Foundation}}, \"the unseen ones who support the great tree of Konoha from the depths of the earth\", some of these missions were less than respectable, such as eliminating individuals that were considered potential threats simply for expressing their detestation for Konoha, despite not actually having done anything against the village. The organisation's top priority was its secrecy, and most of its missions were carried out in the dark - autonomous of Konoha's authority. It placed a greater emphasis on secrecy even compared to the regular Anbu. Root was officially disbanded after the Uchiha Clan Downfall due to Danzō spearheading the tragedy but remained active as an underground organisation until Danzō's death. Despite Hiruzen's orders to disband the group, the members remained loyal to Danzō, his orders being the highest priority over even the Hokage's. Upon Danzō's death, Sai suggested its members look to Kakashi Hatake for guidance since Kakashi, at the time, was slated to become Hokage.\nAfter Danzō's death and Root's actions came to light, the members were forced to scatter as they became pariahs, such as Tanuki Shigaraki. However, after the Fourth Shinobi World War, Tsunade and Kakashi prevented background checks of the villagers, partially hoping to protect Root members from being further ostracised. This allowed the likes of Kido Tsumiki and Magire to integrate into the regular Anbu forces. However, as a result of the lack of investigations, Tanuki's daughter, Sumire Shigaraki, was able to infiltrate Konoha in a bid for revenge on how the village shunned Root. Sai intended to help those remnants connected to Root to break free from Danzō's dark legacy.\nthumb|right|The cursed seal all Root members bore.\nRoot was an extremely strict and secretive group, and as such, each member of the organisation had a cursed seal imprinted on the back of their tongues by Danzō which, when activated, would paralyse their entire body if they tried to speak anything about Danzō or the organisation, rendering them unable to speak or move. Sai noted that this was done in an effort to prevent an information leak should any of them be captured and interrogated by enemy forces. The seal disappeared after Danzō's death.\nDanzō had also trained its members to lose their emotions by growing up as brothers from a young age, only to later be made to kill each other. This was done to kill any sense of sentiment or emotional attachment. This method was extremely similar, if not identical, to the Kirigakure Academy's former graduation test. Each member had a codename; even the members themselves apparently did not know their original names. Unlike normal Anbu, they carried a tip-less tantō instead of a katana. Also unlike normal Anbu, members of Root took orders only from Danzō instead of the Kage, unless ordered to otherwise. Another specialty of the organisation was slow, long-term brainwashing. In the case of one of their members, Nonō Yakushi, she was brainwashed through a series of photographs starting with photographs of Kabuto — one of her former wards at orphanage showing him growing up. Eventually, Root slowly switched the person in the photographs entirely and then gave Nonō the order to kill the actual Kabuto. This resulted in Nonō not recognising the young man in their final confrontation.\nthumb|left|Root members.\nThough the members wore the standard cloak and mask of the Konohagakure Anbu, they didn't have an actual standardised uniform like the others. Underneath the cloak each Root member wore personal attire. The only single distinguishing garment they all wore was a short, black, midriff jacket with red straps over the shoulders along with the tip-less tantō.\nIn the anime, despite the harsh training of Root, Danzō had nev...",
+      "Trivia": "* The name for this organisation appears to reflect Danzō's last words: \"…you are the leaves bathing in the sun. I am the roots that grow in the dark.\"\n* Unlike other Root members' pair of black gloves, the ones worn by Sai leave both his index fingers and thumbs bare — a feature probably intended to favour the use of his drawing abilities.\n* The members of Root seemingly do not have the traditional Anbu tattoos branded on their shoulders.\n* Despite Nonō Yakushi's talent in intelligence gathering during her membership in the organisation, Danzō ultimately considered her to be an unsuitable member as she could not lose her emotions.\n* The creed of this group may possibly be: {{translation|\"In 'Root', you have no name. You have no feelings. You have no past. You have no future. There is only the mission.\"|“根”には、名前は無い。感情は無い。過去は無い。未来は無い。あるのは任務。|\"Ne\" ni wa, namae wa nai. Kanjō wa nai. Kako wa nai. Mirai wa nai. Aru no wa ninmu.}}, as recited by Sai and Hyō.\n* In episode 317, Danzō is revealed to recruit Root members himself, without the Hokage's interference. He favoured those from clans who possess special techniques, such as the Aburame, Yamanaka, and Uchiha clan.\n* Root was charged with training Anbu members. It is unknown who trained members before Root was founded, or after its disbanding."
+    }
   },
   {
-    "active_period": [{"from_year": 33, "to_year": 47, "phase": "kara_era"}],
+    "active_period": [
+      {
+        "from_year": 33,
+        "phase": "kara_era",
+        "to_year": 47
+      }
+    ],
     "canonicity": "boruto_manga",
-    "founders": ["isshiki_otsutsuki"],
-    "headquarters": ["kara_hideout"],
+    "founders": [
+      "isshiki_otsutsuki"
+    ],
+    "headquarters": [
+      "kara_hideout"
+    ],
     "id": "kara",
     "ideology_fr": "Organisation secrete cherchant a faire revivre Isshiki Otsutsuki et utiliser le karma pour creer un nouvel hote.",
     "leaders_by_era": [
-      {"from_year": 33, "to_year": 47, "leader": "jigen"}
+      {
+        "from_year": 33,
+        "leader": "jigen",
+        "to_year": 47
+      }
     ],
     "members_by_era": [
-      {"year": 35, "members": ["jigen", "delta", "code", "boro", "victor", "amado", "kashin_koji"]}
+      {
+        "members": [
+          "jigen",
+          "delta",
+          "code",
+          "boro",
+          "victor",
+          "amado",
+          "kashin_koji"
+        ],
+        "year": 35
+      }
     ],
     "name_fr": "Kara",
     "name_romaji": "Kara",
-    "sources": ["narutopedia:Kara"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Kara"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "History": "[Isshiki's Kara] thumb|left|Isshiki's Kara\nWhen Isshiki Ōtsutsuki came to earth over one thousand years ago to cultivate a chakra fruit, he was betrayed by his subordinate partner, Kaguya, who injured him to the point of near death. Desperately clinging to life, Isshiki parasitically invaded Jigen, a monk who happened to be nearby.\nUsing Jigen as a host body, Isshiki went onto to found the secret society, Kara as its leader, which recruited a group of people — the Inners — to assist him in cultivating a new God Tree to collect its chakra fruit, under the promise that their personal wishes would be fulfilled. Amado Sanzu, the chief scientist of the organisation, modified every member with advanced Shinobi-Ware that they had an unwitting Katasuke Tōno deliver to them. Along with implanting Shibai's cells, for the purpose of having them manifest one of his many Shinjutsu abilities.\nDue to losing Kaguya, Isshiki intended to feed himself to the Ten-Tails to have it bloom into the God Tree, as there were no other Ōtsutsuki to sacrifice. However, with his body being so critically and irreparably damaged by Kaguya and his current vessel of Jigen being incompatible with the Kāma, this would produce an inferior Chakra Fruit. To circumvent this, Isshiki began preparing a new vessel for his Kāma to properly continue his survival, having purchased fifteen orphaned children to carry out his experiments to ensure his next body would be suitable for a full lifetime, with Kawaki being the result. Delta noted that Isshiki's investment in preparing his vessel was enough to buy an entire country. Kawaki's development, along with the God Tree's cultivation, became factors that had Kara pressed for time in their goals. Code, being one of the fourteen children to be deemed a failure and the only one of those to survive, was left with a White Kāma instead, which does not have the capacity of reviving Isshiki, and was then recruited into Kara as an Inner, and Isshiki's most loyal subordinate. In the anime, Kara took advantage of Amegakure's mostly abandoned state to run such earlier experiments in one of their hidden facilities there; they abandoned it themselves after it was discovered by Shojoji of the Mujina Bandits, who had eavesdropped during one of their experiments and quickly fled before they took notice. It remained intact for a long while in disrepair until Sasuke Uchiha and Sai Yamanaka investigated Kara, causing the Outer Garashi Tōno to trigger a self-destruction mechanism. When Jigen questioned why the place was not destroyed long ago, he gave Victor a look of suspicion, who frowned in return, before brushing it off as nothing incriminating in the long run.\nHowever, when Boruto Uzumaki became the vessel for Momoshiki Ōtsutsuki, the time limit was greatly alleviated. Kara, therefore, shifted their plans to feeding Boruto to the beast instead, as his healthier and stronger body along with being compatible with the Kāma would result in a more potent Chakra Fruit. Furthermore, Boruto's contact with Kawaki had led to both of their Kāma to decompress more rapidly than expected due to their resonance, a development that Isshiki found favourable.\nIn the anime, when Amado hit a roadblock while studying the human heart, he augmented the brain of the Inner Ōga, so she could help him further his research. However, when she attempted to investigate Jigen's heart, he saw it as treason and destroyed a part of her brain before she escaped.\nIn the anime, the Inners Victor and Deepa plotted to use Kara's resources for their own unauthorised project in recreating a God Tree via a splinter that Victor retrieved from the Fourth Shinobi World War, as opposed to helping Isshiki plant the one that was planned, in order to cultivate a Chakra fruit of their own. Victor desired this fruit early to ensure he would not die from his waning lifespan, while Deepa wanted to simply taste it. Deepa acknowledged that neither were trusted by the rest of Kara, and that Vi...",
+      "Trivia": "*The kanji used for the two divisions of the organisation are {{translation|naijin|内陣}} and {{translation|gejin|外陣}}, respectively referring to the sanctum and the nave of a Heian-style Buddhist temple. When broken into individual kanji, they can be read literally as \"inner team\" and \"outer team\".\n*With the exception of Code and Jigen, all of the Inners and cyborgs initially intended to become Inners eventually committed some form of betrayal against Kara.\n**Ōga turned involuntarily against Jigen by conducting a forbidden experiment on his heart. Jigen attempted to eliminate her but failed.\n**Under Eida's spell, Boro disobeyed Jigen's orders by sparing her. For reasons unknown, he also chose not to eliminate Daemon.\n**Victor and Deepa conspired to cultivate their own God Tree in order to obtain the Chakra Fruit. After their plan failed, Victor survived and framed Deepa for the incident before attempting to abduct Kawaki, Kara's vessel, to use him for research and bargain with Jigen. Both were ultimately executed on Jigen's orders.\n**Koji Kashin and Amado secretly plotted together to eliminate Jigen and Isshiki Ōtsutsuki, with Amado defecting to Konoha.\n**Delta was reprogrammed by Amado, causing her to defect from Kara and become an ally of Konoha.\n**Eida and Daemon betrayed Code following a dispute over Amado's fate and accepted Amado's proposal to join Konoha, Eida seeing it as an opportunity to pursue her goals more easily.\n*According to Ōga, the Roman number of the Inners denotes their order of creation/transformation as cyborgs, describing herself as the eighth Inner created by Amado.\n**This implies that Kawaki, who received the same cybernetic modifications as the other Inners and the Roman Numeral \"Ⅸ\", was originally intended to be the ninth Inner of the organisation.\n**This also explains why Amado doesn't have a Roman numeral tattoo.\n*While not a member, Kawaki has a Roman numeral \"Ⅸ\" tattoo, which is located under his left eye.\n**Additionally, while viewed by Kara as just the vessel, Kawaki apparently held some access to Kara's information, as he noted that he had read Kara's files to learn about Tailed Beasts.\n*Amado is the only Inner who does not have a Roman numeral tattoo on his face, and a black and secondary coloured cloak along with Ōga. He wears a black and green cloak in the 7th opening of the Boruto anime.\n*While Katasuke Tōno was never a direct member and was placed under genjutsu by Ao, this made him act on the group's objectives which revolved around the development of scientific ninja tools and industrial espionage.\n*With the exception of Ōga and Kiseru Gankubi, all members that have been introduced after Isshiki's death are named after information technology related terms."
+    }
   },
   {
-    "active_period": [{"from_year": -100, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": -100,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "manga",
     "founders": [],
-    "headquarters": ["seven_swordsmen_hideout_kiri"],
+    "headquarters": [
+      "seven_swordsmen_hideout_kiri"
+    ],
     "id": "seven_ninja_swordsmen_of_the_mist",
     "ideology_fr": "Confrerie d'epeistes legendaires de Kirigakure, chacun portant une des sept lames mythiques.",
     "leaders_by_era": [],
     "members_by_era": [
-      {"year": -5, "members": ["zabuza_momochi", "hoshigaki_kisame", "ringo_ameyuri", "munashi_jinpachi", "kuriarare_kushimaru", "akebino_jinin", "suikazan_fuguki"]}
+      {
+        "members": [
+          "zabuza_momochi",
+          "hoshigaki_kisame",
+          "ringo_ameyuri",
+          "munashi_jinpachi",
+          "kuriarare_kushimaru",
+          "akebino_jinin",
+          "suikazan_fuguki"
+        ],
+        "year": -5
+      }
     ],
     "name_fr": "Sept epeistes de la Brume",
     "name_romaji": "Kirigakure no Shinobigatana Shichinin Shu",
-    "sources": ["narutopedia:Seven_Ninja_Swordsmen_of_the_Mist"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Seven_Ninja_Swordsmen_of_the_Mist"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "History": "thumb|left|A previous generation of the Seven Swordsmen.\nSome time after the Third Shinobi World War, the Seven Swordsmen of the time (Fuguki Suikazan, Jinin Akebino, Kushimaru Kuriarare, Raiga Kurosuki, Jūzō Biwa, and two others) cornered a Konoha team. The team was rescued by Might Duy, who fought all seven using the Eight Gates Released Formation. In the manga, it is only known that Fuguki survived, while in the anime, Jūzō and Raiga also survived along with him.\nThe group's make-up changed over the following years: Mangetsu Hōzuki joined and mastered all seven swords, and Fuguki was killed and replaced by his subordinate, Kisame Hoshigaki. The group's remaining members started dying — as in the case of Mangetsu — or becoming missing-nin and taking their swords with them — as in the cases of Kisame and Zabuza Momochi, as well as Jūzō and Raiga in the anime. By the time of the Fourth Shinobi World War, only Hiramekarei wielded by Chōjūrō remained in Kirigakure's possession.\nthumb|The strongest generation revived.\nThe \"strongest\" generation of the Seven Swordsmen was later reincarnated to fight for Akatsuki during the Fourth Shinobi World War. Five of the swordsmen were reunited with their former swords, which they used in battle against the Third Division of the Allied Shinobi Forces. Although the Third Division suffered numerous casualties, they were able to seal all of the Seven Swordsmen by the second day of the war. With the release of the Impure World Reincarnation, the sealed swordsmen's souls were ultimately returned to the Pure Land.\nIn the anime, the remaining six swords returned to Kiri's possession, including Kubikiribōchō from Kakashi Hatake, Samehada taken by Killer B, and Kiba that was in the possession of Omoi. As such, the unit had been reinstated, with Chōjūrō personally choosing Kagura Karatachi to replace his position. Shizuma Hoshigaki later forms his own version of the group called the New Seven Ninja Swordsmen, comprised of malcontents who wish to return the village to its roots as the \"Village of Bloody Mist\". Recruiting Kagura to their cause, they take advantage of his access to the armoury where the seven blades are stored and steal them with plans of staging out a coup d'etat. However, they failed to start their revolution due to the actions of Boruto Uzumaki, his friends, Chōjūrō and eventually Kagura himself, which resulted in them being defeated and taken into custody. Despite not being official members of the Seven Swordsmen, when Kiri was in need of manpower to go against the Funato clan, three of the arrested members of Shizuma's group who did not participate in their leader's jailbreak were recruited by Kagura and loaned the swords they took during their failed coup. Kagura is killed by Funamushi, and thus the Hiramekarei would be returned to Chōjūrō's possession. In the aftermath, Buntan Kurosuki returns to Kiri, presumably returning Kiba, Nuibari and Kabutowari.",
+      "Other Members": "An earlier generation of the organisation consisted of Fuguki, Jinin, Jūzō, Raiga, Kushimaru and two other unidentified shinobi:\n* Hiramekarei's wielder: A shorter individual with moused-up hair who wore his forehead protector as a choker and a utility belt around his waist along with a flak jacket and a pinstriped shirt and pants. He carried the Twinsword strapped to his back horizontally. Together with his companions he assaulted Konoha shinobi, and died during his battle with Might Duy.\n* Shibuki's wielder: A slender man bearing a similar appearance to Jinpachi. He who wore a pinstriped shirt and a cloth-mask that only showed his eyes. Together with his companions he assaulted Konoha shinobi, and died during his battle with Might Duy.",
+      "Swords": "thumb|The seven swords.\n*{{translation|Hiramekarei|ヒラメカレイ}}: A bandaged double-handled sword that is capable of storing and emitting the user's chakra which can then take on various forms. It is also called a {{translation|\"Twinsword\"|双刀|Sōtō}}.\n*{{translation|Kabutowari|兜割|lit meaning=Helmet Splitter}}: A sword consisting of a single-sided axe and a hammer joined by a length of chain. Said to be capable of crushing any and all defences. It is also called a {{translation|\"Bluntsword\"|鈍刀|Dontō}}.\n*{{translation|Kiba|牙|lit meaning=Fangs}}: Twin swords that are imbued with lightning which increases their cutting power. They are said to be the sharpest swords ever forged. They are also called {{translation|\"Thunderswords\"|雷刀|Raitō}}.\n*{{translation|Kubikiribōchō|首斬り包丁|lit meaning=Decapitating Carving Knife|viz=Executioner's Blade}}: A giant sword with a butcher-knife-like appearance, the wielder can use the semi-circle on the blade to decapitate an opponent's head, hence the name. The sword has an ability to regenerate using the iron absorbed from the blood of those it cuts down. It is also called a {{translation|\"Seversword\"|断刀|Dantō}}.\n*{{translation|Nuibari|縫い針|lit meaning=Sewing Needle}}: A sword in the shape of a needle with a long thin wire that resembles thread attached to it, which can be used to pierce enemies and \"sew\" them together in human bundles. It is also called a {{translation|\"Longsword\"|長刀|Chōtō}}.\n*{{translation|Samehada|鮫肌|lit meaning=Shark Skin}}: The most terrifying of the seven blades, it has the appearance of a giant knife covered in shark scales. It is a sentient, living weapon and has the ability to \"eat\" chakra. It is also called a {{translation|\"Greatsword\"|大刀|Daitō}}.\n*{{translation|Shibuki|飛沫|lit meaning=Splash}}: A sword that has a scroll full of explosive tags incorporated into it, lined up behind the blade, combining swordsmanship and explosions. It is also called a {{translation|\"Blastsword\"|爆刀|Bakutō}}.",
+      "Trivia": "* The Seven Swordsmen seem to be loosely inspired by the Seven Spears of Shizugatake, a group of seven samurai during the Sengoku period in 1583 who were led by the daimyō, Toyotomi Hideyoshi.\n* It seems to be a tradition for the members and aspiring members of the Seven Swordsmen to have sharpened teeth, the only exception being Raiga in the anime.\n* When the group debuted in the anime, at least two of the sword designs differed to later appearances in the anime and in the manga.\n* All named members of the Seven Swordsmen have surnames, or a given name in the case of Chōjūrō, derived from a type of produce. This does not hold true for Raiga.\n* All of the reincarnated swordsmen have bandages around their necks.\n* At least two (four in the anime) of the members became missing-nin, while one was discovered to be a traitor, leaking confidential information to other villages.\n* Although Mangetsu was said to have mastered use of all the swords, other members of his generation wielded six of them, leaving Hiramekarei as the blade he likely primarily used.\n* At least two (one in the manga) members of the Seven Swordsmen were former Anbu members.\n* At least two (three in the anime) members of the Seven Swordsmen managed to fake their own deaths or regain life later on by means of an accomplice.\n* In the anime, Kushimaru and Jinpachi were known collectively as the {{translation|\"Heartless Pair\"|非情コンビ|Hijō Konbi}} due to their many acts of cruelty in their lifetimes.\n* Due to the tradition of the group, every single Kiri villager strives to master kenjutsu from their childhood onwards.\n* This group bears similarities to the [https://yokai.com/shichininmisaki/ shichinin misaki], namely there always being seven in number and their association with water.\n* According to Naruto Mobile, there were at least three generations of Seven Ninja Swordsmen, with each generation wielding their respective blade for that time:\n** Fuguki, Kushimaru, and Raiga were part of the first generation. (Though the series suggests Raiga belonged to a later iteration.)\n** Mangetsu was part of the second generation.\n** Chōjūrō was part of the third generation."
+    }
   },
   {
-    "active_period": [{"from_year": -55, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": -55,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "manga",
-    "founders": ["uchiha_clan"],
-    "headquarters": ["konohagakure_police_hq"],
+    "founders": [
+      "uchiha_clan"
+    ],
+    "headquarters": [
+      "konohagakure_police_hq"
+    ],
     "id": "konoha_military_police_force",
     "ideology_fr": "Force de police interne de Konoha, traditionnellement composee de membres du clan Uchiha. Dissoute apres le massacre.",
     "leaders_by_era": [
-      {"from_year": -10, "to_year": 4, "leader": "uchiha_fugaku"}
+      {
+        "from_year": -10,
+        "leader": "uchiha_fugaku",
+        "to_year": 4
+      }
     ],
     "members_by_era": [
-      {"year": 0, "members": ["uchiha_fugaku", "uchiha_itachi", "uchiha_shisui"]}
+      {
+        "members": [
+          "uchiha_fugaku",
+          "uchiha_itachi",
+          "uchiha_shisui"
+        ],
+        "year": 0
+      }
     ],
     "name_fr": "Police militaire de Konoha",
     "name_romaji": "Konohagakure Keimu Butai",
-    "sources": ["narutopedia:Konoha_Military_Police_Force"],
-    "updated_at": "2026-05-02"
+    "sources": [
+      "narutopedia:Konoha_Military_Police_Force"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Trivia": "* In the anime, within Tsunade's Infinite Tsukuyomi dream, Taiko Uchiha was a member, and Shisui as well as Sasuke Uchiha were high ranking members of the force."
+    }
   },
   {
-    "active_period": [{"from_year": -100, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": -100,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "manga",
     "founders": [],
-    "headquarters": ["kage_summit_locations"],
+    "headquarters": [
+      "kage_summit_locations"
+    ],
     "id": "five_kage",
     "ideology_fr": "Conseil informel des chefs des cinq grandes nations ninjas, se reunissant lors des sommets pour traiter les crises.",
     "leaders_by_era": [],
     "members_by_era": [
-      {"year": 16, "members": ["hatake_kakashi", "gaara", "mei_terumi", "ay", "onoki"]}
+      {
+        "members": [
+          "hatake_kakashi",
+          "gaara",
+          "mei_terumi",
+          "ay",
+          "onoki"
+        ],
+        "year": 16
+      }
     ],
     "name_fr": "Cinq Kage",
     "name_romaji": "Gokage",
-    "sources": ["narutopedia:Five_Kage"],
+    "sources": [
+      "narutopedia:Five_Kage"
+    ],
     "updated_at": "2026-05-02"
   },
   {
-    "active_period": [{"from_year": -50, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": -50,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "manga",
     "founders": [],
-    "headquarters": ["mount_myoboku"],
+    "headquarters": [
+      "mount_myoboku"
+    ],
     "id": "mount_myoboku_sages",
     "ideology_fr": "Communaute des crapauds-sages habitant Mont Myoboku, gardiens du senjutsu transmis a quelques humains exceptionnels.",
     "leaders_by_era": [
-      {"from_year": -200, "to_year": null, "leader": "great_sage_toad"}
+      {
+        "from_year": -200,
+        "leader": "great_sage_toad",
+        "to_year": null
+      }
     ],
     "members_by_era": [
-      {"year": 12, "members": ["fukasaku", "shima", "gamamaru", "jiraiya", "uzumaki_naruto"]}
+      {
+        "members": [
+          "fukasaku",
+          "shima",
+          "gamamaru",
+          "jiraiya",
+          "uzumaki_naruto"
+        ],
+        "year": 12
+      }
     ],
     "name_fr": "Sages du Mont Myoboku",
     "name_romaji": "Myoboku-zan no Sennin",
-    "sources": ["narutopedia:Mount_Myoboku"],
+    "sources": [
+      "narutopedia:Mount_Myoboku"
+    ],
     "updated_at": "2026-05-02"
   },
   {
-    "active_period": [{"from_year": 33, "to_year": null, "phase": "active"}],
+    "active_period": [
+      {
+        "from_year": 33,
+        "phase": "active",
+        "to_year": null
+      }
+    ],
     "canonicity": "boruto_manga",
-    "founders": ["uzumaki_boruto", "uchiha_sarada", "mitsuki"],
-    "headquarters": ["konohagakure"],
+    "founders": [
+      "uzumaki_boruto",
+      "uchiha_sarada",
+      "mitsuki"
+    ],
+    "headquarters": [
+      "konohagakure"
+    ],
     "id": "team_konohamaru",
     "ideology_fr": "Genin de la nouvelle generation a Konoha, sous la tutelle de Konohamaru.",
     "leaders_by_era": [
-      {"from_year": 33, "to_year": null, "leader": "konohamaru"}
+      {
+        "from_year": 33,
+        "leader": "konohamaru",
+        "to_year": null
+      }
     ],
     "members_by_era": [
-      {"year": 35, "members": ["uzumaki_boruto", "uchiha_sarada", "mitsuki"]}
+      {
+        "members": [
+          "uzumaki_boruto",
+          "uchiha_sarada",
+          "mitsuki"
+        ],
+        "year": 35
+      }
     ],
     "name_fr": "Equipe Konohamaru",
     "name_romaji": "Team Konohamaru",
-    "sources": ["narutopedia:Team_Konohamaru"],
+    "sources": [
+      "narutopedia:Team_Konohamaru"
+    ],
     "updated_at": "2026-05-02"
   }
 ]

@@ -9,7 +9,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": true,
-    "sources": ["narutopedia:Mind_Body_Switch_Technique"],
+    "sources": [
+      "narutopedia:Mind_Body_Switch_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -22,7 +24,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Shadow_Imitation_Technique"],
+    "sources": [
+      "narutopedia:Shadow_Imitation_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -35,7 +39,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Multi-Size_Technique"],
+    "sources": [
+      "narutopedia:Multi-Size_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -48,7 +54,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Insect_Cocoon_Technique"],
+    "sources": [
+      "narutopedia:Insect_Cocoon_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -61,7 +69,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Beast_Human_Clone"],
+    "sources": [
+      "narutopedia:Beast_Human_Clone"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -74,7 +84,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Gentle_Fist"],
+    "sources": [
+      "narutopedia:Gentle_Fist"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -87,7 +99,9 @@
     "owning_village": "sunagakure",
     "shareable_outside_clan": true,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Puppet_Technique"],
+    "sources": [
+      "narutopedia:Puppet_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -100,7 +114,9 @@
     "owning_village": "kirigakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Hydrification_Technique"],
+    "sources": [
+      "narutopedia:Hydrification_Technique"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -113,7 +129,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Kohaku_Clan"],
+    "sources": [
+      "narutopedia:Kohaku_Clan"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -126,7 +144,9 @@
     "owning_village": "uzushiogakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": true,
-    "sources": ["narutopedia:Uzumaki_Clan"],
+    "sources": [
+      "narutopedia:Uzumaki_Clan"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -139,7 +159,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Kurama_Clan"],
+    "sources": [
+      "narutopedia:Kurama_Clan"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -152,7 +174,9 @@
     "owning_village": "sunagakure",
     "shareable_outside_clan": true,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Poison_Crafting"],
+    "sources": [
+      "narutopedia:Poison_Crafting"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -165,7 +189,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": true,
-    "sources": ["narutopedia:Hagoromo_Clan"],
+    "sources": [
+      "narutopedia:Hagoromo_Clan"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -178,7 +204,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": false,
-    "sources": ["narutopedia:Fuma_Clan"],
+    "sources": [
+      "narutopedia:Fuma_Clan"
+    ],
     "updated_at": "2026-05-02"
   },
   {
@@ -191,7 +219,9 @@
     "owning_village": "konohagakure",
     "shareable_outside_clan": false,
     "shareable_with_authorization": true,
-    "sources": ["narutopedia:Yamanaka_Clan"],
+    "sources": [
+      "narutopedia:Yamanaka_Clan"
+    ],
     "updated_at": "2026-05-02"
   }
 ]

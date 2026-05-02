@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from shinobi.canon.fact_sheet import fact_sheets_for
+from shinobi.canon.fact_sheet import context_fact_sheets, fact_sheets_for
 from shinobi.canon.models import CanonBundle
 from shinobi.engine.scene_context import (
     SceneContext,
@@ -201,6 +201,11 @@ class NarrationRequest:
     character_state_summary: str
     duration_str: str
     scene_context: SceneContext | None = None
+    # Contextes optionnels pour enrichir le narrator avec lieu/village/clan/etc
+    current_village: str | None = None
+    player_clan: str | None = None
+    player_kekkei_genkai: list[str] | None = None
+    player_tailed_beast: str | None = None
 
 
 @dataclass
@@ -372,6 +377,18 @@ class Narrator:
                 "un PNJ liste, ta sortie sera REJETEE."
             )
             user_blocks.append("###############################################\n")
+        # Contexte canon : lieu, village, clan, kekkei, bijuu du joueur
+        ctx_sheets = context_fact_sheets(
+            self.canon,
+            current_village=request.current_village,
+            current_location=request.location_id,
+            player_clan=request.player_clan,
+            player_kekkei_genkai=request.player_kekkei_genkai,
+            player_tailed_beast=request.player_tailed_beast,
+        )
+        if ctx_sheets:
+            user_blocks.append(ctx_sheets)
+            user_blocks.append("")
         if request.scene_context is not None:
             user_blocks.append(format_scene_context_for_prompt(request.scene_context))
             user_blocks.append("")
