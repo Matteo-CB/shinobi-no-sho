@@ -30,7 +30,7 @@ $env:Path = "$machinePath;$userPath"
 $llamaServer = Get-Command llama-server -ErrorAction SilentlyContinue
 if (-not $llamaServer) {
     $candidates = @(
-        "C:\Users\matte\llama.cpp\llama-server.exe",
+        (Join-Path $env:USERPROFILE "llama.cpp\llama-server.exe"),
         "C:\llama.cpp\llama-server.exe",
         ".\llama.cpp\llama-server.exe"
     )
