@@ -35,7 +35,13 @@ cd shinobi-no-sho
 2. Cree le `.venv`
 3. Installe toutes les dependances Python + le projet en mode editable
 4. Telecharge **llama.cpp** dans `%USERPROFILE%\llama.cpp\` (build CUDA 12 si NVIDIA, sinon CPU)
-5. Telecharge le modele **Qwen3-8B-UD-Q5_K_XL.gguf** (5.5 Go) dans `models/llm/`
+5. Telecharge le modele LLM adapte a ta GPU dans `models/llm/` :
+   - **Qwen3-1.7B Q4** (~1.1 Go) si <3 Go VRAM ou CPU only -- ultra rapide
+   - **Qwen3-4B UD-Q4_K_XL** (~2.5 Go) si 3-9 Go VRAM (RTX 3060/3070/4060/5060) -- equilibre **defaut**
+   - **Qwen3-8B UD-Q5_K_XL** (~5.5 Go) si 10-15 Go VRAM -- qualite max
+   - **Qwen3-14B Q5_K_M** (~10 Go) si 16-23 Go VRAM
+   - **Qwen3-32B Q4_K_M** (~19 Go) si 24+ Go VRAM
+   Force un modele specifique avec `-ModelSize tiny|small|medium|large|xlarge`
 6. Cree des launchers globaux dans `bin/` et les ajoute au PATH utilisateur
 7. Cree `.env` depuis `.env.example`
 8. Configure git (user.name, user.email)
@@ -111,14 +117,16 @@ llama.cpp doit etre installe a part : `pacman -S llama.cpp` sur Arch, ou compila
 ## Hardware recommande
 
 ```
-GPU       NVIDIA 8 Go VRAM (RTX 3060/3070/4060/5060 ou superieur)
+GPU       NVIDIA 4-8 Go VRAM (RTX 3060/3070/4060/5060 ou superieur)
 CPU       recent (4 coeurs+)
 RAM       16 Go (32 Go ideal)
-Stockage  ~12 Go libres minimum
+Stockage  ~6 Go libres (3 Go modele 4B + 1 Go RAG + setup)
 OS        Windows 10/11 ou Linux (Arch valide, autres devraient marcher)
 ```
 
-Le tout-CPU fonctionne mais le LLM sera limite a 1-3 tok/s vs 30-50 tok/s sur GPU.
+Modele defaut : Qwen3-4B (~50 tok/s sur 8 Go VRAM, equilibre vitesse/qualite).
+Le setup auto-detecte la VRAM et choisit la bonne taille (1.7B / 4B / 8B / 14B / 32B).
+Tout-CPU fonctionne via Qwen3-1.7B mais limite a 1-3 tok/s.
 
 ## Documentation technique
 
