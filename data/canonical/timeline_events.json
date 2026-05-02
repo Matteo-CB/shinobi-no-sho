@@ -1,0 +1,428 @@
+[
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay", "notes_fr": "Si Hashirama et Madara ne se sont pas affrontes, la fondation est repoussee."},
+    "date": "10-01",
+    "id": "konoha_founded",
+    "involved_characters": ["senju_hashirama", "uchiha_madara", "senju_tobirama"],
+    "location": "konohagakure",
+    "name_fr": "Fondation de Konohagakure",
+    "narrative_summary_fr": "Hashirama Senju et Madara Uchiha allient leurs clans pour fonder le premier village cache, Konohagakure no Sato.",
+    "outcomes": [
+      {"type": "village_founded", "parameters": {"village_id": "konohagakure"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "senju_hashirama"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_madara"}}
+    ],
+    "sources": ["narutopedia:Konohagakure"],
+    "updated_at": "2026-05-02",
+    "year": -55
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "substitute", "substitute_logic": "Si Madara n'est pas la, autre conflit Senju-Uchiha"},
+    "date": "06-15",
+    "id": "valley_of_the_end_battle",
+    "involved_characters": ["senju_hashirama", "uchiha_madara"],
+    "location": "valley_of_the_end",
+    "name_fr": "Bataille de la Vallee de la Fin",
+    "narrative_summary_fr": "Hashirama et Madara s'affrontent dans la legendaire Vallee de la Fin. Madara est presume mort. Le Mokuton bride le Kyuubi.",
+    "outcomes": [
+      {"type": "character_apparent_death", "parameters": {"character_id": "uchiha_madara"}},
+      {"type": "kyuubi_bound", "parameters": {"jinchuuriki_id": "uzumaki_mito"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "senju_hashirama"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_madara"}}
+    ],
+    "sources": ["narutopedia:Battle_of_the_Valley_of_the_End"],
+    "updated_at": "2026-05-02",
+    "year": -50
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay", "notes_fr": "La Premiere Guerre depend de tensions geopolitiques inevitables."},
+    "date": "04-01",
+    "id": "first_great_ninja_war_start",
+    "involved_characters": ["senju_tobirama", "sarutobi_hiruzen"],
+    "location": "five_great_nations",
+    "name_fr": "Debut de la Premiere Grande Guerre Ninja",
+    "narrative_summary_fr": "Conflit ouvert entre les cinq grands villages pour le partage des terres et ressources. Tobirama meurt en sacrifiant pour proteger Hiruzen.",
+    "outcomes": [
+      {"type": "war_started", "parameters": {"war_id": "first_great_war"}},
+      {"type": "character_death", "parameters": {"character_id": "senju_tobirama"}},
+      {"type": "hokage_succession", "parameters": {"new_kage": "sarutobi_hiruzen"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "senju_tobirama"}}
+    ],
+    "sources": ["narutopedia:First_Shinobi_World_War"],
+    "updated_at": "2026-05-02",
+    "year": -45
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay", "notes_fr": "Tensions inevitables entre les villages."},
+    "date": "06-01",
+    "id": "second_great_ninja_war_start",
+    "involved_characters": ["jiraiya", "tsunade", "orochimaru", "hanzo"],
+    "location": "amegakure",
+    "name_fr": "Deuxieme Grande Guerre Ninja",
+    "narrative_summary_fr": "Affrontement majeur dans le Pays de la Pluie. Jiraiya, Tsunade et Orochimaru gagnent leur titre de Sannin face a Hanzo.",
+    "outcomes": [
+      {"type": "war_started", "parameters": {"war_id": "second_great_war"}},
+      {"type": "title_granted", "parameters": {"title": "sannin", "characters": ["jiraiya", "tsunade", "orochimaru"]}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "hanzo"}}
+    ],
+    "sources": ["narutopedia:Second_Shinobi_World_War"],
+    "updated_at": "2026-05-02",
+    "year": -30
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "03-12",
+    "id": "third_great_ninja_war_start",
+    "involved_characters": ["namikaze_minato", "hatake_kakashi", "uchiha_obito", "nohara_rin"],
+    "location": "five_great_nations",
+    "name_fr": "Troisieme Grande Guerre Ninja",
+    "narrative_summary_fr": "La Troisieme Guerre eclate. L'equipe de Minato (Kakashi, Obito, Rin) est envoyee detruire le pont de Kannabi.",
+    "outcomes": [
+      {"type": "war_started", "parameters": {"war_id": "third_great_war"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "namikaze_minato"}}
+    ],
+    "sources": ["narutopedia:Third_Shinobi_World_War"],
+    "updated_at": "2026-05-02",
+    "year": -13
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "cascade_cancel", "notes_fr": "La mort apparente d'Obito declenche tout l'arc Tobi-Madara."},
+    "date": "08-22",
+    "id": "obito_apparent_death",
+    "involved_characters": ["uchiha_obito", "hatake_kakashi", "nohara_rin"],
+    "location": "kannabi_bridge",
+    "name_fr": "Mort apparente d'Obito au pont de Kannabi",
+    "narrative_summary_fr": "Obito sauve Kakashi et Rin, donne son Sharingan a Kakashi, est presume mort. Madara le recupere en secret pour servir son plan.",
+    "outcomes": [
+      {"type": "character_apparent_death", "parameters": {"character_id": "uchiha_obito"}},
+      {"type": "sharingan_transplanted", "parameters": {"from": "uchiha_obito", "to": "hatake_kakashi"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_obito"}},
+      {"type": "character_alive", "parameters": {"character_id": "hatake_kakashi"}}
+    ],
+    "sources": ["narutopedia:Battle_of_Kannabi_Bridge"],
+    "updated_at": "2026-05-02",
+    "year": -10
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "cascade_cancel", "notes_fr": "Cet evenement declenche la mort de Minato/Kushina et la naissance jinchuuriki de Naruto."},
+    "date": "10-10",
+    "id": "kyuubi_attack_konoha",
+    "involved_characters": ["uchiha_obito", "namikaze_minato", "uzumaki_kushina", "uzumaki_naruto", "kurama"],
+    "location": "konohagakure",
+    "name_fr": "Attaque du Kyuubi sur Konoha",
+    "narrative_summary_fr": "Obito, dissimule sous masque, libere le Kyuubi de Kushina pendant l'accouchement de Naruto. Minato et Kushina se sacrifient pour sceller le bijuu dans leur fils.",
+    "outcomes": [
+      {"type": "character_death", "parameters": {"character_id": "namikaze_minato"}},
+      {"type": "character_death", "parameters": {"character_id": "uzumaki_kushina"}},
+      {"type": "jinchuuriki_transfer", "parameters": {"from": "uzumaki_kushina", "to": "uzumaki_naruto", "beast": "kurama"}},
+      {"type": "village_damaged", "parameters": {"village_id": "konohagakure", "severity": "major"}},
+      {"type": "hokage_succession", "parameters": {"new_kage": "sarutobi_hiruzen"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_obito"}},
+      {"type": "character_alive", "parameters": {"character_id": "namikaze_minato"}},
+      {"type": "jinchuuriki_held_by", "parameters": {"jinchuuriki_id": "uzumaki_kushina", "beast": "kurama"}}
+    ],
+    "sources": ["narutopedia:Nine-Tails_Attack_on_Konoha"],
+    "updated_at": "2026-05-02",
+    "year": 1
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "hard_cancel", "notes_fr": "Si Itachi est mort ou les Uchiha n'ont pas comploté, le massacre n'a pas lieu."},
+    "date": "07-04",
+    "id": "uchiha_clan_massacre",
+    "involved_characters": ["uchiha_itachi", "uchiha_sasuke", "uchiha_obito", "shimura_danzo", "uchiha_fugaku", "uchiha_mikoto"],
+    "location": "konohagakure",
+    "name_fr": "Massacre du clan Uchiha",
+    "narrative_summary_fr": "Itachi, sous ordres de Danzo et avec l'aide d'Obito masque, decime le clan Uchiha pour empecher un coup d'etat. Sasuke est epargne par son frere.",
+    "outcomes": [
+      {"type": "clan_decimated", "parameters": {"clan_id": "uchiha"}},
+      {"type": "character_becomes_missing_nin", "parameters": {"character_id": "uchiha_itachi"}},
+      {"type": "character_traumatized", "parameters": {"character_id": "uchiha_sasuke"}},
+      {"type": "character_death", "parameters": {"character_id": "uchiha_fugaku"}},
+      {"type": "character_death", "parameters": {"character_id": "uchiha_mikoto"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_itachi"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}},
+      {"type": "clan_active", "parameters": {"clan_id": "uchiha", "min_members": 30}},
+      {"type": "no_event_triggered", "parameters": {"event_id": "uchiha_coup_succeeds"}}
+    ],
+    "sources": ["narutopedia:Uchiha_Clan_Downfall"],
+    "updated_at": "2026-05-02",
+    "year": 5
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "04-05",
+    "id": "team_7_formation",
+    "involved_characters": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura", "hatake_kakashi"],
+    "location": "konohagakure",
+    "name_fr": "Formation de l'Equipe 7",
+    "narrative_summary_fr": "Apres la sortie de l'academie, Naruto, Sasuke et Sakura sont formes en Equipe 7 sous la tutelle de Kakashi.",
+    "outcomes": [
+      {"type": "team_formed", "parameters": {"team_id": "team_7", "members": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura"], "sensei": "hatake_kakashi"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}},
+      {"type": "character_alive", "parameters": {"character_id": "haruno_sakura"}},
+      {"type": "character_alive", "parameters": {"character_id": "hatake_kakashi"}}
+    ],
+    "sources": ["narutopedia:Team_7"],
+    "updated_at": "2026-05-02",
+    "year": 12
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "06-15",
+    "id": "wave_country_arc",
+    "involved_characters": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura", "hatake_kakashi", "zabuza_momochi", "haku"],
+    "location": "wave_country",
+    "name_fr": "Mission au Pays des Vagues",
+    "narrative_summary_fr": "Premiere mission C-rang devenue A-rang. L'equipe 7 affronte Zabuza et Haku. Naruto debloque ses limites.",
+    "outcomes": [
+      {"type": "character_death", "parameters": {"character_id": "zabuza_momochi"}},
+      {"type": "character_death", "parameters": {"character_id": "haku"}},
+      {"type": "team_growth", "parameters": {"team_id": "team_7"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}},
+      {"type": "character_alive", "parameters": {"character_id": "zabuza_momochi"}}
+    ],
+    "sources": ["narutopedia:Land_of_Waves_Arc"],
+    "updated_at": "2026-05-02",
+    "year": 12
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "07-10",
+    "id": "chunin_exam_konoha",
+    "involved_characters": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura", "gaara", "orochimaru", "sarutobi_hiruzen"],
+    "location": "konohagakure",
+    "name_fr": "Examen Chunin de Konoha",
+    "narrative_summary_fr": "Les genins de Konoha passent l'examen chunin. Orochimaru attaque Sasuke et marque Sasuke avec le Sceau Maudit. Le Troisieme Hokage meurt face a Orochimaru.",
+    "outcomes": [
+      {"type": "character_marked", "parameters": {"character_id": "uchiha_sasuke", "mark": "cursed_seal_of_heaven"}},
+      {"type": "character_death", "parameters": {"character_id": "sarutobi_hiruzen"}},
+      {"type": "village_damaged", "parameters": {"village_id": "konohagakure", "severity": "moderate"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "sarutobi_hiruzen"}},
+      {"type": "character_alive", "parameters": {"character_id": "orochimaru"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}}
+    ],
+    "sources": ["narutopedia:Chunin_Exams"],
+    "updated_at": "2026-05-02",
+    "year": 12
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "11-15",
+    "id": "tsunade_becomes_hokage",
+    "involved_characters": ["tsunade", "jiraiya", "uzumaki_naruto"],
+    "location": "konohagakure",
+    "name_fr": "Tsunade devient Cinquieme Hokage",
+    "narrative_summary_fr": "Apres la mort d'Hiruzen, Jiraiya et Naruto retrouvent Tsunade pour la convaincre d'accepter le titre.",
+    "outcomes": [
+      {"type": "hokage_succession", "parameters": {"new_kage": "tsunade"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "tsunade"}},
+      {"type": "no_event_triggered", "parameters": {"event_id": "sarutobi_hiruzen_alive"}}
+    ],
+    "sources": ["narutopedia:Tsunade"],
+    "updated_at": "2026-05-02",
+    "year": 12
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "cascade_cancel"},
+    "date": "12-20",
+    "id": "sasuke_defection",
+    "involved_characters": ["uchiha_sasuke", "uzumaki_naruto", "orochimaru"],
+    "location": "valley_of_the_end",
+    "name_fr": "Defection de Sasuke",
+    "narrative_summary_fr": "Sasuke quitte Konoha pour rejoindre Orochimaru et obtenir plus de pouvoir. Naruto le poursuit. Combat a la Vallee de la Fin.",
+    "outcomes": [
+      {"type": "character_becomes_missing_nin", "parameters": {"character_id": "uchiha_sasuke"}},
+      {"type": "character_marked", "parameters": {"character_id": "uchiha_sasuke", "mark": "stage_2_curse"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}},
+      {"type": "character_alive", "parameters": {"character_id": "orochimaru"}}
+    ],
+    "sources": ["narutopedia:Sasuke_Recovery_Mission"],
+    "updated_at": "2026-05-02",
+    "year": 13
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "01-15",
+    "id": "naruto_training_with_jiraiya",
+    "involved_characters": ["uzumaki_naruto", "jiraiya"],
+    "location": "various",
+    "name_fr": "Entrainement de Naruto avec Jiraiya",
+    "narrative_summary_fr": "Jiraiya emmene Naruto pour 2.5 ans d'entrainement intensif. Maitrise du Rasengan et bases du senjutsu.",
+    "outcomes": [
+      {"type": "character_trained", "parameters": {"character_id": "uzumaki_naruto", "techniques": ["rasengan", "kuchiyose_toad"]}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "jiraiya"}},
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}}
+    ],
+    "sources": ["narutopedia:Time_Skip"],
+    "updated_at": "2026-05-02",
+    "year": 13
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "10-15",
+    "id": "akatsuki_hunting_jinchuuriki",
+    "involved_characters": ["uchiha_itachi", "hoshigaki_kisame", "deidara", "sasori", "gaara"],
+    "location": "five_great_nations",
+    "name_fr": "Akatsuki commence la chasse aux Jinchuuriki",
+    "narrative_summary_fr": "L'Akatsuki entre en phase active : Deidara et Sasori capturent Gaara, Itachi et Kisame infiltrent Konoha.",
+    "outcomes": [
+      {"type": "war_started", "parameters": {"war_id": "akatsuki_jinchuuriki_hunt"}},
+      {"type": "character_kidnapped", "parameters": {"character_id": "gaara"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_itachi"}},
+      {"type": "character_alive", "parameters": {"character_id": "deidara"}}
+    ],
+    "sources": ["narutopedia:Akatsuki"],
+    "updated_at": "2026-05-02",
+    "year": 14
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "cascade_cancel"},
+    "date": "06-22",
+    "id": "itachi_death",
+    "involved_characters": ["uchiha_itachi", "uchiha_sasuke", "orochimaru"],
+    "location": "uchiha_hideout",
+    "name_fr": "Mort d'Itachi face a Sasuke",
+    "narrative_summary_fr": "Sasuke affronte Itachi en duel a mort. Itachi succombe a sa maladie en plein combat, transmettant son pouvoir et la verite a Sasuke posthume.",
+    "outcomes": [
+      {"type": "character_death", "parameters": {"character_id": "uchiha_itachi"}},
+      {"type": "character_revelation", "parameters": {"character_id": "uchiha_sasuke", "secret": "uchiha_massacre_truth"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_itachi"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}}
+    ],
+    "sources": ["narutopedia:Itachi_Pursuit_Mission"],
+    "updated_at": "2026-05-02",
+    "year": 15
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "cascade_cancel"},
+    "date": "08-13",
+    "id": "pain_attack_konoha",
+    "involved_characters": ["nagato", "konan", "uzumaki_naruto", "tsunade", "jiraiya"],
+    "location": "konohagakure",
+    "name_fr": "Invasion de Pain a Konoha",
+    "narrative_summary_fr": "Pain attaque Konoha pour capturer Naruto. Le village est devaste. Naruto convainc Nagato de ressusciter les morts. Tsunade tombe dans le coma.",
+    "outcomes": [
+      {"type": "village_damaged", "parameters": {"village_id": "konohagakure", "severity": "extreme"}},
+      {"type": "character_death", "parameters": {"character_id": "nagato"}},
+      {"type": "village_resurrected", "parameters": {"village_id": "konohagakure"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "nagato"}},
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}}
+    ],
+    "sources": ["narutopedia:Invasion_of_Pain"],
+    "updated_at": "2026-05-02",
+    "year": 15
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "10-08",
+    "id": "fourth_great_ninja_war_start",
+    "involved_characters": ["uchiha_obito", "uchiha_madara", "uzumaki_naruto", "uchiha_sasuke", "hatake_kakashi"],
+    "location": "five_great_nations",
+    "name_fr": "Quatrieme Grande Guerre Ninja",
+    "narrative_summary_fr": "Tobi (Obito) declare la guerre a l'alliance des cinq Kage. Bataille epique avec utilisation massive d'Edo Tensei.",
+    "outcomes": [
+      {"type": "war_started", "parameters": {"war_id": "fourth_great_war"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_obito"}}
+    ],
+    "sources": ["narutopedia:Fourth_Shinobi_World_War"],
+    "updated_at": "2026-05-02",
+    "year": 16
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "06-15",
+    "id": "kaguya_resurrection_and_defeat",
+    "involved_characters": ["kaguya_otsutsuki", "uzumaki_naruto", "uchiha_sasuke", "hatake_kakashi", "uchiha_obito"],
+    "location": "various_dimensions",
+    "name_fr": "Resurrection et defaite de Kaguya",
+    "narrative_summary_fr": "Madara devient le receptacle du Juubi puis se fait absorber par Kaguya, ressuscitee. Naruto et Sasuke avec Kakashi et Sakura defont Kaguya.",
+    "outcomes": [
+      {"type": "character_sealed", "parameters": {"character_id": "kaguya_otsutsuki"}},
+      {"type": "war_ended", "parameters": {"war_id": "fourth_great_war"}},
+      {"type": "character_acquired_power", "parameters": {"character_id": "uzumaki_naruto", "power": "rikudou_chakra"}},
+      {"type": "character_acquired_power", "parameters": {"character_id": "uchiha_sasuke", "power": "rinnegan"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}},
+      {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}}
+    ],
+    "sources": ["narutopedia:Kaguya_Otsutsuki"],
+    "updated_at": "2026-05-02",
+    "year": 17
+  },
+  {
+    "canonicity": "manga",
+    "cancellation_strategy": {"type": "delay"},
+    "date": "10-10",
+    "id": "naruto_becomes_hokage",
+    "involved_characters": ["uzumaki_naruto", "hatake_kakashi"],
+    "location": "konohagakure",
+    "name_fr": "Naruto devient le Septieme Hokage",
+    "narrative_summary_fr": "Apres l'intermede de Kakashi comme Sixieme, Naruto realise son reve d'enfance et devient officiellement le Septieme Hokage.",
+    "outcomes": [
+      {"type": "hokage_succession", "parameters": {"new_kage": "uzumaki_naruto"}}
+    ],
+    "preconditions": [
+      {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}}
+    ],
+    "sources": ["narutopedia:Naruto_Uzumaki"],
+    "updated_at": "2026-05-02",
+    "year": 33
+  }
+]

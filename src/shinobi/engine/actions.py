@@ -16,6 +16,12 @@ from shinobi.constants import (
 )
 from shinobi.engine.character import Character
 from shinobi.engine.consequences import apply_action_consequences
+from shinobi.engine.learning import (
+    can_attempt_learning,
+    compute_learning_hours_required,
+    progress_learning,
+    start_learning,
+)
 from shinobi.engine.missions import Mission
 from shinobi.engine.progression import (
     INTANGIBLE_EXT,
@@ -290,6 +296,35 @@ def apply_action_to_state(
             new_char = apply_fatigue(new_char, fatigue_delta)
 
     elif action.action_type == ActionType.train_technique:
+        # Si une technique cible est specifiee + canon disponible, vraie progression
+        target_id = action.parameters.get("target_technique_id") or ""
+        canon_bundle = action.parameters.get("_canon")
+        rules_bundle = action.parameters.get("_world_rules")
+        learned_now = False
+        if target_id and canon_bundle is not None and rules_bundle is not None:
+            tech = canon_bundle.techniques.get(target_id)
+            if tech is not None:
+                eligibility = can_attempt_learning(new_char, tech)
+                if eligibility.eligible:
+                    if not any(
+                        t.technique_id == target_id for t in new_char.techniques_in_progress
+                    ):
+                        required = compute_learning_hours_required(
+                            new_char, tech, rules=rules_bundle
+                        )
+                        new_char = start_learning(
+                            new_char,
+                            technique_id=target_id,
+                            progress_required=required,
+                            teacher_id=None,
+                            started_year=int(action.parameters.get("current_year", 0)),
+                        )
+                    new_char, learned_now = progress_learning(
+                        new_char,
+                        target_id,
+                        hours=duration_hours,
+                        learn_year=int(action.parameters.get("current_year", 0)),
+                    )
         new_char, c1 = train_stat(
             new_char, "intelligence", hours=duration_hours // 2, quality_modifier=quality
         )
@@ -302,6 +337,10 @@ def apply_action_to_state(
         fatigue_delta = fatigue_for_duration(duration_hours)
         if fatigue_delta > 0:
             new_char = apply_fatigue(new_char, fatigue_delta)
+        if learned_now and target_id:
+            result = result.model_copy(
+                update={"summary_fr": result.summary_fr + f" Technique apprise : {target_id}."}
+            )
 
     elif action.action_type == ActionType.rest:
         sleep = bool(action.parameters.get("sleep", False))

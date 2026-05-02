@@ -178,8 +178,12 @@ def run_character_creation() -> str | None:
 
     profile = CanonicityProfile.default()
     world = create_default_world(profile=profile, starting_year=starting_year)
-    # Bound the seed within signed int63 range pour SQLite.
     world = world.with_seed(world.seed & 0x7FFFFFFFFFFFFFFF)
+    # Initialize le scheduler avec les events canon a venir
+    from shinobi.engine.events import initialize_scheduler
+
+    scheduled = initialize_scheduler(canon, starting_year=starting_year)
+    world = world.model_copy(update={"scheduled_events": scheduled})
 
     declared_objective = Prompt.ask(
         "[bold cyan]Premier objectif[/bold cyan] [dim](texte libre, vide pour passer)[/dim]",

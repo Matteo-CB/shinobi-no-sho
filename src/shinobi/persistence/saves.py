@@ -21,6 +21,8 @@ from shinobi.engine.actions import ActionResult
 from shinobi.engine.character import Character
 from shinobi.engine.world import WorldState
 from shinobi.errors import SaveCorruptError, SaveNotFoundError
+from shinobi.goals.breadcrumbs import Breadcrumb
+from shinobi.goals.declaration import Goal
 from shinobi.logging_setup import get_logger
 from shinobi.persistence.database import close, open_connection
 from shinobi.persistence.serialize import decode_payload, encode_json, encode_payload
@@ -206,6 +208,87 @@ def append_narrative_log(save_id: str, payload: dict[str, Any]) -> None:
     p = _narrative_log_path(save_id)
     with p.open("a", encoding="utf-8") as f:
         f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+
+# Goals + Breadcrumbs CRUD ---------------------------------------------------
+
+
+def save_goal(save_id: str, goal: Goal) -> None:
+    """Insere ou remplace un objectif."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT OR REPLACE INTO goals (id, payload, status, declared_at_year, completed_at_year, abandoned_at_year) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                goal.id,
+                encode_json(goal.model_dump(mode="json")),
+                goal.status.value,
+                goal.declared_at_year,
+                goal.completed_at_year,
+                goal.abandoned_at_year,
+            ),
+        )
+        conn.commit()
+    finally:
+        close(conn)
+
+
+def load_goals(save_id: str) -> list[Goal]:
+    """Charge tous les objectifs d'un save."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT payload FROM goals")
+        out: list[Goal] = []
+        for row in cur.fetchall():
+            out.append(Goal.model_validate_json(row[0]))
+        return out
+    finally:
+        close(conn)
+
+
+def save_breadcrumb(save_id: str, breadcrumb: Breadcrumb) -> None:
+    """Insere ou remplace un breadcrumb."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT OR REPLACE INTO breadcrumbs (id, parent_goal_id, payload, revealed, completed, sequence_index) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                breadcrumb.id,
+                breadcrumb.parent_goal_id,
+                encode_json(breadcrumb.model_dump(mode="json")),
+                int(breadcrumb.revealed),
+                int(breadcrumb.completed),
+                breadcrumb.sequence_index,
+            ),
+        )
+        conn.commit()
+    finally:
+        close(conn)
+
+
+def load_breadcrumbs(save_id: str, *, parent_goal_id: str | None = None) -> list[Breadcrumb]:
+    """Charge les breadcrumbs (filtres optionnellement par goal parent)."""
+    conn = open_connection(_state_path(save_id))
+    try:
+        cur = conn.cursor()
+        if parent_goal_id:
+            cur.execute(
+                "SELECT payload FROM breadcrumbs WHERE parent_goal_id = ? ORDER BY sequence_index",
+                (parent_goal_id,),
+            )
+        else:
+            cur.execute("SELECT payload FROM breadcrumbs ORDER BY sequence_index")
+        out: list[Breadcrumb] = []
+        for row in cur.fetchall():
+            out.append(Breadcrumb.model_validate_json(row[0]))
+        return out
+    finally:
+        close(conn)
 
 
 def append_divergence(save_id: str, payload: dict[str, Any]) -> None:

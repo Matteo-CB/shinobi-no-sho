@@ -1,0 +1,159 @@
+[
+  {
+    "abilities_fr": "Manipulation et drainage de chakra naturel, force colossale, association rapide avec son hote.",
+    "canonicity": "manga",
+    "chakra_signature_color": "tan",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -8, "to_year": 16, "jinchuuriki": "gaara"}
+    ],
+    "epithets": ["ichibi", "tanuki monstrueux"],
+    "id": "shukaku",
+    "name_romaji": "Shukaku",
+    "personality_fr": "Cavalier, instable, paranoide, obsede par le sommeil et les paris. Apprivoise tardivement par Gaara.",
+    "sources": ["narutopedia:Shukaku"],
+    "tails": 1,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Lame de chakra Lava-Lava, force destructrice, vitalite enorme. Soutien fidele a son jinchuuriki.",
+    "canonicity": "manga",
+    "chakra_signature_color": "blue",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -45, "to_year": null, "jinchuuriki": "yugito_nii"}
+    ],
+    "epithets": ["nibi", "chat-monstre fantome"],
+    "id": "matatabi",
+    "name_romaji": "Matatabi",
+    "personality_fr": "Chat de feu bleu, posee, polie, parle calmement. Tres protectrice envers Yugito.",
+    "sources": ["narutopedia:Matatabi"],
+    "tails": 2,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Bulles d'eau chakratique, corail dur comme le diamant, controle marin.",
+    "canonicity": "manga",
+    "chakra_signature_color": "red",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -25, "to_year": null, "jinchuuriki": "yagura_karatachi"}
+    ],
+    "epithets": ["sanbi", "tortue-requin geante"],
+    "id": "isobu",
+    "name_romaji": "Isobu",
+    "personality_fr": "Calme, tres timide, blessee par les humains. Souffre de devoir s'exiler dans l'eau.",
+    "sources": ["narutopedia:Isobu"],
+    "tails": 3,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Volcan personnel : crachats de lave, vapeur, force brute pure. Resistance physique extreme.",
+    "canonicity": "manga",
+    "chakra_signature_color": "red",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -55, "to_year": null, "jinchuuriki": "han"},
+      {"from_year": -10, "to_year": null, "jinchuuriki": "roshi"}
+    ],
+    "epithets": ["yonbi", "singe a quatre queues"],
+    "id": "son_goku",
+    "name_romaji": "Son Goku",
+    "personality_fr": "Singe geant feru d'honneur, fier, parle un langage soutenu. Respecte ceux qui le respectent.",
+    "sources": ["narutopedia:Son_Goku"],
+    "tails": 4,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Vapeur d'eau brulante, force enorme, ondes d'expansion. Controle Han via la combinaison kekkei genkai du jinchuuriki.",
+    "canonicity": "manga",
+    "chakra_signature_color": "white",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -40, "to_year": null, "jinchuuriki": "han"}
+    ],
+    "epithets": ["gobi", "cheval-dauphin a cinq queues"],
+    "id": "kokuo",
+    "name_romaji": "Kokuo",
+    "personality_fr": "Stoique, peu loquace, force tranquille. Tres difficile a apprivoiser sans perte d'esprit.",
+    "sources": ["narutopedia:Kokuo"],
+    "tails": 5,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Bulles solidifiees, jets sous pression, dissolution corrosive. Manipulation des elements liquides.",
+    "canonicity": "manga",
+    "chakra_signature_color": "white",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -45, "to_year": null, "jinchuuriki": "utakata"}
+    ],
+    "epithets": ["rokubi", "limace a six queues"],
+    "id": "saiken",
+    "name_romaji": "Saiken",
+    "personality_fr": "Distante, serieuse, ne se livre qu'a son jinchuuriki apres long temps. Sage et patiente.",
+    "sources": ["narutopedia:Saiken"],
+    "tails": 6,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Manipulation precise du chakra (poudre dispersee), absorption d'attaques, tres agile en vol et au sol.",
+    "canonicity": "manga",
+    "chakra_signature_color": "blue",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -30, "to_year": null, "jinchuuriki": "fu"}
+    ],
+    "epithets": ["nanabi", "scarabee a sept queues"],
+    "id": "chomei",
+    "name_romaji": "Chomei",
+    "personality_fr": "Joviale, espiegle, papote facilement. Apprivoisee facilement grace au caractere de Fu.",
+    "sources": ["narutopedia:Chomei"],
+    "tails": 7,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Tentacules colossaux, encre paralysante, raitons enormes via Killer B. Force surhumaine.",
+    "canonicity": "manga",
+    "chakra_signature_color": "purple",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -55, "to_year": -40, "jinchuuriki": "blue_b"},
+      {"from_year": -25, "to_year": null, "jinchuuriki": "killer_b"}
+    ],
+    "epithets": ["hachibi", "boeuf-pieuvre a huit queues"],
+    "id": "gyuki",
+    "name_romaji": "Gyuki",
+    "personality_fr": "Sage, blagueur, parle en mots savants entrecoupes de jeux de mots. Forte amitie avec Killer B.",
+    "sources": ["narutopedia:Gyuki"],
+    "tails": 8,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Chakra demoniaque dense, regeneration acceleree, telepathie partielle, manipulation de la haine.",
+    "canonicity": "manga",
+    "chakra_signature_color": "orange_red",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -55, "to_year": -45, "jinchuuriki": "uzumaki_mito"},
+      {"from_year": -45, "to_year": -7, "jinchuuriki": "uzumaki_kushina"},
+      {"from_year": 1, "to_year": null, "jinchuuriki": "uzumaki_naruto"}
+    ],
+    "epithets": ["kyuubi no kitsune", "renard a neuf queues"],
+    "id": "kurama",
+    "name_romaji": "Kurama",
+    "personality_fr": "Initialement haineux et rancunier suite aux abus de Madara, evolue vers une relation de partenariat avec Naruto.",
+    "sources": ["narutopedia:Kurama"],
+    "tails": 9,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "abilities_fr": "Forme initiale de tous les bijuu, puissance totale combinee. Forme finale : Shinju, l'arbre divin originel.",
+    "canonicity": "manga",
+    "chakra_signature_color": "purple",
+    "current_jinchuuriki_by_era": [
+      {"from_year": -1000, "to_year": -995, "jinchuuriki": "kaguya_otsutsuki"},
+      {"from_year": -995, "to_year": -990, "jinchuuriki": "hagoromo_otsutsuki"},
+      {"from_year": 16, "to_year": 17, "jinchuuriki": "uchiha_obito"},
+      {"from_year": 17, "to_year": 17, "jinchuuriki": "uchiha_madara"}
+    ],
+    "epithets": ["juubi", "bete a dix queues", "shinju"],
+    "id": "juubi",
+    "name_romaji": "Juubi",
+    "personality_fr": "Entite primordiale, intelligence brute non-humaine, designee comme la racine du chakra mondial.",
+    "sources": ["narutopedia:Ten-Tails"],
+    "tails": 10,
+    "updated_at": "2026-05-02"
+  }
+]

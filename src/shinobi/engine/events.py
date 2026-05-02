@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from shinobi.canon.models import CanonBundle, EventPrecondition
+from shinobi.engine.rumors import make_rumor_from_event
 from shinobi.engine.world import (
     CancelledEvent,
     CompletedEvent,
+    Rumor,
     ScheduledEvent,
     WorldState,
 )
@@ -83,11 +85,12 @@ def tick_scheduler(
     """Avance le scheduler d'evenements pour la date courante du monde.
 
     Pour chaque evenement scheduled dont la date est passee, evalue les preconditions.
-    Si toutes ok, marque triggered. Sinon applique la strategie de cancellation.
+    Si toutes ok, marque triggered + propage rumeur. Sinon strategie de cancellation.
     """
     new_scheduled: list[ScheduledEvent] = []
     new_completed: list[CompletedEvent] = list(world.completed_events)
     new_cancelled: list[CancelledEvent] = list(world.cancelled_events)
+    new_rumors: list[Rumor] = list(world.rumors)
     fired: list[CompletedEvent] = []
     cancelled: list[CancelledEvent] = []
 
@@ -117,6 +120,15 @@ def tick_scheduler(
             )
             new_completed.append(completed)
             fired.append(completed)
+            # Genere une rumeur pour l'evenement declenche (radius selon ampleur)
+            radius = "international" if any(
+                kw in (canon_ev.name_fr or "").lower()
+                for kw in ("guerre", "kage", "kyuubi", "akatsuki", "uchiha", "konoha")
+            ) else "regional"
+            rumor = make_rumor_from_event(
+                canon_ev, born_at_year=world.current_year, radius=radius
+            )
+            new_rumors.append(rumor)
         else:
             strategy = canon_ev.cancellation_strategy.type
             if strategy == "delay":
@@ -141,6 +153,7 @@ def tick_scheduler(
             "scheduled_events": new_scheduled,
             "completed_events": new_completed,
             "cancelled_events": new_cancelled,
+            "rumors": new_rumors,
         }
     )
     return new_world, fired, cancelled

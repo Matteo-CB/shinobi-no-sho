@@ -1,0 +1,166 @@
+[
+  {
+    "active_period": [
+      {"from_year": -20, "to_year": 16, "phase": "yahiko_era"},
+      {"from_year": -10, "to_year": 16, "phase": "obito_era"}
+    ],
+    "canonicity": "manga",
+    "founders": ["yahiko", "nagato", "konan"],
+    "headquarters": ["amegakure_tower", "hidden_caves"],
+    "id": "akatsuki",
+    "ideology_fr": "Premier objectif : capturer les neuf bijuu pour invoquer le Gedo Mazo et lancer le Tsuki no Me, plan d'illusion mondiale.",
+    "leaders_by_era": [
+      {"from_year": -20, "to_year": -15, "leader": "yahiko"},
+      {"from_year": -15, "to_year": 0, "leader": "nagato_puppet_pain"},
+      {"from_year": 0, "to_year": 16, "leader": "uchiha_obito_as_madara"}
+    ],
+    "members_by_era": [
+      {"year": 12, "members": ["nagato", "konan", "uchiha_itachi", "hoshigaki_kisame", "deidara", "sasori", "hidan", "kakuzu", "uchiha_obito", "zetsu"]}
+    ],
+    "name_fr": "Aube",
+    "name_romaji": "Akatsuki",
+    "sources": ["narutopedia:Akatsuki"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -55, "to_year": null, "phase": "active"}],
+    "canonicity": "manga",
+    "founders": ["senju_tobirama"],
+    "headquarters": ["konohagakure_anbu_hq"],
+    "id": "anbu",
+    "ideology_fr": "Force speciale du Hokage executant les missions sensibles dans l'ombre, sous masques et noms de code.",
+    "leaders_by_era": [
+      {"from_year": -38, "to_year": -7, "leader": "sarutobi_hiruzen"},
+      {"from_year": -7, "to_year": 1, "leader": "namikaze_minato"}
+    ],
+    "members_by_era": [
+      {"year": 4, "members": ["uchiha_itachi", "hatake_kakashi", "uchiha_shisui"]}
+    ],
+    "name_fr": "Anbu",
+    "name_romaji": "Anbu",
+    "sources": ["narutopedia:Anbu"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -38, "to_year": 4, "phase": "shadow_anbu"}],
+    "canonicity": "manga",
+    "founders": ["shimura_danzo"],
+    "headquarters": ["konohagakure_root_hq"],
+    "id": "root",
+    "ideology_fr": "Section secrete des Anbu fondee par Danzo, agissant hors du commandement officiel du Hokage. Dissoute apres l'incident Uchiha.",
+    "leaders_by_era": [
+      {"from_year": -38, "to_year": 4, "leader": "shimura_danzo"}
+    ],
+    "members_by_era": [
+      {"year": 4, "members": ["sai", "shimura_danzo", "torune", "fu_yamanaka"]}
+    ],
+    "name_fr": "Racine",
+    "name_romaji": "Roto",
+    "sources": ["narutopedia:Root"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": 33, "to_year": 47, "phase": "kara_era"}],
+    "canonicity": "boruto_manga",
+    "founders": ["isshiki_otsutsuki"],
+    "headquarters": ["kara_hideout"],
+    "id": "kara",
+    "ideology_fr": "Organisation secrete cherchant a faire revivre Isshiki Otsutsuki et utiliser le karma pour creer un nouvel hote.",
+    "leaders_by_era": [
+      {"from_year": 33, "to_year": 47, "leader": "jigen"}
+    ],
+    "members_by_era": [
+      {"year": 35, "members": ["jigen", "delta", "code", "boro", "victor", "amado", "kashin_koji"]}
+    ],
+    "name_fr": "Kara",
+    "name_romaji": "Kara",
+    "sources": ["narutopedia:Kara"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -100, "to_year": null, "phase": "active"}],
+    "canonicity": "manga",
+    "founders": [],
+    "headquarters": ["seven_swordsmen_hideout_kiri"],
+    "id": "seven_ninja_swordsmen_of_the_mist",
+    "ideology_fr": "Confrerie d'epeistes legendaires de Kirigakure, chacun portant une des sept lames mythiques.",
+    "leaders_by_era": [],
+    "members_by_era": [
+      {"year": -5, "members": ["zabuza_momochi", "hoshigaki_kisame", "ringo_ameyuri", "munashi_jinpachi", "kuriarare_kushimaru", "akebino_jinin", "suikazan_fuguki"]}
+    ],
+    "name_fr": "Sept epeistes de la Brume",
+    "name_romaji": "Kirigakure no Shinobigatana Shichinin Shu",
+    "sources": ["narutopedia:Seven_Ninja_Swordsmen_of_the_Mist"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -55, "to_year": null, "phase": "active"}],
+    "canonicity": "manga",
+    "founders": ["uchiha_clan"],
+    "headquarters": ["konohagakure_police_hq"],
+    "id": "konoha_military_police_force",
+    "ideology_fr": "Force de police interne de Konoha, traditionnellement composee de membres du clan Uchiha. Dissoute apres le massacre.",
+    "leaders_by_era": [
+      {"from_year": -10, "to_year": 4, "leader": "uchiha_fugaku"}
+    ],
+    "members_by_era": [
+      {"year": 0, "members": ["uchiha_fugaku", "uchiha_itachi", "uchiha_shisui"]}
+    ],
+    "name_fr": "Police militaire de Konoha",
+    "name_romaji": "Konohagakure Keimu Butai",
+    "sources": ["narutopedia:Konoha_Military_Police_Force"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -100, "to_year": null, "phase": "active"}],
+    "canonicity": "manga",
+    "founders": [],
+    "headquarters": ["kage_summit_locations"],
+    "id": "five_kage",
+    "ideology_fr": "Conseil informel des chefs des cinq grandes nations ninjas, se reunissant lors des sommets pour traiter les crises.",
+    "leaders_by_era": [],
+    "members_by_era": [
+      {"year": 16, "members": ["hatake_kakashi", "gaara", "mei_terumi", "ay", "onoki"]}
+    ],
+    "name_fr": "Cinq Kage",
+    "name_romaji": "Gokage",
+    "sources": ["narutopedia:Five_Kage"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": -50, "to_year": null, "phase": "active"}],
+    "canonicity": "manga",
+    "founders": [],
+    "headquarters": ["mount_myoboku"],
+    "id": "mount_myoboku_sages",
+    "ideology_fr": "Communaute des crapauds-sages habitant Mont Myoboku, gardiens du senjutsu transmis a quelques humains exceptionnels.",
+    "leaders_by_era": [
+      {"from_year": -200, "to_year": null, "leader": "great_sage_toad"}
+    ],
+    "members_by_era": [
+      {"year": 12, "members": ["fukasaku", "shima", "gamamaru", "jiraiya", "uzumaki_naruto"]}
+    ],
+    "name_fr": "Sages du Mont Myoboku",
+    "name_romaji": "Myoboku-zan no Sennin",
+    "sources": ["narutopedia:Mount_Myoboku"],
+    "updated_at": "2026-05-02"
+  },
+  {
+    "active_period": [{"from_year": 33, "to_year": null, "phase": "active"}],
+    "canonicity": "boruto_manga",
+    "founders": ["uzumaki_boruto", "uchiha_sarada", "mitsuki"],
+    "headquarters": ["konohagakure"],
+    "id": "team_konohamaru",
+    "ideology_fr": "Genin de la nouvelle generation a Konoha, sous la tutelle de Konohamaru.",
+    "leaders_by_era": [
+      {"from_year": 33, "to_year": null, "leader": "konohamaru"}
+    ],
+    "members_by_era": [
+      {"year": 35, "members": ["uzumaki_boruto", "uchiha_sarada", "mitsuki"]}
+    ],
+    "name_fr": "Equipe Konohamaru",
+    "name_romaji": "Team Konohamaru",
+    "sources": ["narutopedia:Team_Konohamaru"],
+    "updated_at": "2026-05-02"
+  }
+]

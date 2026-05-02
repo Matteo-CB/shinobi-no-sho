@@ -1,0 +1,172 @@
+[
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques de chakra externes, variees selon les natures elementaires.",
+    "id": "ninjutsu",
+    "name_fr": "Ninjutsu",
+    "name_romaji": "Ninjutsu",
+    "sources": ["narutopedia:Ninjutsu"],
+    "typical_difficulty": 3,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Combat physique sans chakra ou avec chakra concentre dans le corps.",
+    "id": "taijutsu",
+    "name_fr": "Taijutsu",
+    "name_romaji": "Taijutsu",
+    "sources": ["narutopedia:Taijutsu"],
+    "typical_difficulty": 2,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Illusions affectant les sens d'autrui via manipulation du chakra cerebral.",
+    "id": "genjutsu",
+    "name_fr": "Genjutsu",
+    "name_romaji": "Genjutsu",
+    "sources": ["narutopedia:Genjutsu"],
+    "typical_difficulty": 4,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Maitrise du sabre et des techniques d'escrime avec ou sans chakra.",
+    "id": "kenjutsu",
+    "name_fr": "Kenjutsu",
+    "name_romaji": "Kenjutsu",
+    "sources": ["narutopedia:Kenjutsu"],
+    "typical_difficulty": 3,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Maitrise des armes ninja (kunai, shuriken, fuma, etc.).",
+    "id": "bukijutsu",
+    "name_fr": "Bukijutsu",
+    "name_romaji": "Bukijutsu",
+    "sources": ["narutopedia:Bukijutsu"],
+    "typical_difficulty": 2,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Sceaux fuinjutsu : stockage, scelle, transfert, contrats.",
+    "id": "fuinjutsu",
+    "name_fr": "Fuinjutsu",
+    "name_romaji": "Fuinjutsu",
+    "sources": ["narutopedia:Fuinjutsu"],
+    "typical_difficulty": 5,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Marques maudites imposant des effets sur le porteur (Juin Tatouage de Marque Maudite).",
+    "id": "juinjutsu",
+    "name_fr": "Juinjutsu",
+    "name_romaji": "Juinjutsu",
+    "sources": ["narutopedia:Cursed_Seal"],
+    "typical_difficulty": 7,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques utilisant le chakra naturel preleve dans l'environnement (mode sage).",
+    "id": "senjutsu",
+    "name_fr": "Senjutsu",
+    "name_romaji": "Senjutsu",
+    "sources": ["narutopedia:Senjutsu"],
+    "typical_difficulty": 8,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques medicales : guerison, operation, reanimation. Necessite controle chakra eleve.",
+    "id": "iryo_ninjutsu",
+    "name_fr": "Iryo Ninjutsu",
+    "name_romaji": "Iryo Ninjutsu",
+    "sources": ["narutopedia:Medical_Ninjutsu"],
+    "typical_difficulty": 5,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques interdites par le village pour leur cout, leur danger, ou leur immoralite.",
+    "id": "kinjutsu",
+    "name_fr": "Kinjutsu",
+    "name_romaji": "Kinjutsu",
+    "sources": ["narutopedia:Kinjutsu"],
+    "typical_difficulty": 8,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques secretes transmises uniquement au sein d'un clan ou village.",
+    "id": "hijutsu",
+    "name_fr": "Hijutsu",
+    "name_romaji": "Hijutsu",
+    "sources": ["narutopedia:Hiden"],
+    "typical_difficulty": 4,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Techniques heritees genetiquement par un clan (lignee de sang).",
+    "id": "kekkei_genkai",
+    "name_fr": "Kekkei Genkai",
+    "name_romaji": "Kekkei Genkai",
+    "sources": ["narutopedia:Kekkei_Genkai"],
+    "typical_difficulty": 6,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Heritage genetique des Otsutsuki, encore plus rare et puissant que les kekkei genkai.",
+    "id": "kekkei_mora",
+    "name_fr": "Kekkei Mora",
+    "name_romaji": "Kekkei Mora",
+    "sources": ["narutopedia:Kekkei_Mora"],
+    "typical_difficulty": 9,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Capacites associees a un dojutsu specifique (Sharingan, Byakugan, Rinnegan, etc.).",
+    "id": "dojutsu_ability",
+    "name_fr": "Capacite de Dojutsu",
+    "name_romaji": "Dojutsu",
+    "sources": ["narutopedia:Dojutsu"],
+    "typical_difficulty": 6,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Capacite unique a un personnage, non transmissible.",
+    "id": "unique_ability",
+    "name_fr": "Capacite unique",
+    "name_romaji": "Koyu no Noryoku",
+    "sources": ["narutopedia:Special_Abilities"],
+    "typical_difficulty": 7,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Invocation d'animaux ou entites sous contrat.",
+    "id": "summoning",
+    "name_fr": "Invocation",
+    "name_romaji": "Kuchiyose",
+    "sources": ["narutopedia:Summoning_Technique"],
+    "typical_difficulty": 5,
+    "updated_at": "2026-05-02"
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Barriere ou champ de chakra protecteur ou detecteur.",
+    "id": "barrier",
+    "name_fr": "Barriere",
+    "name_romaji": "Kekkai",
+    "sources": ["narutopedia:Barrier_Ninjutsu"],
+    "typical_difficulty": 4,
+    "updated_at": "2026-05-02"
+  }
+]

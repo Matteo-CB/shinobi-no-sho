@@ -1,4 +1,4 @@
-"""Orchestrateur de tour narratif : assemble RAG, voice profiles et appelle le LLM."""
+"""Orchestrateurs LLM : narrator, character interpreter, world resolver."""
 
 from __future__ import annotations
 
@@ -139,6 +139,131 @@ class Narrator:
             proposed_actions=proposed_actions,
             world_observations=data.get("world_observations", []),
             clarification_request=data.get("clarification_request"),
+        )
+
+
+# ---------------------------------------------------------------------------
+# Character Interpreter LLM (fallback de l'heuristique engine.interpreter)
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class InterpretedIntent:
+    """Resultat de l'interpretation LLM d'une action libre."""
+
+    action_type: str
+    summary: str
+    parameters: dict[str, Any]
+    target_id: str | None
+    clarification_questions: list[str]
+
+
+class CharacterInterpreter:
+    """LLM-driven interpretation des actions joueur ambigues."""
+
+    def __init__(self, client: LLMClient) -> None:
+        self.client = client
+
+    async def interpret(self, free_text: str, *, context_summary: str = "") -> InterpretedIntent:
+        from shinobi.llm.prompts import CHARACTER_INTERPRETER_SYSTEM_PROMPT
+        from shinobi.llm.schema import CHARACTER_INTERPRETER_SCHEMA
+
+        user_msg = (
+            f"[CONTEXTE]\n{context_summary}\n\n"
+            f"[ACTION DU JOUEUR]\n{free_text}\n\n"
+            f"[INSTRUCTION]\nClassifie cette action et reponds en JSON conforme."
+        )
+        response = await self.client.generate(
+            messages=[
+                Message(role="system", content=CHARACTER_INTERPRETER_SYSTEM_PROMPT),
+                Message(role="user", content=user_msg),
+            ],
+            schema=CHARACTER_INTERPRETER_SCHEMA,
+        )
+        if response.parsed_json is None:
+            return InterpretedIntent(
+                action_type="custom",
+                summary=free_text,
+                parameters={},
+                target_id=None,
+                clarification_questions=[],
+            )
+        intent = response.parsed_json.get("intention", {})
+        return InterpretedIntent(
+            action_type=intent.get("action_type", "custom"),
+            summary=intent.get("summary", free_text),
+            parameters=intent.get("parameters", {}),
+            target_id=intent.get("target_id"),
+            clarification_questions=response.parsed_json.get("clarification_questions", []),
+        )
+
+
+# ---------------------------------------------------------------------------
+# World Resolver LLM (resout les divergences canoniques complexes)
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class WorldResolution:
+    """Resultat du WorldResolver pour un evenement annule."""
+
+    substitute_event_summary: str
+    consequences: list[dict[str, Any]]
+    rumor_template: str | None
+
+
+class WorldResolver:
+    """LLM qui propose des consequences narratives quand un event canon est annule."""
+
+    def __init__(self, client: LLMClient, canon: CanonBundle) -> None:
+        self.client = client
+        self.canon = canon
+
+    async def resolve_cancelled_event(
+        self,
+        *,
+        event_id: str,
+        cancellation_reason: str,
+        current_year: int,
+    ) -> WorldResolution:
+        from shinobi.llm.prompts import WORLD_RESOLVER_SYSTEM_PROMPT
+        from shinobi.llm.schema import WORLD_RESOLVER_SCHEMA
+
+        ev = self.canon.timeline_events.get(event_id)
+        if ev is None:
+            return WorldResolution(
+                substitute_event_summary="Evenement inconnu, aucun substitut.",
+                consequences=[],
+                rumor_template=None,
+            )
+        user_msg = (
+            f"[EVENEMENT ANNULE]\n"
+            f"Id : {event_id}\n"
+            f"Nom : {ev.name_fr}\n"
+            f"Date prevue : an {ev.year}{', ' + ev.date if ev.date else ''}\n"
+            f"Resume canon : {ev.narrative_summary_fr}\n"
+            f"Raison annulation : {cancellation_reason}\n"
+            f"Annee courante in-game : {current_year}\n\n"
+            f"[INSTRUCTION]\nProduis un substitut narratif et liste les consequences en cascade."
+        )
+        response = await self.client.generate(
+            messages=[
+                Message(role="system", content=WORLD_RESOLVER_SYSTEM_PROMPT),
+                Message(role="user", content=user_msg),
+            ],
+            schema=WORLD_RESOLVER_SCHEMA,
+        )
+        if response.parsed_json is None:
+            return WorldResolution(
+                substitute_event_summary="Le canon est devie, mais aucune narration n'a pu etre generee.",
+                consequences=[],
+                rumor_template=None,
+            )
+        data = response.parsed_json
+        return WorldResolution(
+            substitute_event_summary=data.get("substitute_event_summary", ""),
+            consequences=data.get("consequences", []),
+            rumor_template=data.get("rumor_template"),
         )
 
 

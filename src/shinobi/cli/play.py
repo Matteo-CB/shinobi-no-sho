@@ -48,7 +48,10 @@ META_HELP = {
     "/status": "Affiche le panneau de statut detaille",
     "/techniques": "Liste tes techniques connues et en cours",
     "/objectives": "Liste tes objectifs declares",
+    "/declare": "Declare un nouvel objectif (texte libre)",
+    "/path <goal_id>": "Demande au pathfinder LLM le prochain pas vers un objectif",
     "/missions": "Liste les missions disponibles",
+    "/reputation": "Affiche ta reputation par village",
     "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
     "/journal": "Indique ou se trouve le journal",
     "/help": "Affiche cette aide",
@@ -88,6 +91,23 @@ def play_session(save_id: str) -> None:
     )
 
     store = ChromaStore()
+    # Auto-indexation au premier lancement si l'index ChromaDB est vide
+    try:
+        if store.count("crossdomain") == 0:
+            console.print("[dim]Premiere utilisation : indexation RAG en cours...[/dim]")
+            from shinobi.rag.chunker import chunk_all
+            from shinobi.rag.embedder import embed_texts
+
+            chunks = chunk_all(canon)
+            total = len(chunks)
+            for i in range(0, total, 64):
+                batch = chunks[i : i + 64]
+                vecs = embed_texts([c.text for c in batch], batch_size=64)
+                store.add_chunks(batch, vecs)
+            console.print(f"[green]RAG indexe : {total} chunks.[/green]")
+    except Exception as exc:
+        console.print(f"[dim]Indexation RAG echouee : {type(exc).__name__}[/dim]")
+
     retriever = Retriever(store, canon)
     turn = meta.total_turns
     last_proposed: list[dict] = []
@@ -115,7 +135,7 @@ def play_session(save_id: str) -> None:
 
         if intent_text.startswith("/"):
             should_continue, character, world = _handle_meta(
-                intent_text, character, world, save_id, canon, pending_missions
+                intent_text, character, world, save_id, canon, pending_missions, retriever=retriever
             )
             if not should_continue:
                 save_module.append_narrative_log(
@@ -329,7 +349,7 @@ def _default_duration_index(target_hours: int) -> int:
     return best_i
 
 
-def _handle_meta(command: str, character, world, save_id: str, canon, pending_missions: list):
+def _handle_meta(command: str, character, world, save_id: str, canon, pending_missions: list, retriever=None):
     """Traite une commande meta. Retourne (continue, character, world)."""
     if command in ("/quit", "/exit"):
         return False, character, world
@@ -341,8 +361,43 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
     elif command == "/techniques":
         print_techniques(console, character)
     elif command == "/objectives":
-        descriptions = [f"{g.goal_id} : {g.status.value}" for g in character.declared_goals]
+        goals = save_module.load_goals(save_id)
+        descriptions = [
+            f"[{g.id[:8]}] {g.description_player} - {g.status.value}" for g in goals
+        ]
         print_objectives(console, descriptions)
+    elif command == "/declare":
+        from shinobi.goals.declaration import declare_goal
+
+        text = Prompt.ask("[bold cyan]Decris ton objectif[/bold cyan]")
+        if text.strip():
+            goal = declare_goal(
+                description_player=text.strip(),
+                interpretation_canonical=text.strip(),
+                declared_at_year=world.current_year,
+                declared_at_age=character.age_years,
+            )
+            save_module.save_goal(save_id, goal)
+            console.print(f"[green]Objectif declare : {goal.id[:8]}[/green]")
+    elif command.startswith("/path"):
+        parts = command.split(maxsplit=1)
+        goal_id_partial = parts[1].strip() if len(parts) > 1 else ""
+        goals = save_module.load_goals(save_id)
+        target_goal = next((g for g in goals if g.id.startswith(goal_id_partial)), None)
+        if target_goal is None:
+            console.print(f"[red]Objectif introuvable : {goal_id_partial}[/red]")
+        else:
+            console.print(f"[cyan]Recherche du chemin pour : {target_goal.description_player}[/cyan]")
+            try:
+                asyncio.run(_pathfinder_flow(target_goal, character, world, canon, retriever, save_id))
+            except Exception as exc:
+                console.print(f"[dim]Pathfinder LLM indisponible ({type(exc).__name__})[/dim]")
+    elif command == "/reputation":
+        if not character.reputation.by_village:
+            console.print(Panel("Aucune reputation enregistree.", title="Reputation"))
+        else:
+            lines = [f"  {e.village_id}: {e.score}" for e in character.reputation.by_village]
+            console.print(Panel("\n".join(lines), title="Reputation par village"))
     elif command == "/missions":
         character, world = _missions_flow(character, world, save_id, canon)
     elif command.startswith("/skip"):
@@ -451,6 +506,46 @@ def _missions_flow(character, world, save_id: str, canon):
     )
     new_world = new_world.model_copy(update={"seed": next_seed(r.seed_after) & 0x7FFFFFFFFFFFFFFF})
     return new_char, new_world
+
+
+async def _pathfinder_flow(goal, character, world, canon, retriever, save_id: str) -> None:
+    """Demande au pathfinder LLM le prochain pas vers un objectif."""
+    from shinobi.goals.pathfinder import GoalPathfinder, PathfinderRequest
+    from shinobi.llm.client import LLMClient
+
+    async with LLMClient() as client:
+        if not await client.health():
+            console.print("[dim]Serveur LLM hors ligne[/dim]")
+            return
+        pathfinder = GoalPathfinder(client, canon, retriever)
+        existing_breadcrumbs = save_module.load_breadcrumbs(save_id, parent_goal_id=goal.id)
+        seq = len(existing_breadcrumbs) + 1
+        request = PathfinderRequest(
+            goal=goal,
+            character_state_summary=(
+                f"{character.name}, {character.age_years} ans, {character.rank} a {character.current_village}, "
+                f"clan {character.clan or 'civil'}"
+            ),
+            current_year=world.current_year,
+            sequence_index=seq,
+        )
+        response = await pathfinder.find_path(request)
+        console.print(Panel(response.interpretation or "(pas d'interpretation)", title="Interpretation", border_style="cyan"))
+        for bc in response.breadcrumbs:
+            save_module.save_breadcrumb(save_id, bc)
+            price_str = ""
+            if bc.price_paid and bc.price_paid.type != "none":
+                amt = f" ({bc.price_paid.amount})" if bc.price_paid.amount else ""
+                price_str = f"\n  Prix : [{bc.price_paid.type}{amt}] {bc.price_paid.description}"
+            console.print(
+                Panel(
+                    f"[bold]{bc.description}[/bold]\n"
+                    f"  Base canonique : {bc.canonical_basis}"
+                    + price_str,
+                    title=f"Indice {bc.sequence_index} pour '{goal.description_player[:40]}'",
+                    border_style="magenta",
+                )
+            )
 
 
 def _skip_time(command: str, character, world):
