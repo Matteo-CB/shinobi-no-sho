@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Launcher bash pour shinobi : marche dans Git Bash, WSL, Linux, macOS
-# sans necessiter l'activation prealable du venv.
+# Launcher bash pour shinobi : marche dans Git Bash, WSL, Linux, macOS.
+# Auto-repare si le package n'est pas installe.
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -9,7 +9,11 @@ if [[ -f "$PROJECT_ROOT/.venv/Scripts/python.exe" ]]; then
 elif [[ -f "$PROJECT_ROOT/.venv/bin/python" ]]; then
     PY="$PROJECT_ROOT/.venv/bin/python"
 else
-    echo "venv introuvable a $PROJECT_ROOT/.venv. Lance d'abord scripts/setup.sh" >&2
+    echo "[shinobi] venv introuvable a $PROJECT_ROOT/.venv. Lance scripts/setup.sh d'abord." >&2
     exit 1
+fi
+if ! "$PY" -c "import shinobi" 2>/dev/null; then
+    echo "[shinobi] Package non installe, reparation automatique..." >&2
+    (cd "$PROJECT_ROOT" && "$PY" -m pip install -e . --quiet)
 fi
 exec "$PY" -m shinobi "$@"
