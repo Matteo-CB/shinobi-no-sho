@@ -35,6 +35,15 @@ def root(ctx: typer.Context) -> None:
             bootstrap_index(console=console)
         except Exception as exc:
             console.print(f"[dim]Bootstrap RAG ignore : {type(exc).__name__}[/dim]")
+        # Bootstrap LLM : lance llama-server en background s'il n'est pas deja up.
+        # No-op si le serveur repond deja. Fallback silencieux si llama-server ou
+        # le modele est introuvable (le jeu marche en mode mecanique).
+        try:
+            from shinobi.llm.server_bootstrap import ensure_llm_server
+
+            ensure_llm_server(console=console)
+        except Exception as exc:
+            console.print(f"[dim]Bootstrap LLM ignore : {type(exc).__name__}[/dim]")
         main_loop()
 
 

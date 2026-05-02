@@ -113,6 +113,13 @@ def play_session(save_id: str) -> None:
         bootstrap_index(console=console)
     except Exception as exc:
         console.print(f"[dim]Bootstrap RAG echoue : {type(exc).__name__}[/dim]")
+    # Bootstrap LLM : assure que llama-server tourne en arriere-plan.
+    try:
+        from shinobi.llm.server_bootstrap import ensure_llm_server
+
+        ensure_llm_server(console=console)
+    except Exception as exc:
+        console.print(f"[dim]Bootstrap LLM ignore : {type(exc).__name__}[/dim]")
     store = ChromaStore()
 
     retriever = Retriever(store, canon)
