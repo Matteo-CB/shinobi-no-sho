@@ -2,11 +2,32 @@
 # Usage : .\scripts\start_llm_server.ps1
 
 param(
-    [string]$ModelPath = "models\llm\Qwen3-8B-UD-Q5_K_XL.gguf",
-    [int]$GpuLayers = 99,
-    [int]$ContextSize = 16384,
+    [string]$ModelPath = "",
+    [int]$GpuLayers = -1,
+    [int]$ContextSize = -1,
     [int]$Port = 8080
 )
+
+# Auto-load les valeurs depuis .env si pas fournies en parametres.
+$envPath = Join-Path $PSScriptRoot "..\.env"
+if (Test-Path $envPath) {
+    Get-Content $envPath | ForEach-Object {
+        if ($_ -match '^LLM_MODEL_PATH=(.+)$' -and [string]::IsNullOrWhiteSpace($ModelPath)) {
+            $ModelPath = $matches[1].Trim()
+        }
+        elseif ($_ -match '^LLM_GPU_LAYERS=(\d+)$' -and $GpuLayers -lt 0) {
+            $GpuLayers = [int]$matches[1]
+        }
+        elseif ($_ -match '^LLM_CONTEXT_SIZE=(\d+)$' -and $ContextSize -lt 0) {
+            $ContextSize = [int]$matches[1]
+        }
+    }
+}
+if ([string]::IsNullOrWhiteSpace($ModelPath)) {
+    $ModelPath = "models\llm\Qwen3-8B-UD-Q5_K_XL.gguf"
+}
+if ($GpuLayers -lt 0) { $GpuLayers = 99 }
+if ($ContextSize -lt 0) { $ContextSize = 16384 }
 
 $ErrorActionPreference = "Stop"
 
