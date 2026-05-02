@@ -4,12 +4,12 @@
     "cancellation_strategy": {"type": "hard_cancel"},
     "date": "01-01",
     "id": "kaguya_eats_chakra_fruit",
-    "involved_characters": ["kaguya_otsutsuki"],
+    "involved_characters": ["otsutsuki_kaguya"],
     "location": "shinju_world",
     "name_fr": "Kaguya consomme le fruit du Shinju",
     "narrative_summary_fr": "Kaguya Otsutsuki consomme le fruit interdit du Shinju et devient la premiere humaine porteuse du chakra. Sa folie de pouvoir mene a la fusion avec le Juubi.",
     "outcomes": [
-      {"type": "character_acquired_power", "parameters": {"character_id": "kaguya_otsutsuki", "power": "chakra_origin"}}
+      {"type": "character_acquired_power", "parameters": {"character_id": "otsutsuki_kaguya", "power": "chakra_origin"}}
     ],
     "preconditions": [],
     "sources": ["narutopedia:Kaguya_Otsutsuki"],
@@ -21,7 +21,7 @@
     "cancellation_strategy": {"type": "hard_cancel"},
     "date": "06-15",
     "id": "hagoromo_indra_asura_birth",
-    "involved_characters": ["hagoromo_otsutsuki", "indra_otsutsuki", "asura_otsutsuki"],
+    "involved_characters": ["otsutsuki_hagoromo", "otsutsuki_indra", "otsutsuki_asura"],
     "location": "ancient_world",
     "name_fr": "Naissance d'Indra et Asura, fils du Sage des Six Voies",
     "narrative_summary_fr": "Hagoromo Otsutsuki, le Sage des Six Voies, vainc sa mere Kaguya avec son frere Hamura, puis enseigne le chakra au monde. Ses deux fils Indra (genie) et Asura (volonte) deviennent les ancetres respectifs des Uchiha et des Senju.",
@@ -547,18 +547,18 @@
     "cancellation_strategy": {"type": "delay"},
     "date": "06-15",
     "id": "wave_country_arc",
-    "involved_characters": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura", "hatake_kakashi", "zabuza_momochi", "haku"],
+    "involved_characters": ["uzumaki_naruto", "uchiha_sasuke", "haruno_sakura", "hatake_kakashi", "momochi_zabuza", "haku"],
     "location": "wave_country",
     "name_fr": "Mission au Pays des Vagues",
     "narrative_summary_fr": "Premiere mission C-rang devenue A-rang. L'equipe 7 affronte Zabuza et Haku au pont de Tazuna. Naruto et Sasuke debloquent leurs limites. Zabuza et Haku meurent.",
     "outcomes": [
-      {"type": "character_death", "parameters": {"character_id": "zabuza_momochi"}},
+      {"type": "character_death", "parameters": {"character_id": "momochi_zabuza"}},
       {"type": "character_death", "parameters": {"character_id": "haku"}},
       {"type": "team_growth", "parameters": {"team_id": "team_7"}}
     ],
     "preconditions": [
       {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}},
-      {"type": "character_alive", "parameters": {"character_id": "zabuza_momochi"}}
+      {"type": "character_alive", "parameters": {"character_id": "momochi_zabuza"}}
     ],
     "sources": ["narutopedia:Land_of_Waves_Arc"],
     "updated_at": "2026-05-02",
@@ -794,12 +794,12 @@
     "cancellation_strategy": {"type": "cascade_cancel"},
     "date": "07-05",
     "id": "team_taka_formation",
-    "involved_characters": ["uchiha_sasuke", "suigetsu_hozuki", "karin", "jugo"],
+    "involved_characters": ["uchiha_sasuke", "hozuki_suigetsu", "karin", "jugo"],
     "location": "northern_hideout",
     "name_fr": "Formation de l'equipe Taka (Hawk)",
     "narrative_summary_fr": "Apres avoir absorbe Orochimaru, Sasuke forme sa propre equipe pour traquer Itachi : Suigetsu Hozuki, Karin Uzumaki, Jugo. L'equipe s'appelle d'abord Hebi puis devient Taka.",
     "outcomes": [
-      {"type": "team_formed", "parameters": {"team_id": "taka", "members": ["uchiha_sasuke", "suigetsu_hozuki", "karin", "jugo"]}}
+      {"type": "team_formed", "parameters": {"team_id": "taka", "members": ["uchiha_sasuke", "hozuki_suigetsu", "karin", "jugo"]}}
     ],
     "preconditions": [
       {"type": "character_alive", "parameters": {"character_id": "uchiha_sasuke"}}
@@ -875,7 +875,7 @@
     "cancellation_strategy": {"type": "delay"},
     "date": "10-04",
     "id": "five_kage_summit",
-    "involved_characters": ["danzo_shimura", "ay", "onoki", "mei_terumi", "gaara", "uchiha_sasuke"],
+    "involved_characters": ["shimura_danzo", "ay", "onoki", "terumi_mei", "gaara", "uchiha_sasuke"],
     "location": "iron_country",
     "name_fr": "Sommet des Cinq Kage",
     "narrative_summary_fr": "Premier sommet officiel des Kage depuis la fondation des villages. Decision de declarer la guerre a l'Akatsuki. Sasuke fait irruption pour tuer Danzo.",
@@ -911,7 +911,7 @@
     "cancellation_strategy": {"type": "cascade_cancel"},
     "date": "10-09",
     "id": "naruto_meets_killer_b",
-    "involved_characters": ["uzumaki_naruto", "killer_b", "kurama"],
+    "involved_characters": ["uzumaki_naruto", "b_killer", "kurama"],
     "location": "turtle_island",
     "name_fr": "Naruto controle Kurama avec Killer B",
     "narrative_summary_fr": "Naruto se rend sur l'ile de la Tortue avec Killer B pour apprendre a controler Kurama. Il vainc la haine du renard et obtient le mode Kyuubi puis Kurama Mode.",
@@ -921,7 +921,7 @@
     ],
     "preconditions": [
       {"type": "character_alive", "parameters": {"character_id": "uzumaki_naruto"}},
-      {"type": "character_alive", "parameters": {"character_id": "killer_b"}}
+      {"type": "character_alive", "parameters": {"character_id": "b_killer"}}
     ],
     "sources": ["narutopedia:Kurama"],
     "updated_at": "2026-05-02",
@@ -992,12 +992,12 @@
     "cancellation_strategy": {"type": "delay"},
     "date": "06-15",
     "id": "kaguya_resurrection_and_defeat",
-    "involved_characters": ["kaguya_otsutsuki", "uzumaki_naruto", "uchiha_sasuke", "hatake_kakashi", "haruno_sakura", "uchiha_obito"],
+    "involved_characters": ["otsutsuki_kaguya", "uzumaki_naruto", "uchiha_sasuke", "hatake_kakashi", "haruno_sakura", "uchiha_obito"],
     "location": "various_dimensions",
     "name_fr": "Resurrection et defaite de Kaguya",
     "narrative_summary_fr": "Madara devient le receptacle du Juubi puis se fait absorber par Kaguya, ressuscitee. Naruto, Sasuke, Sakura et Kakashi defont Kaguya en plusieurs dimensions.",
     "outcomes": [
-      {"type": "character_sealed", "parameters": {"character_id": "kaguya_otsutsuki"}},
+      {"type": "character_sealed", "parameters": {"character_id": "otsutsuki_kaguya"}},
       {"type": "war_ended", "parameters": {"war_id": "fourth_great_war"}},
       {"type": "character_acquired_power", "parameters": {"character_id": "uzumaki_naruto", "power": "rikudou_chakra"}},
       {"type": "character_acquired_power", "parameters": {"character_id": "uchiha_sasuke", "power": "rinnegan"}}
@@ -1152,7 +1152,7 @@
     "cancellation_strategy": {"type": "delay"},
     "date": "11-20",
     "id": "isshiki_arrives_kara",
-    "involved_characters": ["isshiki_otsutsuki", "jigen", "kawaki"],
+    "involved_characters": ["otsutsuki_isshiki", "jigen", "kawaki"],
     "location": "kara_hideout",
     "name_fr": "Isshiki revele dans Jigen",
     "narrative_summary_fr": "Le moine Jigen est revele etre le receptacle d'Isshiki Otsutsuki, qui se prepare a renaitre completement via Kawaki.",
@@ -1171,7 +1171,7 @@
     "cancellation_strategy": {"type": "cascade_cancel"},
     "date": "03-15",
     "id": "kurama_death",
-    "involved_characters": ["uzumaki_naruto", "kurama", "uchiha_sasuke", "isshiki_otsutsuki"],
+    "involved_characters": ["uzumaki_naruto", "kurama", "uchiha_sasuke", "otsutsuki_isshiki"],
     "location": "alternate_dimension",
     "name_fr": "Mort de Kurama",
     "narrative_summary_fr": "Pour vaincre Isshiki, Naruto active le Mode Baryon avec Kurama. La technique consume la vie de Kurama qui meurt apres la victoire. Naruto perd ses pouvoirs de jinchuuriki.",
@@ -1181,7 +1181,7 @@
     ],
     "preconditions": [
       {"type": "character_alive", "parameters": {"character_id": "kurama"}},
-      {"type": "character_alive", "parameters": {"character_id": "isshiki_otsutsuki"}}
+      {"type": "character_alive", "parameters": {"character_id": "otsutsuki_isshiki"}}
     ],
     "sources": ["narutopedia:Kurama"],
     "updated_at": "2026-05-02",

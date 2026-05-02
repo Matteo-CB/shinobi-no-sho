@@ -279,6 +279,132 @@ def _detect_clan(parsed: dict) -> str | None:
     return None
 
 
+# Mapping village -> id depuis les categories Narutopedia
+_CATEGORY_TO_VILLAGE: dict[str, str] = {
+    "Category:Konohagakure Characters": "konohagakure",
+    "Category:Sunagakure Characters": "sunagakure",
+    "Category:Kirigakure Characters": "kirigakure",
+    "Category:Kumogakure Characters": "kumogakure",
+    "Category:Iwagakure Characters": "iwagakure",
+    "Category:Otogakure Characters": "otogakure",
+    "Category:Amegakure Characters": "amegakure",
+    "Category:Takigakure Characters": "takigakure",
+    "Category:Yugakure Characters": "yugakure",
+    "Category:Hoshigakure Characters": "hoshigakure",
+    "Category:Kusagakure Characters": "kusagakure",
+    "Category:Yukigakure Characters": "yukigakure",
+    "Category:Shimogakure Characters": "shimogakure",
+    "Category:Tanigakure Characters": "tanigakure",
+}
+
+
+def _detect_village_from_categories(categories: list[str]) -> str | None:
+    """Detecte village depuis Category:<Village>gakure Characters."""
+    for cat in categories:
+        if cat in _CATEGORY_TO_VILLAGE:
+            return _CATEGORY_TO_VILLAGE[cat]
+    return None
+
+
+# Mots-cles de natures dans les wiki_links (ex: Fire Release, Wind Release, etc.)
+_NATURE_LINKS = {
+    "Fire Release": "katon",
+    "Water Release": "suiton",
+    "Wind Release": "fuuton",
+    "Earth Release": "doton",
+    "Lightning Release": "raiton",
+    "Wood Release": "mokuton",
+    "Ice Release": "hyouton",
+    "Lava Release": "youton",
+    "Boil Release": "futton",
+    "Storm Release": "ranton",
+    "Magnet Release": "jiton",
+    "Dust Release": "jinton",
+    "Crystal Release": "shouton",
+    "Scorch Release": "shakuton",
+    "Yin Release": "inton",
+    "Yang Release": "youton_yang",
+    "Yin-Yang Release": "onmyoton",
+}
+
+
+def _detect_natures_from_links(parsed: dict) -> list[str]:
+    """Extrait les natures depuis les wiki_links '{{X Release}}' classiques."""
+    out: list[str] = []
+    for link in parsed.get("wiki_links", []):
+        if link in _NATURE_LINKS:
+            slug = _NATURE_LINKS[link]
+            if slug not in out:
+                out.append(slug)
+    return out
+
+
+# Mots-cles de kekkei genkai dans wiki_links
+_KEKKEI_LINKS = {
+    "Sharingan": "sharingan",
+    "Byakugan": "byakugan",
+    "Rinnegan": "rinnegan",
+    "Mangekyo Sharingan": "mangekyo_sharingan",
+    "Tenseigan": "tenseigan",
+    "Jougan": "jougan",
+    "Ketsuryugan": "ketsuryugan",
+    "Mokuton": "mokuton",
+    "Hyouton": "hyouton",
+    "Hyoton": "hyouton",
+    "Youton": "youton",
+    "Futton": "futton",
+    "Jiton": "jiton",
+    "Jinton": "jinton",
+    "Shouton": "shouton",
+    "Shakuton": "shakuton",
+    "Ranton": "ranton",
+    "Hyaton": "hyaton",
+    "Shikotsumyaku": "shikotsumyaku",
+    "Hydrification Technique": "hydrification",
+}
+
+
+def _detect_kekkei_from_links(parsed: dict) -> list[str]:
+    """Extrait les kekkei genkai depuis les wiki_links."""
+    out: list[str] = []
+    for link in parsed.get("wiki_links", []):
+        if link in _KEKKEI_LINKS:
+            slug = _KEKKEI_LINKS[link]
+            if slug not in out:
+                out.append(slug)
+    return out
+
+
+# Date de naissance : pattern 'born on October 10' ou 'born in year XX' dans le wikitext
+_BIRTH_PATTERNS = [
+    r"born on (?:the night of )?(\w+) (\d+)",  # born on October 10
+    r"born in (\d{4})",  # born in year 1234 (rare)
+]
+
+
+def _detect_birth_date_from_text(parsed: dict) -> str | None:
+    """Extrait birth_date 'MM-DD' depuis l'intro si pattern reconnu."""
+    sections = parsed.get("sections", [])
+    if not sections:
+        return None
+    text = sections[0].get("text", "") + "\n"
+    if len(sections) > 1:
+        # Background section souvent
+        for s in sections[1:5]:
+            text += s.get("text", "") + "\n"
+    months = {
+        "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+        "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12,
+    }
+    m = re.search(r"\bborn on (?:the night of |the )?(\w+) (\d+)", text, re.IGNORECASE)
+    if m:
+        month_name = m.group(1).lower()
+        day = int(m.group(2))
+        if month_name in months:
+            return f"{months[month_name]:02d}-{day:02d}"
+    return None
+
+
 def map_character(parsed: dict) -> dict[str, Any] | None:
     title = parsed.get("title", "").strip()
     if not title or title.startswith("List of") or title.startswith("Category:"):
@@ -297,22 +423,31 @@ def map_character(parsed: dict) -> dict[str, Any] | None:
     if not char_id:
         return None
     intro = _intro_text(parsed, max_chars=1200)
+    # Village : priorite categories > infobox > heuristique texte > defaut
     village_slug = (
-        slugify(_first_link(params.get("affiliation")) or "")
+        _detect_village_from_categories(parsed.get("categories", []))
+        or slugify(_first_link(params.get("affiliation")) or "")
         or _detect_village(intro)
         or "konohagakure"
     )
     sex = _gender(params.get("sex") or params.get("gender"))
     birth_year = _int(params.get("birthdate"))
+    birth_date = _detect_birth_date_from_text(parsed)
+    # Natures : infobox > wiki_links (Fire Release, etc.)
     natures = _slug_from_links(
         params.get("nature type") or params.get("nature_type") or params.get("nature")
     )
+    if not natures:
+        natures = _detect_natures_from_links(parsed)
+    # Kekkei genkai : infobox > wiki_links (Sharingan, Byakugan, etc.)
     kekkei_genkai = _slug_from_links(params.get("kekkei genkai") or params.get("kekkei_genkai"))
+    if not kekkei_genkai:
+        kekkei_genkai = _detect_kekkei_from_links(parsed)
     techniques = _slug_from_links(params.get("jutsu"), transform=slug_technique)
     if not techniques:
         techniques = _detect_links_to_techniques(parsed)[:30]
     clan = _detect_clan(parsed)
-    return {
+    out = {
         "canonicity": str(Canonicity.manga),
         "id": char_id,
         "clan": clan,
@@ -332,6 +467,9 @@ def map_character(parsed: dict) -> dict[str, Any] | None:
         "current_village_by_era": [],
         "wiki_sections": _extract_all_sections(parsed),
     }
+    if birth_date:
+        out["birth_date"] = birth_date
+    return out
 
 
 def map_technique(parsed: dict) -> dict[str, Any] | None:

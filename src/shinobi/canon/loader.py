@@ -137,6 +137,13 @@ def load_canon(
         clans=len(bundle.clans),
         events=len(bundle.timeline_events),
     )
+    # Audit referentiel (log warning si refs cassees, ne bloque jamais le load).
+    try:
+        from shinobi.canon.integrity import validate_canon_integrity
+
+        validate_canon_integrity(bundle, auto_fix=True)
+    except Exception as exc:
+        logger.warning("canon_integrity_audit_skipped", error=str(exc))
     return bundle
 
 

@@ -27,9 +27,14 @@ logger = get_logger(__name__)
 RELEASE_INDEX_URL = (
     "https://github.com/Matteo-CB/shinobi-no-sho/releases/latest/download/rag_index.tar.gz"
 )
+# Manifest URL qui contient le SHA-256 attendu de l'archive.
+RELEASE_MANIFEST_URL = (
+    "https://github.com/Matteo-CB/shinobi-no-sho/releases/latest/download/rag_index.sha256"
+)
 FINGERPRINT_FILENAME = ".canon_fingerprint"
 DOWNLOAD_TIMEOUT_SECONDS = 60
 EXPECTED_DB_FILE = "chroma.sqlite3"
+MAX_ARCHIVE_SIZE = 200 * 1024 * 1024  # 200 MB - garde-fou contre archives anormales
 
 
 def compute_canon_fingerprint() -> str:
@@ -85,19 +90,66 @@ def index_is_up_to_date() -> bool:
     return stored == current
 
 
+def _fetch_expected_sha256(manifest_url: str = RELEASE_MANIFEST_URL) -> str | None:
+    """Telecharge le manifest .sha256 et extrait le hash hexadecimal attendu.
+
+    Format accepte : ligne 'XXXXX...XXXX  rag_index.tar.gz' ou hash brut.
+    Si le manifest est absent (404, network error), retourne None : le bootstrap
+    procedera sans verification (mode degrade) mais journalisera l'absence.
+    """
+    try:
+        req = urllib.request.Request(
+            manifest_url,
+            headers={"User-Agent": "ShinobiNoSho-Bootstrap/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            content = resp.read().decode("utf-8", errors="replace").strip()
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError, TimeoutError) as exc:
+        logger.warning("rag_manifest_fetch_failed", error=str(exc))
+        return None
+    # Extrait la premiere sequence hex de 64 chars (SHA-256)
+    import re as _re
+
+    m = _re.search(r"\b[0-9a-fA-F]{64}\b", content)
+    return m.group(0).lower() if m else None
+
+
+def _compute_sha256(path) -> str:
+    """Calcule le SHA-256 d'un fichier en streaming."""
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def download_index_from_release(*, url: str = RELEASE_INDEX_URL) -> bool:
-    """Telecharge l'index pre-build depuis GitHub Releases. Retourne True si succes."""
+    """Telecharge l'index pre-build depuis GitHub Releases. Retourne True si succes.
+
+    Verifie l'integrite via SHA-256 si un manifest .sha256 est publie aux cotes
+    de l'archive. Si manifest absent : log warning, accepte download (mode degrade).
+    Si hash present mais ne match pas : reject + delete archive corrompue.
+    """
     target_dir = settings.chroma_persist_dir
     target_dir.mkdir(parents=True, exist_ok=True)
     tmp_archive = target_dir.parent / "_rag_index_download.tar.gz"
+
+    # 1. Recupere le hash attendu (peut echouer silencieusement)
+    expected_sha = _fetch_expected_sha256()
+
+    # 2. Telecharge l'archive (avec garde-fou taille)
     try:
-        logger.info("rag_download_start", url=url)
+        logger.info("rag_download_start", url=url, expected_sha=expected_sha or "none")
         req = urllib.request.Request(
             url,
             headers={"User-Agent": "ShinobiNoSho-Bootstrap/1.0"},
         )
         with urllib.request.urlopen(req, timeout=DOWNLOAD_TIMEOUT_SECONDS) as resp:
-            tmp_archive.write_bytes(resp.read())
+            data = resp.read()
+            if len(data) > MAX_ARCHIVE_SIZE:
+                logger.error("rag_download_too_large", size=len(data), max=MAX_ARCHIVE_SIZE)
+                return False
+            tmp_archive.write_bytes(data)
     except (urllib.error.URLError, urllib.error.HTTPError, OSError, TimeoutError) as exc:
         logger.warning("rag_download_failed", error=str(exc))
         if tmp_archive.exists():
@@ -107,7 +159,28 @@ def download_index_from_release(*, url: str = RELEASE_INDEX_URL) -> bool:
                 pass
         return False
 
-    # Nettoie l'index existant pour eviter les conflits
+    # 3. Verifie le SHA-256 si on l'a
+    if expected_sha:
+        actual_sha = _compute_sha256(tmp_archive)
+        if actual_sha != expected_sha:
+            logger.error(
+                "rag_sha256_mismatch",
+                expected=expected_sha,
+                actual=actual_sha,
+            )
+            try:
+                tmp_archive.unlink()
+            except OSError:
+                pass
+            return False
+        logger.info("rag_sha256_verified", sha=actual_sha[:16] + "...")
+    else:
+        logger.warning(
+            "rag_sha256_skipped",
+            reason="manifest absent ou inaccessible : telechargement non verifie",
+        )
+
+    # 4. Nettoie l'index existant pour eviter les conflits
     for item in target_dir.iterdir():
         if item.name == FINGERPRINT_FILENAME:
             continue
@@ -119,6 +192,7 @@ def download_index_from_release(*, url: str = RELEASE_INDEX_URL) -> bool:
         except OSError:
             pass
 
+    # 5. Extrait
     try:
         with tarfile.open(tmp_archive, "r:gz") as tar:
             tar.extractall(target_dir, filter="data")

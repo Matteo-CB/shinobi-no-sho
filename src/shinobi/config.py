@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.7
     llm_temperature_structured: float = 0.3
     llm_max_tokens: int = 800
-    llm_context_size: int = 8192
-    llm_timeout_seconds: int = 120
+    llm_context_size: int = 32768
+    llm_timeout_seconds: int = 180
     llm_gpu_layers: int = 99
     llm_disable_thinking: bool = True
 

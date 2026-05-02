@@ -42,7 +42,7 @@
     "current_jinchuuriki_by_era": [
       {
         "from_year": -45,
-        "jinchuuriki": "yugito_nii",
+        "jinchuuriki": "nii_yugito",
         "to_year": null
       }
     ],
@@ -75,7 +75,7 @@
     "current_jinchuuriki_by_era": [
       {
         "from_year": -25,
-        "jinchuuriki": "yagura_karatachi",
+        "jinchuuriki": "karatachi_yagura",
         "to_year": null
       }
     ],
@@ -121,7 +121,7 @@
       "yonbi",
       "singe a quatre queues"
     ],
-    "id": "son_goku",
+    "id": "goku_son",
     "name_romaji": "Son Goku",
     "personality_fr": "Singe geant feru d'honneur, fier, parle un langage soutenu. Respecte ceux qui le respectent.",
     "sources": [
@@ -252,7 +252,7 @@
       },
       {
         "from_year": -25,
-        "jinchuuriki": "killer_b",
+        "jinchuuriki": "b_killer",
         "to_year": null
       }
     ],
@@ -335,12 +335,12 @@
     "current_jinchuuriki_by_era": [
       {
         "from_year": -1000,
-        "jinchuuriki": "kaguya_otsutsuki",
+        "jinchuuriki": "otsutsuki_kaguya",
         "to_year": -995
       },
       {
         "from_year": -995,
-        "jinchuuriki": "hagoromo_otsutsuki",
+        "jinchuuriki": "otsutsuki_hagoromo",
         "to_year": -990
       },
       {

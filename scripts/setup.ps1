@@ -128,7 +128,7 @@ function Resolve-ModelChoice([int]$vramMib, [bool]$forceCpu, [string]$override) 
             file = "Qwen3-1.7B-Q4_K_M.gguf"
             url = "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf"
             size_gb = 1.1
-            ctx_default = 8192
+            ctx_default = 32768
             max_tokens = 600
         }
         small = @{
@@ -136,7 +136,7 @@ function Resolve-ModelChoice([int]$vramMib, [bool]$forceCpu, [string]$override) 
             file = "Qwen3-4B-UD-Q4_K_XL.gguf"
             url = "https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-UD-Q4_K_XL.gguf"
             size_gb = 2.5
-            ctx_default = 8192
+            ctx_default = 32768
             max_tokens = 800
         }
         medium = @{

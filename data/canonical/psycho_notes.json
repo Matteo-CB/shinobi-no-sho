@@ -227,7 +227,7 @@
       {"from_age": 0, "to_age": 11, "note": "Orphelin de l'attaque du Kyuubi (parents tues). Devient instable, fait des farces.", "allowed_relations": [], "forbidden_relations": []},
       {"from_age": 12, "to_age": 99, "note": "Enseignant a l'academie de Konoha. Premiere figure paternelle de Naruto.", "allowed_relations": ["uzumaki_naruto (eleve protege)", "tous les academy_students"], "forbidden_relations": []}
     ],
-    "zabuza_momochi": [{"from_age": 0, "to_age": 26, "note": "Demon de la Brume. Membre des 7 Epeistes de Kirigakure. Tue 100 etudiants. Devient missing-nin. Mort an 12.", "allowed_relations": ["haku (disciple)", "kirigakure_seven_swordsmen"], "forbidden_relations": []}],
+    "momochi_zabuza": [{"from_age": 0, "to_age": 26, "note": "Demon de la Brume. Membre des 7 Epeistes de Kirigakure. Tue 100 etudiants. Devient missing-nin. Mort an 12.", "allowed_relations": ["haku (disciple)", "kirigakure_seven_swordsmen"], "forbidden_relations": []}],
     "haku": [{"from_age": 0, "to_age": 14, "note": "Orphelin du Pays de l'Eau. Hyouton (kekkei genkai glace). Recueilli par Zabuza, devient son outil.", "allowed_relations": ["zabuza_momochi (maitre)"], "forbidden_relations": []}],
     "pain_nagato": [
       {"from_age": 0, "to_age": 36, "note": "Orphelin d'Amegakure. Rinnegan (don de Madara). Avec Yahiko et Konan, fonde Akatsuki originale.", "allowed_relations": ["yahiko", "konan", "jiraiya (sensei dans la jeunesse)"], "forbidden_relations": []}
@@ -253,7 +253,7 @@
     "aburame_shino": [
       {"from_age": 0, "to_age": 11, "note": "Discret, controle des insectes. Famille Aburame.", "allowed_relations": ["aburame_shibi (pere)"], "forbidden_relations": []}
     ],
-    "rock_lee": [
+    "lee_rock": [
       {"from_age": 0, "to_age": 11, "note": "Incapable d'utiliser ninjutsu/genjutsu. S'entraine au taijutsu pur sous Maito Gai.", "allowed_relations": ["maito_gai (sensei adore)"], "forbidden_relations": []}
     ],
     "hyuga_neji": [

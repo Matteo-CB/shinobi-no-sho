@@ -176,7 +176,7 @@
     "vocabulary_themes": ["insectes", "kikaichu", "logique", "observation", "discretion"]
   },
   {
-    "character_id": "rock_lee",
+    "character_id": "lee_rock",
     "do_not_use": ["cynisme", "renoncement", "ironie"],
     "id": "lee_voice",
     "register_fr": "passionne, sincere, exalte, respectueux",
@@ -544,7 +544,7 @@
     "vocabulary_themes": ["marionnettes", "Crow", "Sasori", "Suna", "Gaara", "maquillage"]
   },
   {
-    "character_id": "killer_b",
+    "character_id": "b_killer",
     "do_not_use": ["registre sobre", "vocabulaire formel"],
     "id": "killer_b_voice",
     "register_fr": "rappeur, exuberant, freestyle constant, partenaire fidele de Hachibi",
@@ -593,7 +593,7 @@
     "vocabulary_themes": ["Tsuchikage", "Jinton", "Iwa", "vieux", "guerre", "leviation"]
   },
   {
-    "character_id": "mei_terumi",
+    "character_id": "terumi_mei",
     "do_not_use": ["agressivite gratuite", "froideur permanente"],
     "id": "mei_voice",
     "register_fr": "femme forte, douce-amere, drole avec un fond mortel",
