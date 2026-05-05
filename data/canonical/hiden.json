@@ -1,0 +1,291 @@
+[
+  {
+    "canonicity": "manga",
+    "description_fr": "Permet a l'utilisateur d'envoyer son esprit dans le corps d'un adversaire pour en prendre temporairement le controle. Le corps de l'utilisateur reste vulnerable.",
+    "id": "shintenshin_no_jutsu",
+    "name_fr": "Transposition mentale",
+    "name_romaji": "Shintenshin no Jutsu",
+    "owning_clan": "yamanaka",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": true,
+    "sources": [
+      "narutopedia:Mind_Body_Switch_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Description": "Technique de transposition mentale du clan Yamanaka (Konoha). L'utilisateur projette son esprit hors de son corps pour prendre temporairement le controle d'une cible. Le corps du lanceur reste inanime pendant la duree de l'echange et est extremement vulnerable.",
+      "Limitations": "Ne fonctionne que sur cible immobile ou peu mobile (l'esprit voyage en ligne droite et lente). L'utilisateur perd les sensations de son propre corps. Si la cible meurt avec l'esprit dedans, l'utilisateur meurt aussi.",
+      "Trivia": "Ino Yamanaka apprend cette technique d'enfance. Inoichi Yamanaka, son pere, est l'un des maitres les plus accomplis de la technique."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Imite l'ombre de la cible et la lie a la sienne, forcant la cible a copier ses mouvements. Necessite une source de lumiere et un sol pour les ombres.",
+    "id": "kage_mane_no_jutsu",
+    "name_fr": "Possession des ombres",
+    "name_romaji": "Kage Mane no Jutsu",
+    "owning_clan": "nara",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Shadow_Imitation_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Overview": "The user manipulates their shadow across a surface to merge it with a target or targets' shadow. The user can stretch their shadow however they wish in order to accomplish this goal, but they are limited by their shadow's surface area; if a target can move far enough away from the Shadow Imitation's user, they are theoretically safe from it. But there are ways around this: the user's shadow can freely move within other shadows, extending its range; Shikamaru Nara frequently uses flash bombs, either to briefly extend his own shadow or to extend his targets' shadows. Shikamaru Hiden clarifies that a user must have a shadow to manipulate, and so the Shadow Imitation cannot be used in utter darkness.\nOnce a user merges their shadow with a target's, the target cannot move on their own other than to talk. The only movements they are able to make are those that the user makes: if the user walks forward, the target walks forward; if the user raises their right hand, the target raises their right hand. Nara tend to wear their shuriken holsters in atypical locations so that, when they reach for and throw shuriken, their targets will reach for and throw nothing. Although most often used against opponents, the Shadow Imitation Technique can be used to save allies, freezing them in physically impossible positions so that they won't trigger booby traps or causing them to cling to sheer surfaces with no means of support. At times, the Shadow Imitation's mimicry is two-way, as if a third-party forces the target to make a move, the user will be forced to make the same move.\nKeeping a target restrained requires a great deal of chakra, making it difficult to maintain the Shadow Imitation for long periods of time; in Part II, Shikamaru can only maintain it for five minute intervals. With repeated use or against multiple targets, the duration of the binding becomes shorter. If a target is strong enough or if the user is weakened enough, targets can resist and even overpower the Shadow Imitation's control. When that happens, Nara will inevitably use one of their other techniques, such as the Shadow–Neck Binding Technique or Shadow Sewing Technique.\nThe Shadow Imitation Technique was previously known as the {{translation|\"Leaf Secret: Shadow Bind Technique\"|木ノ葉秘伝・影縛りの術|Konoha Hiden: Kageshibari no Jutsu|lit meaning=Tree Leaf Secret: Shadow Bind Technique}}, which was only capable of restricting targets' movements. The imitation aspect was apparently not added until after Orochimaru defected from Konohagakure, as his Otogakure invaders did not know about it prior to the Konoha Crush. Shikaku Nara still uses the old name sometimes. Young Nara are initially only taught the Shadow Bind, with the Shadow Imitation not being learned until later; in the anime, being able to use the Shadow Imitation is considered a rite of passage within the Nara clan.",
+      "Trivia": "* The Shadow Imitation Technique was originally created as a way to capture deer for their antlers.\n* A distinct sound can often be heard as indication of the technique successfully binding the user's shadow to the target's own.\n* On occasion, Shikamaru will say the name of the technique followed by \"complete\", to signify that he was successful in capturing his opponent.\n* In the novelisation of Boruto: Naruto the Movie, it is the Shadow Bind Technique - not the Shadow Imitation - that is usable through the Shinobi Gauntlet.\n* In the anime, Akita Inuzuka could perform this technique through the Shinobi Gauntlet.\n* In the English dub of the anime, Sakon states that he mastered this technique.\n* In the anime, Inojin Yamanaka tricked Metal Lee into believing that his ink snakes were this technique.\n* In the Naruto: Clash of Ninja series, Kakashi can perform this technique by copying it with his Sharingan.\n* In Naruto: Path of the Ninja 2, using this technique on multiple opponents at once gives it the name \"Eight Way Shadow Imitation Technique\".\n* The trading card game Naruto Kayou by Studio Pierrot classifies this technique as A-Rank."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Augmente massivement la masse corporelle pour devenir un boulet humain destructeur. Consomme la masse grasse stockee comme carburant.",
+    "id": "baika_no_jutsu",
+    "name_fr": "Multiplication de masse",
+    "name_romaji": "Baika no Jutsu",
+    "owning_clan": "akimichi",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Multi-Size_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Trivia": "* During the Fourth Shinobi World War, use of the Multi-Size Technique is shown to produce extra markings under the user's eyes. Such markings are not present in earlier depictions.\n* In Naruto Retsuden, Chōji uses the Multi-Size Technique in response to a poison needle he's struck by. Because the needle would only have enough poison to kill a regular-sized person, it would be harmless to his enlarged body. He's forced to continue using the Multi-Size Technique until his body breaks down the poison, limiting his mobility since he's indoors at the time.\n* The trading card game Naruto Kayou by Studio Pierrot classifies this technique as C-Rank."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Cycle vital symbiotique avec une colonie d'insectes kikaichu loges dans le corps. Les insectes drainent le chakra des cibles.",
+    "id": "mushi_yose_no_jutsu",
+    "name_fr": "Appel des insectes",
+    "name_romaji": "Mushi Yose no Jutsu",
+    "owning_clan": "aburame",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Insect_Cocoon_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Description": "Technique d'appel des insectes du clan Aburame (Konoha). Permet a l'utilisateur de convoquer ses kikaichu (insectes parasites) pour les faire emerger de son corps ou les rappeler depuis une distance.",
+      "Limitations": "Necessite que l'utilisateur ait deja une colonie de kikaichu vivant en symbiose avec lui (implant des la naissance dans le clan Aburame)."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Symbiose avec un ninken (chien-ninja) pour combat coordonne, traque olfactive, et techniques en duo.",
+    "id": "jujin_bunshin",
+    "name_fr": "Clone homme-bete",
+    "name_romaji": "Jujin Bunshin",
+    "owning_clan": "inuzuka",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Beast_Human_Clone"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Trivia": "* This technique's complete name is {{translation|Imitation Human Ninja Art: Beast Human Clone|擬人忍法・獣人分身|Gijin Ninpō: Jūjin Bunshin}}.\n* In Naruto Shippūden the Movie: The Will of Fire, Kiba calls this technique {{translation|\"Beast Human Transformation\"|獣人変化|Jūjin Henge}}."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Style de combat des Hyuga utilisant le Byakugan pour cibler les tenketsu (points de chakra) de l'adversaire et bloquer la circulation chakratique.",
+    "id": "juuken",
+    "name_fr": "Poing souple",
+    "name_romaji": "Juuken",
+    "owning_clan": "hyuga",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Gentle_Fist"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Background": "Maitrise par tous les Hyuga des leur enfance. Necessite un controle ultra-precis du chakra dans les paumes et un Byakugan actif pour voir le reseau de chakra de la cible.",
+      "Description": "Le Poing Souple (Gentle Fist) est le style de combat exclusif du clan Hyuga (Konoha). Combine avec le Byakugan, il permet de viser et fermer les tenketsus (canaux de chakra) de l'adversaire d'une simple frappe, paralysant les organes internes.",
+      "Trivia": "Hiashi Hyuga, Hizashi Hyuga, Neji Hyuga et Hinata Hyuga sont des praticiens notables. Permet l'utilisation des techniques signatures comme les Soixante-Quatre Paumes."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Marionnettes de chakra controlees a distance par fils de chakra. Maitrise propre a Sunagakure.",
+    "id": "kugutsu_no_jutsu",
+    "name_fr": "Marionnettes",
+    "name_romaji": "Kugutsu no Jutsu",
+    "owning_clan": null,
+    "owning_village": "sunagakure",
+    "shareable_outside_clan": true,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Puppet_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Known Styles": "* {{Translation|White Secret Technique|白秘技|Shirohigi}} - practised by Monzaemon and Chiyo.\n* {{Translation|Red Secret Technique|赤秘技|Akahigi}} - practised by Sasori and Kankurō.\n* {{Translation|Black Secret Technique|黒秘技|Kurohigi}} - practised by Kankurō and Shinki.",
+      "Overview": "The modern version of the Puppet Technique used by shinobi was first created by Monzaemon Chikamatsu of Sunagakure. Monzaemon originally intended the Puppet Technique for purely entertainment purposes, but by collaborating with shinobi he adapted the skill for combat.{{Citation needed}} In the years following the technique's creation, Suna's shinobi became pioneers in the art of puppetry, with its Puppet Brigade being given the specific mandate of finding new ways to use and exploit puppets for battle.\nthumb|left|Chakra Threads.\nPerforming the Puppet Technique involves emitting {{translation|chakra threads|チャクラの糸­|Chakura no Ito}} from a user's fingers to connect to a puppet, with the fingers' movements controlling the puppet's actions. Less experienced users will connect all ten of their fingers to a single puppet, with each finger controlling a specific joint or mechanism. As a user becomes more experienced they require fewer threads to control a single puppet, until finally they can control a puppet using only one thread. With this growing mastery, users also become able to control multiple puppets at a time, ten being the normal limit (one per finger). No matter how many threads are being used per puppet, the user's will plays a large role in a puppet's movements, thus creating an inevitable time lag between the user's commands and the puppet's response.\nControlling a puppet requires most of a puppeteer's attentions and maintaining the threads is a constant drain on their chakra. Not only does this mean a puppeteer is vulnerable when they are controlling a puppet, it also tends to mean they cannot fight very well without one, as their combat style relies so heavily on them. As such, puppeteers try very hard to hide or at least keep their distance from opponents.  In the event that an opponent gets too close, some puppeteers have devised countermeasures: certain puppets created by Sasori, such as Sanshōuo and Hiruko, are intended to be controlled from the inside, acting as shields for their puppeteers; Chiyo replaced one of her arms with a Mechanical Light Shield Block, giving her a defensive option to use in emergencies; Kankurō is in the habit of disguising puppets as himself, causing opponents that attack him to instead fall into his puppets' clutches. It should also be noted that, while the Chakra Threads are difficult to notice, it is possible to cut them, effectively disabling the puppet in the process. The threads can also be used to wrap around opponents in order to restrict their movements.  \nBecause puppeteers rely on their puppets for almost all aspects of combat, keeping the puppets safe is of paramount importance. At the simplest, this means not allowing the puppets to be destroyed or otherwise disabled. More than that, it is also vital to keep how a puppet works secret from opponents. If an opponent knows what weapons or traps a puppet is outfitted with, the puppeteer will lose the advantage of surprise that so often gives them the upperhand. If an opponent knows how a puppet is designed – which, unlike weapons and traps, cannot be greatly altered by the puppeteer – they can focus their attacks on the puppet's structural weaknesses. \nIf a puppeteer does lose their puppet in battle (or if they merely opt not to use one), the chakra threads remain a versatile tool. The threads can be connected to opponents to impede their movements, such as by tripping them, or to take control of their body, using them as a puppet. To prevent opponents from noticing that they're being manipulated, puppeteers will use a minimal amount of chakra to create the threads, rendering them invisible. If chakra threads are attached to weapons, such as kunai, this not only allows users to throw multiple weapons at a time, but also allows them an easy method of connecting their threads to distant targets. Puppeteers can attach chakra threads to faraway targets even without this subterfuge, giving them a quick way to bring objects to thei...",
+      "Trivia": "* Sasori converted himself into a puppet in order to overcome many of the Puppet Technique's shortcomings: he can control one hundred puppets simultaneously, experiences no time lag between command and movement because his puppets are directly attached to his \"core\", and close combat doesn't have any lasting impact on him since his body isn't flesh and blood.\n* In Naruto Shippūden the Movie: The Lost Tower, Mukade could use this technique to control thousands of puppets at a very long range. He achieved this by connecting his chakra threads to pipes that distributed chakra across Rōran, expanding the number of threads and distance he could cover.\n* In some Naruto video games, Kankurō demonstrates greater versatility in hand-to-hand combat than puppeteers are said to possesses, as he mixes his puppet control with haymakers and other forms of taijutsu."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Liquefaction du corps en eau pure, permettant d'eviter physiquement les attaques. Necessite hydratation continue.",
+    "id": "suika_no_jutsu",
+    "name_fr": "Hydrification",
+    "name_romaji": "Suika no Jutsu",
+    "owning_clan": "hozuki",
+    "owning_village": "kirigakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Hydrification_Technique"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Trivia": "* {{translation|\"Suika\"|水化}} is the Japanese term for \"hydration\", but separately, the kanji mean {{translation|\"water\"|水}} and {{translation|\"to become\"|化}} respectively, translating to something more similar to \"hydrification\" (\"to become water\"). This explains the effect of this technique more precisely.\n* By researching Suigetsu Hōzuki's body, Kabuto Yakushi creates a similar defensive skill that he uses by coating his body with bodily fluids."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Manipulation de l'or par chakra, propre au clan Kinkaku-gintai et a leurs descendants directs.",
+    "id": "ougon_no_kuro_kogane_no_seishin",
+    "name_fr": "Esprit d'or noir",
+    "name_romaji": "Ougon no Kuro Kogane",
+    "owning_clan": "kohaku",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Kohaku_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Description": "Esprit d'or noir (Ougon no Kuro Kogane) : technique secrete tres rare utilisant des metaux specifiques pour creer des protections / armes spirituelles. Affiliation clanique incertaine, considere comme un kinjutsu mineur.",
+      "Trivia": "Apparait dans des contextes filler/anime, peu document dans le canon manga principal."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Art du tatouage chakra : symboles dessines sur la peau libererent des effets sur le porteur ou la cible.",
+    "id": "irezumi_fuin",
+    "name_fr": "Sceau-tatouage",
+    "name_romaji": "Irezumi Fuin",
+    "owning_clan": "uzumaki",
+    "owning_village": "uzushiogakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": true,
+    "sources": [
+      "narutopedia:Uzumaki_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Description": "Sceau-tatouage : technique de fuinjutsu permettant d'apposer un sceau qui s'integre comme un tatouage sur la peau. Utilise pour stocker des objets, du chakra, ou pour marquer un porteur (ex: sceau de la marque maudite).",
+      "Limitations": "Necessite des connaissances avancees en fuinjutsu. Les sceaux complexes (comme la marque maudite d'Orochimaru) requierent un rituel et un sacrifice."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Genjutsu spirituel hereditaire qui devore l'esprit du caster en cas d'echec. Tres puissant mais maudit.",
+    "id": "kurama_genjutsu",
+    "name_fr": "Genjutsu Kurama",
+    "name_romaji": "Kurama Ichizoku Genjutsu",
+    "owning_clan": "kurama",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Kurama_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Background": "Le clan Kurama est presque eteint au moment de Naruto. Yakumo Kurama est l'une des dernieres heritieres. Le clan a ete decime par sa propre instabilite mentale.",
+      "Description": "Genjutsu du clan Kurama (Konoha) : illusions extremement puissantes, capables de tuer la cible si elle croit assez fort a l'illusion. Le clan Kurama possede une ligne de chakra specialisee dans la perception et la manipulation de l'esprit.",
+      "Trivia": "A ne pas confondre avec Kurama, le Kyuubi (Bete a Neuf Queues) - aucun lien direct."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Manipulation des reactions chimiques internes pour produire des poisons ou des antidotes a la volee.",
+    "id": "doku_kakou",
+    "name_fr": "Synthese de poison",
+    "name_romaji": "Doku Kakou",
+    "owning_clan": null,
+    "owning_village": "sunagakure",
+    "shareable_outside_clan": true,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Poison_Crafting"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Background": "Sasori du Sable est le maitre incontesté. Ses poisons paralysants ou letaux sont actifs en quelques secondes. Sakura Haruno apprend les antidotes correspondants.",
+      "Description": "Synthese de poison : ensemble de techniques chimiques permettant de fabriquer, stocker et appliquer des poisons sur des armes (kunai, senbon) ou de les vaporiser. Specialite des shinobis de Sunagakure et de certains medic-nin."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Style de combat hereditaire utilisant les armes a courte portee, propre au clan Hagoromo de Konoha.",
+    "id": "hagoromo_kenjutsu",
+    "name_fr": "Kenjutsu Hagoromo",
+    "name_romaji": "Hagoromo Ryu Kenjutsu",
+    "owning_clan": "hagoromo",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": true,
+    "sources": [
+      "narutopedia:Hagoromo_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Abilities": "thumb|left|The Sword of the Thunder God in use.\nThe sword itself had many uses that involved its ability to manipulate lightning. Being made of concentrated lightning, once making contact with the enemy, it would give them a strong electrical shock capable of incapacitating them afterwards. The sword was capable of producing rings of electricity that can paralyse the enemy while continuously shocking them; even magnetically suspend them mid-air. Defensively, the blade can channel its electrical properties in mid-air to block incoming attacks. As shown in Aoi's fight with Naruto and Sasuke, the blade was shown to not only be able to easily cut through any solid object, but also through chakra as well, including A-rank techniques like the Chidori and Rasengan.",
+      "Appearance": "The blade glowed bright yellow and was apparently infused with pure electrical energy, hence its name. The blade was unusual in that, though it appeared to retract into or emanate from the hilt or crossguard like a lightsaber (and producing the same sound).",
+      "History": "After the Second Hokage's passing, this sword was sealed away in Konohagakure. It was later stolen during the reign of the Third Hokage by Idate Morino after Aoi Rokushō deceived him with a promotion to chūnin. Aoi then took the sword for himself but lacked the knowledge on how to use the sword at its full potential. The sword also came with a scroll of instructions on how to properly wield it that Idate's older brother Ibiki had stolen back from Aoi. During a mission to sabotage the Todoroki Shrine race, Aoi wielded the Sword against Team 7, only for it to be broken by their combined efforts.",
+      "Trivia": "* The hilt of the sword seems to resemble a vajra, mimicking the symbol of the blade's owner's clan.\n* Although an anime-only tool, this sword first appears in the video game Naruto: Path of the Ninja 2 by the name of Raijin Sword, with the description reading, \"''Second Hokage's blade''\". It is one of the secrets within the game and is unlocked by obtaining the Silver Blade Ticket and talking to Shizune afterwards."
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Manipulation hereditaire des cordes (filaments de chakra), propre au clan Kazama de Konoha.",
+    "id": "ito_no_jutsu",
+    "name_fr": "Technique des fils",
+    "name_romaji": "Ito no Jutsu",
+    "owning_clan": "fuma",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": false,
+    "sources": [
+      "narutopedia:Fuma_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Trivia": "* The sword Nuibari has a very lengthy wire attached to it to bind its opponents together, and in the anime, sharp enough to slice through flesh and bone.\n* The wires used between the Mother and Father puppets are sharp enough to slice through a thousand puppet arms.\nde:Drahtseil\nid:Senar Kawat\nfr:Fil Métallique\npl:Drut",
+      "Utilised Techniques": "* Fire Release: Dragon Fire Technique\n* Longsword Ninja Art — Earth Spider Sewing\n* Longsword Ninja Art: Massacre Method Formation\n* Manipulated Shuriken Technique\n* Manipulated Shuriken Wire Binding\n* Manipulating Windmill Triple Blades\n* Murderous Grasp\n* Wire Bind\n* Wire Cage"
+    }
+  },
+  {
+    "canonicity": "manga",
+    "description_fr": "Sceau de la baignade : technique fuinjutsu permettant un transfert de chakra d'urgence entre deux porteurs marques.",
+    "id": "shouten_no_jutsu",
+    "name_fr": "Transfert d'ascension",
+    "name_romaji": "Shouten no Jutsu",
+    "owning_clan": "yamanaka",
+    "owning_village": "konohagakure",
+    "shareable_outside_clan": false,
+    "shareable_with_authorization": true,
+    "sources": [
+      "narutopedia:Yamanaka_Clan"
+    ],
+    "updated_at": "2026-05-02",
+    "wiki_sections": {
+      "Description": "Transfert d'ascension (Shouten no Jutsu) : technique de Pain et de l'Akatsuki permettant a un utilisateur de prendre le controle a distance d'un autre corps via un fragment de chakra. Le 'corps' devient une marionnette vivante du contrologue.",
+      "Limitations": "Necessite un fragment du corps cible (cheveu, sang) et un sceau prealable. Si la connexion est rompue, le corps controle peut mourir ou tomber inconscient.",
+      "Trivia": "Pain a six corps via cette technique (les Six Chemins de Pain). Yahiko, son corps principal, etait deja mort et reanime par cette technique."
+    }
+  }
+]

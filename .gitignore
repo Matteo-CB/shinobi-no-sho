@@ -1,0 +1,70 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+_rag_index_download.tar.gz
+data/_rag_index_download.tar.gz
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Donnees lourdes ou non versionnables
+data/raw/
+data/embeddings/
+data/saves/
+data/models/
+logs/
+
+# Modeles
+*.gguf
+*.bin
+*.safetensors
+models/
+
+# Editeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outils
+.tool-versions
+.python-version
+.env
+
+# Claude Code (settings locaux user-specific, peut contenir des clefs en allowlist)
+.claude/
+CLAUDE.md.local
+
+# Donnees pipeline RAG (gros volume, regenerable via scripts pass2/pass5)
+data/canonical/_pass2_output/
+data/canonical/_pass2_output_dryrun/
+data/canonical/_pass2_output_failed_run1/
+data/canonical/_pass2_batches/
+data/canonical/_pass5_output/
+data/canonical/_pass5_batches/
+data/canonical/_pass2_debug/
+data/canonical/_pass2_validation_report.json
+data/canonical/_pass2_5_derivation_report.json
+data/canonical/*.pre_pass2_backup
+data/bm25/
+data/.pipeline_ready

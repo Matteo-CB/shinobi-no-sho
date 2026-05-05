@@ -1,0 +1,316 @@
+[
+  {
+    "id": "amegakure",
+    "name_fr": "Amegakure",
+    "country": "amegakure",
+    "main_clans": [
+      "fuma",
+      "uzumaki"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "bamboo_village",
+    "name_fr": "Bamboo Village",
+    "country": "bamboo_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ceramic_village",
+    "name_fr": "Ceramic Village",
+    "country": "ceramic_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "curtain_village",
+    "name_fr": "Curtain Village",
+    "country": "curtain_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "daidai_village",
+    "name_fr": "Daidai Village",
+    "country": "daidai_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "genjutsu_tree_village",
+    "name_fr": "Genjutsu Tree Village",
+    "country": "genjutsu_tree_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hacho_village",
+    "name_fr": "Hachō Village",
+    "country": "hacho_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hoshigakure",
+    "name_fr": "Hoshigakure",
+    "country": "hoshigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "howling_wolf_village",
+    "name_fr": "Howling Wolf Village",
+    "country": "howling_wolf_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "inaho_village",
+    "name_fr": "Inaho Village",
+    "country": "inaho_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ishigakure",
+    "name_fr": "Ishigakure",
+    "country": "ishigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "iwagakure",
+    "name_fr": "Iwagakure",
+    "country": "iwagakure",
+    "main_clans": [
+      "kamizuru"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "jomae_village",
+    "name_fr": "Jōmae Village",
+    "country": "jomae_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kagero_village",
+    "name_fr": "Kagerō Village",
+    "country": "kagero_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kirigakure",
+    "name_fr": "Kirigakure",
+    "country": "kirigakure",
+    "main_clans": [
+      "hozuki",
+      "kaguya",
+      "yuki"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kisaragi_village",
+    "name_fr": "Kisaragi Village",
+    "country": "kisaragi_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "konohagakure",
+    "name_fr": "Konohagakure",
+    "country": "konohagakure",
+    "main_clans": [
+      "aburame",
+      "akimichi",
+      "fuma",
+      "hagoromo",
+      "hatake",
+      "hyuga",
+      "inuzuka",
+      "kohaku",
+      "kurama",
+      "lee",
+      "nara",
+      "sarutobi",
+      "senju",
+      "shimura",
+      "uchiha",
+      "uzumaki",
+      "yamanaka"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kumogakure",
+    "name_fr": "Kumogakure",
+    "country": "kumogakure",
+    "main_clans": [
+      "yotsuki"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kusagakure",
+    "name_fr": "Kusagakure",
+    "country": "kusagakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "mount_katsuragi",
+    "name_fr": "Mount Katsuragi",
+    "country": "mount_katsuragi",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "mount_myoboku",
+    "name_fr": "Mount Myōboku",
+    "country": "mount_myoboku",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "nadeshiko_village",
+    "name_fr": "Nadeshiko Village",
+    "country": "nadeshiko_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "otogakure",
+    "name_fr": "Otogakure",
+    "country": "otogakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ryuchi_cave",
+    "name_fr": "Ryūchi Cave",
+    "country": "ryuchi_cave",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shangri_la",
+    "name_fr": "Shangri-la",
+    "country": "shangri_la",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shikkotsu_forest",
+    "name_fr": "Shikkotsu Forest",
+    "country": "shikkotsu_forest",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shimogakure",
+    "name_fr": "Shimogakure",
+    "country": "shimogakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sugi_village",
+    "name_fr": "Sugi Village",
+    "country": "sugi_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sunagakure",
+    "name_fr": "Sunagakure",
+    "country": "sunagakure",
+    "main_clans": [
+      "fuma",
+      "kazekage"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "takigakure",
+    "name_fr": "Takigakure",
+    "country": "takigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "takumi_village",
+    "name_fr": "Takumi Village",
+    "country": "takumi_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tanigakure",
+    "name_fr": "Tanigakure",
+    "country": "tanigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tonika_village",
+    "name_fr": "Tonika Village",
+    "country": "tonika_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tree_felling_village",
+    "name_fr": "Tree Felling Village",
+    "country": "tree_felling_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tsuchigumo_village",
+    "name_fr": "Tsuchigumo Village",
+    "country": "tsuchigumo_village",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tsukigakure",
+    "name_fr": "Tsukigakure",
+    "country": "tsukigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "uzushiogakure",
+    "name_fr": "Uzushiogakure",
+    "country": "uzushiogakure",
+    "main_clans": [
+      "uzumaki"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yugakure",
+    "name_fr": "Yugakure",
+    "country": "yugakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yukigakure",
+    "name_fr": "Yukigakure",
+    "country": "yukigakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yumegakure",
+    "name_fr": "Yumegakure",
+    "country": "yumegakure",
+    "main_clans": [],
+    "canonicity": "manga"
+  }
+]

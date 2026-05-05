@@ -1,0 +1,266 @@
+[
+  {
+    "id": "boil_release",
+    "name_romaji": "Boil Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "byakugan",
+    "name_romaji": "Byakugan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [
+      "hyuga"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "crystal_release",
+    "name_romaji": "Crystal Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "dark_release",
+    "name_romaji": "Dark Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "explosion_release",
+    "name_romaji": "Explosion Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "iburi_clans_kekkei_genkai",
+    "name_romaji": "Iburi Clan's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ice_release",
+    "name_romaji": "Ice Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [
+      "yuki"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "jogan",
+    "name_romaji": "Jōgan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "jugos_clans_kekkei_genkai",
+    "name_romaji": "Jūgo's Clan's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ketsuryugan",
+    "name_romaji": "Ketsuryūgan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kokugan",
+    "name_romaji": "Kokugan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kurama_clans_kekkei_genkai",
+    "name_romaji": "Kurama Clan's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "lava_release",
+    "name_romaji": "Lava Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "magnet_release",
+    "name_romaji": "Magnet Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "mangekyo_sharingan",
+    "name_romaji": "Mangekyō Sharingan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [
+      "uchiha"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "mud_release",
+    "name_romaji": "Mud Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ranmarus_kekkei_genkai",
+    "name_romaji": "Ranmaru's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "rinha_clans_kekkei_genkai",
+    "name_romaji": "Rinha Clan's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "rinnegan",
+    "name_romaji": "Rinnegan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ryuzetsus_kekkei_genkai",
+    "name_romaji": "Ryūzetsu's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sakon_and_ukons_kekkei_genkai",
+    "name_romaji": "Sakon and Ukon's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "scorch_release",
+    "name_romaji": "Scorch Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "senrigan",
+    "name_romaji": "Senrigan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sharingan",
+    "name_romaji": "Sharingan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [
+      "uchiha"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shikotsumyaku",
+    "name_romaji": "Shikotsumyaku",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "steel_release",
+    "name_romaji": "Steel Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "storm_release",
+    "name_romaji": "Storm Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "swift_release",
+    "name_romaji": "Swift Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tenseigan",
+    "name_romaji": "Tenseigan",
+    "type": "dojutsu",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "typhoon_release",
+    "name_romaji": "Typhoon Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "wood_release",
+    "name_romaji": "Wood Release",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yanarus_kekkei_genkai",
+    "name_romaji": "Yanaru's Kekkei Genkai",
+    "type": "non_elemental",
+    "category": "kekkei_genkai",
+    "eligible_clans": [],
+    "canonicity": "manga"
+  }
+]

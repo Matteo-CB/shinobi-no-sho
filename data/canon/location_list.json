@@ -1,0 +1,926 @@
+[
+  {
+    "id": "academy",
+    "name_fr": "Academy",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "advanced_technology_research_institute",
+    "name_fr": "Advanced Technology Research Institute",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "akagahara",
+    "name_fr": "Akagahara",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "allied_shinobi_forces_headquarters",
+    "name_fr": "Allied Shinobi Forces' Headquarters",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "amaguriama",
+    "name_fr": "Amaguriama",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ame_orphans_hideout",
+    "name_fr": "Ame Orphans' Hideout",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ankorodo",
+    "name_fr": "Ankorodō",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "astronomy_research_institute",
+    "name_fr": "Astronomy Research Institute",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "battle_of_kikyo_pass",
+    "name_fr": "Battle of Kikyō Pass",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "castle_dusk",
+    "name_fr": "Castle Dusk",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "cat_fortress",
+    "name_fr": "Cat Fortress",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "coliseum",
+    "name_fr": "Coliseum",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "curry_of_life_shop",
+    "name_fr": "Curry of Life Shop",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "dango_shop",
+    "name_fr": "Dango Shop",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "degarashi_port",
+    "name_fr": "Degarashi Port",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "demon_desert",
+    "name_fr": "Demon Desert",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "doto_island",
+    "name_fr": "Dotō Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "eastern_great_sand_dune",
+    "name_fr": "Eastern Great Sand Dune",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "falls_of_truth",
+    "name_fr": "Falls of Truth",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "fire_park",
+    "name_fr": "Fire Park",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "fire_temple",
+    "name_fr": "Fire Temple",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "first_shinobi_world_war",
+    "name_fr": "First Shinobi World War",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "five_great_shinobi_countries",
+    "name_fr": "Five Great Shinobi Countries",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "forest_of_bewilderment",
+    "name_fr": "Forest of Bewilderment",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "forest_of_delusion",
+    "name_fr": "Forest of Delusion",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "forty_fourth_training_ground",
+    "name_fr": "Forty-Fourth Training Ground",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "fourth_shinobi_world_war",
+    "name_fr": "Fourth Shinobi World War",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "fushu_castle",
+    "name_fr": "Fushū Castle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "garden_of_ryumyaku",
+    "name_fr": "Garden of Ryūmyaku",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "genbu",
+    "name_fr": "Genbu",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "genjutsu_world",
+    "name_fr": "Genjutsu World",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "geography",
+    "name_fr": "Geography",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "great_naruto_bridge",
+    "name_fr": "Great Naruto Bridge",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "green_banks",
+    "name_fr": "Green Banks",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "hinode_bridge",
+    "name_fr": "Hinode Bridge",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "hokage_residence",
+    "name_fr": "Hokage Residence",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "hokage_rock",
+    "name_fr": "Hokage Rock",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "hozuki_castle",
+    "name_fr": "Hōzuki Castle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "hyuga_affair",
+    "name_fr": "Hyūga Affair",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "information_receiving_centre",
+    "name_fr": "Information & Receiving Centre",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "jiraiyas_memorial",
+    "name_fr": "Jiraiya's Memorial",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "jofuku_forest",
+    "name_fr": "Jofuku Forest",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "jonin_standby_station",
+    "name_fr": "Jōnin Standby Station",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kaguyas_dimensions",
+    "name_fr": "Kaguya's Dimensions",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kaminarimon_company_headquarters",
+    "name_fr": "Kaminarimon Company Headquarters",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kamuis_dimension",
+    "name_fr": "Kamui's Dimension",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kannabi_bridge",
+    "name_fr": "Kannabi Bridge",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "karas_dimension",
+    "name_fr": "Kara's Dimension",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "katabami_gold_mine",
+    "name_fr": "Katabami Gold Mine",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kazahana_castle",
+    "name_fr": "Kazahana Castle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kazekages_office",
+    "name_fr": "Kazekage's Office",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kikyo_castle",
+    "name_fr": "Kikyō Castle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kikyo_pass",
+    "name_fr": "Kikyō Pass",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kirigakure_academy",
+    "name_fr": "Kirigakure Academy",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "kirigakure_sealing_chamber",
+    "name_fr": "Kirigakure Sealing Chamber",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_archive_library",
+    "name_fr": "Konoha Archive Library",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_aviary",
+    "name_fr": "Konoha Aviary",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_bank",
+    "name_fr": "Konoha Bank",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_cemetery",
+    "name_fr": "Konoha Cemetery",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_crush",
+    "name_fr": "Konoha Crush",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_dome",
+    "name_fr": "Konoha Dome",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_hospital",
+    "name_fr": "Konoha Hospital",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_hot_springs",
+    "name_fr": "Konoha Hot Springs",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_library",
+    "name_fr": "Konoha Library",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_mountain_villa",
+    "name_fr": "Konoha Mountain Villa",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_ninja_tool_research_facility_detached_office",
+    "name_fr": "Konoha Ninja Tool Research Facility: Detached Office",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_orphanage",
+    "name_fr": "Konoha Orphanage",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_sealed_hall",
+    "name_fr": "Konoha Sealed Hall",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konoha_strict_correctional_facility",
+    "name_fr": "Konoha Strict Correctional Facility",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "konohagakure_intelligence_division",
+    "name_fr": "Konohagakure Intelligence Division",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "land_of_fire_bounty_station",
+    "name_fr": "Land of Fire Bounty Station",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "lightning_burger",
+    "name_fr": "Lightning Burger",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "make_out_club_battle",
+    "name_fr": "Make-Out Club Battle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "memorial_park",
+    "name_fr": "Memorial Park",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "memorial_stone",
+    "name_fr": "Memorial Stone",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "minatos_safe_houses",
+    "name_fr": "Minato's Safe Houses",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mission_assignment_desk",
+    "name_fr": "Mission Assignment Desk",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mizukages_office",
+    "name_fr": "Mizukage's Office",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "modoroki_shrine",
+    "name_fr": "Modoroki Shrine",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mohawk_fish_market",
+    "name_fr": "Mohawk Fish Market",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mokuzu_island",
+    "name_fr": "Mokuzu Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "momoshikis_planet",
+    "name_fr": "Momoshiki's Planet",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "moon",
+    "name_fr": "Moon",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mori_no_yu_hot_spring",
+    "name_fr": "Mori-No-Yu Hot Spring",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mount_jofuku",
+    "name_fr": "Mount Jofuku",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mount_koryu",
+    "name_fr": "Mount Koryū",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mount_shumisen",
+    "name_fr": "Mount Shumisen",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "mountains_graveyard",
+    "name_fr": "Mountains' Graveyard",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nagato_and_yahikos_shrine",
+    "name_fr": "Nagato and Yahiko's Shrine",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nagi_island",
+    "name_fr": "Nagi Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "naka_river",
+    "name_fr": "Naka River",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "naka_shrine",
+    "name_fr": "Naka Shrine",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nanakusa_island",
+    "name_fr": "Nanakusa Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nara_clan_forest",
+    "name_fr": "Nara Clan Forest",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nikko_inn_town",
+    "name_fr": "Nikkō Inn Town",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nine_tailed_demon_foxs_attack",
+    "name_fr": "Nine-Tailed Demon Fox's Attack",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ninja_tools_roll_roll_roll",
+    "name_fr": "Ninja Tools Roll Roll Roll",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ninjutsu_research_centre",
+    "name_fr": "Ninjutsu Research Centre",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "nues_dimension",
+    "name_fr": "Nue's Dimension",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "otsutsuki_castle",
+    "name_fr": "Ōtsutsuki Castle",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ouza_island",
+    "name_fr": "Ouza Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "pains_assault",
+    "name_fr": "Pain's Assault",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "pains_tower",
+    "name_fr": "Pain's Tower",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "purple_moon_island",
+    "name_fr": "Purple Moon Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "raikages_office",
+    "name_fr": "Raikage's Office",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ramen_ichiraku",
+    "name_fr": "Ramen Ichiraku",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "ridge_tower",
+    "name_fr": "Ridge Tower",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "roran_palace",
+    "name_fr": "Rōran Palace",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "samurai_bridge",
+    "name_fr": "Samurai Bridge",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "sanzu_plains",
+    "name_fr": "Sanzu Plains",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "sea_route_of_silence",
+    "name_fr": "Sea Route of Silence",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "sealing_room",
+    "name_fr": "Sealing Room",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "second_shinobi_world_war",
+    "name_fr": "Second Shinobi World War",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "senju_park",
+    "name_fr": "Senju Park",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "seventh_front",
+    "name_fr": "Seventh Front",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "shin_uchihas_hideout",
+    "name_fr": "Shin Uchiha's Hideout",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "shinonome",
+    "name_fr": "Shinonome",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "shukuba_town",
+    "name_fr": "Shukuba Town",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "shushu_ya",
+    "name_fr": "Shushu-ya",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "sora_ku",
+    "name_fr": "Sora-ku",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "source_of_the_ryumyaku",
+    "name_fr": "Source of the Ryūmyaku",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "stone_monument",
+    "name_fr": "Stone Monument",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "summoning_island",
+    "name_fr": "Summoning Island",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "suna_aviary",
+    "name_fr": "Suna Aviary",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "suna_greenhouse",
+    "name_fr": "Suna Greenhouse",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "suna_hospital",
+    "name_fr": "Suna Hospital",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "tailed_beast_temple",
+    "name_fr": "Tailed Beast Temple",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "tanzaku_quarters",
+    "name_fr": "Tanzaku Quarters",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "temujins_continent",
+    "name_fr": "Temujin's Continent",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "tenchi_bridge",
+    "name_fr": "Tenchi Bridge",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "the_hole",
+    "name_fr": "The Hole",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "third_shinobi_world_war",
+    "name_fr": "Third Shinobi World War",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "third_training_ground",
+    "name_fr": "Third Training Ground",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "todoroki_great_shrine",
+    "name_fr": "Todoroki Great Shrine",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "tragedy_of_yosuga_pass",
+    "name_fr": "Tragedy of Yosuga Pass",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "training_cave",
+    "name_fr": "Training Cave",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "training_hall",
+    "name_fr": "Training Hall",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "uchiha_clan_downfall",
+    "name_fr": "Uchiha Clan Downfall",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "uchiha_hideout",
+    "name_fr": "Uchiha Hideout",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "uchiha_senbei",
+    "name_fr": "Uchiha Senbei",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "unidentified_world",
+    "name_fr": "Unidentified World",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "uzumaki_clans_mask_storage_temple",
+    "name_fr": "Uzumaki Clan's Mask Storage Temple",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "valley_of_clouds_and_lightning",
+    "name_fr": "Valley of Clouds and Lightning",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "valley_of_hell",
+    "name_fr": "Valley of Hell",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "valley_of_judgement",
+    "name_fr": "Valley of Judgement",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "valley_of_lies",
+    "name_fr": "Valley of Lies",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "valley_of_the_end",
+    "name_fr": "Valley of the End",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "warring_states_period",
+    "name_fr": "Warring States Period",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "yakiniku_q",
+    "name_fr": "Yakiniku Q",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "yamanaka_flowers",
+    "name_fr": "Yamanaka Flowers",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "yamanaka_nara_and_akimichi_clan_memorial",
+    "name_fr": "Yamanaka, Nara, and Akimichi Clan Memorial",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "yosuga_pass",
+    "name_fr": "Yosuga Pass",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "zabuza_and_hakus_grave",
+    "name_fr": "Zabuza and Haku's Grave",
+    "country": "",
+    "canonicity": "manga"
+  },
+  {
+    "id": "zeroth_training_ground",
+    "name_fr": "Zeroth Training Ground",
+    "country": "",
+    "canonicity": "manga"
+  }
+]

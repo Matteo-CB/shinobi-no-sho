@@ -1,0 +1,42 @@
+{
+  "counts": {
+    "characters": 1360,
+    "jutsus": 3025,
+    "locations": 154,
+    "villages": 40,
+    "clans": 52,
+    "kekkei_genkai": 32,
+    "natures": 18
+  },
+  "integrity": {
+    "jutsu_users_unknown": 0,
+    "kg_carriers_unknown": 0,
+    "nature_clans_unknown": 4,
+    "clan_key_kgs_unknown": 0,
+    "clan_available_kgs_unknown": 0
+  },
+  "integrity_samples": {
+    "jutsu_users_unknown": [],
+    "kg_carriers_unknown": [],
+    "nature_clans_unknown": [
+      {
+        "nature": "fuuton",
+        "clan": "namikaze"
+      },
+      {
+        "nature": "bakuton",
+        "clan": "explosion_corps"
+      },
+      {
+        "nature": "inton",
+        "clan": "hyuuga"
+      },
+      {
+        "nature": "inyouton",
+        "clan": "rikudou"
+      }
+    ],
+    "clan_key_kgs_unknown": [],
+    "clan_available_kgs_unknown": []
+  }
+}

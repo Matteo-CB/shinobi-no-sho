@@ -1,0 +1,16 @@
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+ignore = ["B008", "RUF012", "RUF003", "RUF001", "E501", "SIM102", "SIM103", "SIM105", "SIM108", "B904", "E731", "C416"]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["N802", "N806"]
+"scripts/**/*.py" = ["N802"]
+"src/shinobi/utils/text.py" = ["RUF001", "RUF003"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

@@ -1,0 +1,263 @@
+{
+  "_meta": {
+    "schema_version": "2.0",
+    "description": "Notes psycho + relations canoniques par tranche d'age. Pour chaque NPC majeur on encode :  note (situation generale), allowed_relations (NPCs avec qui il interagit canoniquement a cet age), forbidden_relations (NPCs avec qui il N'INTERAGIT PAS encore canoniquement, qui seront lies plus tard ou jamais).",
+    "format": "{ npc_id: [{from_age, to_age, note, allowed_relations: [...], forbidden_relations: [...]}, ...] }"
+  },
+  "notes": {
+    "uzumaki_naruto": [
+      {
+        "from_age": 0, "to_age": 5,
+        "note": "Petit enfant solitaire. Le village le craint sans raison apparente pour lui. Vit seul, l'orphelinat l'a expulse.",
+        "allowed_relations": ["sarutobi_hiruzen (Sandaime, le surveille de loin)", "umino_iruka (academie, l'ignore poliment)"],
+        "forbidden_relations": ["uchiha_sasuke (rivalite naitra plus tard)", "haruno_sakura (la deteste, elle l'ignore)", "sarutobi_konohamaru (encore nourrisson)", "tous les autres enfants (l'evitent)"]
+      },
+      {
+        "from_age": 6, "to_age": 8,
+        "note": "Ostracise par le village (jinchuuriki kyuubi cache). Seul a l'academie. Pas d'amis, evite par les enfants, deteste par les adultes. Compense par des farces.",
+        "allowed_relations": ["umino_iruka (seul adulte qui le tolere progressivement)", "sarutobi_hiruzen (lui rend visite)", "ichiraku_teuchi (proprietaire de Ichiraku Ramen, l'accueille)"],
+        "forbidden_relations": ["uchiha_sasuke (rivalite silencieuse, pas amis)", "haruno_sakura (l'ignore, le trouve embetant)", "sarutobi_konohamaru (encore trop jeune, lien apres an 11)", "yamanaka_ino (l'ignore)", "nara_shikamaru (le trouve agacant)", "tous les autres camarades de classe (l'evitent)"]
+      },
+      {
+        "from_age": 9, "to_age": 11,
+        "note": "Toujours ostracise. Echoue plusieurs fois a l'examen genin. Apprend Kage Bunshin via le rouleau interdit (an 12). Iruka devient sa premiere figure paternelle.",
+        "allowed_relations": ["umino_iruka (mentor proche)", "ichiraku_teuchi", "sarutobi_konohamaru (lien naissant a partir de l'an 11)"],
+        "forbidden_relations": ["uchiha_sasuke (rivalite/jalousie, pas amis)", "haruno_sakura (l'ignore, amoureuse de Sasuke)", "yamanaka_ino", "nara_shikamaru", "akimichi_choji"]
+      },
+      {
+        "from_age": 12, "to_age": 12,
+        "note": "Forme l'equipe 7 avec Sasuke et Sakura sous Kakashi. Premier vrai cercle social. Toujours rejete par la majorite du village.",
+        "allowed_relations": ["uchiha_sasuke (rivalite/equipe)", "haruno_sakura (amour a sens unique de Naruto, equipe)", "hatake_kakashi (sensei)", "umino_iruka", "sarutobi_konohamaru (disciple informel)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 13, "to_age": 15,
+        "note": "Voyage avec Jiraiya. Devient plus mature. Sasuke a deserte, Naruto le poursuit.",
+        "allowed_relations": ["jiraiya (mentor)", "haruno_sakura", "hatake_kakashi", "tsunade (Hokage)", "sarutobi_konohamaru"],
+        "forbidden_relations": ["uchiha_sasuke (deserteur, ennemi)"]
+      },
+      {
+        "from_age": 16, "to_age": 17,
+        "note": "Heros apres avoir vaincu Pain. Maitrise senjutsu et controle partiel du kyuubi.",
+        "allowed_relations": [],
+        "forbidden_relations": []
+      }
+    ],
+    "uchiha_sasuke": [
+      {
+        "from_age": 0, "to_age": 7,
+        "note": "Dans l'ombre de son frere Itachi, deja tres talentueux. Famille intacte.",
+        "allowed_relations": ["uchiha_itachi (frere admire)", "uchiha_fugaku (pere distant)", "uchiha_mikoto (mere)", "tous les Uchiha du clan"],
+        "forbidden_relations": ["uzumaki_naruto (pas encore connu)", "haruno_sakura (pas encore connu)", "sarutobi_konohamaru (encore nourrisson)"]
+      },
+      {
+        "from_age": 8, "to_age": 11,
+        "note": "Massacre du clan recent (an 8). Survivant traumatise, seul, obsede par la vengeance contre Itachi. Ne parle a personne.",
+        "allowed_relations": ["sarutobi_hiruzen (le surveille)"],
+        "forbidden_relations": ["uzumaki_naruto (rivalite silencieuse a l'academie, pas amis)", "haruno_sakura (l'ignore, elle est amoureuse)", "yamanaka_ino (admiratrice eperdue)", "tous les autres camarades (le considerent froid)"]
+      },
+      {
+        "from_age": 12, "to_age": 12,
+        "note": "Equipe 7 avec Naruto et Sakura sous Kakashi. Tient ses distances mais developpe une rivalite/amitie avec Naruto.",
+        "allowed_relations": ["uzumaki_naruto (rival/equipier)", "haruno_sakura (equipiere, indifferent a son amour)", "hatake_kakashi (sensei)"],
+        "forbidden_relations": []
+      }
+    ],
+    "haruno_sakura": [
+      {
+        "from_age": 0, "to_age": 5,
+        "note": "Petite fille timide, complexee par son grand front. Sa mere la rassure.",
+        "allowed_relations": ["haruno_mebuki (mere)", "haruno_kizashi (pere)"],
+        "forbidden_relations": ["uzumaki_naruto", "uchiha_sasuke", "yamanaka_ino (rencontre vers 6 ans)"]
+      },
+      {
+        "from_age": 6, "to_age": 11,
+        "note": "Eleve studieuse a l'academie. Amie d'Ino qui la sort de sa coquille. Rivalite naissante autour de Sasuke a partir de 9 ans.",
+        "allowed_relations": ["yamanaka_ino (meilleure amie puis rivale)"],
+        "forbidden_relations": ["uzumaki_naruto (le trouve embetant, l'ignore)", "uchiha_sasuke (l'aime de loin, ne lui parle pas)", "sarutobi_konohamaru (trop jeune)"]
+      },
+      {
+        "from_age": 12, "to_age": 12,
+        "note": "Equipe 7. Inutile au combat au debut. Toujours amoureuse de Sasuke, agace par Naruto.",
+        "allowed_relations": ["uzumaki_naruto (equipier)", "uchiha_sasuke (equipier, amour a sens unique)", "hatake_kakashi (sensei)"],
+        "forbidden_relations": []
+      }
+    ],
+    "sarutobi_konohamaru": [
+      {
+        "from_age": 0, "to_age": 3,
+        "note": "Tres jeune enfant. Vit dans le palais du Hokage sous la protection de son grand-pere Hiruzen. Pas a l'academie, pas autonome.",
+        "allowed_relations": ["sarutobi_hiruzen (grand-pere)", "ebisu (tuteur)"],
+        "forbidden_relations": ["uzumaki_naruto (pas encore rencontre, lien des an 11)", "uchiha_sasuke", "haruno_sakura", "tous les autres enfants de l'academie"]
+      },
+      {
+        "from_age": 4, "to_age": 7,
+        "note": "Petit-fils du Sandaime Hokage. Aspirant Hokage des l'enfance. Frustre d'etre traite comme 'le petit-fils' et non comme une personne.",
+        "allowed_relations": ["sarutobi_hiruzen", "ebisu (tuteur)"],
+        "forbidden_relations": ["uzumaki_naruto (pas encore rencontre, lien apres an 11)", "uchiha_sasuke", "haruno_sakura"]
+      },
+      {
+        "from_age": 8, "to_age": 11,
+        "note": "Disciple informel de Naruto. Apprend Sexy no Jutsu, Oiroke no Jutsu.",
+        "allowed_relations": ["uzumaki_naruto (idole/maitre)", "ebisu", "udon", "moegi"],
+        "forbidden_relations": []
+      }
+    ],
+    "uchiha_itachi": [
+      {
+        "from_age": 0, "to_age": 6,
+        "note": "Prodige du clan Uchiha. Tres jeune mais deja exceptionnel, traumatise par la guerre.",
+        "allowed_relations": ["uchiha_fugaku (pere)", "uchiha_mikoto (mere)", "uchiha_shisui (cousin/meilleur ami)"],
+        "forbidden_relations": ["uchiha_sasuke (frere encore bebe)", "uzumaki_naruto", "tous les non-Uchiha"]
+      },
+      {
+        "from_age": 7, "to_age": 12,
+        "note": "Genin a 7, chunin a 10, jonin a 11. Anbu a 13. Aime profondement Sasuke. Ambivalent face aux ordres du village.",
+        "allowed_relations": ["uchiha_shisui (meilleur ami)", "uchiha_sasuke (frere protege)", "uchiha_fugaku", "uchiha_mikoto", "shimura_danzo (ordres secrets)", "sarutobi_hiruzen"],
+        "forbidden_relations": ["uchiha_madara (rencontre apres l'an 12)", "tous les Akatsuki (rejoindra apres l'an 13)"]
+      },
+      {
+        "from_age": 13, "to_age": 13,
+        "note": "Massacre le clan Uchiha sur ordre de Danzo (an 8 environ). Devient missing-nin. Rejoint Akatsuki.",
+        "allowed_relations": ["uchiha_madara (recrue par lui)", "akatsuki (membre)"],
+        "forbidden_relations": []
+      }
+    ],
+    "hatake_kakashi": [
+      {
+        "from_age": 0, "to_age": 5,
+        "note": "Prodige, fils de Sakumo le Croc Blanc. Sakumo se suicide a cause de sa disgrace.",
+        "allowed_relations": ["hatake_sakumo (pere, mort vers an -10)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 6, "to_age": 12,
+        "note": "Chunin a 6 ans, jonin a 12. Eleve de Minato. Mort de Obito puis de Rin.",
+        "allowed_relations": ["namikaze_minato (sensei)", "uchiha_obito (coequipier puis 'mort')", "nohara_rin (coequipiere puis morte)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 13, "to_age": 25,
+        "note": "Anbu (capitaine), puis enseignant. Connu comme Kakashi du Sharingan. Lit constamment Icha Icha.",
+        "allowed_relations": ["yamato (Anbu)", "maito_gai (rival)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 26, "to_age": 30,
+        "note": "Sensei de l'equipe 7 (Naruto/Sasuke/Sakura). Toujours en retard, masque permanent.",
+        "allowed_relations": ["uzumaki_naruto (eleve)", "uchiha_sasuke (eleve)", "haruno_sakura (eleve)", "maito_gai", "yamato"],
+        "forbidden_relations": []
+      }
+    ],
+    "yakushi_kabuto": [
+      {
+        "from_age": 0, "to_age": 9,
+        "note": "Orphelin de guerre adopte par Nono Yakushi a l'orphelinat de Konoha (geree par Root).",
+        "allowed_relations": ["nono_yakushi (mere adoptive)", "shimura_danzo (Root)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 10, "to_age": 18,
+        "note": "Eleve de Nono puis espion d'Orochimaru depuis ses 10 ans. Apparait comme medic-nin loyal a Konoha.",
+        "allowed_relations": ["orochimaru (maitre)", "nono_yakushi (la tue accidentellement)"],
+        "forbidden_relations": []
+      },
+      {
+        "from_age": 19, "to_age": 99,
+        "note": "Bras droit d'Orochimaru. Deserteur officiel.",
+        "allowed_relations": ["orochimaru"],
+        "forbidden_relations": []
+      }
+    ],
+    "uzumaki_kushina": [
+      {
+        "from_age": 0, "to_age": 24,
+        "note": "Vivante. Jinchuuriki du Kyuubi avant Naruto. Femme de Minato. Morte en l'an 0 en accouchant.",
+        "allowed_relations": ["namikaze_minato (mari)", "uchiha_mikoto (amie d'enfance)"],
+        "forbidden_relations": []
+      },
+      {"from_age": 25, "to_age": 99, "note": "Morte. Apparait brievement via le sceau de Naruto.", "allowed_relations": [], "forbidden_relations": []}
+    ],
+    "namikaze_minato": [
+      {
+        "from_age": 0, "to_age": 24,
+        "note": "Vivant. Yondaime Hokage. Mort en l'an 0 lors de l'attaque du Kyuubi.",
+        "allowed_relations": ["uzumaki_kushina (femme)", "jiraiya (sensei)", "hatake_kakashi (eleve)", "uchiha_obito (eleve)", "nohara_rin (eleve)"],
+        "forbidden_relations": []
+      }
+    ],
+    "uchiha_madara": [
+      {"from_age": 0, "to_age": 99, "note": "Mort officiellement vers an -40. Reapparait via Edo Tensei.", "allowed_relations": [], "forbidden_relations": []}
+    ],
+    "senju_hashirama": [
+      {"from_age": 0, "to_age": 99, "note": "Premier Hokage, mort vers an -40. Reapparait via Edo Tensei.", "allowed_relations": [], "forbidden_relations": []}
+    ],
+    "orochimaru": [
+      {"from_age": 0, "to_age": 35, "note": "Sannin de Konoha. Experimente sur des humains en secret.", "allowed_relations": ["sarutobi_hiruzen (sensei)", "jiraiya", "tsunade", "yakushi_kabuto (eleve)"], "forbidden_relations": []},
+      {"from_age": 36, "to_age": 99, "note": "Missing-nin a Otogakure.", "allowed_relations": ["yakushi_kabuto", "uchiha_sasuke (apres an 12)"], "forbidden_relations": []}
+    ],
+    "jiraiya": [
+      {"from_age": 0, "to_age": 50, "note": "Sannin. Voyage. Sensei de Minato puis Naruto.", "allowed_relations": ["sarutobi_hiruzen (sensei)", "tsunade", "orochimaru", "namikaze_minato (eleve)", "uzumaki_naruto (filleul)"], "forbidden_relations": []}
+    ],
+    "tsunade": [
+      {"from_age": 0, "to_age": 50, "note": "Sannin. Voyage, jeu, alcool.", "allowed_relations": ["sarutobi_hiruzen", "jiraiya", "orochimaru", "shizune (eleve)"], "forbidden_relations": []}
+    ],
+    "sarutobi_hiruzen": [
+      {"from_age": 0, "to_age": 99, "note": "Sandaime Hokage. Sage, paternel. Sensei des Sannin. Mort an 12.", "allowed_relations": ["jiraiya", "tsunade", "orochimaru", "uzumaki_naruto (le surveille)", "sarutobi_konohamaru (petit-fils)", "sarutobi_asuma (fils)"], "forbidden_relations": []}
+    ],
+    "shimura_danzo": [
+      {"from_age": 0, "to_age": 99, "note": "Rival de Hiruzen. Chef de Root. Manipulateur, prone une approche brutale et clandestine.", "allowed_relations": ["sarutobi_hiruzen (rival)", "uchiha_itachi (operations secretes)", "yakushi_kabuto", "sai (recrue Root)"], "forbidden_relations": []}
+    ],
+    "uchiha_fugaku": [
+      {"from_age": 0, "to_age": 38, "note": "Chef du clan Uchiha. Pere d'Itachi et Sasuke. Prepare un coup d'etat. Tue par Itachi an 8.", "allowed_relations": ["uchiha_itachi", "uchiha_sasuke", "uchiha_mikoto", "tous les Uchiha"], "forbidden_relations": []}
+    ],
+    "uchiha_mikoto": [
+      {"from_age": 0, "to_age": 36, "note": "Mere d'Itachi et Sasuke. Amie de Kushina. Tuee par Itachi an 8.", "allowed_relations": ["uchiha_fugaku", "uchiha_itachi", "uchiha_sasuke", "uzumaki_kushina"], "forbidden_relations": []}
+    ],
+    "subaku_no_gaara": [
+      {"from_age": 0, "to_age": 11, "note": "Jinchuuriki du Shukaku. Ostracise a Sunagakure. Tue son oncle a 6 ans. Solitaire, sanguinaire.", "allowed_relations": ["temari (soeur, distante)", "kankuro (frere, distant)"], "forbidden_relations": ["uzumaki_naruto (rencontre an 12)", "uchiha_sasuke", "haruno_sakura"]},
+      {"from_age": 12, "to_age": 13, "note": "Combat Naruto a l'examen chunin (an 12). Defaite spirituelle, commence sa redemption.", "allowed_relations": ["uzumaki_naruto (rival puis ami)", "temari", "kankuro"], "forbidden_relations": []}
+    ],
+    "killer_bee": [{"from_age": 0, "to_age": 99, "note": "Jinchuuriki du Hachibi. Frere adoptif du Raikage Ay.", "allowed_relations": ["ay_yondaime_raikage (frere)"], "forbidden_relations": []}],
+    "uchiha_obito": [
+      {"from_age": 0, "to_age": 13, "note": "Coequipier de Kakashi sous Minato. Maladroit, gentil, amoureux de Rin.", "allowed_relations": ["namikaze_minato (sensei)", "hatake_kakashi (rival)", "nohara_rin (amour)"], "forbidden_relations": []},
+      {"from_age": 14, "to_age": 99, "note": "Bascule cote sombre apres la mort de Rin. Devient Tobi/Madara.", "allowed_relations": ["uchiha_madara", "akatsuki"], "forbidden_relations": []}
+    ],
+    "umino_iruka": [
+      {"from_age": 0, "to_age": 11, "note": "Orphelin de l'attaque du Kyuubi (parents tues). Devient instable, fait des farces.", "allowed_relations": [], "forbidden_relations": []},
+      {"from_age": 12, "to_age": 99, "note": "Enseignant a l'academie de Konoha. Premiere figure paternelle de Naruto.", "allowed_relations": ["uzumaki_naruto (eleve protege)", "tous les academy_students"], "forbidden_relations": []}
+    ],
+    "momochi_zabuza": [{"from_age": 0, "to_age": 26, "note": "Demon de la Brume. Membre des 7 Epeistes de Kirigakure. Tue 100 etudiants. Devient missing-nin. Mort an 12.", "allowed_relations": ["haku (disciple)", "kirigakure_seven_swordsmen"], "forbidden_relations": []}],
+    "haku": [{"from_age": 0, "to_age": 14, "note": "Orphelin du Pays de l'Eau. Hyouton (kekkei genkai glace). Recueilli par Zabuza, devient son outil.", "allowed_relations": ["zabuza_momochi (maitre)"], "forbidden_relations": []}],
+    "pain_nagato": [
+      {"from_age": 0, "to_age": 36, "note": "Orphelin d'Amegakure. Rinnegan (don de Madara). Avec Yahiko et Konan, fonde Akatsuki originale.", "allowed_relations": ["yahiko", "konan", "jiraiya (sensei dans la jeunesse)"], "forbidden_relations": []}
+    ],
+    "konan": [{"from_age": 0, "to_age": 99, "note": "Orpheline d'Amegakure. Maitre du papier. Garde l'ile d'Akatsuki. Morte an 16.", "allowed_relations": ["yahiko", "pain_nagato"], "forbidden_relations": []}],
+    "deidara": [{"from_age": 0, "to_age": 17, "note": "Eleve d'Onoki, deserteur d'Iwa. Akatsuki. Maitrise l'argile explosive. Mort an 15.", "allowed_relations": ["sasori (partenaire Akatsuki)", "tobi_obito"], "forbidden_relations": []}],
+    "sasori": [{"from_age": 0, "to_age": 33, "note": "Petit-fils de Chiyo. Marionnettiste de Sunagakure. Akatsuki. Mort an 14.", "allowed_relations": ["chiyo (grand-mere)", "deidara"], "forbidden_relations": []}],
+    "yamanaka_ino": [
+      {"from_age": 0, "to_age": 11, "note": "Eleve a l'academie. Amie de Sakura jusqu'a la rivalite Sasuke (vers 9 ans).", "allowed_relations": ["yamanaka_inoichi (pere)", "haruno_sakura (amie/rivale)", "nara_shikamaru (camarade)", "akimichi_choji (camarade)"], "forbidden_relations": ["uzumaki_naruto (l'ignore)"]}
+    ],
+    "nara_shikamaru": [
+      {"from_age": 0, "to_age": 11, "note": "Genie paresseux. Camarade des trois clans Ino-Shika-Cho.", "allowed_relations": ["nara_shikaku (pere)", "yamanaka_ino", "akimichi_choji"], "forbidden_relations": ["uzumaki_naruto (le trouve agacant)"]}
+    ],
+    "akimichi_choji": [
+      {"from_age": 0, "to_age": 11, "note": "Doux, gros mangeur, complexe par son poids. Meilleur ami de Shikamaru.", "allowed_relations": ["akimichi_choza (pere)", "nara_shikamaru", "yamanaka_ino"], "forbidden_relations": []}
+    ],
+    "hyuga_hinata": [
+      {"from_age": 0, "to_age": 11, "note": "Heritiere du clan Hyuga (branche principale), timide, complexee. Amoureuse silencieuse de Naruto depuis qu'il l'a defendue contre des kidnappeurs.", "allowed_relations": ["hyuga_hiashi (pere severe)", "hyuga_hanabi (soeur cadette)", "uzumaki_naruto (admiration silencieuse, jamais lui parle)"], "forbidden_relations": []}
+    ],
+    "inuzuka_kiba": [
+      {"from_age": 0, "to_age": 11, "note": "Sauvage, instinctif. Toujours avec son chien Akamaru.", "allowed_relations": ["inuzuka_tsume (mere)", "akamaru (compagnon)"], "forbidden_relations": []}
+    ],
+    "aburame_shino": [
+      {"from_age": 0, "to_age": 11, "note": "Discret, controle des insectes. Famille Aburame.", "allowed_relations": ["aburame_shibi (pere)"], "forbidden_relations": []}
+    ],
+    "lee_rock": [
+      {"from_age": 0, "to_age": 11, "note": "Incapable d'utiliser ninjutsu/genjutsu. S'entraine au taijutsu pur sous Maito Gai.", "allowed_relations": ["maito_gai (sensei adore)"], "forbidden_relations": []}
+    ],
+    "hyuga_neji": [
+      {"from_age": 0, "to_age": 11, "note": "Branche secondaire des Hyuga, marque par le sceau de l'oiseau en cage. Amer, croit au destin.", "allowed_relations": ["hyuga_hizashi (pere mort)", "hyuga_hiashi (oncle)"], "forbidden_relations": []}
+    ]
+  }
+}

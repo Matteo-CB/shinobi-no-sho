@@ -1,0 +1,561 @@
+[
+  {
+    "id": "aburame",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "kikaichu"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "akimichi",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "partial_multi_size_technique"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "amagiri",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "chinoike",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "fuma",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "fuma_land_of_sound",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "funato",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [
+      "suiton"
+    ],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hagoromo",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hatake",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hirasaka",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hoki_family",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hoshigaki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hozuki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [
+      "suiton"
+    ],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "hyuga",
+    "key_kekkei_genkai": [
+      "byakugan"
+    ],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "iburi",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "inuzuka",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "fang_passing_fang"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "izuno",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "jugos",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kagetsu_family",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kaguya",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kamizuru",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "karatachi_family",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kazekage",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kedoin",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kodon",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kohaku",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kumanoi",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "kurama",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "lee",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "nara",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "shadow_imitation_technique"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "onikuma",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "otsutsuki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [
+      "doton"
+    ],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "rinha",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "ryu",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sarutobi",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [
+      "fuuton",
+      "katon"
+    ],
+    "available_natures": [
+      "raiton"
+    ],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "sendo",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "senju",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [
+      "doton",
+      "fuuton",
+      "inton",
+      "katon",
+      "raiton",
+      "suiton",
+      "youton_yang"
+    ],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shiin",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shimura",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "shirogane",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "taketori",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tenro",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "tsuchigumo",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "infinite_embrace"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "uchiha",
+    "key_kekkei_genkai": [
+      "sharingan"
+    ],
+    "available_kekkei_genkai": [
+      "mangekyo_sharingan"
+    ],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "uzumaki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "wagarashi_family",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "wasabi_family",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yamanaka",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [
+      "mind_body_switch_technique"
+    ],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yoimura",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yotas",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yotsuki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  },
+  {
+    "id": "yuki",
+    "key_kekkei_genkai": [],
+    "available_kekkei_genkai": [
+      "ice_release"
+    ],
+    "key_natures": [],
+    "available_natures": [],
+    "key_techniques": [],
+    "available_techniques": [],
+    "canonicity": "manga"
+  }
+]

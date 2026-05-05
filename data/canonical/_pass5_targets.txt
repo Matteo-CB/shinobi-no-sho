@@ -1,0 +1,15 @@
+# Pass 5 - liste des chunk_ids a tagger temporellement.
+#
+# Format : un chunk_id par ligne. Lignes vides et lignes commencant par # ignorees.
+#
+# Pour generer cette liste a partir du corpus RAG :
+#
+#   python -c "import pathlib; \
+#     [print(f.stem) for f in pathlib.Path('data/rag_chunks').glob('*.json')]" \
+#     > data/canonical/_pass5_targets.txt
+#
+# (ajuster le chemin du corpus si besoin, cf. CHUNKS_DIR dans pass5_tag_chunks.py)
+#
+# Volume attendu : ~17000 chunks selon docs/05_data_pipeline.md.
+# Cout estime sur Llama-3.3-70b Groq Batch (50% off) : $5-10.
+# Duree : 1-2h batch processing cote Groq.

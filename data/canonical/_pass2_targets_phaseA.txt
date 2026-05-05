@@ -1,0 +1,13 @@
+# Phase A : 10 persos failed du batch test 50, retest avec llama-3.3-70b-versatile.
+# 9 du failed top-50/tier-2 + 1 secondaire.
+
+senju_hashirama
+uchiha_madara
+sarutobi_hiruzen
+hatake_kakashi
+uchiha_sasuke
+gaara
+namikaze_minato
+uchiha_obito
+shimura_danzo
+nohara_rin

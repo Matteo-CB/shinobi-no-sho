@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "description": "Ancres temporelles des arcs canon Naruto. Toutes les annees sont relatives a year 0 = naissance Naruto Uzumaki = attaque du Kyuubi sur Konoha. Used by scripts/pass2_5_derive.py to derive birth_year from age_at_event entries.",
+    "convention": "year 0 = Naruto Uzumaki birth = Nine-Tails attack on Konoha",
+    "confidence": "Most values are well-attested in canon (manga/databook). Some Boruto-era arcs are approximate (databook 5 not always explicit). To be reviewed by user before running pass2_5_derive.",
+    "source": "manga + databook 4 + Boruto manga"
+  },
+  "arcs": {
+    "pre_series": {
+      "year_min": -100,
+      "year_max": -1,
+      "description": "Periode anterieure a la naissance de Naruto (Hashirama, Madara, Yondaime arc, Uchiha massacre)"
+    },
+    "warring_states_period": {
+      "year_min": -80,
+      "year_max": -50,
+      "description": "Era pre-Konoha. Hashirama et Madara enfants/jeunes adultes."
+    },
+    "konoha_founding": {
+      "year_min": -50,
+      "year_max": -45,
+      "description": "Fondation de Konoha. Hashirama Premier Hokage."
+    },
+    "first_shinobi_world_war": {
+      "year_min": -40,
+      "year_max": -35,
+      "description": "Sous Tobirama Senju (Deuxieme Hokage). Mort Tobirama."
+    },
+    "second_shinobi_world_war": {
+      "year_min": -25,
+      "year_max": -20,
+      "description": "Sannin Jiraiya/Tsunade/Orochimaru en jeunes shinobi. Hanzo affronte les Sannin."
+    },
+    "third_shinobi_world_war": {
+      "year_min": -7,
+      "year_max": -3,
+      "description": "Team Minato. Mort de Obito (officielle), de Rin. Itachi 4-7 ans."
+    },
+    "kyuubi_attack": {
+      "year_min": 0,
+      "year_max": 0,
+      "description": "Attaque Kyuubi sur Konoha. Naissance Naruto. Mort Minato et Kushina."
+    },
+    "uchiha_massacre": {
+      "year_min": 5,
+      "year_max": 6,
+      "description": "Itachi extermine le clan Uchiha. Itachi 13 ans, Sasuke 7 ans."
+    },
+    "academy": {
+      "year_min": 6,
+      "year_max": 12,
+      "description": "Naruto et sa generation a l'academie ninja (6-12 ans)."
+    },
+    "anbu_promotion": {
+      "year_min": 4,
+      "year_max": 6,
+      "description": "Itachi devient ANBU a 11 ans (year ~4). Generique pour les ANBU prodiges."
+    },
+    "land_of_waves": {
+      "year_min": 12,
+      "year_max": 12,
+      "description": "Premier arc Part I. Team 7 vs Zabuza/Haku. Naruto et Sasuke 12 ans."
+    },
+    "chunin_exam": {
+      "year_min": 12,
+      "year_max": 13,
+      "description": "Chunin Exam Konoha. Naruto/Sasuke/Sakura 12-13 ans."
+    },
+    "konoha_crush": {
+      "year_min": 13,
+      "year_max": 13,
+      "description": "Invasion Konoha par Orochimaru. Mort Hiruzen."
+    },
+    "search_for_tsunade": {
+      "year_min": 13,
+      "year_max": 13,
+      "description": "Recherche Tsunade pour 5e Hokage."
+    },
+    "sasuke_defection": {
+      "year_min": 13,
+      "year_max": 13,
+      "description": "Sasuke quitte Konoha pour rejoindre Orochimaru."
+    },
+    "pre_shippuden_timeskip": {
+      "year_min": 13,
+      "year_max": 15,
+      "description": "Naruto s'entraine avec Jiraiya pendant 2.5 ans."
+    },
+    "kazekage_rescue": {
+      "year_min": 15,
+      "year_max": 15,
+      "description": "Debut Part II. Sauvetage Gaara. Mort Chiyo."
+    },
+    "tenchi_bridge": {
+      "year_min": 15,
+      "year_max": 15,
+      "description": "Reconnaissance Tenchi Bridge. Mission Sai. Mort Sai's brother memory."
+    },
+    "akatsuki_suppression": {
+      "year_min": 15,
+      "year_max": 16,
+      "description": "Sai/Yamato joining Team 7. Premiers combats avec Akatsuki."
+    },
+    "hidan_kakuzu": {
+      "year_min": 15,
+      "year_max": 16,
+      "description": "Mort Asuma. Naruto cree le Big Ball Rasengan."
+    },
+    "itachi_pursuit": {
+      "year_min": 16,
+      "year_max": 16,
+      "description": "Sasuke vs Itachi. Mort Itachi. Capture jinchuuriki par Akatsuki."
+    },
+    "pain_invasion": {
+      "year_min": 16,
+      "year_max": 16,
+      "description": "Pain detruit Konoha. Mort Jiraiya, Kakashi (revive). Naruto vs Pain."
+    },
+    "five_kage_summit": {
+      "year_min": 16,
+      "year_max": 16,
+      "description": "Sommet 5 Kage. Sasuke vs Danzo. Mort Danzo."
+    },
+    "shinobi_world_war_4": {
+      "year_min": 16,
+      "year_max": 17,
+      "description": "4e grande guerre. Edo Tensei massif. Mort Madara final, Obito, Kaguya."
+    },
+    "post_war": {
+      "year_min": 17,
+      "year_max": 17,
+      "description": "Fin Naruto manga, debut Blank Period."
+    },
+    "blank_period": {
+      "year_min": 17,
+      "year_max": 30,
+      "description": "Entre Naruto fin et Boruto. Naruto devient 7e Hokage. The Last, mariages."
+    },
+    "the_last": {
+      "year_min": 19,
+      "year_max": 19,
+      "description": "Film The Last : Naruto x Hinata. Mariage Naruto/Hinata."
+    },
+    "naruto_hokage_inauguration": {
+      "year_min": 30,
+      "year_max": 30,
+      "description": "Naruto devient 7e Hokage."
+    },
+    "boruto_academy": {
+      "year_min": 30,
+      "year_max": 32,
+      "description": "Boruto et Sarada a l'academie. Boruto 12 ans environ."
+    },
+    "boruto_chunin_exam": {
+      "year_min": 32,
+      "year_max": 32,
+      "description": "Chunin Exam Boruto-era. Momoshiki/Kinshiki invasion."
+    },
+    "kawaki_arrival": {
+      "year_min": 33,
+      "year_max": 34,
+      "description": "Kawaki arrive a Konoha."
+    },
+    "boruto_timeskip": {
+      "year_min": 35,
+      "year_max": 36,
+      "description": "Time-skip Boruto. Boruto et Kawaki adolescents/jeunes adultes."
+    },
+    "new_era_part_2": {
+      "year_min": 35,
+      "year_max": 40,
+      "description": "Boruto: Two Blue Vortex. Eida/Daemon, Code, God Trees."
+    }
+  }
+}

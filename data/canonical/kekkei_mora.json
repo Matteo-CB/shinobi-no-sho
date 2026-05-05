@@ -1,0 +1,104 @@
+[
+  {
+    "activation_conditions_fr": "Hereditaire chez les Otsutsuki et leurs descendants directs ; activable a tout moment par chakra.",
+    "canonicity": "manga",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": ["tenseigan", "rinne_sharingan"],
+    "id": "byakugan_otsutsuki",
+    "name_kanji": "白眼",
+    "name_romaji": "Byakugan Otsutsuki",
+    "sources": ["narutopedia:Byakugan"],
+    "stages": [
+      {"abilities_fr": "Vision a 360 degres, voit le chakra et les tenketsu, distingue le chakra naturel.", "stage": 1}
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Petit angle mort pres de la nuque ; epuisement chakratique a usage prolonge."
+  },
+  {
+    "activation_conditions_fr": "Eveil rare, declenche par fusion de Byakugan et chakra Otsutsuki residuel chez Toneri Otsutsuki.",
+    "canonicity": "movie_canon",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": [],
+    "id": "tenseigan",
+    "name_kanji": "転生眼",
+    "name_romaji": "Tenseigan",
+    "sources": ["narutopedia:Tenseigan"],
+    "stages": [
+      {"abilities_fr": "Levitation, manipulation gravitationnelle, generation d'orbes Truth-Seeking, mode Tenseigan ultime.", "stage": 1}
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Necessite un corps Otsutsuki ou genetiquement compatible pour ne pas etre rejete."
+  },
+  {
+    "activation_conditions_fr": "Forme primordiale du Sharingan eveillee par Kaguya Otsutsuki apres ingestion du fruit du Shinju.",
+    "canonicity": "manga",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": [],
+    "id": "rinne_sharingan",
+    "name_kanji": "輪廻写輪眼",
+    "name_romaji": "Rinne Sharingan",
+    "sources": ["narutopedia:Rinne_Sharingan"],
+    "stages": [
+      {"abilities_fr": "Combinaison ultime des dojutsu : controle illimite de l'espace-temps, hypnose mondiale (Mugen Tsukuyomi), creation de dimensions.", "stage": 1}
+    ],
+    "type": "dojutsu",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Apparition extremement rare ; necessite la fusion d'enormes quantites de chakra avec les bijuu."
+  },
+  {
+    "activation_conditions_fr": "Hereditaire chez les Otsutsuki, mais peut etre acquis par implantation pour porteurs compatibles.",
+    "canonicity": "manga",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": [],
+    "id": "karma",
+    "name_kanji": "楔",
+    "name_romaji": "Kama",
+    "sources": ["narutopedia:Karma"],
+    "stages": [
+      {"abilities_fr": "Sceau noir grave dans la chair par un Otsutsuki, transformant lentement l'hote en un nouveau receptacle Otsutsuki.", "stage": 1}
+    ],
+    "type": "physical",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Le porteur perd progressivement son humanite ; pression continue sur l'esprit."
+  },
+  {
+    "activation_conditions_fr": "Hereditaire chez Isshiki Otsutsuki et heritiers ; controle des objets a l'etat d'energie cubique.",
+    "canonicity": "boruto_manga",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": [],
+    "id": "sukunahikona",
+    "name_kanji": "少彦名",
+    "name_romaji": "Sukunahikona",
+    "sources": ["narutopedia:Sukunahikona"],
+    "stages": [
+      {"abilities_fr": "Reduit instantanement la taille des objets a une echelle subatomique pour les stocker ou les projeter.", "stage": 1}
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Cout chakratique enorme, necessite preparation des marqueurs cubiques."
+  },
+  {
+    "activation_conditions_fr": "Hereditaire Otsutsuki ; restitution instantanee a taille reelle d'objets pre-stockes via Sukunahikona.",
+    "canonicity": "boruto_manga",
+    "carrier_clans": ["otsutsuki"],
+    "category": "kekkei_mora",
+    "evolution_paths": [],
+    "id": "daikokuten",
+    "name_kanji": "大黒天",
+    "name_romaji": "Daikokuten",
+    "sources": ["narutopedia:Daikokuten"],
+    "stages": [
+      {"abilities_fr": "Stockage / extraction d'objets miniaturises dans une dimension de poche, reutilisables comme projectiles.", "stage": 1}
+    ],
+    "type": "non_elemental",
+    "updated_at": "2026-05-02",
+    "weaknesses_fr": "Doit etre couple a Sukunahikona ; tres rare."
+  }
+]

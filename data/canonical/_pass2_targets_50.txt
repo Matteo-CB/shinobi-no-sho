@@ -1,0 +1,64 @@
+# Pass 2 — batch test 50 personnages
+# 20 du dry-run (deja extraits par CC, vont etre re-extraits par Groq pour cross-check)
+# + 30 nouveaux (10 top-50 restants + 10 tier 2 + 10 secondaires)
+#
+# Lignes commencant par # sont ignorees.
+# Une ligne = un char_id (lowercase snake_case).
+
+# === 20 du dry-run (cross-check Groq vs CC) ===
+sarutobi_hiruzen
+senju_hashirama
+uzumaki_naruto
+roshi
+mitsuki
+uchiha_sasuke
+uchiha_itachi
+uchiha_madara
+hatake_kakashi
+gaara
+otsutsuki_kaguya
+kimimaro
+momochi_zabuza
+darui
+karin
+sarutobi_konohamaru
+tenten
+fu
+aburame_shino
+hozuki_suigetsu
+
+# === 10 top-50 restants (Akatsuki principal + Edo Tensei specialist) ===
+nagato
+konan
+hoshigaki_kisame
+hidan
+kakuzu
+deidara
+sasori
+zetsu_white
+zetsu_black
+yakushi_kabuto
+
+# === 10 tier 2 (sensei + Konoha 11 + Suna trio + Yondaime) ===
+umino_iruka
+sarutobi_asuma
+yuhi_kurenai
+guy_might
+nara_shikamaru
+hyuga_neji
+hyuga_hinata
+temari
+kankuro
+namikaze_minato
+
+# === 10 secondaires (mix wiki riche/pauvre, Boruto-era, jinchuuriki, Konoha shadow) ===
+nohara_rin
+uchiha_obito
+jugo
+haku
+sai
+shimura_danzo
+otsutsuki_isshiki
+otsutsuki_momoshiki
+b_killer
+nii_yugito

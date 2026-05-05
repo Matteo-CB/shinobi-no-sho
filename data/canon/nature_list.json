@@ -1,0 +1,151 @@
+[
+  {
+    "id": "katon",
+    "common_clans": [
+      "uchiha",
+      "sarutobi"
+    ],
+    "common_villages": [
+      "konohagakure",
+      "sunagakure",
+      "iwagakure"
+    ]
+  },
+  {
+    "id": "suiton",
+    "common_clans": [
+      "hozuki",
+      "uchiha",
+      "senju"
+    ],
+    "common_villages": [
+      "kirigakure",
+      "konohagakure"
+    ]
+  },
+  {
+    "id": "fuuton",
+    "common_clans": [
+      "uzumaki",
+      "namikaze"
+    ],
+    "common_villages": [
+      "sunagakure",
+      "konohagakure"
+    ]
+  },
+  {
+    "id": "doton",
+    "common_clans": [
+      "kamizuru"
+    ],
+    "common_villages": [
+      "iwagakure",
+      "sunagakure"
+    ]
+  },
+  {
+    "id": "raiton",
+    "common_clans": [],
+    "common_villages": [
+      "kumogakure"
+    ]
+  },
+  {
+    "id": "mokuton",
+    "common_clans": [
+      "senju"
+    ],
+    "common_villages": [
+      "konohagakure"
+    ]
+  },
+  {
+    "id": "hyouton",
+    "common_clans": [
+      "yuki"
+    ],
+    "common_villages": [
+      "kirigakure"
+    ]
+  },
+  {
+    "id": "youton",
+    "common_clans": [],
+    "common_villages": [
+      "iwagakure"
+    ]
+  },
+  {
+    "id": "jinton",
+    "common_clans": [],
+    "common_villages": [
+      "iwagakure"
+    ]
+  },
+  {
+    "id": "bakuton",
+    "common_clans": [
+      "explosion_corps"
+    ],
+    "common_villages": [
+      "iwagakure"
+    ]
+  },
+  {
+    "id": "shouton",
+    "common_clans": [],
+    "common_villages": [
+      "takigakure"
+    ]
+  },
+  {
+    "id": "ranton",
+    "common_clans": [],
+    "common_villages": [
+      "kumogakure"
+    ]
+  },
+  {
+    "id": "jiton",
+    "common_clans": [],
+    "common_villages": []
+  },
+  {
+    "id": "inton",
+    "common_clans": [
+      "hyuuga",
+      "kurama"
+    ],
+    "common_villages": []
+  },
+  {
+    "id": "youton_yang",
+    "common_clans": [
+      "uzumaki",
+      "senju"
+    ],
+    "common_villages": []
+  },
+  {
+    "id": "inyouton",
+    "common_clans": [
+      "uzumaki",
+      "senju",
+      "rikudou"
+    ],
+    "common_villages": []
+  },
+  {
+    "id": "meiton",
+    "common_clans": [],
+    "common_villages": [
+      "kumogakure"
+    ]
+  },
+  {
+    "id": "senpou",
+    "common_clans": [],
+    "common_villages": []
+  }
+]
