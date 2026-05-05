@@ -131,10 +131,50 @@ CREATE INDEX IF NOT EXISTS idx_kg_subject ON kg_facts(subject, relation);
 CREATE INDEX IF NOT EXISTS idx_kg_object ON kg_facts(object);
 CREATE INDEX IF NOT EXISTS idx_kg_valid ON kg_facts(valid_from_year, valid_to_year);
 CREATE INDEX IF NOT EXISTS idx_kg_canonicity ON kg_facts(canonicity);
+
+-- Phase B : sous-KG par PNJ (belief propagator)
+-- Chaque ligne = "ce NPC croit que ce fact est vrai", avec une fidelity
+-- qui se degrade par chaine de transmission. learned_at_year permet de
+-- savoir DEPUIS QUAND le NPC connait le fait (pas avant).
+CREATE TABLE IF NOT EXISTS kg_beliefs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fact_id INTEGER NOT NULL REFERENCES kg_facts(id) ON DELETE CASCADE,
+    npc_id TEXT NOT NULL,
+    fidelity REAL NOT NULL DEFAULT 1.0,
+    learned_at_year INTEGER,
+    learned_via_npc_id TEXT,           -- NPC source (None = temoin direct ou canon)
+    learned_via_channel TEXT,          -- 'witness' / 'rumor' / 'spy' / 'canon_default'
+    distortion_notes TEXT,             -- (optionnel) note sur la deformation
+    created_at_ts INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    UNIQUE(fact_id, npc_id)
+);
+CREATE INDEX IF NOT EXISTS idx_kg_beliefs_npc ON kg_beliefs(npc_id);
+CREATE INDEX IF NOT EXISTS idx_kg_beliefs_fact ON kg_beliefs(fact_id);
+CREATE INDEX IF NOT EXISTS idx_kg_beliefs_year ON kg_beliefs(learned_at_year);
+
+-- Phase B : reseau social (graphe non oriente avec strength)
+-- Une ligne par paire ordonnee (a, b) avec a < b par convention.
+-- link_type : family / friend / mentor / student / rival / enemy / acquaintance / ally
+-- strength : 0 (etranger) -> 1 (lien tres fort)
+CREATE TABLE IF NOT EXISTS kg_social_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    npc_a TEXT NOT NULL,
+    npc_b TEXT NOT NULL,
+    link_type TEXT NOT NULL DEFAULT 'acquaintance',
+    strength REAL NOT NULL DEFAULT 0.5,
+    valid_from_year INTEGER,
+    valid_to_year INTEGER,
+    notes TEXT,
+    created_at_ts INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    UNIQUE(npc_a, npc_b, link_type, valid_from_year)
+);
+CREATE INDEX IF NOT EXISTS idx_kg_social_a ON kg_social_links(npc_a);
+CREATE INDEX IF NOT EXISTS idx_kg_social_b ON kg_social_links(npc_b);
+CREATE INDEX IF NOT EXISTS idx_kg_social_strength ON kg_social_links(strength);
 """
 
 
-CURRENT_SCHEMA_VERSION = 1
+CURRENT_SCHEMA_VERSION = 2  # bump : ajout kg_beliefs + kg_social_links
 
 
 def initialize_db(db_path: Path | str | None = None) -> sqlite3.Connection:
@@ -179,6 +219,119 @@ def fact_columns() -> tuple[str, ...]:
         "valid_from_year", "valid_to_year", "source", "confidence",
         "canonicity", "known_by_npc_ids", "created_at_ts",
     )
+
+
+def belief_columns() -> tuple[str, ...]:
+    """Colonnes de kg_beliefs."""
+    return (
+        "id", "fact_id", "npc_id", "fidelity", "learned_at_year",
+        "learned_via_npc_id", "learned_via_channel", "distortion_notes",
+        "created_at_ts",
+    )
+
+
+def social_link_columns() -> tuple[str, ...]:
+    """Colonnes de kg_social_links."""
+    return (
+        "id", "npc_a", "npc_b", "link_type", "strength",
+        "valid_from_year", "valid_to_year", "notes", "created_at_ts",
+    )
+
+
+@dataclass
+class Belief:
+    """Croyance d'un NPC sur un fact, avec fidelity (precision de l'info)."""
+
+    fact_id: int
+    npc_id: str
+    fidelity: float = 1.0  # 1.0 = certitude/temoin direct, 0 = inconnu
+    learned_at_year: int | None = None
+    learned_via_npc_id: str | None = None  # None = canon ou temoin direct
+    learned_via_channel: str | None = None  # 'witness' | 'rumor' | 'spy' | 'canon_default'
+    distortion_notes: str | None = None
+    id: int | None = None
+    created_at_ts: int | None = None
+
+    def to_row(self) -> dict[str, Any]:
+        return {
+            "fact_id": self.fact_id,
+            "npc_id": self.npc_id,
+            "fidelity": self.fidelity,
+            "learned_at_year": self.learned_at_year,
+            "learned_via_npc_id": self.learned_via_npc_id,
+            "learned_via_channel": self.learned_via_channel,
+            "distortion_notes": self.distortion_notes,
+        }
+
+    @classmethod
+    def from_row(cls, row: sqlite3.Row | dict[str, Any]) -> Belief:
+        d = dict(row) if isinstance(row, sqlite3.Row) else row
+        return cls(
+            id=d.get("id"),
+            fact_id=d["fact_id"],
+            npc_id=d["npc_id"],
+            fidelity=float(d.get("fidelity") or 1.0),
+            learned_at_year=d.get("learned_at_year"),
+            learned_via_npc_id=d.get("learned_via_npc_id"),
+            learned_via_channel=d.get("learned_via_channel"),
+            distortion_notes=d.get("distortion_notes"),
+            created_at_ts=d.get("created_at_ts"),
+        )
+
+
+@dataclass
+class SocialLink:
+    """Lien social entre deux NPCs, oriente non (a < b par convention)."""
+
+    npc_a: str
+    npc_b: str
+    link_type: str = "acquaintance"
+    strength: float = 0.5  # 0..1, intensite du lien
+    valid_from_year: int | None = None
+    valid_to_year: int | None = None
+    notes: str | None = None
+    id: int | None = None
+    created_at_ts: int | None = None
+
+    def __post_init__(self) -> None:
+        # Convention : on stocke toujours npc_a < npc_b lexicographiquement
+        if self.npc_a > self.npc_b:
+            self.npc_a, self.npc_b = self.npc_b, self.npc_a
+
+    def to_row(self) -> dict[str, Any]:
+        return {
+            "npc_a": self.npc_a,
+            "npc_b": self.npc_b,
+            "link_type": self.link_type,
+            "strength": self.strength,
+            "valid_from_year": self.valid_from_year,
+            "valid_to_year": self.valid_to_year,
+            "notes": self.notes,
+        }
+
+    @classmethod
+    def from_row(cls, row: sqlite3.Row | dict[str, Any]) -> SocialLink:
+        d = dict(row) if isinstance(row, sqlite3.Row) else row
+        link = cls(
+            id=d.get("id"),
+            npc_a=d["npc_a"],
+            npc_b=d["npc_b"],
+            link_type=d.get("link_type") or "acquaintance",
+            strength=float(d.get("strength") or 0.5),
+            valid_from_year=d.get("valid_from_year"),
+            valid_to_year=d.get("valid_to_year"),
+            notes=d.get("notes"),
+            created_at_ts=d.get("created_at_ts"),
+        )
+        return link
+
+    def other(self, npc_id: str) -> str:
+        """Retourne l'autre NPC du lien."""
+        if npc_id == self.npc_a:
+            return self.npc_b
+        if npc_id == self.npc_b:
+            return self.npc_a
+        raise ValueError(f"{npc_id} n'est pas dans ce lien ({self.npc_a}, {self.npc_b}).")
 
 
 def insert_facts_batch(conn: sqlite3.Connection, facts: Iterable[Fact]) -> list[int]:
