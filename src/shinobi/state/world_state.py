@@ -36,6 +36,11 @@ class PlayerCharacterState(BaseModel):
     rank: str = "academy_student"
     known_jutsu: list[str] = Field(default_factory=list)
     location: str = "(non défini)"
+    # Relations etablies en jeu : ids canon avec qui le joueur a une relation
+    # explicitement positive (affinity > seuil amical, lien etabli par
+    # interactions repetees). Vide par defaut (le joueur est un OC inconnu
+    # du canon). Sera alimente par le KG dynamique en Phase A et au-dela.
+    established_npc_relationships: list[str] = Field(default_factory=list)
 
 
 class CharacterDeath(BaseModel):

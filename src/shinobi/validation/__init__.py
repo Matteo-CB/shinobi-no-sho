@@ -15,6 +15,10 @@ sera appele une fois branche au pipeline narrateur (cf. regen_loop.py).
 from __future__ import annotations
 
 from shinobi.validation.age_coherence import AgeCoherenceLayer
+from shinobi.validation.anachronism import AnachronismLayer
+from shinobi.validation.coordination_friends import CoordinationFriendsLayer
+from shinobi.validation.explicit_age import ExplicitAgeLayer
+from shinobi.validation.player_friendship import PlayerFriendshipLayer
 from shinobi.validation.regen_loop import format_violations_for_regen
 from shinobi.validation.risk_tagger import (
     RiskLevel,
@@ -37,9 +41,13 @@ from shinobi.validation.validator import (
 
 __all__ = [
     "AgeCoherenceLayer",
+    "AnachronismLayer",
+    "CoordinationFriendsLayer",
+    "ExplicitAgeLayer",
     "NarrativeAction",
     "NarrativeDialogue",
     "NarrativeOutput",
+    "PlayerFriendshipLayer",
     "RiskLevel",
     "RiskSegment",
     "SegmentType",
