@@ -105,6 +105,16 @@ def agents_embeddings_db_path(save_id: str) -> Path:
     return _save_dir(save_id) / "agents_embeddings.sqlite"
 
 
+def tension_scheduler_state_path(save_id: str) -> Path:
+    """Chemin du state SchedulerState persiste (Phase C §5.3 - 1 inf/3 mois).
+
+    Sans persistance, le scheduler oublie son last_analyst_year/month entre
+    sessions et re-tire l'analyst immediatement. Avec persistance, le
+    throttling 3 mois est respecte sur l'ensemble de la partie.
+    """
+    return _save_dir(save_id) / "tension_scheduler_state.json"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []

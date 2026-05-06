@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 
 from rich.console import Console
@@ -204,15 +205,42 @@ def play_session(save_id: str) -> None:
     main_loop_kg = save_module.kg_db_path(save_id)
     main_loop_tension_scheduler = None
     main_loop_kg_store = None
+    main_loop_llm_client = None
     if main_loop_kg.exists():
         try:
             from shinobi.kg.social import SocialNetwork
             from shinobi.kg.store import KnowledgeGraphStore
+            from shinobi.llm.client import LLMClient
+            from shinobi.tension import LLMTensionAnalyst, SchedulerState
+
             main_loop_kg_store = KnowledgeGraphStore(main_loop_kg)
             main_loop_social = SocialNetwork(main_loop_kg_store.conn)
+
+            # Spec §5.3 : LLM client wired pour que l'analyst soit ACTIF.
+            # Sans LLMClient, analyze() retourne TensionList vide.
+            main_loop_llm_client = LLMClient()
+            main_loop_analyst = LLMTensionAnalyst(
+                main_loop_kg_store,
+                llm_client=main_loop_llm_client,
+                social_network=main_loop_social,
+            )
+            # Spec §5.3 : scheduler_state persiste entre sessions pour
+            # respecter '1 inf/3 mois' au-dela d'une session.
+            scheduler_state_path = save_module.tension_scheduler_state_path(save_id)
+            initial_state = SchedulerState()
+            if scheduler_state_path.exists():
+                try:
+                    state_data = json.loads(
+                        scheduler_state_path.read_text(encoding="utf-8"),
+                    )
+                    initial_state = SchedulerState.from_dict(state_data)
+                except (json.JSONDecodeError, OSError):
+                    initial_state = SchedulerState()
             main_loop_tension_scheduler = TensionScheduler(
                 main_loop_kg_store,
+                analyst=main_loop_analyst,
                 social_network=main_loop_social,
+                state=initial_state,
             )
         except Exception:
             main_loop_tension_scheduler = None
@@ -562,6 +590,21 @@ def play_session(save_id: str) -> None:
                             f"  [dim][{t.severity.value}][/dim] "
                             f"{t.description[:80]}"
                         )
+                # Persiste le state apres chaque tick pour preserver le
+                # throttling 3-mois entre sessions.
+                if tick_result.analyst_ran:
+                    try:
+                        state_path = save_module.tension_scheduler_state_path(save_id)
+                        state_path.parent.mkdir(parents=True, exist_ok=True)
+                        state_path.write_text(
+                            json.dumps(
+                                main_loop_tension_scheduler.state.to_dict(),
+                                ensure_ascii=False, indent=2,
+                            ),
+                            encoding="utf-8",
+                        )
+                    except Exception:
+                        pass
             except Exception:
                 # Defensif : ne crash pas le tour si scheduler echoue
                 pass
