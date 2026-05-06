@@ -42,6 +42,14 @@ class Settings(BaseSettings):
     llm_gpu_layers: int = 99
     llm_disable_thinking: bool = True
 
+    # Speculative decoding (spec docs/02 §13 + §11.4 - Phase E latency)
+    # Si llm_speculative_draft_model_path est defini, llama-server lance avec
+    # `--model-draft <path> --draft-max <N>` pour 1.5-2.5x speedup sur GPU.
+    # Neutre voire negatif sur CPU pur.
+    llm_speculative_draft_model_path: str = ""
+    llm_speculative_draft_tokens: int = 8
+    llm_speculative_draft_gpu_layers: int = 99
+
     # Embeddings
     embeddings_model_name: str = "BAAI/bge-m3"
     embeddings_device: str = "cpu"

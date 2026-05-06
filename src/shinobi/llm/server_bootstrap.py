@@ -71,11 +71,13 @@ def find_model_path() -> Path | None:
     return p if p.exists() else None
 
 
-def start_llama_server_background(
-    *, llama_path: Path, model_path: Path
-) -> subprocess.Popen | None:
-    """Lance llama-server en background. Retourne le Popen (ou None si echec)."""
-    port = _port_from_url(settings.llm_backend_url)
+def build_llama_server_args(
+    *, llama_path: Path, model_path: Path, port: int,
+) -> list[str]:
+    """Compose les args llama-server (testable, pure).
+
+    Spec docs/02 §13 + §11.4 : ajoute speculative decoding si configure.
+    """
     args = [
         str(llama_path),
         "-m",
@@ -90,6 +92,36 @@ def start_llama_server_background(
         str(port),
         "--jinja",
     ]
+    draft_path_str = (settings.llm_speculative_draft_model_path or "").strip()
+    if draft_path_str:
+        draft_path = Path(draft_path_str)
+        if not draft_path.is_absolute():
+            from shinobi.config import settings as _s
+
+            draft_path = _s._abs_path(draft_path_str)
+        if draft_path.exists():
+            args.extend([
+                "--model-draft", str(draft_path),
+                "--draft-max", str(settings.llm_speculative_draft_tokens),
+                "-ngld", str(settings.llm_speculative_draft_gpu_layers),
+            ])
+            logger.info("llm_speculative_decoding_enabled", draft=str(draft_path))
+        else:
+            logger.warning(
+                "llm_speculative_decoding_disabled_missing_draft",
+                draft=str(draft_path),
+            )
+    return args
+
+
+def start_llama_server_background(
+    *, llama_path: Path, model_path: Path
+) -> subprocess.Popen | None:
+    """Lance llama-server en background. Retourne le Popen (ou None si echec)."""
+    port = _port_from_url(settings.llm_backend_url)
+    args = build_llama_server_args(
+        llama_path=llama_path, model_path=model_path, port=port,
+    )
     logger.info("llm_server_starting", args=args)
     try:
         if os.name == "nt":

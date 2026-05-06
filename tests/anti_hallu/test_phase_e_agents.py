@@ -852,6 +852,73 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_speculative_decoding_args_disabled_by_default(self) -> None:
+        """Spec §13 + §11.4 : speculative decoding off par defaut.
+        build_llama_server_args ne contient PAS --model-draft."""
+        from shinobi.config import settings
+        from shinobi.llm.server_bootstrap import build_llama_server_args
+
+        # Sauvegarde + reset
+        original = settings.llm_speculative_draft_model_path
+        settings.llm_speculative_draft_model_path = ""
+        try:
+            args = build_llama_server_args(
+                llama_path=Path("llama-server"),
+                model_path=Path("model.gguf"),
+                port=8080,
+            )
+            assert "--model-draft" not in args
+            assert "--draft-max" not in args
+        finally:
+            settings.llm_speculative_draft_model_path = original
+
+    def test_speculative_decoding_args_enabled_when_configured(
+        self, tmp_path: Path,
+    ) -> None:
+        """Si draft model existe, args contiennent --model-draft + --draft-max + -ngld."""
+        from shinobi.config import settings
+        from shinobi.llm.server_bootstrap import build_llama_server_args
+
+        # Cree un faux draft model file
+        draft_file = tmp_path / "draft.gguf"
+        draft_file.write_bytes(b"fake gguf")
+
+        original = settings.llm_speculative_draft_model_path
+        original_tokens = settings.llm_speculative_draft_tokens
+        settings.llm_speculative_draft_model_path = str(draft_file)
+        settings.llm_speculative_draft_tokens = 16
+        try:
+            args = build_llama_server_args(
+                llama_path=Path("llama-server"),
+                model_path=Path("model.gguf"),
+                port=8080,
+            )
+            assert "--model-draft" in args
+            assert str(draft_file) in args
+            assert "--draft-max" in args
+            assert "16" in args
+            assert "-ngld" in args
+        finally:
+            settings.llm_speculative_draft_model_path = original
+            settings.llm_speculative_draft_tokens = original_tokens
+
+    def test_speculative_decoding_disabled_when_draft_missing(self) -> None:
+        """Si draft path configure MAIS fichier absent : graceful skip."""
+        from shinobi.config import settings
+        from shinobi.llm.server_bootstrap import build_llama_server_args
+
+        original = settings.llm_speculative_draft_model_path
+        settings.llm_speculative_draft_model_path = "/nonexistent/draft.gguf"
+        try:
+            args = build_llama_server_args(
+                llama_path=Path("llama-server"),
+                model_path=Path("model.gguf"),
+                port=8080,
+            )
+            assert "--model-draft" not in args  # graceful fallback
+        finally:
+            settings.llm_speculative_draft_model_path = original
+
     def test_try_load_bge_encoders_returns_tuple_or_none(self) -> None:
         """Helper safe-load BGE-M3 : retourne (encoder, query_encoder) ou
         (None, None) si modele indisponible. Ne crash JAMAIS."""
