@@ -1472,16 +1472,50 @@ async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
         )
         return
     console.print("[cyan]Snapshot KG + analyst LLM en cours...[/cyan]")
+    from shinobi.llm.client import LLMClient
+    from shinobi.tension import LLMTensionAnalyst, SchedulerState
+
     with KnowledgeGraphStore(kg_db) as kg:
         social = SocialNetwork(kg.conn)
-        scheduler = TensionScheduler(kg, social_network=social)
-        try:
-            result = await scheduler.tick(year, month=1, force_analyst=True)
-        except Exception as exc:
-            console.print(
-                f"[red]Analyst LLM echoue : {type(exc).__name__}: {exc}[/red]"
+        # Spec §5.3 : LLM client REEL pour que l'analyst soit actif
+        async with LLMClient() as llm:
+            analyst = LLMTensionAnalyst(
+                kg, llm_client=llm, social_network=social,
             )
-            return
+            state_path = save_module.tension_scheduler_state_path(save_id)
+            initial_state = SchedulerState()
+            if state_path.exists():
+                try:
+                    initial_state = SchedulerState.from_dict(
+                        json.loads(state_path.read_text(encoding="utf-8")),
+                    )
+                except (json.JSONDecodeError, OSError):
+                    initial_state = SchedulerState()
+            scheduler = TensionScheduler(
+                kg, analyst=analyst,
+                social_network=social, state=initial_state,
+            )
+            try:
+                result = await scheduler.tick(
+                    year, month=1, force_analyst=True,
+                )
+            except Exception as exc:
+                console.print(
+                    f"[red]Analyst LLM echoue : {type(exc).__name__}: {exc}[/red]"
+                )
+                return
+            # Persiste le state apres tick (force_analyst => analyst tourne toujours)
+            try:
+                state_path.parent.mkdir(parents=True, exist_ok=True)
+                state_path.write_text(
+                    json.dumps(
+                        scheduler.state.to_dict(),
+                        ensure_ascii=False, indent=2,
+                    ),
+                    encoding="utf-8",
+                )
+            except Exception:
+                pass
 
     if not result.tensions.tensions:
         console.print(
@@ -1715,10 +1749,34 @@ async def _run_fast_forward(
     # Phase C §5.3 : TensionScheduler - 1 inf LLM analyst tous les 3 mois
     # in-game. Le detector deterministe tourne a chaque tick (gratuit).
     # social_network passe a l'analyst pour le snapshot avec relations.
-    tension_scheduler = (
-        TensionScheduler(kg_store_ref, social_network=social_net)
-        if kg_store_ref is not None else None
-    )
+    # LLMClient + state persiste (idem main loop) pour que l'analyst soit
+    # ACTIF et le throttling 3 mois preserve entre sessions.
+    tension_scheduler = None
+    fast_forward_llm_client = None
+    if kg_store_ref is not None:
+        try:
+            from shinobi.llm.client import LLMClient
+            from shinobi.tension import LLMTensionAnalyst, SchedulerState
+            fast_forward_llm_client = LLMClient()
+            ff_analyst = LLMTensionAnalyst(
+                kg_store_ref, llm_client=fast_forward_llm_client,
+                social_network=social_net,
+            )
+            ff_state_path = save_module.tension_scheduler_state_path(save_id)
+            ff_initial_state = SchedulerState()
+            if ff_state_path.exists():
+                try:
+                    ff_initial_state = SchedulerState.from_dict(
+                        json.loads(ff_state_path.read_text(encoding="utf-8")),
+                    )
+                except (json.JSONDecodeError, OSError):
+                    ff_initial_state = SchedulerState()
+            tension_scheduler = TensionScheduler(
+                kg_store_ref, analyst=ff_analyst,
+                social_network=social_net, state=ff_initial_state,
+            )
+        except Exception:
+            tension_scheduler = None
     # Accumulateur de tensions analyst pour le digest
     analyst_tensions_acc: list = []
 
@@ -1881,10 +1939,31 @@ async def _run_fast_forward(
         Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
     )
 
-    # Cleanup KG store
+    # Spec §5.3 : persiste le scheduler state apres fast-forward pour
+    # preserver le throttling 3 mois entre sessions.
+    if tension_scheduler is not None:
+        try:
+            ff_state_path = save_module.tension_scheduler_state_path(save_id)
+            ff_state_path.parent.mkdir(parents=True, exist_ok=True)
+            ff_state_path.write_text(
+                json.dumps(
+                    tension_scheduler.state.to_dict(),
+                    ensure_ascii=False, indent=2,
+                ),
+                encoding="utf-8",
+            )
+        except Exception:
+            pass
+
+    # Cleanup KG store + LLM client fast-forward
     if kg_store_ref is not None:
         try:
             kg_store_ref.close()
+        except Exception:
+            pass
+    if fast_forward_llm_client is not None:
+        try:
+            await fast_forward_llm_client.aclose()
         except Exception:
             pass
 
