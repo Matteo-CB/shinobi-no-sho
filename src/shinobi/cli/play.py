@@ -11,6 +11,15 @@ from rich.prompt import Prompt
 from rich.table import Table
 from rich.text import Text
 
+from shinobi.agents import (
+    ActionSelector,
+    AgentMemoryStore,
+    AgentTier,
+    LLMCache,
+    Reflector,
+    TickEngine,
+    initialize_roster,
+)
 from shinobi.canon.loader import load_canon
 from shinobi.cli.display import (
     COLOR_TITLE,
@@ -89,6 +98,9 @@ META_HELP = {
     "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
     "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
     "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
+    "/agents": "Liste les agents Phase E (top-15 + secondary 50)",
+    "/agent <npc_id>": "Inspecte la memoire 3-niveaux + dernieres actions d'un agent",
+    "/fast-forward <mois>": "Simule N mois sans le joueur (digest des events)",
     "/help": "Affiche cette aide",
     "/quit": "Sauvegarde et retourne au menu principal",
 }
@@ -165,6 +177,15 @@ def play_session(save_id: str) -> None:
     except Exception as exc:
         console.print(f"[dim]Personality init ignore : {type(exc).__name__}[/dim]")
     personality_engine = PersonalityEngine()
+
+    # Phase E : agents multi-agent (top-15 + secondary 50). Idempotent : ne
+    # re-initialise pas le roster si la base est deja peuplee. La simulation
+    # active reste en mode opt-in : l'utilisateur appelle /fast-forward pour
+    # tick le monde sans le joueur.
+    try:
+        _ensure_agents_initialized(save_id, world.current_year, console=console)
+    except Exception as exc:
+        console.print(f"[dim]Agents init ignore : {type(exc).__name__}[/dim]")
 
     console.print(
         Panel.fit(
@@ -715,6 +736,25 @@ def _handle_meta(
             console.print("[red]Usage : /personality <npc_id>[/red]")
         else:
             _print_personality(save_id, parts[1].strip())
+    elif command == "/agents":
+        _print_agents_roster(save_id)
+    elif command.startswith("/agent "):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2 or not parts[1].strip():
+            console.print("[red]Usage : /agent <npc_id>[/red]")
+        else:
+            _print_agent_detail(save_id, parts[1].strip())
+    elif command.startswith("/fast-forward"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2 or not parts[1].strip():
+            console.print("[red]Usage : /fast-forward <mois>[/red]")
+        else:
+            try:
+                months = int(parts[1].strip())
+            except ValueError:
+                console.print("[red]Mois doit etre un entier[/red]")
+            else:
+                asyncio.run(_run_fast_forward(save_id, world.current_year, months))
     else:
         console.print(f"[red]Commande inconnue : {command}[/red] (tape [cyan]/help[/cyan])")
     return True, character, world
@@ -1238,6 +1278,148 @@ def _ensure_kg_initialized(save_id: str, canon, *, console=None) -> None:
                             f"{stats.get('missions_imported', 0)} missions, "
                             f"{stats.get('facts_inserted', 0)} facts[/dim]"
                         )
+
+
+def _ensure_agents_initialized(
+    save_id: str, current_year: int, *, console=None,
+) -> None:
+    """Initialise le roster Phase E (top-15 + secondary 50). Idempotent."""
+    db_path = save_module.agents_db_path(save_id)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    with AgentMemoryStore(db_path) as store:
+        existing = len(store.list_roster())
+        if existing == 0:
+            roster = initialize_roster(store, included_since_year=current_year)
+            if console is not None:
+                console.print(
+                    f"[dim]Agents Phase E initialises : "
+                    f"{roster.major_count} majors + "
+                    f"{roster.secondary_count} secondary[/dim]"
+                )
+
+
+def _print_agents_roster(save_id: str) -> None:
+    """Liste les agents top-15 / secondary-50 avec last_active."""
+    db_path = save_module.agents_db_path(save_id)
+    if not db_path.exists():
+        console.print("[yellow]Roster Phase E non initialise.[/yellow]")
+        return
+    with AgentMemoryStore(db_path) as store:
+        majors = store.list_roster(tier=AgentTier.major)
+        secondary = store.list_roster(tier=AgentTier.secondary)
+
+    lines = ["[cyan]Top-15 (simulation active chaque tick) :[/cyan]"]
+    for e in majors:
+        last = (
+            f" last={e.last_active_year}/{e.last_active_tick}"
+            if e.last_active_year is not None else ""
+        )
+        lines.append(f"  {e.npc_id}{last}")
+    lines.append("")
+    lines.append(f"[cyan]Secondary ({len(secondary)}, par lot tous les 10 ticks) :[/cyan]")
+    for e in secondary[:10]:
+        lines.append(f"  {e.npc_id}")
+    if len(secondary) > 10:
+        lines.append(f"  ... ({len(secondary) - 10} de plus)")
+    console.print(
+        Panel("\n".join(lines), title="Roster agents Phase E", border_style="cyan")
+    )
+
+
+def _print_agent_detail(save_id: str, npc_id: str) -> None:
+    """Affiche memoire 3-niveaux + dernieres actions d'un agent."""
+    db_path = save_module.agents_db_path(save_id)
+    if not db_path.exists():
+        console.print("[yellow]Roster Phase E non initialise.[/yellow]")
+        return
+    with AgentMemoryStore(db_path) as store:
+        entry = store.get_roster_entry(npc_id)
+        memory = store.load_memory(npc_id)
+        actions = store.list_actions(npc_id, limit=10)
+    if entry is None and memory.size == 0:
+        console.print(f"[yellow]Aucun agent enregistre pour {npc_id}.[/yellow]")
+        return
+    tier = entry.tier.value if entry else "background"
+    lines = [
+        f"  Tier : [bold]{tier}[/bold]",
+        f"  Memoire : {len(memory.observations)} obs + "
+        f"{len(memory.reflections)} refl + {len(memory.plans)} plans",
+        "",
+    ]
+    if memory.observations:
+        lines.append("[cyan]3 dernieres observations :[/cyan]")
+        for o in list(memory.observations)[-3:]:
+            txt = o.text[:80]
+            lines.append(f"  [dim]an {o.year}[/dim] {txt}")
+    if memory.reflections:
+        lines.append("")
+        lines.append("[cyan]3 dernieres reflections :[/cyan]")
+        for r in list(memory.reflections)[-3:]:
+            lines.append(f"  [dim]an {r.year}[/dim] {r.gist or r.text[:80]}")
+    if actions:
+        lines.append("")
+        lines.append(f"[cyan]Dernieres {len(actions)} actions :[/cyan]")
+        for a in actions[-5:]:
+            content = a.content[:60] if a.content else ""
+            lines.append(f"  [dim]an {a.year}[/dim] {a.type.value}: {content}")
+    console.print(
+        Panel("\n".join(lines), title=f"Agent : {npc_id}", border_style="cyan")
+    )
+
+
+async def _run_fast_forward(
+    save_id: str, current_year: int, months: int,
+) -> None:
+    """Simule N mois sans player input. Affiche le digest."""
+    if months <= 0 or months > 60:
+        console.print("[red]Mois doit etre dans [1, 60][/red]")
+        return
+    db_path = save_module.agents_db_path(save_id)
+    cache_path = save_module.llm_cache_db_path(save_id)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    console.print(
+        f"[cyan]Fast-forward {months} mois en cours (mode passif)...[/cyan]"
+    )
+    with AgentMemoryStore(db_path) as store, LLMCache(cache_path) as cache:
+        from shinobi.agents import AgentRoster
+
+        roster = AgentRoster(store)
+        if roster.major_count == 0:
+            initialize_roster(store, included_since_year=current_year)
+            roster = AgentRoster(store)
+        # LLM call=None : utilise le fallback deterministe (frugal)
+        engine = TickEngine(
+            roster=roster, memory_store=store,
+            selector=ActionSelector(cache=cache),
+            reflector=Reflector(cache=cache),
+            cache=cache,
+        )
+        digest = await engine.fast_forward(
+            from_year=current_year, months=months,
+        )
+
+    lines = [
+        f"  Annees : {digest.from_year} -> {digest.to_year}",
+        f"  Ticks simules : {digest.ticks_simulated}",
+        f"  Actions totales : {digest.actions_total}",
+        f"  Agents actifs : {len(digest.npcs_active)}",
+        f"  Cache hit rate : {digest.cache_hit_rate:.1%}",
+    ]
+    if digest.entries:
+        lines.append("")
+        lines.append(f"[cyan]Digest ({len(digest.entries)} events importants) :[/cyan]")
+        for e in digest.entries[:20]:
+            lines.append(f"  [dim]an {e.year}[/dim] {e.headline[:90]}")
+        if len(digest.entries) > 20:
+            lines.append(f"  ... ({len(digest.entries) - 20} de plus)")
+    else:
+        lines.append("")
+        lines.append("[dim]Aucun event marquant detecte (importance < seuil).[/dim]")
+
+    console.print(
+        Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
+    )
 
 
 def _ensure_personality_initialized(save_id: str, *, console=None) -> None:

@@ -90,6 +90,16 @@ def personality_db_path(save_id: str) -> Path:
     return _save_dir(save_id) / "personality.sqlite"
 
 
+def agents_db_path(save_id: str) -> Path:
+    """Chemin de la base SQLite multi-agent (Phase E)."""
+    return _save_dir(save_id) / "agents.sqlite"
+
+
+def llm_cache_db_path(save_id: str) -> Path:
+    """Chemin du cache disque pour inferences LLM (Phase E §11.2)."""
+    return _save_dir(save_id) / "llm_cache.sqlite"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []
