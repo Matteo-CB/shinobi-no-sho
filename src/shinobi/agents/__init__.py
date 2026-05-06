@@ -35,7 +35,25 @@ from shinobi.agents.agent import (
     AgentTickResult,
     MajorAgent,
 )
+from shinobi.agents.batch_selector import (
+    BATCH_ACTIONS_JSON_SCHEMA,
+    BATCH_SYSTEM_PROMPT,
+    BatchActionSelector,
+    build_batch_user_prompt,
+)
 from shinobi.agents.cache import LLMCache, compute_cache_key
+from shinobi.agents.embeddings_index import (
+    EmbeddingsIndex,
+    cosine_similarity,
+)
+from shinobi.agents.kg_bridge import (
+    SECRET_ACTION_TYPES,
+    action_to_fact,
+    collect_witness_observations,
+    push_action_to_kg,
+    push_actions_to_kg_batch,
+    witness_observation,
+)
 from shinobi.agents.memory import (
     DEFAULT_RECENCY_DECAY,
     DEFAULT_WEIGHTS,
@@ -83,6 +101,8 @@ from shinobi.agents.types import (
 
 __all__ = [
     "AGENT_ACTION_JSON_SCHEMA",
+    "BATCH_ACTIONS_JSON_SCHEMA",
+    "BATCH_SYSTEM_PROMPT",
     "DEFAULT_RECENCY_DECAY",
     "DEFAULT_SECONDARY_50",
     "DEFAULT_SYSTEM_PROMPT",
@@ -90,6 +110,7 @@ __all__ = [
     "DEFAULT_WEIGHTS",
     "REFLECTOR_SYSTEM_PROMPT",
     "REFLECT_JSON_SCHEMA",
+    "SECRET_ACTION_TYPES",
     "TRIVIAL_ACTION_TYPES",
     "ActionSelector",
     "AgentAction",
@@ -100,7 +121,9 @@ __all__ = [
     "AgentTickInputs",
     "AgentTickResult",
     "AgentTier",
+    "BatchActionSelector",
     "DigestEntry",
+    "EmbeddingsIndex",
     "FastForwardDigest",
     "LLMCache",
     "LLMCall",
@@ -116,15 +139,22 @@ __all__ = [
     "SelectionContext",
     "TickContextProvider",
     "TickEngine",
+    "action_to_fact",
+    "build_batch_user_prompt",
     "build_reflect_prompt",
     "build_user_prompt",
+    "collect_witness_observations",
     "composite_score",
     "compute_cache_key",
+    "cosine_similarity",
     "deterministic_fallback_action",
     "deterministic_fallback_reflections",
     "initialize_roster",
     "is_trivial_action",
     "jaccard_similarity",
+    "push_action_to_kg",
+    "push_actions_to_kg_batch",
     "recency_score",
     "relevance_score",
+    "witness_observation",
 ]

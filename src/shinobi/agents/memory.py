@@ -216,8 +216,13 @@ class AgentMemory:
         top_k: int = 5,
         now_ts: float | None = None,
         include_kinds: tuple[str, ...] = ("observation", "reflection", "plan"),
+        embeddings_index=None,  # type: EmbeddingsIndex | None
     ) -> list[tuple[float, MemoryEntry]]:
         """Top-k memories selon recency + importance + relevance.
+
+        Si `embeddings_index` est fourni ET dispose d'un encoder BGE-M3,
+        la composante 'relevance' utilise cosine semantique au lieu de
+        Jaccard (spec docs/02 §6.1).
 
         Retourne liste de tuples (score, entry) triee desc.
         """
@@ -232,14 +237,42 @@ class AgentMemory:
         if not candidates or top_k <= 0:
             return []
 
+        # Cache des cosines BGE-M3 si index dispo
+        cosines: dict[str, float] = {}
+        if (
+            embeddings_index is not None
+            and getattr(embeddings_index, "has_encoder", False)
+            and query
+        ):
+            try:
+                semantic = embeddings_index.retrieve_semantic(
+                    self._npc_id,
+                    query=query,
+                    top_k=max(top_k * 4, 20),
+                )
+                cosines = {entry_id: score for score, entry_id, _k in semantic}
+            except Exception:
+                cosines = {}
+
         scored: list[tuple[float, MemoryEntry]] = []
         for entry in candidates:
-            s = composite_score(
-                entry, query,
-                now_ts=now_ts,
-                weights=self._config.weights,
-                decay=self._config.decay,
-            )
+            if cosines and entry.id in cosines:
+                # Score hybride : recency + importance + cosine_BGE_M3
+                a, b, g = self._config.weights
+                rec = recency_score(
+                    entry.created_at_ts, now_ts=now_ts, decay=self._config.decay,
+                )
+                imp = entry.importance
+                rel = cosines[entry.id]
+                s = a * rec + b * imp + g * rel
+            else:
+                # Fallback Jaccard si pas dans le top semantique ou pas d'index
+                s = composite_score(
+                    entry, query,
+                    now_ts=now_ts,
+                    weights=self._config.weights,
+                    decay=self._config.decay,
+                )
             scored.append((s, entry))
         scored.sort(key=lambda t: t[0], reverse=True)
         return scored[:top_k]

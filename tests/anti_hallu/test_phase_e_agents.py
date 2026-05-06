@@ -742,3 +742,372 @@ class TestPhaseEValidation30DaysSimulation:
             assert digest_12.to_year == 13  # 12 mois -> +1 an
 
         asyncio.run(run())
+
+
+# ============================================================================
+# 12. EmbeddingsIndex BGE-M3 (gap closure spec §6.1)
+# ============================================================================
+
+
+class TestEmbeddingsIndexBGE:
+    """Spec docs/02 §6.1 : 'embeddings BGE-M3 pour le retrieval semantique'."""
+
+    def test_cosine_similarity_basic(self) -> None:
+        from shinobi.agents import cosine_similarity
+        assert cosine_similarity([1.0, 0.0], [1.0, 0.0]) == pytest.approx(1.0)
+        assert cosine_similarity([1.0, 0.0], [0.0, 1.0]) == pytest.approx(0.0)
+
+    def test_index_and_retrieve_semantic(self) -> None:
+        from shinobi.agents import EmbeddingsIndex
+
+        # Encoder mock : maps keywords to fixed vectors
+        def encoder(texts: list[str]) -> list[list[float]]:
+            return [
+                [1.0, 0.0, 0.0] if "massacre" in t.lower()
+                else [0.0, 1.0, 0.0] if "training" in t.lower()
+                else [0.0, 0.0, 1.0]
+                for t in texts
+            ]
+
+        def query_encoder(t: str) -> list[float]:
+            return encoder([t])[0]
+
+        idx = EmbeddingsIndex(
+            None, encoder=encoder, query_encoder=query_encoder,
+        )
+        idx.index_entry("x", entry_id="obs_1", kind="observation", text="massacre clan")
+        idx.index_entry("x", entry_id="obs_2", kind="observation", text="training day")
+        idx.index_entry("x", entry_id="obs_3", kind="observation", text="random fact")
+
+        top = idx.retrieve_semantic("x", query="massacre", top_k=2)
+        assert top[0][1] == "obs_1"
+        assert top[0][0] > top[1][0]
+
+    def test_retrieve_semantic_no_encoder_returns_empty(self) -> None:
+        from shinobi.agents import EmbeddingsIndex
+        idx = EmbeddingsIndex(None, encoder=None, query_encoder=None)
+        idx.index_entry("x", entry_id="obs_1", kind="observation", text="t")
+        # Sans encoder, l'index n'enregistre rien
+        assert idx.size("x") == 0
+        # Et retrieve renvoie []
+        assert idx.retrieve_semantic("x", query="t", top_k=5) == []
+
+    def test_index_entries_bulk(self) -> None:
+        from shinobi.agents import EmbeddingsIndex
+
+        def encoder(texts: list[str]) -> list[list[float]]:
+            return [[float(i), 0.0, 0.0] for i, _ in enumerate(texts)]
+
+        idx = EmbeddingsIndex(None, encoder=encoder)
+        obs = [
+            Observation(npc_id="x", text=f"obs {i}", year=12)
+            for i in range(5)
+        ]
+        n = idx.index_entries("x", obs)
+        assert n == 5
+        assert idx.size("x") == 5
+
+    def test_memory_retrieve_uses_bge_when_provided(self) -> None:
+        """AgentMemory.retrieve avec embeddings_index utilise les cosines."""
+        from shinobi.agents import AgentMemory, EmbeddingsIndex
+
+        def encoder(texts: list[str]) -> list[list[float]]:
+            return [
+                [1.0, 0.0, 0.0] if "massacre" in t.lower() else [0.0, 1.0, 0.0]
+                for t in texts
+            ]
+
+        def query_encoder(t: str) -> list[float]:
+            return encoder([t])[0]
+
+        idx = EmbeddingsIndex(
+            None, encoder=encoder, query_encoder=query_encoder,
+        )
+        m = AgentMemory(npc_id="sasuke")
+        # 2 obs, 1 pertinent semantiquement
+        o1 = Observation(npc_id="sasuke", text="massacre uchiha clan", year=8, importance=0.5)
+        o2 = Observation(npc_id="sasuke", text="ate ramen for breakfast", year=12, importance=0.5)
+        m.add_observation(o1)
+        m.add_observation(o2)
+        idx.index_entries("sasuke", [o1, o2])
+        # query semantique 'massacre' doit propulser o1 en tete
+        top = m.retrieve(
+            "massacre", top_k=2, embeddings_index=idx,
+        )
+        assert top[0][1].id == o1.id
+
+
+# ============================================================================
+# 13. Actions agents -> mutation KG (gap closure spec §6.3)
+# ============================================================================
+
+
+class TestAgentActionsKGBridge:
+    """Spec docs/02 §6.3 : 'Ces actions modifient le KG, qui a son tour
+    change ce que les autres PNJ peuvent observer.'"""
+
+    def test_action_to_fact_speak(self) -> None:
+        from shinobi.agents import action_to_fact
+
+        a = AgentAction(
+            npc_id="naruto", type=AgentActionType.speak, year=12,
+            target_npc_id="sasuke", content="bonjour",
+        )
+        fact = action_to_fact(a)
+        assert fact is not None
+        assert fact.subject == "naruto"
+        assert fact.relation == "said_to"
+        assert fact.object == "sasuke"
+
+    def test_action_to_fact_idle_returns_none(self) -> None:
+        from shinobi.agents import action_to_fact
+        a = AgentAction(
+            npc_id="x", type=AgentActionType.idle, year=12,
+        )
+        assert action_to_fact(a) is None
+
+    def test_secret_plot_known_only_by_actor(self) -> None:
+        """Une action 'plot' ne doit etre connue que de l'acteur."""
+        from shinobi.agents import action_to_fact
+
+        a = AgentAction(
+            npc_id="orochimaru", type=AgentActionType.plot, year=12,
+            target_npc_id="hiruzen", content="prepare invasion",
+        )
+        fact = action_to_fact(a)
+        assert fact is not None
+        assert fact.known_by_npc_ids == ["orochimaru"]
+
+    def test_witness_observation_target_higher_importance(self) -> None:
+        """Le target d'une action recoit une obs avec importance pleine."""
+        from shinobi.agents import witness_observation
+
+        a = AgentAction(
+            npc_id="naruto", type=AgentActionType.attack, year=12,
+            target_npc_id="sasuke", content="rasengan",
+            importance=0.7,
+        )
+        obs = witness_observation(a, witness_npc_id="sasuke")
+        assert obs.importance >= 0.7
+        assert obs.npc_id == "sasuke"
+
+    def test_witness_observation_bystander_dampened(self) -> None:
+        """Un temoin secondaire recoit une obs avec importance amoindrie."""
+        from shinobi.agents import witness_observation
+
+        a = AgentAction(
+            npc_id="naruto", type=AgentActionType.attack, year=12,
+            target_npc_id="sasuke", content="rasengan",
+            importance=1.0,
+        )
+        obs = witness_observation(a, witness_npc_id="sakura")
+        assert obs.importance < 1.0
+        assert obs.npc_id == "sakura"
+
+    def test_collect_witness_observations(self) -> None:
+        """Plusieurs actions -> dict des observations par temoin."""
+        from shinobi.agents import collect_witness_observations
+
+        actions = [
+            AgentAction(
+                npc_id="naruto", type=AgentActionType.speak, year=12,
+                target_npc_id="sasuke", content="hello",
+                location_id="konoha",
+            ),
+            AgentAction(
+                npc_id="kakashi", type=AgentActionType.travel, year=12,
+                location_id="konoha",
+            ),
+        ]
+        scene_npcs = {"konoha": {"naruto", "sasuke", "sakura", "kakashi"}}
+        obs_map = collect_witness_observations(
+            actions, npcs_in_scene_per_location=scene_npcs,
+        )
+        # sasuke est target de speak -> obs
+        # sakura est temoin de speak (bystander) + travel -> 2 obs
+        # kakashi : ne se temoigne pas lui-meme + temoin de speak -> 1 obs
+        assert "sasuke" in obs_map
+        assert len(obs_map.get("sakura", [])) >= 1
+
+    def test_secret_actions_skipped_in_witness_collection(self) -> None:
+        from shinobi.agents import collect_witness_observations
+
+        secret = AgentAction(
+            npc_id="orochimaru", type=AgentActionType.plot, year=12,
+            target_npc_id="hiruzen", content="invasion",
+            location_id="oto",
+        )
+        scene = {"oto": {"orochimaru", "kabuto"}}
+        obs_map = collect_witness_observations(
+            [secret], npcs_in_scene_per_location=scene,
+        )
+        # plot est SECRET : aucun temoin ne doit etre genere
+        assert obs_map == {}
+
+    def test_push_action_to_kg_inserts_fact(self) -> None:
+        from shinobi.agents import push_action_to_kg
+        from shinobi.kg.store import KnowledgeGraphStore
+
+        with KnowledgeGraphStore(None) as kg:
+            a = AgentAction(
+                npc_id="naruto", type=AgentActionType.travel, year=12,
+                location_id="suna", content="visite Suna",
+            )
+            fid = push_action_to_kg(a, kg_store=kg)
+            assert fid is not None
+            facts = kg.get_facts(subject="naruto", relation="traveled_to")
+            assert len(facts) == 1
+            assert facts[0].object == "suna"
+
+
+# ============================================================================
+# 14. Batch inferences (gap closure spec §6.4 + §11)
+# ============================================================================
+
+
+class TestBatchInferences:
+    """Spec docs/02 §6.4 + §11.1 :
+    'Batch d'agents en un seul prompt (5 PNJ -> 1 inference Qwen3-4B
+     multi-output)'."""
+
+    def test_batch_selector_one_inference_for_n_agents(self) -> None:
+        async def run() -> None:
+            from shinobi.agents import BatchActionSelector
+
+            llm_call_count = 0
+
+            async def mock_llm(sys_p, user_p, schema, model, temp):
+                nonlocal llm_call_count
+                llm_call_count += 1
+                # 5 actions
+                return {
+                    "actions": [
+                        {"type": "speak", "content": f"hi from {i}", "importance": 0.5}
+                        for i in range(5)
+                    ],
+                }
+
+            batch = BatchActionSelector(llm_call=mock_llm, batch_size=5)
+            items = [
+                (
+                    AgentMemory(npc_id=f"npc_{i}"),
+                    SelectionContext(npc_id=f"npc_{i}", year=12),
+                )
+                for i in range(5)
+            ]
+            actions = await batch.select_batch(items)
+            assert len(actions) == 5
+            assert llm_call_count == 1  # UNE seule inference pour 5 agents
+            for i, a in enumerate(actions):
+                assert a.npc_id == f"npc_{i}"
+
+        asyncio.run(run())
+
+    def test_batch_selector_splits_by_batch_size(self) -> None:
+        """10 agents avec batch_size=5 -> 2 inferences."""
+        async def run() -> None:
+            from shinobi.agents import BatchActionSelector
+
+            llm_call_count = 0
+
+            async def mock_llm(sys_p, user_p, schema, model, temp):
+                nonlocal llm_call_count
+                llm_call_count += 1
+                return {
+                    "actions": [
+                        {"type": "idle", "content": "x", "importance": 0.2}
+                        for _ in range(5)
+                    ],
+                }
+
+            batch = BatchActionSelector(llm_call=mock_llm, batch_size=5)
+            items = [
+                (
+                    AgentMemory(npc_id=f"npc_{i}"),
+                    SelectionContext(npc_id=f"npc_{i}", year=12),
+                )
+                for i in range(10)
+            ]
+            actions = await batch.select_batch(items)
+            assert len(actions) == 10
+            assert llm_call_count == 2  # 10/5 = 2 batches
+
+        asyncio.run(run())
+
+    def test_batch_selector_fallback_when_llm_fails(self) -> None:
+        """Si LLM retourne pas le bon nombre d'actions, fallback per-agent."""
+        async def run() -> None:
+            from shinobi.agents import BatchActionSelector
+
+            async def bad_llm(*args, **kwargs):
+                # Renvoie 2 actions au lieu de 5 -> invalide
+                return {"actions": [
+                    {"type": "speak", "content": "x", "importance": 0.5},
+                    {"type": "speak", "content": "y", "importance": 0.5},
+                ]}
+
+            batch = BatchActionSelector(llm_call=bad_llm, batch_size=5)
+            items = [
+                (
+                    AgentMemory(npc_id=f"npc_{i}"),
+                    SelectionContext(npc_id=f"npc_{i}", year=12),
+                )
+                for i in range(5)
+            ]
+            actions = await batch.select_batch(items)
+            # Fallback deterministe : tous meditate (pas de plans, pas de presents)
+            assert len(actions) == 5
+            for a in actions:
+                assert a.type == AgentActionType.meditate
+
+        asyncio.run(run())
+
+    def test_batch_no_llm_uses_fallback(self) -> None:
+        async def run() -> None:
+            from shinobi.agents import BatchActionSelector
+
+            batch = BatchActionSelector(llm_call=None)
+            items = [
+                (
+                    AgentMemory(npc_id="x"),
+                    SelectionContext(npc_id="x", year=12),
+                ),
+            ]
+            actions = await batch.select_batch(items)
+            assert len(actions) == 1
+
+        asyncio.run(run())
+
+    def test_batch_cache_hit(self) -> None:
+        """2eme appel avec memes contextes -> cache hit, 1 seule inference."""
+        async def run() -> None:
+            from shinobi.agents import BatchActionSelector
+
+            llm_count = 0
+
+            async def mock_llm(*args, **kwargs):
+                nonlocal llm_count
+                llm_count += 1
+                return {
+                    "actions": [
+                        {"type": "idle", "content": "x", "importance": 0.2}
+                        for _ in range(3)
+                    ],
+                }
+
+            with LLMCache(None) as cache:
+                batch = BatchActionSelector(
+                    llm_call=mock_llm, cache=cache, batch_size=3,
+                )
+                items = [
+                    (
+                        AgentMemory(npc_id=f"npc_{i}"),
+                        SelectionContext(npc_id=f"npc_{i}", year=12),
+                    )
+                    for i in range(3)
+                ]
+                await batch.select_batch(items)
+                await batch.select_batch(items)
+                assert llm_count == 1  # 2eme = cache hit
+
+        asyncio.run(run())
