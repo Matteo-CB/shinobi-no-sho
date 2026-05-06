@@ -1529,19 +1529,20 @@ async def _run_fast_forward(
     final_world = world_ref[0]
     aged_character = _age_character_if_needed(character, final_world)
     try:
-        save_module.save_turn(
+        save_module.save_passive_state(
             save_id,
             turn_number=_meta.total_turns + digest.ticks_simulated,
-            action_result=None,  # pas d'action joueur ce 'tour'
             new_character=aged_character,
             new_world=final_world,
             seed_state=int(final_world.seed),
         )
-    except Exception as exc:
-        # save_turn requiert action_result : on tente une persistance plus simple
         console.print(
-            f"[dim]save_turn complet KO ({type(exc).__name__}), "
-            f"mise a jour partielle[/dim]"
+            f"[dim]Etat sauvegarde : an {final_world.current_year} "
+            f"date {final_world.current_date}[/dim]",
+        )
+    except Exception as exc:
+        console.print(
+            f"[red]Persistance fast-forward echouee : {type(exc).__name__}: {exc}[/red]"
         )
 
     lines = [

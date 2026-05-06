@@ -188,6 +188,43 @@ def load_save(save_id: str) -> tuple[Character, WorldState, SaveMeta]:
     return character, world, meta
 
 
+def save_passive_state(
+    save_id: str,
+    *,
+    turn_number: int,
+    new_character: Character,
+    new_world: WorldState,
+    seed_state: int,
+) -> None:
+    """Persiste un snapshot character + world SANS log de turn (fast-forward).
+
+    Spec Phase E §6.5 : 'le monde tourne sans le joueur'. Apres un
+    fast-forward, le world state DOIT etre persiste pour que la session
+    suivante reprenne dans l'etat avance. Mais il n'y a pas d'action joueur
+    a logger ce 'tour' -> on saute la table turns.
+    """
+    conn = open_connection(_state_path(save_id))
+    try:
+        _insert_character_snapshot(
+            conn, new_character, year=new_world.current_year, turn=turn_number,
+        )
+        _insert_world_snapshot(
+            conn, new_world, year=new_world.current_year, turn=turn_number,
+        )
+        _update_current_character(
+            conn, new_character, year=new_world.current_year, turn=turn_number,
+        )
+        _update_current_world(
+            conn, new_world, year=new_world.current_year, turn=turn_number,
+        )
+        conn.commit()
+    finally:
+        close(conn)
+    _bump_meta(
+        save_id, turn_number=turn_number, world=new_world, character=new_character,
+    )
+
+
 def save_turn(
     save_id: str,
     *,

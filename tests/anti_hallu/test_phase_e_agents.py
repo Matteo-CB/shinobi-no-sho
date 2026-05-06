@@ -852,6 +852,64 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_save_passive_state_persists_world_without_action_result(
+        self, tmp_path: Path,
+    ) -> None:
+        """Spec §6.5 'le monde tourne sans le joueur' -> apres fast-forward,
+        le world state DOIT etre persiste. save_passive_state ne requiert
+        pas d'action_result (pas de turn log) et persiste character + world."""
+        from shinobi.canon.profiles import CanonicityProfile
+        from shinobi.config import settings
+        from shinobi.engine.character import (
+            Character,
+            CoreStats,
+            ExtendedStats,
+        )
+        from shinobi.engine.world import create_default_world
+        from shinobi.persistence import saves as save_module
+        from shinobi.types import Gender
+
+        original_saves = settings.saves_path
+        settings.saves_path = str(tmp_path)
+        try:
+            character = Character(
+                id="test_save_passive",
+                name="TestSavePassive",
+                gender=Gender.female,
+                birth_year=0, birth_date="06-15", age_years=12,
+                village_of_origin="konohagakure",
+                current_village="konohagakure",
+                current_location="konohagakure",
+                rank="genin",
+                stats=CoreStats(), extended_stats=ExtendedStats(),
+            )
+            world = create_default_world(
+                profile=CanonicityProfile.default(), starting_year=12,
+            )
+            save_id = save_module.create_save(character, world)
+
+            # Simule fast-forward : world avance, character vieillit
+            advanced_world = world.with_time(
+                year=13, date="06-15", hour=8, minute=0,
+            )
+            aged_character = character.model_copy(update={"age_years": 13})
+
+            save_module.save_passive_state(
+                save_id,
+                turn_number=100,
+                new_character=aged_character,
+                new_world=advanced_world,
+                seed_state=42,
+            )
+
+            # Reload + verifie persistance
+            loaded_char, loaded_world, _ = save_module.load_save(save_id)
+            assert loaded_world.current_year == 13
+            assert loaded_world.current_date == "06-15"
+            assert loaded_char.age_years == 13
+        finally:
+            settings.saves_path = original_saves
+
     def test_tick_engine_uses_batch_selector_for_secondary_tier(self) -> None:
         """Spec §6.4 : 'PNJ secondaires (~50) : simulation par lot toutes les
         10 ticks (1 inference batchee pour le groupe via prompt batched)'.
