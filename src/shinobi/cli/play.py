@@ -196,6 +196,27 @@ def play_session(save_id: str) -> None:
     except Exception as exc:
         console.print(f"[dim]Agents init ignore : {type(exc).__name__}[/dim]")
 
+    # Phase C §5.3 : TensionScheduler pour la boucle de jeu normale.
+    # Spec '1 inf/3 mois in-game' s'applique a TOUS les modes (normal +
+    # fast-forward). En normal, on tick a chaque tour pour que l'analyst
+    # se declenche quand 3 mois sont passes. Detector tourne chaque tour
+    # (gratuit, sync).
+    main_loop_kg = save_module.kg_db_path(save_id)
+    main_loop_tension_scheduler = None
+    main_loop_kg_store = None
+    if main_loop_kg.exists():
+        try:
+            from shinobi.kg.social import SocialNetwork
+            from shinobi.kg.store import KnowledgeGraphStore
+            main_loop_kg_store = KnowledgeGraphStore(main_loop_kg)
+            main_loop_social = SocialNetwork(main_loop_kg_store.conn)
+            main_loop_tension_scheduler = TensionScheduler(
+                main_loop_kg_store,
+                social_network=main_loop_social,
+            )
+        except Exception:
+            main_loop_tension_scheduler = None
+
     console.print(
         Panel.fit(
             f"Tu reprends [bold yellow]{character.name}[/bold yellow] a l'an {world.current_year}, "
@@ -515,6 +536,42 @@ def play_session(save_id: str) -> None:
                 pass
         except Exception as exc:
             console.print(f"[red]Erreur de sauvegarde : {type(exc).__name__}: {exc}[/red]")
+
+        # Phase C §5.3 : tick le TensionScheduler apres chaque tour normal.
+        # Detector tourne sync (gratuit). Analyst LLM tourne uniquement si
+        # 3 mois in-game ecoules depuis le dernier appel (intelligent throttling).
+        if main_loop_tension_scheduler is not None:
+            try:
+                month = int(world.current_date.split("-")[0])
+                tick_result = asyncio.run(
+                    main_loop_tension_scheduler.tick(
+                        world.current_year, month=month,
+                    ),
+                )
+                # Si l'analyst a tourne ce tour : affiche les opportunites
+                if (
+                    tick_result.analyst_ran
+                    and tick_result.tensions.tensions
+                ):
+                    console.print(
+                        f"[magenta]>>> Tension Analyst (1 inf/3 mois) : "
+                        f"{len(tick_result.tensions.tensions)} opportunites detectees[/magenta]"
+                    )
+                    for t in tick_result.tensions.tensions[:3]:
+                        console.print(
+                            f"  [dim][{t.severity.value}][/dim] "
+                            f"{t.description[:80]}"
+                        )
+            except Exception:
+                # Defensif : ne crash pas le tour si scheduler echoue
+                pass
+
+    # Cleanup KG store du main loop
+    if main_loop_kg_store is not None:
+        try:
+            main_loop_kg_store.close()
+        except Exception:
+            pass
 
     console.print(
         Panel(f"[red]Fin de la vie de {character.name}.[/red]", title="Mort", border_style="red")
