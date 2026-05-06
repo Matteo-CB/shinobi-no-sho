@@ -25,6 +25,14 @@ from shinobi.kg.bootstrap import (
     bootstrap_social_network_from_canon,
 )
 from shinobi.kg.loader import import_canon_to_kg
+from shinobi.kg.rumor_bridge import (
+    belief_to_rumor,
+    insert_rumor_as_fact,
+    propagate_rumor_to_npcs,
+    propagate_rumor_via_social,
+    rumor_to_fact,
+    sync_world_rumors_to_kg,
+)
 from shinobi.kg.schema import (
     KG_SCHEMA_SQL,
     Belief,
@@ -53,8 +61,14 @@ __all__ = [
     "ObjectType",
     "SocialLink",
     "SocialNetwork",
+    "belief_to_rumor",
     "bootstrap_canon_beliefs",
     "bootstrap_social_network_from_canon",
     "import_canon_to_kg",
     "initialize_db",
+    "insert_rumor_as_fact",
+    "propagate_rumor_to_npcs",
+    "propagate_rumor_via_social",
+    "rumor_to_fact",
+    "sync_world_rumors_to_kg",
 ]

@@ -194,22 +194,35 @@ class BeliefPropagator:
         max_depth: int = DEFAULT_MAX_DEPTH,
         channel: str = "rumor",
         min_fidelity: float = DEFAULT_MIN_FIDELITY,
+        initial_fidelity: float = 1.0,
     ) -> dict[str, float]:
         """BFS dans le reseau social a partir du temoin, propage avec decay.
 
         Retourne un dict {npc_id: fidelity_finale} de tous les NPCs qui ont
-        appris le fact (incluant le temoin a fidelity 1.0).
+        appris le fact (incluant le temoin a `initial_fidelity`, default 1.0).
 
         Algorithme : BFS niveau par niveau, fidelity courante = base * (link *
         decay)^depth. Si on revisite un NPC avec une fidelity superieure, on
         ne propage pas plus loin (deja connu mieux).
-        """
-        # Le temoin connait avec fidelity 1.0
-        self.record_witness(witness_npc, fact_id, year=year)
-        propagated: dict[str, float] = {witness_npc: 1.0}
 
-        # BFS niveau par niveau
-        frontier: list[tuple[str, float]] = [(witness_npc, 1.0)]
+        `initial_fidelity` : fidelity du temoin de depart. 1.0 = temoin direct
+        d'un event. < 1.0 = temoin d'une rumeur (ex: rumor regional 0.8).
+        """
+        # Cas special : si initial_fidelity = 1.0, on enregistre comme witness
+        # (channel='witness'). Sinon comme rumor avec la fidelity passee.
+        if initial_fidelity >= 1.0:
+            self.record_witness(witness_npc, fact_id, year=year)
+        else:
+            self.add_belief(Belief(
+                fact_id=fact_id, npc_id=witness_npc,
+                fidelity=initial_fidelity,
+                learned_at_year=year,
+                learned_via_channel=channel,
+            ))
+        propagated: dict[str, float] = {witness_npc: initial_fidelity}
+
+        # BFS niveau par niveau, en partant de la fidelity initiale
+        frontier: list[tuple[str, float]] = [(witness_npc, initial_fidelity)]
         for _depth in range(max_depth):
             next_frontier: list[tuple[str, float]] = []
             for src, src_fid in frontier:
