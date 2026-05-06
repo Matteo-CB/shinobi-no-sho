@@ -28,6 +28,11 @@ from shinobi.tension.llm_analyst import (
     LLMTensionAnalyst,
     SnapshotBuilder,
 )
+from shinobi.tension.scheduler import (
+    SchedulerState,
+    TensionScheduler,
+    TickResult,
+)
 from shinobi.tension.types import (
     Tension,
     TensionList,
@@ -39,11 +44,14 @@ __all__ = [
     "INVARIANTS",
     "LLMAnalystConfig",
     "LLMTensionAnalyst",
+    "SchedulerState",
     "SnapshotBuilder",
     "Tension",
     "TensionDetector",
     "TensionInvariant",
     "TensionList",
+    "TensionScheduler",
     "TensionSeverity",
     "TensionType",
+    "TickResult",
 ]
