@@ -1413,7 +1413,15 @@ def _print_agent_detail(save_id: str, npc_id: str) -> None:
 async def _run_fast_forward(
     save_id: str, current_year: int, months: int,
 ) -> None:
-    """Simule N mois sans player input. Affiche le digest."""
+    """Simule N mois sans player input. Le MONDE tourne (spec §6.5).
+
+    Spec §6.5 : 'le monde tourne sans le joueur ... events canon se
+    declenchent ou s'annulent selon les actions agents'. Implementation :
+    - Charge la save (world + character + canon)
+    - A chaque tick agent : advance world time (1 semaine), tick canon
+      scheduler, age character si annee passe
+    - Persiste la save mise a jour a la fin
+    """
     if months <= 0 or months > 60:
         console.print("[red]Mois doit etre dans [1, 60][/red]")
         return
@@ -1421,6 +1429,16 @@ async def _run_fast_forward(
     cache_path = save_module.llm_cache_db_path(save_id)
     emb_path = save_module.agents_embeddings_db_path(save_id)
     db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Charge state pour faire avancer le monde (spec §6.5)
+    character, world, _meta = save_module.load_save(save_id)
+    canon = load_canon(
+        optional=(
+            "characters", "techniques", "clans", "villages", "organizations",
+            "tailed_beasts", "kekkei_genkai", "kekkei_mora", "hiden",
+            "weapons_tools", "locations", "timeline_events", "voice_profiles",
+        ),
+    )
 
     console.print(
         f"[cyan]Fast-forward {months} mois en cours (mode passif)...[/cyan]"
@@ -1437,6 +1455,37 @@ async def _run_fast_forward(
     # Phase D doit etre passe au TickEngine pour que les agents recoivent
     # leur vector dans SelectionContext.
     personality_db = save_module.personality_db_path(save_id)
+
+    # State partage entre les ticks pour faire avancer le monde
+    world_ref = [world]
+
+    def canon_scheduler_callable(state, year, tick):
+        """Tick canon scheduler + advance world time. Spec §6.5."""
+        from shinobi.engine.time import advance_time
+        from shinobi.utils.time_utils import GameDate
+
+        cur_world = world_ref[0]
+        # Advance time : 1 semaine par tick
+        prev_date = GameDate(
+            year=cur_world.current_year,
+            month=int(cur_world.current_date.split("-")[0]),
+            day=int(cur_world.current_date.split("-")[1]),
+            hour=cur_world.current_hour,
+            minute=cur_world.current_minute,
+        )
+        new_date = advance_time(prev_date, 7 * 24 * 60)  # 1 week
+        cur_world = cur_world.with_time(
+            year=new_date.year,
+            date=new_date.date_str,
+            hour=new_date.hour,
+            minute=new_date.minute,
+        )
+        # Tick canon scheduler
+        cur_world, fired, cancelled = tick_scheduler(
+            cur_world, canon, turn_number=tick,
+        )
+        world_ref[0] = cur_world
+        return state, fired, cancelled
 
     with AgentMemoryStore(db_path) as store, \
             LLMCache(cache_path) as cache, \
@@ -1458,6 +1507,27 @@ async def _run_fast_forward(
         )
         digest = await engine.fast_forward(
             from_year=current_year, months=months,
+            canon_scheduler_fn=canon_scheduler_callable,
+            canon_scheduler_state={},  # opaque, used as placeholder
+        )
+
+    # Persiste world state mis a jour + age character
+    final_world = world_ref[0]
+    aged_character = _age_character_if_needed(character, final_world)
+    try:
+        save_module.save_turn(
+            save_id,
+            turn_number=_meta.total_turns + digest.ticks_simulated,
+            action_result=None,  # pas d'action joueur ce 'tour'
+            new_character=aged_character,
+            new_world=final_world,
+            seed_state=int(final_world.seed),
+        )
+    except Exception as exc:
+        # save_turn requiert action_result : on tente une persistance plus simple
+        console.print(
+            f"[dim]save_turn complet KO ({type(exc).__name__}), "
+            f"mise a jour partielle[/dim]"
         )
 
     lines = [

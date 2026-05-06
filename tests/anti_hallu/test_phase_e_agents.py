@@ -852,6 +852,52 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_fast_forward_world_time_advances_via_scheduler(self) -> None:
+        """Spec §6.5 : 'le monde tourne sans le joueur ... events canon se
+        declenchent'. canon_scheduler_fn doit etre appele a chaque tick
+        et peut muter un etat externe (avancement du temps mondial)."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            world_state = {"ticks_advanced": 0}
+
+            def scheduler(state, year, tick):
+                world_state["ticks_advanced"] += 1
+                if tick % 8 == 0:
+                    class MockEv:
+                        event_id = f"world_tick_{tick}"
+                        involved_characters = ["uzumaki_naruto"]
+                    return state, [MockEv()], []
+                return state, [], []
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+            )
+            digest = await engine.fast_forward(
+                from_year=12, months=2,
+                canon_scheduler_fn=scheduler,
+                canon_scheduler_state={},
+            )
+            # 2 mois * 4 ticks = 8 ticks -> scheduler appele 8 fois
+            assert world_state["ticks_advanced"] == 8
+            # Au moins 1 canon event dans le digest
+            canon_entries = [
+                e for e in digest.entries
+                if e.related_event_id is not None
+            ]
+            assert len(canon_entries) >= 1
+
+        asyncio.run(run())
+
     def test_tick_engine_uses_personality_store_for_agent_vector(self) -> None:
         """Spec §6.3 : 'Son vecteur de personnalite actuel'. Quand
         TickEngine recoit un PersonalityStore, _get_or_create_agent charge
