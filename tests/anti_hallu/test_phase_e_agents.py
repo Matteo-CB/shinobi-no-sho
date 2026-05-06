@@ -811,6 +811,83 @@ class TestEmbeddingsIndexBGE:
         assert n == 5
         assert idx.size("x") == 5
 
+    def test_memory_auto_indexes_on_add(self) -> None:
+        """AgentMemory avec embeddings_index auto-indexe a chaque add_*."""
+        from shinobi.agents import AgentMemory, EmbeddingsIndex
+
+        encoder = lambda texts: [[1.0, 0.0, 0.0] for _ in texts]
+        idx = EmbeddingsIndex(None, encoder=encoder, query_encoder=lambda t: [1.0, 0.0, 0.0])
+        m = AgentMemory(npc_id="x", embeddings_index=idx)
+        assert idx.size("x") == 0
+        m.add_observation(Observation(npc_id="x", text="hello", year=12))
+        assert idx.size("x") == 1
+        m.add_reflection(Reflection(npc_id="x", text="insight", year=12))
+        assert idx.size("x") == 2
+        m.add_plan(Plan(npc_id="x", description="train", year_started=12))
+        assert idx.size("x") == 3
+
+    def test_memory_retrieve_uses_self_index_by_default(self) -> None:
+        """Si AgentMemory a un embeddings_index, retrieve l'utilise sans
+        avoir besoin de le passer en kwarg."""
+        from shinobi.agents import AgentMemory, EmbeddingsIndex
+
+        def encoder(texts):
+            return [
+                [1.0, 0.0, 0.0] if "massacre" in t.lower() else [0.0, 1.0, 0.0]
+                for t in texts
+            ]
+
+        def query_encoder(t):
+            return encoder([t])[0]
+
+        idx = EmbeddingsIndex(None, encoder=encoder, query_encoder=query_encoder)
+        m = AgentMemory(npc_id="sasuke", embeddings_index=idx)
+        m.add_observation(Observation(
+            npc_id="sasuke", text="massacre clan", year=8, importance=0.5,
+        ))
+        m.add_observation(Observation(
+            npc_id="sasuke", text="ate breakfast", year=12, importance=0.5,
+        ))
+        # Pas de embeddings_index= dans le call -> doit utiliser self._embeddings_index
+        top = m.retrieve("massacre", top_k=2)
+        assert "massacre" in top[0][1].text
+
+    def test_tick_engine_propagates_embeddings_index(self) -> None:
+        """TickEngine -> MajorAgent -> AgentMemory : index BGE-M3 auto-attache."""
+        async def run() -> None:
+            from shinobi.agents import (
+                ActionSelector,
+                AgentMemoryStore,
+                EmbeddingsIndex,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            encoder = lambda texts: [[0.5] * 3 for _ in texts]
+            idx = EmbeddingsIndex(
+                None, encoder=encoder, query_encoder=lambda t: [0.5] * 3,
+            )
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+                embeddings_index=idx,
+            )
+            # Simule un agent perceoit une observation
+            agent = engine._get_or_create_agent("uzumaki_naruto")
+            obs = Observation(
+                npc_id="uzumaki_naruto",
+                text="combat important", year=12, importance=0.8,
+            )
+            agent.perceive([obs])
+            # L'index doit avoir ete utilise via la chaine TickEngine->Agent->Memory
+            assert idx.size("uzumaki_naruto") == 1
+
+        asyncio.run(run())
+
     def test_memory_retrieve_uses_bge_when_provided(self) -> None:
         """AgentMemory.retrieve avec embeddings_index utilise les cosines."""
         from shinobi.agents import AgentMemory, EmbeddingsIndex

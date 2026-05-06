@@ -141,12 +141,54 @@ class AgentMemory:
         reflections: Iterable[Reflection] = (),
         plans: Iterable[Plan] = (),
         config: RetrievalConfig | None = None,
+        embeddings_index=None,  # type: EmbeddingsIndex | None
     ) -> None:
         self._npc_id = npc_id
         self._obs: list[Observation] = list(observations)
         self._refl: list[Reflection] = list(reflections)
         self._plans: list[Plan] = list(plans)
         self._config = config or RetrievalConfig()
+        # Spec §6.1 : embeddings BGE-M3 pour retrieval semantique. Si fourni,
+        # toutes les nouvelles entries sont auto-indexees et retrieve()
+        # utilise cosine BGE par defaut.
+        self._embeddings_index = embeddings_index
+        # Index initial : encode les entries deja presentes
+        self._index_existing_entries()
+
+    def _index_existing_entries(self) -> None:
+        """Encode et index les entries chargees depuis le store (lazy)."""
+        if self._embeddings_index is None:
+            return
+        if not getattr(self._embeddings_index, "has_encoder", False):
+            return
+        # Index entry-par-entry pour respecter le mapping text/description
+        for entry in (*self._obs, *self._refl, *self._plans):
+            self._auto_index_entry(entry)
+
+    def _entry_text(self, entry: MemoryEntry) -> str:
+        """Extrait le texte indexable : Observation/Reflection ont `text`,
+        Plan a `description`."""
+        if hasattr(entry, "text"):
+            return entry.text
+        if hasattr(entry, "description"):
+            return entry.description
+        return ""
+
+    def _auto_index_entry(self, entry: MemoryEntry) -> None:
+        """Auto-indexe une entry si l'index BGE-M3 est wire."""
+        if self._embeddings_index is None:
+            return
+        if not getattr(self._embeddings_index, "has_encoder", False):
+            return
+        text = self._entry_text(entry)
+        if not text:
+            return
+        try:
+            self._embeddings_index.index_entry(
+                self._npc_id, entry_id=entry.id, kind=entry.kind, text=text,
+            )
+        except Exception:
+            pass
 
     @property
     def npc_id(self) -> str:
@@ -180,6 +222,7 @@ class AgentMemory:
                 f"obs.npc_id {obs.npc_id} != memory.npc_id {self._npc_id}",
             )
         self._obs.append(obs)
+        self._auto_index_entry(obs)
 
     def add_reflection(self, refl: Reflection) -> None:
         if refl.npc_id != self._npc_id:
@@ -187,6 +230,7 @@ class AgentMemory:
                 f"refl.npc_id {refl.npc_id} != memory.npc_id {self._npc_id}",
             )
         self._refl.append(refl)
+        self._auto_index_entry(refl)
 
     def add_plan(self, plan: Plan) -> None:
         if plan.npc_id != self._npc_id:
@@ -194,6 +238,7 @@ class AgentMemory:
                 f"plan.npc_id {plan.npc_id} != memory.npc_id {self._npc_id}",
             )
         self._plans.append(plan)
+        self._auto_index_entry(plan)
 
     def update_plan_status(self, plan_id: str, status: PlanStatus) -> bool:
         """Met a jour le status d'un plan. Retourne True si trouve+modifie."""
@@ -236,6 +281,10 @@ class AgentMemory:
 
         if not candidates or top_k <= 0:
             return []
+
+        # Resolution embeddings_index : kwarg explicite > self._embeddings_index
+        if embeddings_index is None:
+            embeddings_index = self._embeddings_index
 
         # Cache des cosines BGE-M3 si index dispo
         cosines: dict[str, float] = {}

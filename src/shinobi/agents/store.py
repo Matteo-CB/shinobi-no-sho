@@ -293,13 +293,20 @@ class AgentMemoryStore:
 
     # --- compose memory ----------------------------------------------------
 
-    def load_memory(self, npc_id: str) -> AgentMemory:
-        """Charge AgentMemory complete pour un NPC."""
+    def load_memory(
+        self, npc_id: str, *, embeddings_index=None,
+    ) -> AgentMemory:
+        """Charge AgentMemory complete pour un NPC.
+
+        `embeddings_index` (optionnel) : si fourni, AgentMemory auto-indexe
+        les nouvelles entries et utilise BGE-M3 dans retrieve() (spec §6.1).
+        """
         return AgentMemory(
             npc_id=npc_id,
             observations=self.list_observations(npc_id),
             reflections=self.list_reflections(npc_id),
             plans=self.list_plans(npc_id),
+            embeddings_index=embeddings_index,
         )
 
     def save_memory(self, memory: AgentMemory) -> None:

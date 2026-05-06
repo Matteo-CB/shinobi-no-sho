@@ -77,6 +77,7 @@ class TickEngine:
         ticks_per_month: int = DEFAULT_TICKS_PER_MONTH,
         sample_majors_k: int | None = None,
         sampling_seed: int = 0,
+        embeddings_index=None,
     ) -> None:
         self._roster = roster
         self._store = memory_store
@@ -90,6 +91,8 @@ class TickEngine:
         # Si sample_majors_k est defini, on tire K majors par tick (deterministe avec seed).
         self._sample_majors_k = sample_majors_k
         self._sampling_seed = sampling_seed
+        # Spec §6.1 : embeddings BGE-M3 propage a chaque MajorAgent
+        self._embeddings_index = embeddings_index
         # Cache d'instances MajorAgent par npc_id (eviter re-load memory)
         self._agents: dict[str, MajorAgent] = {}
 
@@ -123,6 +126,7 @@ class TickEngine:
             selector=self._selector,
             reflector=self._reflector,
             personality=personality,
+            embeddings_index=self._embeddings_index,
         )
         self._agents[npc_id] = agent
         return agent

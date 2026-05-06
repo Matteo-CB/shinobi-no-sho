@@ -84,13 +84,21 @@ class MajorAgent:
         reflector: Reflector,
         personality: NPCPersonality | None = None,
         memory: AgentMemory | None = None,
+        embeddings_index=None,  # type: EmbeddingsIndex | None
     ) -> None:
         self._npc_id = npc_id
         self._store = memory_store
         self._selector = selector
         self._reflector = reflector
         self._personality = personality
-        self._memory = memory or memory_store.load_memory(npc_id)
+        # Si memory non fournie, on charge depuis le store ET on attache
+        # l'index embeddings BGE-M3 si fourni (spec §6.1).
+        if memory is None:
+            self._memory = memory_store.load_memory(
+                npc_id, embeddings_index=embeddings_index,
+            )
+        else:
+            self._memory = memory
         self._ticks_since_reflect = 0
 
     @property
