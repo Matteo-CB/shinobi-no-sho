@@ -211,6 +211,45 @@ def test_snapshot_handles_empty_kg(store: KnowledgeGraphStore) -> None:
     assert "Snapshot du monde" in snap
 
 
+def test_snapshot_includes_relations_when_social_network_provided(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Spec §5.3 : 'top-50 PNJ + leurs etats + RELATIONS + events recents'.
+    Quand SocialNetwork est fourni au SnapshotBuilder, les relations entre
+    top NPCs apparaissent dans le snapshot."""
+    from shinobi.kg.schema import SocialLink
+    from shinobi.kg.social import SocialNetwork
+
+    add(store, subject="naruto", relation="type", object="character")
+    add(store, subject="sasuke", relation="type", object="character")
+    add(store, subject="naruto", relation="clan", object="uzumaki",
+        object_type=ObjectType.entity)
+    add(store, subject="sasuke", relation="clan", object="uchiha",
+        object_type=ObjectType.entity)
+
+    net = SocialNetwork(store.conn)
+    net.add_link(SocialLink(
+        npc_a="naruto", npc_b="sasuke",
+        link_type="rival", strength=0.85,
+    ))
+
+    builder = SnapshotBuilder(store, social_network=net)
+    snap = builder.build(year=12)
+    assert "Relations sociales clefs" in snap
+    assert "naruto" in snap and "sasuke" in snap
+    assert "rival" in snap
+
+
+def test_snapshot_no_relations_section_without_social_network(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Sans SocialNetwork (default), pas de section relations (back-compat)."""
+    add(store, subject="naruto", relation="type", object="character")
+    builder = SnapshotBuilder(store)  # social_network=None
+    snap = builder.build(year=12)
+    assert "Relations sociales" not in snap
+
+
 # === LLMTensionAnalyst (offline) ===========================================
 
 

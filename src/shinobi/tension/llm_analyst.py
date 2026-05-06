@@ -145,9 +145,14 @@ def _safe_severity(raw: str) -> TensionSeverity:
 class SnapshotBuilder:
     """Construit un snapshot synthetique du KG pour le LLM.
 
-    Format compact (texte structure) : top NPCs vivants, relations clefs,
-    events recents, secrets en circulation. Le LLM consommera ce snapshot
-    en input.
+    Spec docs/02 §5.3 : 'top-50 PNJ + leurs etats + relations + events recents'.
+
+    Format compact (texte structure) :
+    - Top PNJ vivants (etats : clan/rang/village)
+    - Relations sociales clefs (depuis SocialNetwork si fourni)
+    - Events recents
+    - Secrets en circulation
+    - Anniversaires d'events de la decennie
     """
 
     def __init__(
@@ -155,9 +160,12 @@ class SnapshotBuilder:
         store: KnowledgeGraphStore,
         *,
         config: LLMAnalystConfig | None = None,
+        social_network=None,  # type: SocialNetwork | None
     ) -> None:
         self._store = store
         self._config = config or LLMAnalystConfig()
+        # Spec §5.3 : relations sociales dans le snapshot
+        self._social_network = social_network
 
     def build(self, year: int) -> str:
         """Genere un snapshot textuel du monde a year."""
@@ -165,11 +173,20 @@ class SnapshotBuilder:
 
         # Top NPCs vivants : ceux qui ont le plus de facts (proxy d'importance)
         top = self._top_npcs_by_fact_count(year)
+        top_ids = [npc for npc, _ in top[: self._config.snapshot_top_npcs]]
         if top:
             sections.append("## Top PNJ vivants")
             for npc, count in top[: self._config.snapshot_top_npcs]:
                 sections.append(self._npc_summary(npc, year, count))
             sections.append("")
+
+        # Spec §5.3 : relations sociales entre top NPCs
+        if self._social_network is not None and top_ids:
+            relations_lines = self._build_relations_section(top_ids, year)
+            if relations_lines:
+                sections.append("## Relations sociales clefs")
+                sections.extend(relations_lines)
+                sections.append("")
 
         # Events recents
         events = self._recent_events(year, window=10)
@@ -247,6 +264,40 @@ class SnapshotBuilder:
         out.sort(key=lambda x: -x[0])
         return out
 
+    def _build_relations_section(
+        self, top_ids: list[str], year: int, *, max_links: int = 30,
+    ) -> list[str]:
+        """Spec §5.3 : relations entre top NPCs (limite a max_links les
+        plus forts en valeur absolue). Format compact pour le LLM."""
+        if self._social_network is None:
+            return []
+        all_links: list = []
+        seen_pairs: set[tuple[str, str]] = set()
+        for npc_id in top_ids:
+            try:
+                neighbors = self._social_network.neighbors(npc_id, year=year)
+            except Exception:
+                continue
+            for link in neighbors:
+                other = link.other(npc_id)
+                if other not in top_ids:
+                    continue  # filtre aux top NPCs uniquement
+                pair = tuple(sorted([npc_id, other]))
+                if pair in seen_pairs:
+                    continue
+                seen_pairs.add(pair)
+                all_links.append(link)
+        # Tri par valeur absolue de strength (plus important d'abord)
+        all_links.sort(key=lambda link: -abs(link.strength))
+        out: list[str] = []
+        for link in all_links[:max_links]:
+            sign = "+" if link.strength >= 0 else ""
+            out.append(
+                f"- {link.npc_a} <-> {link.npc_b} : "
+                f"{link.link_type} ({sign}{link.strength:.2f})"
+            )
+        return out
+
     def _notable_anniversaries(self, year: int) -> list[str]:
         deaths = self._store.get_facts(relation="death_year")
         out: list[str] = []
@@ -262,7 +313,11 @@ class SnapshotBuilder:
 
 
 class LLMTensionAnalyst:
-    """LLM analyste qui detecte des opportunites narratives via un snapshot KG."""
+    """LLM analyste qui detecte des opportunites narratives via un snapshot KG.
+
+    Spec docs/02 §5.3 : recoit snapshot avec top-50 + etats + relations
+    + events recents, identifie opportunites dramatiques (n'invente pas).
+    """
 
     def __init__(
         self,
@@ -270,11 +325,16 @@ class LLMTensionAnalyst:
         llm_client=None,
         *,
         config: LLMAnalystConfig | None = None,
+        social_network=None,  # type: SocialNetwork | None
     ) -> None:
         self._store = store
         self._client = llm_client  # peut etre None pour mode offline
         self._config = config or LLMAnalystConfig()
-        self._snapshot_builder = SnapshotBuilder(store, config=self._config)
+        self._social_network = social_network
+        self._snapshot_builder = SnapshotBuilder(
+            store, config=self._config,
+            social_network=self._social_network,
+        )
 
     @property
     def config(self) -> LLMAnalystConfig:
