@@ -1,0 +1,855 @@
+{
+  "_meta": {
+    "version": 1,
+    "schema": "mission_v1",
+    "description": "Missions canon Naruto enrichies, avec dates precises, participants, outcomes. Convention : an 0 = naissance Naruto / attaque Kyuubi.",
+    "extension_strategy": "Phase H (offline batch) : extraction LLM massive sur Narutopedia mission pages pour atteindre couverture canon complete (>500 missions estimees)."
+  },
+  "missions": [
+    {
+      "id": "mission_wave_country_zabuza",
+      "name_fr": "Mission Pays des Vagues (escorte Tazuna)",
+      "name_romaji": "Nami no Kuni Ninmu",
+      "rank": "C",
+      "type": "escort",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 10,
+      "canonical_arc": "wave_country",
+      "participants": [
+        {"character_id": "hatake_kakashi", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "uchiha_sasuke", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "operative"}
+      ],
+      "assigning_authority": "sarutobi_hiruzen",
+      "target_subject": "tazuna",
+      "location_id": "wave_country",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe 7 escorte Tazuna pour proteger la construction d'un pont contre Gato et ses sbires. Confrontation avec Zabuza Momochi et Haku, premiere mission veritablement dangereuse.",
+      "objectives": [
+        "Escorter Tazuna jusqu'au Pays des Vagues",
+        "Proteger la construction du pont",
+        "Neutraliser les menaces (Zabuza, Haku, Gato)"
+      ],
+      "consequences": [
+        "Mort de Zabuza et Haku",
+        "Mort de Gato",
+        "Naruto debloque Kyuubi mode rage debutant",
+        "Kakashi reveille mangekyo passif"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Land_of_Waves_Arc"],
+      "related_event_ids": []
+    },
+    {
+      "id": "mission_chunin_exam_konoha",
+      "name_fr": "Examen chunin de Konoha",
+      "rank": "B",
+      "type": "chunin_exam",
+      "outcome": "partial_success",
+      "year": 12,
+      "duration_days": 30,
+      "canonical_arc": "chunin_exam_arc",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "uchiha_sasuke", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "operative"},
+        {"character_id": "nara_shikamaru", "role": "operative"},
+        {"character_id": "akimichi_choji", "role": "operative"},
+        {"character_id": "yamanaka_ino", "role": "operative"},
+        {"character_id": "hyuga_neji", "role": "operative"},
+        {"character_id": "rock_lee", "role": "operative"},
+        {"character_id": "tenten", "role": "operative"},
+        {"character_id": "subaku_no_gaara", "role": "operative"},
+        {"character_id": "temari", "role": "operative"},
+        {"character_id": "kankuro", "role": "operative"}
+      ],
+      "assigning_authority": "sarutobi_hiruzen",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Examen chunin tripartite (test ecrit, foret de la mort, tournoi final). Interrompu par l'invasion d'Orochimaru qui marque Sasuke et tue Hiruzen.",
+      "objectives": [
+        "Reussir l'examen ecrit (psychologie)",
+        "Sortir vivant de la foret de la mort",
+        "Gagner le tournoi final"
+      ],
+      "consequences": [
+        "Sasuke recoit la marque maudite d'Orochimaru",
+        "Mort de Hiruzen Sandaime Hokage",
+        "Suna trahit Konoha (Kazekage tue par Orochimaru)",
+        "Seul Shikamaru promu chunin"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Chūnin_Exams"],
+      "related_event_ids": ["konoha_invasion_year12"]
+    },
+    {
+      "id": "mission_search_for_tsunade",
+      "name_fr": "Recherche de Tsunade",
+      "rank": "S",
+      "type": "retrieval",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 21,
+      "canonical_arc": "search_for_tsunade",
+      "participants": [
+        {"character_id": "jiraiya", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"}
+      ],
+      "assigning_authority": "konohagakure_council",
+      "target_subject": "tsunade",
+      "starting_village": "konohagakure",
+      "summary_fr": "Apres la mort de Hiruzen, Jiraiya emmene Naruto pour convaincre Tsunade de devenir Godaime Hokage. Confrontation avec Itachi et Kisame en route, puis combat contre Orochimaru et Kabuto.",
+      "objectives": [
+        "Localiser Tsunade",
+        "Convaincre Tsunade de revenir a Konoha comme Hokage",
+        "Repousser Orochimaru"
+      ],
+      "consequences": [
+        "Tsunade devient 5e Hokage",
+        "Naruto apprend le Rasengan",
+        "Premiere rencontre Naruto-Itachi"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Search_for_Tsunade"]
+    },
+    {
+      "id": "mission_sasuke_recovery",
+      "name_fr": "Mission de recuperation de Sasuke",
+      "rank": "A",
+      "type": "retrieval",
+      "outcome": "failure",
+      "year": 12,
+      "duration_days": 3,
+      "canonical_arc": "sasuke_retrieval_arc",
+      "participants": [
+        {"character_id": "nara_shikamaru", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "akimichi_choji", "role": "operative"},
+        {"character_id": "inuzuka_kiba", "role": "operative"},
+        {"character_id": "hyuga_neji", "role": "operative"},
+        {"character_id": "rock_lee", "role": "support"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "uchiha_sasuke",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe assemblee pour rattraper Sasuke avant qu'il rejoigne Orochimaru. Combat contre les Quatre du Son. Sasuke s'echappe vers Otogakure.",
+      "objectives": [
+        "Empecher Sasuke de rejoindre Orochimaru",
+        "Le ramener vivant a Konoha"
+      ],
+      "consequences": [
+        "Sasuke rejoint Orochimaru",
+        "Choji frole la mort (pillule rouge)",
+        "Neji frole la mort (combat Kidomaru)",
+        "Confrontation Naruto-Sasuke a la Vallee de la Fin",
+        "Naruto echoue, est sauve par Kakashi"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Sasuke_Retrieval_Arc"]
+    },
+    {
+      "id": "mission_kazekage_rescue",
+      "name_fr": "Sauvetage du Kazekage Gaara",
+      "rank": "S",
+      "type": "rescue",
+      "outcome": "success",
+      "year": 14,
+      "duration_days": 5,
+      "canonical_arc": "kazekage_rescue_arc",
+      "participants": [
+        {"character_id": "hatake_kakashi", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "medic"},
+        {"character_id": "maito_gai", "role": "leader"},
+        {"character_id": "rock_lee", "role": "operative"},
+        {"character_id": "hyuga_neji", "role": "operative"},
+        {"character_id": "tenten", "role": "operative"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "subaku_no_gaara",
+      "location_id": "akatsuki_hideout_river_country",
+      "starting_village": "konohagakure",
+      "summary_fr": "Akatsuki capture Gaara et extrait Shukaku. Equipes 7 + Gai partent le sauver. Combats contre Sasori et Deidara. Chiyo sacrifie sa vie pour ressusciter Gaara.",
+      "objectives": [
+        "Localiser le repaire Akatsuki",
+        "Sauver Gaara",
+        "Neutraliser Sasori et Deidara"
+      ],
+      "consequences": [
+        "Mort de Gaara puis resurrection par Chiyo",
+        "Mort de Chiyo",
+        "Mort de Sasori",
+        "Deidara s'echappe",
+        "Naruto en mode 4 queues"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Kazekage_Rescue_Mission"]
+    },
+    {
+      "id": "mission_bridge_to_heaven_earth",
+      "name_fr": "Mission Pont du Ciel et de la Terre",
+      "rank": "S",
+      "type": "spy",
+      "outcome": "partial_success",
+      "year": 14,
+      "duration_days": 7,
+      "canonical_arc": "sasuke_and_sai_arc",
+      "participants": [
+        {"character_id": "yamato", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "medic"},
+        {"character_id": "sai", "role": "operative"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "orochimaru",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe Yamato (debutee de l'equipe Kakashi) infiltre la rencontre entre Sasori (en Kabuto) et un espion d'Orochimaru. But : trouver Sasuke. Premiere rencontre apres 2.5 ans.",
+      "objectives": [
+        "Recuperer info sur la base d'Orochimaru",
+        "Localiser Sasuke",
+        "Eviter confrontation directe avec Orochimaru"
+      ],
+      "consequences": [
+        "Premiere apparition de Sasuke en force depuis sa desertion",
+        "Sasuke quitte Naruto et Sakura sans combat",
+        "Sai reveille sa loyaute envers Konoha"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Twelve_Guardian_Ninja"]
+    },
+    {
+      "id": "mission_hidan_kakuzu_arc",
+      "name_fr": "Mission Hidan-Kakuzu",
+      "rank": "A",
+      "type": "extermination",
+      "outcome": "success",
+      "year": 14,
+      "duration_days": 5,
+      "canonical_arc": "hidan_kakuzu_arc",
+      "participants": [
+        {"character_id": "sarutobi_asuma", "role": "leader"},
+        {"character_id": "nara_shikamaru", "role": "operative"},
+        {"character_id": "akimichi_choji", "role": "operative"},
+        {"character_id": "yamanaka_ino", "role": "operative"},
+        {"character_id": "hatake_kakashi", "role": "support"},
+        {"character_id": "uzumaki_naruto", "role": "support"},
+        {"character_id": "yamato", "role": "support"},
+        {"character_id": "haruno_sakura", "role": "support"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "akatsuki",
+      "starting_village": "konohagakure",
+      "summary_fr": "Hidan et Kakuzu (Akatsuki) attaquent le Pays du Feu. Asuma meurt en mission. Vengeance par l'Equipe 10 + Equipe Kakashi.",
+      "objectives": [
+        "Stopper Hidan et Kakuzu",
+        "Defendre le Pays du Feu",
+        "Venger Asuma"
+      ],
+      "consequences": [
+        "Mort de Sarutobi Asuma",
+        "Mort de Hidan (scelle vivant par Shikamaru)",
+        "Mort de Kakuzu (Naruto Rasenshuriken)",
+        "Naruto maitrise le Rasenshuriken",
+        "Kurenai enceinte d'Asuma"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Hidan_and_Kakuzu_Arc"]
+    },
+    {
+      "id": "mission_jiraiya_pain",
+      "name_fr": "Infiltration d'Amegakure (Jiraiya solo)",
+      "rank": "S",
+      "type": "spy",
+      "outcome": "failure",
+      "year": 14,
+      "duration_days": 3,
+      "canonical_arc": "jiraiya_invasion_arc",
+      "participants": [
+        {"character_id": "jiraiya", "role": "leader"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "pain",
+      "location_id": "amegakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Jiraiya infiltre Amegakure pour identifier Pain (chef Akatsuki). Decouvre les six chemins de Pain. Combat acharne, succombe. Code mort dans son dos.",
+      "objectives": [
+        "Identifier Pain",
+        "Recolter intel sur Akatsuki",
+        "Survivre"
+      ],
+      "consequences": [
+        "Mort de Jiraiya",
+        "Pain identifie comme Nagato (revele plus tard)",
+        "Code laisse pour Naruto"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Tale_of_Jiraiya_the_Gallant_Arc"]
+    },
+    {
+      "id": "mission_pain_invasion_konoha",
+      "name_fr": "Defense de Konoha contre Pain",
+      "rank": "S",
+      "type": "protection",
+      "outcome": "partial_success",
+      "year": 14,
+      "duration_days": 1,
+      "canonical_arc": "pain_invasion_arc",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "leader"},
+        {"character_id": "tsunade", "role": "leader"},
+        {"character_id": "hatake_kakashi", "role": "operative"},
+        {"character_id": "shimura_danzo", "role": "operative"},
+        {"character_id": "hyuga_hinata", "role": "operative"},
+        {"character_id": "nara_shikamaru", "role": "operative"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "pain",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Pain (les 6 chemins) attaque Konoha pour capturer Naruto. Detruit le village. Naruto revient du Mont Myoboku, l'affronte en mode senjutsu, le convainc avec un dialogue, puis Pain ressuscite les morts au prix de sa vie.",
+      "objectives": [
+        "Survivre l'attaque de Pain",
+        "Proteger les civils",
+        "Capturer ou neutraliser Pain"
+      ],
+      "consequences": [
+        "Konoha entierement detruite",
+        "Mort de Pain (Nagato)",
+        "Mort de Konan (au Pays de la Pluie plus tard)",
+        "Naruto reconnu heros par tout le village",
+        "Tsunade en coma",
+        "Danzo devient Hokage interim"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Invasion_of_Pain"]
+    },
+    {
+      "id": "mission_5_kage_summit",
+      "name_fr": "Sommet des 5 Kages",
+      "rank": "S",
+      "type": "diplomatic",
+      "outcome": "partial_success",
+      "year": 14,
+      "duration_days": 2,
+      "canonical_arc": "five_kage_summit_arc",
+      "participants": [
+        {"character_id": "shimura_danzo", "role": "leader"},
+        {"character_id": "subaku_no_gaara", "role": "leader"},
+        {"character_id": "ay_yondaime_raikage", "role": "leader"},
+        {"character_id": "onoki", "role": "leader"},
+        {"character_id": "terumi_mei", "role": "leader"}
+      ],
+      "assigning_authority": "samurai_country_iron",
+      "location_id": "land_of_iron",
+      "summary_fr": "Sommet historique entre les 5 Kages au Pays du Fer pour decider de la guerre contre Akatsuki et Sasuke. Sasuke s'incruste, attaque Danzo. Madara declare la 4e guerre.",
+      "objectives": [
+        "Coalition contre Akatsuki",
+        "Statut de Sasuke (deserteur S-rank)",
+        "Eviter une 4e guerre mondiale"
+      ],
+      "consequences": [
+        "4e Guerre Mondiale Shinobi declaree",
+        "Sasuke marque comme S-rank missing-nin",
+        "Mort de Danzo (par Sasuke)",
+        "Coalition shinobi formee"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Five_Kage_Summit"]
+    },
+    {
+      "id": "mission_4th_shinobi_war_alliance",
+      "name_fr": "Quatrieme Guerre Mondiale Shinobi",
+      "rank": "S",
+      "type": "special_operation",
+      "outcome": "success",
+      "year": 16,
+      "duration_days": 2,
+      "canonical_arc": "fourth_shinobi_world_war",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "leader"},
+        {"character_id": "uchiha_sasuke", "role": "leader"},
+        {"character_id": "hatake_kakashi", "role": "leader"},
+        {"character_id": "haruno_sakura", "role": "medic"},
+        {"character_id": "subaku_no_gaara", "role": "leader"},
+        {"character_id": "killer_b", "role": "leader"},
+        {"character_id": "ay_yondaime_raikage", "role": "leader"},
+        {"character_id": "onoki", "role": "leader"},
+        {"character_id": "terumi_mei", "role": "leader"},
+        {"character_id": "tsunade", "role": "leader"}
+      ],
+      "assigning_authority": "shinobi_alliance",
+      "target_subject": "tobi_obito",
+      "summary_fr": "Coalition des 5 villages + samurais contre Akatsuki, Edo Tensei (Madara, Kabuto), Tobi/Obito, et finalement Kaguya. Naruto et Sasuke maitrisent le pouvoir des 6 Chemins.",
+      "objectives": [
+        "Empecher la capture des bijuus",
+        "Vaincre Tobi et Madara",
+        "Empecher l'Infinite Tsukuyomi"
+      ],
+      "consequences": [
+        "Mort de Madara puis re-mort definitive",
+        "Mort d'Obito apres redemption",
+        "Mort de Neji (sacrifice protecteur)",
+        "Naruto et Sasuke perdent un bras",
+        "Kaguya scellee",
+        "Bijuus liberes",
+        "Naruto reconnu comme heros mondial"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Fourth_Shinobi_World_War"]
+    },
+    {
+      "id": "mission_kannabi_bridge",
+      "name_fr": "Mission du Pont Kannabi",
+      "rank": "B",
+      "type": "sabotage",
+      "outcome": "success",
+      "year": -3,
+      "duration_days": 5,
+      "canonical_arc": "third_shinobi_world_war",
+      "participants": [
+        {"character_id": "namikaze_minato", "role": "leader"},
+        {"character_id": "hatake_kakashi", "role": "operative"},
+        {"character_id": "uchiha_obito", "role": "operative"},
+        {"character_id": "nohara_rin", "role": "medic"}
+      ],
+      "assigning_authority": "konohagakure",
+      "target_subject": "kannabi_bridge",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe Minato detruit le pont Kannabi pour couper l'approvisionnement d'Iwa. Obito 'meurt' en sauvant Kakashi. Lui transmet son Sharingan via Rin.",
+      "objectives": [
+        "Detruire le pont Kannabi",
+        "Couper le ravitaillement d'Iwa",
+        "Survivre"
+      ],
+      "consequences": [
+        "Mort apparente d'Obito (sauve par Madara)",
+        "Kakashi recoit le Sharingan",
+        "Trauma fondateur Kakashi"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Kannabi_Bridge_Mission"]
+    },
+    {
+      "id": "mission_uchiha_massacre_intel",
+      "name_fr": "Massacre du clan Uchiha (operation secrete)",
+      "rank": "forbidden",
+      "type": "special_operation",
+      "outcome": "success",
+      "year": 8,
+      "duration_days": 1,
+      "canonical_arc": "uchiha_massacre",
+      "participants": [
+        {"character_id": "uchiha_itachi", "role": "operative"},
+        {"character_id": "tobi_obito", "role": "support"}
+      ],
+      "assigning_authority": "shimura_danzo",
+      "target_subject": "uchiha_clan",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Operation noire commanditee par Danzo (avec aval de Hiruzen) pour empecher le coup d'etat Uchiha. Itachi extermine son clan en une nuit, epargne Sasuke. Devient missing-nin officiel.",
+      "objectives": [
+        "Eliminer le clan Uchiha avant coup d'etat",
+        "Epargner Sasuke",
+        "Itachi devient missing-nin (couverture)"
+      ],
+      "consequences": [
+        "Disparition quasi-totale du clan Uchiha",
+        "Sasuke traumatise (lone_survivor)",
+        "Itachi rejoint Akatsuki sous couverture",
+        "Verite cachee a Sasuke"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Uchiha_Clan_Downfall"],
+      "related_event_ids": ["uchiha_massacre"]
+    },
+    {
+      "id": "mission_d_rank_capture_tora",
+      "name_fr": "Capture du chat Tora",
+      "rank": "D",
+      "type": "capture",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 1,
+      "canonical_arc": "team_7_d_rank_period",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "uchiha_sasuke", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "operative"},
+        {"character_id": "hatake_kakashi", "role": "leader"}
+      ],
+      "assigning_authority": "sarutobi_hiruzen",
+      "target_subject": "tora_cat",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Mission D-rank classique : recuperer le chat de Madame Shijimi. Mission revelatrice du caractere des nouveaux genins.",
+      "objectives": [
+        "Localiser Tora",
+        "Capturer Tora vivant"
+      ],
+      "consequences": [
+        "Naruto se plaint des missions D-rank",
+        "Equipe 7 demande sa premiere C-rank (Wave Country)"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Tora"]
+    },
+    {
+      "id": "mission_bikochu_search",
+      "name_fr": "Recherche de l'insecte Bikochu",
+      "rank": "B",
+      "type": "investigation",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 7,
+      "canonical_arc": "bikochu_arc",
+      "participants": [
+        {"character_id": "hyuga_hinata", "role": "operative"},
+        {"character_id": "inuzuka_kiba", "role": "operative"},
+        {"character_id": "aburame_shino", "role": "operative"},
+        {"character_id": "uzumaki_naruto", "role": "support"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "bikochu_beetle",
+      "starting_village": "konohagakure",
+      "summary_fr": "Trouver l'insecte Bikochu, capable de pister Sasuke par odorat. Filler arc anime.",
+      "objectives": [
+        "Capturer un Bikochu vivant",
+        "L'utiliser pour retrouver Sasuke"
+      ],
+      "consequences": [
+        "Bikochu capture mais s'envole avant utilisation",
+        "Hinata gagne en confiance"
+      ],
+      "canonicity": "anime_canon",
+      "sources": ["narutopedia:Bikōchū_Search_Mission"]
+    },
+    {
+      "id": "mission_third_eye_idate",
+      "name_fr": "Course du Pays du The (Idate)",
+      "rank": "B",
+      "type": "protection",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 3,
+      "canonical_arc": "land_of_tea_escort_arc",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "uchiha_sasuke", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "operative"},
+        {"character_id": "jiraiya", "role": "leader"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "morino_idate",
+      "location_id": "land_of_tea",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe 7 escorte Idate Morino dans une course traditionnelle, contre la mafia locale qui veut truquer le resultat.",
+      "objectives": [
+        "Proteger Idate jusqu'a la fin de la course",
+        "Battre les saboteurs"
+      ],
+      "consequences": [
+        "Idate gagne la course",
+        "Naruto develloppe son endurance"
+      ],
+      "canonicity": "anime_canon",
+      "sources": ["narutopedia:Land_of_Tea_Escort_Mission"]
+    },
+    {
+      "id": "mission_three_tails_seal",
+      "name_fr": "Capture du Sanbi (3-Tails)",
+      "rank": "S",
+      "type": "capture",
+      "outcome": "failure",
+      "year": 14,
+      "duration_days": 4,
+      "canonical_arc": "three_tails_arrival_arc",
+      "participants": [
+        {"character_id": "yamato", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "medic"},
+        {"character_id": "sai", "role": "operative"},
+        {"character_id": "hyuga_hinata", "role": "operative"},
+        {"character_id": "inuzuka_kiba", "role": "operative"},
+        {"character_id": "aburame_shino", "role": "operative"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "isobu_sanbi",
+      "starting_village": "konohagakure",
+      "summary_fr": "Tentative de sceller le Sanbi reapparu pres de Konoha. Akatsuki (Tobi, Deidara) le capture avant.",
+      "objectives": [
+        "Sceller le Sanbi avant qu'Akatsuki l'attrape"
+      ],
+      "consequences": [
+        "Akatsuki capture le Sanbi",
+        "Confrontation avec Tobi"
+      ],
+      "canonicity": "anime_canon",
+      "sources": ["narutopedia:Three-Tails_Arrival"]
+    },
+    {
+      "id": "mission_orochimaru_lair_infiltration",
+      "name_fr": "Infiltration du repaire d'Orochimaru",
+      "rank": "S",
+      "type": "spy",
+      "outcome": "partial_success",
+      "year": 14,
+      "duration_days": 6,
+      "canonical_arc": "sasuke_and_sai_arc",
+      "participants": [
+        {"character_id": "yamato", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "haruno_sakura", "role": "medic"},
+        {"character_id": "sai", "role": "spy"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "orochimaru",
+      "starting_village": "konohagakure",
+      "summary_fr": "Equipe Yamato infiltre la base d'Orochimaru via Sai (qui pretend defection). Trouve Sasuke change. Sai protege Sakura, Sasuke s'echappe.",
+      "objectives": [
+        "Localiser Sasuke",
+        "Recolter intel sur Orochimaru"
+      ],
+      "consequences": [
+        "Sasuke confirme allie Orochimaru",
+        "Sai loyal a Konoha",
+        "Premiere mention de Akatsuki et l'extraction"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Sasuke_and_Sai_Arc"]
+    },
+    {
+      "id": "mission_mizuki_strikes_back",
+      "name_fr": "Mizuki Strikes Back",
+      "rank": "C",
+      "type": "capture",
+      "outcome": "success",
+      "year": 12,
+      "duration_days": 2,
+      "canonical_arc": "mizuki_strikes_back_arc",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "operative"},
+        {"character_id": "umino_iruka", "role": "leader"}
+      ],
+      "assigning_authority": "tsunade",
+      "target_subject": "mizuki",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Mizuki s'echappe de prison apres avoir consomme une potion d'Orochimaru. Naruto et Iruka l'arretent ensemble.",
+      "objectives": [
+        "Recapturer Mizuki",
+        "Recuperer la potion volee"
+      ],
+      "consequences": [
+        "Mizuki bat par Naruto et Iruka",
+        "Renforce le lien Naruto-Iruka"
+      ],
+      "canonicity": "anime_canon",
+      "sources": ["narutopedia:Mizuki_Strikes_Back"]
+    },
+    {
+      "id": "mission_kakashi_anbu_recruit",
+      "name_fr": "Recrutement Anbu de Kakashi",
+      "rank": "A",
+      "type": "special_operation",
+      "outcome": "success",
+      "year": -3,
+      "duration_days": 1,
+      "canonical_arc": "kakashi_anbu_arc",
+      "participants": [
+        {"character_id": "hatake_kakashi", "role": "operative"},
+        {"character_id": "namikaze_minato", "role": "leader"}
+      ],
+      "assigning_authority": "namikaze_minato",
+      "starting_village": "konohagakure",
+      "summary_fr": "Apres la mort de Rin, Kakashi rejoint l'Anbu sous le commandement de Minato pour des operations noires. Periode tres sombre de sa vie.",
+      "objectives": [
+        "Operations noires Konoha",
+        "Eliminer cibles strategiques"
+      ],
+      "consequences": [
+        "Kakashi devient capitaine Anbu",
+        "Trauma psychologique cumulé"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Kakashi:_Shadow_of_the_ANBU_Black_Ops"]
+    },
+    {
+      "id": "mission_borutos_first_chunin",
+      "name_fr": "Examen Chunin de Boruto",
+      "rank": "A",
+      "type": "chunin_exam",
+      "outcome": "partial_success",
+      "year": 28,
+      "duration_days": 3,
+      "canonical_arc": "boruto_chunin_exam_arc",
+      "participants": [
+        {"character_id": "uzumaki_boruto", "role": "operative"},
+        {"character_id": "uchiha_sarada", "role": "operative"},
+        {"character_id": "mitsuki", "role": "operative"}
+      ],
+      "assigning_authority": "uzumaki_naruto",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Examen chunin nouvelle generation. Boruto utilise un kote (outil interdit) et est disqualifie. Attaque de Momoshiki et Kinshiki.",
+      "objectives": [
+        "Reussir l'examen chunin",
+        "Defendre Konoha contre les Otsutsuki"
+      ],
+      "consequences": [
+        "Boruto disqualifie pour triche",
+        "Naruto enleve par Momoshiki",
+        "Naruto et Sasuke sauvent Boruto",
+        "Boruto recoit le Jougan"
+      ],
+      "canonicity": "boruto",
+      "sources": ["narutopedia:Versus_Momoshiki_Arc"]
+    },
+    {
+      "id": "mission_search_for_mitsuki",
+      "name_fr": "Recherche de Mitsuki",
+      "rank": "B",
+      "type": "retrieval",
+      "outcome": "success",
+      "year": 28,
+      "duration_days": 14,
+      "canonical_arc": "mitsuki_disappearance_arc",
+      "participants": [
+        {"character_id": "uzumaki_boruto", "role": "leader"},
+        {"character_id": "uchiha_sarada", "role": "operative"}
+      ],
+      "assigning_authority": "konohamaru_sarutobi",
+      "target_subject": "mitsuki",
+      "starting_village": "konohagakure",
+      "summary_fr": "Mitsuki disparait. Boruto et Sarada partent le retrouver, decouvrent les complots d'Otogakure et la verite sur sa naissance.",
+      "objectives": [
+        "Localiser Mitsuki",
+        "Le ramener a Konoha"
+      ],
+      "consequences": [
+        "Mitsuki revient a Konoha",
+        "Boruto rencontre Orochimaru"
+      ],
+      "canonicity": "boruto",
+      "sources": ["narutopedia:Mitsuki%27s_Disappearance_Arc"]
+    },
+    {
+      "id": "mission_kara_chunin_kawaki",
+      "name_fr": "Mission Kawaki (Kara)",
+      "rank": "S",
+      "type": "protection",
+      "outcome": "in_progress",
+      "year": 28,
+      "duration_days": 90,
+      "canonical_arc": "kawaki_arc",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "leader"},
+        {"character_id": "uzumaki_boruto", "role": "operative"},
+        {"character_id": "uchiha_sasuke", "role": "operative"},
+        {"character_id": "kawaki", "role": "target"}
+      ],
+      "assigning_authority": "konohagakure",
+      "target_subject": "kawaki",
+      "location_id": "konohagakure",
+      "starting_village": "konohagakure",
+      "summary_fr": "Kawaki, ancien receptacle de Kara, est protege par les Uzumaki contre Jigen et l'organisation Kara. Boruto recoit aussi un Karma.",
+      "objectives": [
+        "Proteger Kawaki",
+        "Vaincre Jigen et Kara"
+      ],
+      "consequences": [
+        "Naruto perd Kurama",
+        "Mort de Jigen",
+        "Tension entre Boruto et Kawaki"
+      ],
+      "canonicity": "boruto",
+      "sources": ["narutopedia:Kawaki_Arc"]
+    },
+    {
+      "id": "mission_redeem_obito_war",
+      "name_fr": "Mission de redemption d'Obito",
+      "rank": "S",
+      "type": "special_operation",
+      "outcome": "success",
+      "year": 16,
+      "duration_days": 1,
+      "canonical_arc": "fourth_shinobi_world_war",
+      "participants": [
+        {"character_id": "uchiha_obito", "role": "operative"},
+        {"character_id": "hatake_kakashi", "role": "leader"},
+        {"character_id": "uzumaki_naruto", "role": "support"}
+      ],
+      "assigning_authority": "shinobi_alliance",
+      "target_subject": "kaguya_otsutsuki",
+      "summary_fr": "Apres son retour cote alliance, Obito utilise son Kamui une derniere fois pour sauver Sakura et participer au scellement de Kaguya. Meurt par overuse.",
+      "objectives": [
+        "Aider a sceller Kaguya",
+        "Proteger Sakura via Kamui"
+      ],
+      "consequences": [
+        "Mort d'Obito (redemption complete)",
+        "Sceau de Kaguya stabilise"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Obito_Uchiha"]
+    },
+    {
+      "id": "mission_water_country_seven_swordsmen",
+      "name_fr": "Operations contre les 7 Epeistes de Kiri",
+      "rank": "A",
+      "type": "extermination",
+      "outcome": "success",
+      "year": 16,
+      "duration_days": 3,
+      "canonical_arc": "fourth_shinobi_world_war",
+      "participants": [
+        {"character_id": "kakashi_hatake", "role": "leader"},
+        {"character_id": "maito_gai", "role": "operative"},
+        {"character_id": "killer_b", "role": "operative"}
+      ],
+      "assigning_authority": "shinobi_alliance",
+      "summary_fr": "Pendant la 4e guerre, Edo Tensei ressuscite les 7 Epeistes de Kiri pour combattre l'alliance. Kakashi, Gai, et B mens l'engagement.",
+      "objectives": [
+        "Sceller les 7 Epeistes",
+        "Recuperer leurs sabres"
+      ],
+      "consequences": [
+        "Les 7 sont scelles",
+        "Sabres recuperes par Konoha"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Seven_Ninja_Swordsmen_of_the_Mist"]
+    },
+    {
+      "id": "mission_anbu_root_purge",
+      "name_fr": "Purge de la Racine (Root)",
+      "rank": "S",
+      "type": "special_operation",
+      "outcome": "success",
+      "year": 17,
+      "duration_days": 90,
+      "canonical_arc": "post_war_konoha_reform",
+      "participants": [
+        {"character_id": "uzumaki_naruto", "role": "leader"},
+        {"character_id": "hatake_kakashi", "role": "leader"},
+        {"character_id": "yamato", "role": "operative"}
+      ],
+      "assigning_authority": "kakashi_hatake",
+      "target_subject": "anbu_root",
+      "starting_village": "konohagakure",
+      "summary_fr": "Apres la mort de Danzo, Kakashi (6e Hokage) demantele la Racine. Reintegration des Root agents survivants dans l'Anbu officiel.",
+      "objectives": [
+        "Demanteler la Racine",
+        "Reintegrer agents en Anbu",
+        "Detruire les sceaux mind-control"
+      ],
+      "consequences": [
+        "Fin de la Racine",
+        "Reforme de l'Anbu"
+      ],
+      "canonicity": "manga",
+      "sources": ["narutopedia:Root"]
+    }
+  ]
+}
