@@ -236,6 +236,46 @@ def test_propagate_cascade_floor(
     assert "h" not in spread
 
 
+def test_add_belief_syncs_fact_known_by_npc_ids(
+    store: KnowledgeGraphStore, propagator: BeliefPropagator,
+) -> None:
+    """Spec §5.4 'sous-KG par PNJ' : add_belief doit synchroniser
+    Fact.known_by_npc_ids pour que known_to(npc) (sub-KG view) reste
+    coherent avec kg_beliefs."""
+    fid = store.add_fact(Fact(subject="x", relation="r", object="y"))
+    propagator.add_belief(Belief(
+        fact_id=fid, npc_id="naruto",
+        fidelity=0.8, learned_at_year=12,
+    ))
+    # Verifie que Fact.known_by_npc_ids contient maintenant 'naruto'
+    fact = store.get_fact(fid)
+    assert fact is not None
+    assert "naruto" in fact.known_by_npc_ids
+    # Et known_to(naruto) retourne ce fact
+    known_facts = store.known_to("naruto")
+    assert any(f.id == fid for f in known_facts)
+
+
+def test_propagate_cascade_syncs_known_by_for_all_targets(
+    store: KnowledgeGraphStore, propagator: BeliefPropagator,
+) -> None:
+    """Apres cascade, tous les NPCs avec belief doivent etre dans
+    Fact.known_by_npc_ids."""
+    for a, b in [("witness", "sasuke"), ("sasuke", "madara")]:
+        propagator.social.add_link(SocialLink(npc_a=a, npc_b=b, strength=0.9))
+    fid = store.add_fact(Fact(subject="x", relation="event", object="y"))
+    propagator.propagate_cascade(
+        "witness", fid, year=10, max_depth=2,
+        channel="rumor", min_fidelity=0.2, initial_fidelity=1.0,
+    )
+    fact = store.get_fact(fid)
+    assert fact is not None
+    # witness, sasuke, madara doivent tous etre dans known_by
+    assert "witness" in fact.known_by_npc_ids
+    assert "sasuke" in fact.known_by_npc_ids
+    assert "madara" in fact.known_by_npc_ids
+
+
 def test_propagate_cascade_temporal_offset(
     store: KnowledgeGraphStore, propagator: BeliefPropagator,
 ) -> None:

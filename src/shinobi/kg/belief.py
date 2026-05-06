@@ -69,7 +69,13 @@ class BeliefPropagator:
     def add_belief(self, belief: Belief) -> int:
         """Insert (ou upgrade) un belief. Si une entree existe pour (fact, npc),
         on garde la fidelity la plus haute (un NPC ne peut qu'apprendre mieux,
-        pas oublier - sauf operation explicite)."""
+        pas oublier - sauf operation explicite).
+
+        Spec §5.4 'sous-KG par PNJ' : l'ajout d'un belief synchronise aussi
+        Fact.known_by_npc_ids pour que `known_to(npc)` (sub-KG view) reste
+        coherent avec kg_beliefs (storage). Sans ce sync, les 2 vues du
+        sub-KG divergent.
+        """
         row = belief.to_row()
         cur = self._conn.execute(
             "INSERT INTO kg_beliefs "
@@ -89,6 +95,27 @@ class BeliefPropagator:
             "  ELSE learned_via_channel END",
             row,
         )
+        # Spec §5.4 : sync known_by_npc_ids du Fact (sub-KG coherent)
+        try:
+            row_kf = self._conn.execute(
+                "SELECT known_by_npc_ids FROM kg_facts WHERE id = ?",
+                (belief.fact_id,),
+            ).fetchone()
+            if row_kf is not None:
+                import json as _json
+                raw = row_kf["known_by_npc_ids"] or "[]"
+                try:
+                    known = set(_json.loads(raw))
+                except (_json.JSONDecodeError, TypeError):
+                    known = set()
+                if belief.npc_id not in known:
+                    known.add(belief.npc_id)
+                    self._conn.execute(
+                        "UPDATE kg_facts SET known_by_npc_ids = ? WHERE id = ?",
+                        (_json.dumps(sorted(known)), belief.fact_id),
+                    )
+        except Exception:
+            pass
         self._conn.commit()
         return int(cur.lastrowid or 0)
 
