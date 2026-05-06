@@ -1701,15 +1701,72 @@ def _push_player_action_to_kg(
 
     Convertit une Action joueur en Fact KG pour que la propagation rumeur
     puisse l'amener aux PNJ. Retourne fact_id ou None (action privee).
+
+    Spec §5.4 implique que l'OUTCOME affecte le fact : 'Naruto a vaincu
+    Pain' est different de 'Naruto a echoue contre Pain'. La relation
+    canonique reflete le resultat (full_success vs failure).
     """
     from shinobi.kg.schema import Canonicity, Fact, ObjectType
 
     atype = action.action_type.value if hasattr(
         action.action_type, "value",
     ) else str(action.action_type)
-    relation = _PLAYER_ACTION_RELATIONS.get(atype)
-    if relation is None:
+    base_relation = _PLAYER_ACTION_RELATIONS.get(atype)
+    if base_relation is None:
         return None  # action privee/triviale, pas de fact
+
+    # Spec §5.4 : outcome-aware relation. Un combat gagne != combat perdu.
+    relation = base_relation
+    success_factor = 1.0
+    if result is not None:
+        outcome = getattr(result, "outcome", None)
+        outcome_value = (
+            outcome.value if hasattr(outcome, "value") else str(outcome) if outcome else ""
+        )
+        if atype == "fight":
+            if outcome_value == "full_success":
+                relation = "defeated"
+            elif outcome_value == "partial_success":
+                relation = "wounded"
+            elif outcome_value in ("minor_failure", "catastrophic_failure"):
+                relation = "lost_against"
+                success_factor = 0.5
+        elif atype == "challenge":
+            if outcome_value == "full_success":
+                relation = "challenged_and_defeated"
+            elif outcome_value in ("minor_failure", "catastrophic_failure"):
+                relation = "challenged_and_lost"
+                success_factor = 0.5
+        elif atype == "spy":
+            if outcome_value in ("full_success", "partial_success"):
+                relation = "spied_on_successfully"
+            else:
+                relation = "spy_attempt_failed"
+                success_factor = 0.5
+        elif atype == "steal":
+            if outcome_value in ("full_success", "partial_success"):
+                relation = "stole_from"
+            else:
+                relation = "theft_attempt_failed"
+                success_factor = 0.5
+        elif atype == "seduce":
+            if outcome_value == "full_success":
+                relation = "seduced"
+            else:
+                relation = "seduction_failed_against"
+                success_factor = 0.5
+        elif atype == "bribe":
+            if outcome_value in ("full_success", "partial_success"):
+                relation = "bribed"
+            else:
+                relation = "bribe_refused_by"
+                success_factor = 0.5
+        elif atype == "intimidate":
+            if outcome_value == "full_success":
+                relation = "intimidated"
+            else:
+                relation = "intimidation_failed_against"
+                success_factor = 0.5
 
     target = action.target_id or action.parameters.get("target_id") or ""
     if not target:
@@ -1719,7 +1776,9 @@ def _push_player_action_to_kg(
     else:
         obj_type = ObjectType.entity
 
-    importance = 0.8 if atype in _NOTABLE_PLAYER_ACTIONS else 0.5
+    base_importance = 0.8 if atype in _NOTABLE_PLAYER_ACTIONS else 0.5
+    # Echec dramatique = aussi notable qu'un succes (pour rumeurs)
+    importance = base_importance * success_factor
 
     fact = Fact(
         subject=character_name,

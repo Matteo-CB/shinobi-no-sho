@@ -304,6 +304,78 @@ def test_push_player_action_creates_kg_fact(
     assert "naruto" in fact.known_by_npc_ids
 
 
+def test_push_player_action_outcome_aware_combat(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Spec §5.4 : combat gagne != combat perdu. Relations differentes."""
+    from shinobi.cli.play import _push_player_action_to_kg
+    from shinobi.engine.actions import Action, ActionResult
+    from shinobi.types import ActionOutcome, ActionType
+
+    action = Action(
+        action_type=ActionType.fight, summary="combat",
+        target_id="pain_nagato",
+    )
+    # Cas 1 : full_success -> defeated
+    result_win = ActionResult(
+        action=action, outcome=ActionOutcome.full_success,
+        summary_fr="victoire", duration_minutes=60,
+        seed_after=0,
+    )
+    fid_win = _push_player_action_to_kg(
+        store, "naruto", action=action, result=result_win, year=15,
+    )
+    fact_win = store.get_fact(fid_win)
+    assert fact_win.relation == "defeated"
+    assert fact_win.confidence == 0.8  # full importance
+
+    # Cas 2 : catastrophic_failure -> lost_against
+    result_loss = ActionResult(
+        action=action, outcome=ActionOutcome.catastrophic_failure,
+        summary_fr="defaite", duration_minutes=60, seed_after=0,
+    )
+    fid_loss = _push_player_action_to_kg(
+        store, "naruto", action=action, result=result_loss, year=15,
+    )
+    fact_loss = store.get_fact(fid_loss)
+    assert fact_loss.relation == "lost_against"
+    # Echec : importance reduite (success_factor=0.5)
+    assert fact_loss.confidence < 0.8
+
+
+def test_push_player_action_outcome_aware_seduce(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Spec §5.4 : seduce reussi != seduce echoue."""
+    from shinobi.cli.play import _push_player_action_to_kg
+    from shinobi.engine.actions import Action, ActionResult
+    from shinobi.types import ActionOutcome, ActionType
+
+    action = Action(
+        action_type=ActionType.seduce, summary="seduction",
+        target_id="hyuga_hinata",
+    )
+    result_win = ActionResult(
+        action=action, outcome=ActionOutcome.full_success,
+        summary_fr="seduit", duration_minutes=60, seed_after=0,
+    )
+    fid = _push_player_action_to_kg(
+        store, "naruto", action=action, result=result_win, year=15,
+    )
+    fact = store.get_fact(fid)
+    assert fact.relation == "seduced"
+
+    result_fail = ActionResult(
+        action=action, outcome=ActionOutcome.minor_failure,
+        summary_fr="rejete", duration_minutes=60, seed_after=0,
+    )
+    fid_fail = _push_player_action_to_kg(
+        store, "naruto", action=action, result=result_fail, year=15,
+    )
+    fact_fail = store.get_fact(fid_fail)
+    assert fact_fail.relation == "seduction_failed_against"
+
+
 def test_push_player_action_private_returns_none(
     store: KnowledgeGraphStore,
 ) -> None:
