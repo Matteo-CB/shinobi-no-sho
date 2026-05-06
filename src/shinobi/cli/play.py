@@ -107,6 +107,7 @@ META_HELP = {
     "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
     "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
     "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
+    "/beliefs <npc_id>": "Sub-KG d'un PNJ : facts qu'il sait + fidelity (Phase B §5.4)",
     "/tensions": "Detecte les tensions narratives via les 20 invariants Phase C (detector + analyst si due)",
     "/tensions-llm": "Force l'analyst LLM Qwen3-4B (snapshot KG -> opportunites narratives)",
     "/agents": "Liste les agents Phase E (top-15 + secondary 50)",
@@ -432,6 +433,17 @@ def play_session(save_id: str) -> None:
 
         # Annonce des rumeurs nouvellement nees que le joueur peut entendre
         world = _announce_new_rumors(world, character, fired_event_ids={f.event_id for f in fired}, canon=canon)
+
+        # Phase B §5.4 : Sync les rumeurs world -> KG facts + propage via
+        # SocialNetwork (sub-KG par PNJ). Distorsion en chaine via
+        # CHANNEL_DECAY (rumor=0.7). Idempotent (skip si fact deja present).
+        if main_loop_kg_store is not None and world.rumors:
+            try:
+                _sync_rumors_to_kg_with_propagation(
+                    main_loop_kg_store, main_loop_social, world, canon,
+                )
+            except Exception:
+                pass
 
         # Phase D : drift de personnalite des PNJ impliques dans les events
         # fired ce tour. Le bridge convertit canon TimelineEvent -> ExperiencedEvent
@@ -845,6 +857,12 @@ def _handle_meta(
             console.print("[red]Usage : /personality <npc_id>[/red]")
         else:
             _print_personality(save_id, parts[1].strip())
+    elif command.startswith("/beliefs"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2 or not parts[1].strip():
+            console.print("[red]Usage : /beliefs <npc_id>[/red]")
+        else:
+            _print_npc_beliefs(save_id, parts[1].strip(), year=world.current_year)
     elif command == "/tensions":
         _print_tensions(save_id, year=world.current_year)
     elif command == "/tensions-llm":
@@ -1596,6 +1614,144 @@ async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
             border_style="magenta",
         )
     )
+
+
+def _print_npc_beliefs(save_id: str, npc_id: str, *, year: int) -> None:
+    """Spec §5.4 : affiche le sub-KG (beliefs) d'un PNJ.
+
+    Liste les facts que ce PNJ connait + fidelity (channel decay).
+    """
+    from shinobi.kg.store import KnowledgeGraphStore
+
+    kg_db = save_module.kg_db_path(save_id)
+    if not kg_db.exists():
+        console.print("[yellow]KG non initialise.[/yellow]")
+        return
+    with KnowledgeGraphStore(kg_db) as kg:
+        # Facts dans known_to(npc) (sub-KG personnel)
+        known_facts = kg.known_to(npc_id, year=year)
+
+        # Beliefs depuis kg_beliefs table
+        try:
+            row_count = kg.conn.execute(
+                "SELECT COUNT(*) AS c FROM kg_beliefs WHERE npc_id = ?",
+                (npc_id,),
+            ).fetchone()
+            beliefs_count = int(row_count["c"]) if row_count else 0
+        except Exception:
+            beliefs_count = 0
+
+    if not known_facts and beliefs_count == 0:
+        console.print(
+            Panel(
+                f"[dim]Aucun fact connu et aucun belief enregistre pour {npc_id}.[/dim]",
+                title=f"Sub-KG : {npc_id}",
+                border_style="cyan",
+            )
+        )
+        return
+
+    lines = [
+        f"  Facts connus (sub-KG) : {len(known_facts)}",
+        f"  Beliefs enregistres : {beliefs_count}",
+        "",
+    ]
+    if known_facts:
+        lines.append("  [cyan]Top 10 facts connus :[/cyan]")
+        for f in known_facts[:10]:
+            obj_str = f.object[:30] if f.object else "-"
+            lines.append(
+                f"    [dim]conf={f.confidence:.2f}[/dim] "
+                f"{f.subject} {f.relation} {obj_str}"
+            )
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title=f"Sub-KG (Phase B) : {npc_id}",
+            border_style="cyan",
+        )
+    )
+
+
+def _sync_rumors_to_kg_with_propagation(
+    kg_store, social, world, canon,
+) -> None:
+    """Phase B §5.4 : sync les rumeurs en facts KG + propage via social network.
+
+    Pour chaque nouvelle rumeur :
+    1. Insere comme Fact KG (idempotent via source='rumor:<id>')
+    2. Pour chaque NPC dans le radius event_location, ajoute Belief avec
+       fidelity = rumor.fidelity * CHANNEL_DECAY['rumor'] (=0.7)
+    3. Propage via BeliefPropagator.propagate_cascade aux liens sociaux
+       avec distorsion en chaine
+    """
+    from shinobi.engine.rumors import player_can_hear
+    from shinobi.kg.belief import BeliefPropagator
+    from shinobi.kg.rumor_bridge import sync_world_rumors_to_kg
+
+    propagator = BeliefPropagator(kg_store, social)
+
+    # Pour chaque rumeur, identifie les NPCs qui peuvent l'entendre par
+    # proximite location (radius)
+    npcs_per_rumor: dict[str, list[str]] = {}
+    canon_chars = list(canon.characters.keys()) if hasattr(canon, "characters") else []
+    for rumor in world.rumors:
+        if rumor.id in npcs_per_rumor:
+            continue
+        # NPCs qui peuvent entendre : top NPCs canon dans la radius region
+        # Heuristique simple : on prend les NPCs lies a l'event_location
+        event_location = None
+        if rumor.source_event_id:
+            ev = canon.timeline_events.get(rumor.source_event_id)
+            if ev and ev.location:
+                event_location = ev.location
+        if event_location is None:
+            npcs_per_rumor[rumor.id] = []
+            continue
+        # Limit aux 10 premiers (heuristique perf)
+        listening_npcs: list[str] = []
+        for cid in canon_chars[:50]:
+            npc_state = world.npc_states.get(cid)
+            if npc_state is None:
+                continue
+            if player_can_hear(
+                rumor,
+                player_location=npc_state.current_location,
+                event_location=event_location,
+                current_year=world.current_year,
+            ):
+                listening_npcs.append(cid)
+                if len(listening_npcs) >= 10:
+                    break
+        npcs_per_rumor[rumor.id] = listening_npcs
+
+    # Sync rumors -> KG facts + initial beliefs
+    sync_world_rumors_to_kg(
+        kg_store, propagator, world, npcs_per_rumor=npcs_per_rumor,
+    )
+
+    # Propagation cascade : pour chaque NPC qui a entendu, propage aux
+    # voisins sociaux avec distorsion (channel='rumor')
+    for rumor_id, npcs in npcs_per_rumor.items():
+        existing_facts = kg_store.get_facts(source_prefix=f"rumor:{rumor_id}")
+        if not existing_facts:
+            continue
+        fact_id = existing_facts[0].id
+        if fact_id is None:
+            continue
+        for npc in npcs[:3]:  # Limit cascade depth
+            try:
+                propagator.propagate_cascade(
+                    witness_npc=npc,
+                    fact_id=fact_id,
+                    year=world.current_year,
+                    channel="rumor",
+                    max_depth=2,
+                    min_fidelity=0.3,
+                    initial_fidelity=0.7,
+                )
+            except Exception:
+                continue
 
 
 def _print_tensions(save_id: str, *, year: int) -> None:
