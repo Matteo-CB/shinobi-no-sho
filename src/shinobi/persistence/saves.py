@@ -70,6 +70,21 @@ def _divergence_log_path(save_id: str) -> Path:
     return _save_dir(save_id) / "divergence_log.jsonl"
 
 
+def dialogue_log_path(save_id: str) -> Path:
+    """Chemin du log des dialogues style VN pour cette save (rolling window)."""
+    return _save_dir(save_id) / "dialogues.jsonl"
+
+
+def dialogue_archive_path(save_id: str) -> Path:
+    """Chemin de l'archive JSONL des dialogues offloads (au-dela du window)."""
+    return _save_dir(save_id) / "dialogues_archive.jsonl"
+
+
+def kg_db_path(save_id: str) -> Path:
+    """Chemin de la base SQLite du Knowledge Graph dynamique (Phase A/B/C)."""
+    return _save_dir(save_id) / "kg.sqlite"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []

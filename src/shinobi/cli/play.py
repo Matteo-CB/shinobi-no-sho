@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 
 from rich.console import Console
 from rich.panel import Panel
@@ -19,6 +20,12 @@ from shinobi.cli.display import (
     print_objectives,
     print_status,
     print_techniques,
+)
+from shinobi.dialogue import (
+    DialogueFormatter,
+    DialogueLog,
+    DialogueLogConfig,
+    export_to_vn_json,
 )
 from shinobi.engine.actions import (
     Action,
@@ -73,6 +80,8 @@ META_HELP = {
     "/invoke <name>": "Tente d'invoquer une creature (consomme 30 chakra)",
     "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
     "/journal": "Indique ou se trouve le journal",
+    "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
+    "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
     "/help": "Affiche cette aide",
     "/quit": "Sauvegarde et retourne au menu principal",
 }
@@ -127,6 +136,20 @@ def play_session(save_id: str) -> None:
     last_proposed: list[dict] = []
     pending_missions: list = []
 
+    # Instancie le DialogueLog (rolling window 5000) + DialogueFormatter (parser
+    # narrative -> DialogueLines). Le log est persiste dans la save et restaure
+    # a la reprise. L'archive offload se declenche automatiquement avant overflow.
+    dialogue_log = _load_or_create_dialogue_log(save_id)
+    dialogue_formatter = DialogueFormatter()
+
+    # Phase A/B/C : KG dynamique + missions canon. Auto-load idempotent : ne ré-importe
+    # que si la base SQLite est manquante ou ne contient aucun fact mission. La base
+    # est per-save (kg.sqlite) pour permettre des univers divergents par save.
+    try:
+        _ensure_kg_initialized(save_id, canon, console=console)
+    except Exception as exc:
+        console.print(f"[dim]KG init ignore : {type(exc).__name__}[/dim]")
+
     console.print(
         Panel.fit(
             f"Tu reprends [bold yellow]{character.name}[/bold yellow] a l'an {world.current_year}, "
@@ -149,13 +172,21 @@ def play_session(save_id: str) -> None:
 
         if intent_text.startswith("/"):
             should_continue, character, world = _handle_meta(
-                intent_text, character, world, save_id, canon, pending_missions, retriever=retriever
+                intent_text, character, world, save_id, canon, pending_missions,
+                retriever=retriever,
+                dialogue_log=dialogue_log,
             )
             if not should_continue:
                 save_module.append_narrative_log(
                     save_id,
                     {"turn": turn, "year": world.current_year, "type": "session_end"},
                 )
+                # Persiste le log VN avant de quitter pour que /export-vn-dialogues
+                # puisse etre invoque depuis l'exterieur sur un dump complet.
+                try:
+                    dialogue_log.to_jsonl_file(save_module.dialogue_log_path(save_id))
+                except Exception:
+                    pass
                 console.print("[green]Sauvegarde effectuee. Retour au menu.[/green]")
                 return
             turn -= 1
@@ -371,6 +402,9 @@ def play_session(save_id: str) -> None:
                     intent_text,
                     parsed,
                     present_npcs=scene_npcs,
+                    dialogue_formatter=dialogue_formatter,
+                    dialogue_log=dialogue_log,
+                    turn_number=turn,
                 )
             )
             if narration is not None:
@@ -407,6 +441,12 @@ def play_session(save_id: str) -> None:
                     "action_type": parsed.action_type.value,
                 },
             )
+            # Persiste le log VN (rolling window). L'archive est geree automatiquement
+            # par DialogueLog.append() quand le seuil est atteint.
+            try:
+                dialogue_log.to_jsonl_file(save_module.dialogue_log_path(save_id))
+            except Exception:
+                pass
         except Exception as exc:
             console.print(f"[red]Erreur de sauvegarde : {type(exc).__name__}: {exc}[/red]")
 
@@ -503,7 +543,17 @@ def _default_duration_index(target_hours: int) -> int:
     return best_i
 
 
-def _handle_meta(command: str, character, world, save_id: str, canon, pending_missions: list, retriever=None):
+def _handle_meta(
+    command: str,
+    character,
+    world,
+    save_id: str,
+    canon,
+    pending_missions: list,
+    retriever=None,
+    *,
+    dialogue_log: DialogueLog | None = None,
+):
     """Traite une commande meta. Retourne (continue, character, world)."""
     if command in ("/quit", "/exit"):
         return False, character, world
@@ -622,9 +672,63 @@ def _handle_meta(command: str, character, world, save_id: str, canon, pending_mi
         character, world = _skip_time(command, character, world)
     elif command == "/journal":
         console.print(f"[dim]Journal : data/saves/{save_id}/narrative_log.jsonl[/dim]")
+    elif command == "/dialogues":
+        _print_dialogue_log(dialogue_log)
+    elif command.startswith("/export-vn-dialogues"):
+        parts = command.split(maxsplit=1)
+        # Default path : <saves_dir>/<save_id>/vn_dialogues.json
+        from shinobi.config import settings as _s
+
+        default_path = _s.saves_dir / save_id / "vn_dialogues.json"
+        target = Path(parts[1].strip()) if len(parts) > 1 and parts[1].strip() else default_path
+        _export_vn_dialogues(dialogue_log, target)
     else:
         console.print(f"[red]Commande inconnue : {command}[/red] (tape [cyan]/help[/cyan])")
     return True, character, world
+
+
+def _print_dialogue_log(dialogue_log: DialogueLog | None) -> None:
+    """Affiche les dernieres lignes capturees du log VN."""
+    if dialogue_log is None:
+        console.print("[yellow]Log de dialogues VN non initialise.[/yellow]")
+        return
+    if dialogue_log.size == 0:
+        console.print(Panel("Aucun dialogue capture pour l'instant.", title="Dialogues VN"))
+        return
+    last = dialogue_log.last_n(20)
+    lines = []
+    for d in last:
+        prefix = "*" if d.is_thought else ""
+        loc = f" @{d.location_id}" if d.location_id else ""
+        year = f" an {d.in_game_year}" if d.in_game_year is not None else ""
+        lines.append(
+            f"  [cyan]{d.speaker_id}[/cyan] [{d.emotion.value}/{d.tone.value}]{year}{loc}: "
+            f"{prefix}{d.text}{prefix}"
+        )
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title=f"Dialogues VN ({dialogue_log.size}/{dialogue_log.max_size})",
+            border_style="cyan",
+        )
+    )
+
+
+def _export_vn_dialogues(dialogue_log: DialogueLog | None, target: Path) -> None:
+    """Exporte le log au format VN_PAYLOAD_VERSION_1."""
+    if dialogue_log is None:
+        console.print("[yellow]Log de dialogues VN non initialise.[/yellow]")
+        return
+    if dialogue_log.size == 0:
+        console.print("[yellow]Aucun dialogue a exporter.[/yellow]")
+        return
+    try:
+        n = export_to_vn_json(dialogue_log.all(), target)
+        console.print(
+            f"[green]Export VN reussi : {n} ligne(s) ecrite(s) dans {target}[/green]"
+        )
+    except Exception as exc:
+        console.print(f"[red]Echec export VN : {type(exc).__name__}: {exc}[/red]")
 
 
 def _missions_flow(character, world, save_id: str, canon):
@@ -999,13 +1103,83 @@ def _detect_present_npcs(intent_text: str, canon) -> list[str]:
     return matches
 
 
+def _load_or_create_dialogue_log(save_id: str) -> DialogueLog:
+    """Charge le DialogueLog persiste pour cette save, ou en cree un neuf.
+
+    L'archive_path est branche sur la save : quand le rolling window approche
+    de sa borne (5000 lignes), DialogueLog.append() offload les anciennes
+    vers `dialogues_archive.jsonl` automatiquement, evitant la perte memoire.
+    """
+    archive_path = save_module.dialogue_archive_path(save_id)
+    config = DialogueLogConfig(archive_path=archive_path)
+    log_path = save_module.dialogue_log_path(save_id)
+    if log_path.exists():
+        try:
+            return DialogueLog.from_jsonl_file(log_path, config=config)
+        except Exception:
+            # Corruption tolerable : on repart d'un log vide plutot que crasher
+            return DialogueLog(config=config)
+    return DialogueLog(config=config)
+
+
+def _ensure_kg_initialized(save_id: str, canon, *, console=None) -> None:
+    """Initialise le KG dynamique si la base est vide (idempotent).
+
+    - Importe les datasets canon (characters, techniques, clans, ...) une fois
+    - Importe missions.json s'il existe et qu'aucun fact mission n'est present
+    Bootstrap idempotent : detecte deja-importe via comptage des facts.
+    """
+    from shinobi.config import settings as _s
+    from shinobi.kg.loader import import_canon_to_kg
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.missions.catalog import MissionCatalog
+    from shinobi.missions.kg_integration import import_missions_to_kg
+
+    db_path = save_module.kg_db_path(save_id)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    with KnowledgeGraphStore(db_path) as store:
+        # Canon : on importe si la base est vide
+        existing_canon_facts = store.count(source_prefix="canon")
+        if existing_canon_facts == 0:
+            stats = import_canon_to_kg(store, _s.canonical_data_dir, clear_first=False)
+            if console is not None:
+                console.print(
+                    f"[dim]KG canon importe : {stats.get('total', 0)} facts[/dim]"
+                )
+
+        # Missions : auto-load idempotent
+        missions_path = _s.canonical_data_dir / "missions.json"
+        if missions_path.exists():
+            existing_mission_facts = store.count(source_prefix="mission:")
+            if existing_mission_facts == 0:
+                catalog = MissionCatalog.from_json_file(missions_path)
+                if catalog.count > 0:
+                    stats = import_missions_to_kg(
+                        store, catalog.all(), clear_first=False,
+                    )
+                    if console is not None:
+                        console.print(
+                            f"[dim]KG missions importees : "
+                            f"{stats.get('missions_imported', 0)} missions, "
+                            f"{stats.get('facts_inserted', 0)} facts[/dim]"
+                        )
+
+
 async def _attempt_narration(
-    character, world, canon, retriever, result, intent: str, parsed, *, present_npcs: list[str]
+    character, world, canon, retriever, result, intent: str, parsed, *,
+    present_npcs: list[str],
+    dialogue_formatter=None,
+    dialogue_log=None,
+    turn_number: int | None = None,
 ):
     async with LLMClient() as client:
         if not await client.health():
             return None
-        narrator = Narrator(client, canon, retriever)
+        narrator = Narrator(
+            client, canon, retriever,
+            dialogue_formatter=dialogue_formatter,
+            dialogue_log=dialogue_log,
+        )
         npc_summary = (
             f"PNJ canon presents : {', '.join(present_npcs)}"
             if present_npcs
@@ -1039,6 +1213,11 @@ async def _attempt_narration(
             established_npc_friendships={
                 rel.with_character_id for rel in character.relationships if rel.affinity > 30
             },
+            # Contexte VN : permet a Narrator._capture_dialogues() d'attribuer
+            # year/turn/date corrects a chaque DialogueLine produit.
+            turn_number=turn_number,
+            in_game_year=world.current_year,
+            in_game_date=world.current_date,
         )
         return await narrator.narrate(request)
 

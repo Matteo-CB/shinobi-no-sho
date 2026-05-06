@@ -39,13 +39,19 @@ from shinobi.utils.text import (
 )
 from shinobi.validation import (
     AgeCoherenceLayer,
-    NarrativeAction as ValNarrativeAction,
-    NarrativeDialogue as ValNarrativeDialogue,
-    NarrativeOutput as ValNarrativeOutput,
     SherlockRulesLayer,
     TripletCheckLayer,
     Validator,
     format_violations_for_regen,
+)
+from shinobi.validation import (
+    NarrativeAction as ValNarrativeAction,
+)
+from shinobi.validation import (
+    NarrativeDialogue as ValNarrativeDialogue,
+)
+from shinobi.validation import (
+    NarrativeOutput as ValNarrativeOutput,
 )
 
 # Estimations heuristiques pour combler les "?" dans le tableau d'actions proposees.
@@ -226,6 +232,13 @@ class NarrationRequest:
     # Validator anti-invention amitie joueur-NPC
     player_name: str | None = None
     established_npc_friendships: set[str] | None = None
+    # Contexte VN dialogue (utilise par DialogueFormatter quand wired)
+    turn_number: int | None = None
+    in_game_year: int | None = None
+    in_game_date: str | None = None
+    related_event_id: str | None = None
+    related_mission_id: str | None = None
+    scene_mood: str | None = None
 
 
 def _persona_context_from_request(request: NarrationRequest) -> PersonaContext:
@@ -325,7 +338,14 @@ def _build_runtime_state_from_request(request: NarrationRequest) -> RuntimeState
 
 
 class Narrator:
-    """Orchestrateur du role NARRATOR."""
+    """Orchestrateur du role NARRATOR.
+
+    Si un `DialogueFormatter` et un `DialogueLog` sont fournis, chaque sortie
+    LLM (narrative + npc_dialogue) est convertie en sequence de DialogueLines
+    indexables et appendee au log automatiquement (Phase VN integration).
+    Cela permet l'export ulterieur vers une application Visual Novel sans
+    modifier le pipeline de narration.
+    """
 
     def __init__(
         self,
@@ -334,6 +354,8 @@ class Narrator:
         retriever: Retriever,
         *,
         enable_anti_hallu_validation: bool | None = None,
+        dialogue_formatter=None,  # DialogueFormatter | None
+        dialogue_log=None,        # DialogueLog | None
     ) -> None:
         self.client = client
         self.canon = canon
@@ -350,6 +372,42 @@ class Narrator:
             if self.enable_anti_hallu_validation
             else None
         )
+        # Integration VN (optionnelle). Si les deux sont fournis, append-auto.
+        self._dialogue_formatter = dialogue_formatter
+        self._dialogue_log = dialogue_log
+
+    @property
+    def dialogue_log(self):
+        return self._dialogue_log
+
+    def _capture_dialogues(
+        self, response: NarrationResponse, request: NarrationRequest,
+    ) -> int:
+        """Convertit la sortie LLM en DialogueLines et appende au log si configure.
+
+        Retourne le nombre de lignes ajoutees (0 si VN integration disabled).
+        """
+        if self._dialogue_formatter is None or self._dialogue_log is None:
+            return 0
+        location_id = (
+            request.location_id
+            or (request.scene_context.location if request.scene_context is not None else None)
+        )
+        in_game_year = request.in_game_year or (
+            request.scene_context.current_year if request.scene_context is not None else None
+        )
+        lines = self._dialogue_formatter.format(
+            narrative=response.narrative,
+            npc_dialogue=response.npc_dialogue,
+            in_game_year=in_game_year,
+            in_game_date=request.in_game_date,
+            location_id=location_id,
+            turn_number=request.turn_number,
+            related_event_id=request.related_event_id,
+            related_mission_id=request.related_mission_id,
+            scene_mood=request.scene_mood,
+        )
+        return self._dialogue_log.append_many(lines)
 
     async def narrate(self, request: NarrationRequest) -> NarrationResponse:
         """Narration robuste avec retry x2 :
@@ -422,6 +480,7 @@ class Narrator:
             last_response = parsed
 
             if current_year is None:
+                self._capture_dialogues(parsed, request)
                 return parsed
 
             # ===== VALIDATION ETAGEE =====
@@ -457,6 +516,7 @@ class Narrator:
                 and judge_verdict.ok
                 and not anti_hallu_violations
             ):
+                self._capture_dialogues(parsed, request)
                 return parsed  # SUCCES
 
             # Sinon : compose la correction pour le prochain retry
@@ -489,10 +549,12 @@ class Narrator:
                     world_observations=parsed.world_observations,
                     clarification_request=parsed.clarification_request,
                 )
+                self._capture_dialogues(parsed, request)
                 return parsed
 
         # Defensif : ne devrait jamais arriver (le loop retourne toujours)
         assert last_response is not None
+        self._capture_dialogues(last_response, request)
         return last_response
 
     def _build_user_message(
