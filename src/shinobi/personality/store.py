@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS npc_personalities (
     vector_json TEXT NOT NULL,
     canon_baseline_json TEXT NOT NULL,
     baseline_year INTEGER,
-    updated_at_ts REAL NOT NULL
+    updated_at_ts REAL NOT NULL,
+    relational_dimensions_json TEXT NOT NULL DEFAULT '{}'
 );
 
 CREATE TABLE IF NOT EXISTS personality_drift_history (
@@ -164,16 +165,24 @@ class PersonalityStore:
 
     def upsert_personality(self, personality: NPCPersonality) -> None:
         """Insert ou replace le vecteur courant. NE persiste PAS l'history."""
+        # Spec §6.2 round 18 : serialise relational_dimensions
+        # {npc_id: {dim_value: float}} -> JSON
+        relational_payload = {
+            other_id: {dim.value: val for dim, val in dims.items()}
+            for other_id, dims in personality.relational_dimensions.items()
+        }
         self.conn.execute(
             """
             INSERT INTO npc_personalities (
-                npc_id, vector_json, canon_baseline_json, baseline_year, updated_at_ts
-            ) VALUES (?, ?, ?, ?, ?)
+                npc_id, vector_json, canon_baseline_json, baseline_year,
+                updated_at_ts, relational_dimensions_json
+            ) VALUES (?, ?, ?, ?, ?, ?)
             ON CONFLICT(npc_id) DO UPDATE SET
                 vector_json = excluded.vector_json,
                 canon_baseline_json = excluded.canon_baseline_json,
                 baseline_year = excluded.baseline_year,
-                updated_at_ts = excluded.updated_at_ts
+                updated_at_ts = excluded.updated_at_ts,
+                relational_dimensions_json = excluded.relational_dimensions_json
             """,
             (
                 personality.npc_id,
@@ -181,6 +190,7 @@ class PersonalityStore:
                 _vector_to_json(personality.canon_baseline),
                 personality.baseline_year,
                 time.time(),
+                json.dumps(relational_payload, ensure_ascii=False, sort_keys=True),
             ),
         )
         self.conn.commit()
@@ -194,19 +204,37 @@ class PersonalityStore:
         return n
 
     def get_personality(self, npc_id: str) -> NPCPersonality | None:
-        """Charge le vecteur + baseline + history pour un npc_id."""
+        """Charge le vecteur + baseline + history + relational dims."""
         row = self.conn.execute(
             "SELECT * FROM npc_personalities WHERE npc_id = ?", (npc_id,),
         ).fetchone()
         if row is None:
             return None
         history = self.list_drift_history(npc_id)
+        # Spec §6.2 round 18 : deserialise relational_dimensions (graceful
+        # fallback {} si colonne absente / corrompue)
+        relational: dict[str, dict[PersonalityDimension, float]] = {}
+        try:
+            raw = row["relational_dimensions_json"] or "{}"
+            payload = json.loads(raw)
+            if isinstance(payload, dict):
+                for other_id, dims_payload in payload.items():
+                    if not isinstance(dims_payload, dict):
+                        continue
+                    relational[other_id] = {
+                        PersonalityDimension(k): float(v)
+                        for k, v in dims_payload.items()
+                        if k in {d.value for d in PersonalityDimension}
+                    }
+        except (json.JSONDecodeError, KeyError, IndexError):
+            relational = {}
         return NPCPersonality(
             npc_id=row["npc_id"],
             vector=_vector_from_json(row["vector_json"]),
             canon_baseline=_vector_from_json(row["canon_baseline_json"]),
             drift_history=tuple(history),
             baseline_year=row["baseline_year"],
+            relational_dimensions=relational,
         )
 
     def list_personalities(self) -> list[NPCPersonality]:

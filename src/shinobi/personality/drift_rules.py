@@ -38,6 +38,10 @@ class DriftRule:
     duration_log_factor : pour les rules cumulatives (long_term_companionship,
     secret_kept_long_term, daily_routine_long), on multiplie le delta par
     log(1+years)*duration_log_factor pour avoir un effet decroissant marginal.
+
+    relational_deltas : Spec §6.2 'loyalty envers betrayer -0.1'. Deltas
+    appliques a la dimension relationnelle envers `event.related_npc_id`.
+    Distincts des deltas globaux. Necessitent requires_related_npc=True.
     """
 
     name: str
@@ -46,6 +50,7 @@ class DriftRule:
     requires_related_npc: bool = False
     duration_log_factor: float = 0.0  # 0 = pas d'effet de duree
     description: str = ""
+    relational_deltas: dict[D, float] = field(default_factory=dict)
 
 
 # Les 30 regles deterministes ----------------------------------------------------
@@ -60,17 +65,25 @@ DRIFT_RULES: tuple[DriftRule, ...] = (
     DriftRule(
         name="betrayal_witnessed",
         category=EventCategory.betrayal_witnessed,
-        deltas={D.paranoia: 0.15, D.loyalty: -0.10, D.openness: -0.05},
+        deltas={D.paranoia: 0.15, D.openness: -0.05},
+        relational_deltas={D.loyalty: -0.20, D.empathy: -0.05},
         requires_related_npc=True,
-        description="Trahison observee : paranoia+, loyaute-, ouverture-",
+        description=(
+            "Trahison observee : paranoia+, ouverture- (global), "
+            "loyaute envers betrayer-- (relational, spec §6.2)"
+        ),
     ),
     DriftRule(
         name="long_term_companionship",
         category=EventCategory.long_term_companionship,
-        deltas={D.loyalty: 0.05, D.empathy: 0.03, D.isolationism: -0.03},
+        deltas={D.empathy: 0.03, D.isolationism: -0.03},
+        relational_deltas={D.loyalty: 0.10, D.empathy: 0.05},
         requires_related_npc=True,
         duration_log_factor=1.0,
-        description="Compagnonnage long : loyaute+, empathie+, isolation-",
+        description=(
+            "Compagnonnage long : empathie+, isolation- (global), "
+            "loyaute envers lui+ (relational, spec §6.2)"
+        ),
     ),
     DriftRule(
         name="violent_combat_won",
@@ -115,9 +128,13 @@ DRIFT_RULES: tuple[DriftRule, ...] = (
     DriftRule(
         name="rescued_by",
         category=EventCategory.rescued_by,
-        deltas={D.loyalty: 0.10, D.empathy: 0.05, D.honor: 0.05},
+        deltas={D.empathy: 0.05, D.honor: 0.05},
+        relational_deltas={D.loyalty: 0.20, D.empathy: 0.10},
         requires_related_npc=True,
-        description="Sauve par X : loyaute+ (envers X), empathie+, honneur+",
+        description=(
+            "Sauve par X : empathie+, honneur+ (global), "
+            "loyaute envers X++ (relational, spec §6.2)"
+        ),
     ),
     DriftRule(
         name="witnessed_atrocity",
@@ -323,7 +340,8 @@ def compose_drift_for_event(
     intensity: float = 1.0,
     duration_years: int | None = None,
 ) -> dict[D, float]:
-    """Compose les deltas BRUTS pour un event, modules par intensity et duration.
+    """Compose les deltas globaux BRUTS pour un event, modules par intensity
+    et duration.
 
     intensity : ExperiencedEvent.intensity dans [0,1].
     duration_years : pour les rules cumulatives (factor log).
@@ -334,6 +352,29 @@ def compose_drift_for_event(
         duration_factor = math.log(1.0 + duration_years) * rule.duration_log_factor
     multiplier = max(0.0, intensity) * duration_factor
     for dim, delta in rule.deltas.items():
+        out[dim] = delta * multiplier
+    return out
+
+
+def compose_relational_drift_for_event(
+    rule: DriftRule,
+    *,
+    intensity: float = 1.0,
+    duration_years: int | None = None,
+) -> dict[D, float]:
+    """Compose les deltas RELATIONNELS BRUTS pour un event (spec §6.2).
+
+    Memes modulations que compose_drift_for_event mais sur relational_deltas.
+    Retourne {} si pas de relational_deltas.
+    """
+    if not rule.relational_deltas:
+        return {}
+    out: dict[D, float] = {}
+    duration_factor = 1.0
+    if rule.duration_log_factor and duration_years and duration_years > 0:
+        duration_factor = math.log(1.0 + duration_years) * rule.duration_log_factor
+    multiplier = max(0.0, intensity) * duration_factor
+    for dim, delta in rule.relational_deltas.items():
         out[dim] = delta * multiplier
     return out
 
@@ -351,6 +392,7 @@ __all__ = [
     "DriftRule",
     "apply_delta_with_saturation",
     "compose_drift_for_event",
+    "compose_relational_drift_for_event",
     "get_rule_for_category",
     "total_dimensions_touched",
 ]

@@ -136,13 +136,20 @@ def _default_canon_baseline() -> dict[PersonalityDimension, float]:
 
 class NPCPersonality(BaseModel):
     """Vecteur de personnalite courant d'un PNJ + son baseline canon + son
-    historique de drift.
+    historique de drift + dimensions relationnelles per-NPC.
 
     Invariants :
     - vector contient EXACTEMENT les 20 dimensions
     - chaque valeur est dans [0.0, 1.0]
     - canon_baseline a la meme structure
     - drift_history est append-only (pas modifie en place)
+    - relational_dimensions[other_npc][dim] est dans [0.0, 1.0]
+
+    Spec docs/02 §6.2 : 'loyalty envers betrayer -0.1', 'loyalty envers lui
+    +log(years)*0.05'. Certains drifts ciblent un PNJ specifique
+    (loyalty envers X, vengeance contre Y) plutot que le vecteur global.
+    `relational_dimensions[other_npc_id][dim]` stocke ces valeurs
+    relationnelles. Default neutre (0.5) si non present.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -156,6 +163,10 @@ class NPCPersonality(BaseModel):
     )
     drift_history: tuple[PersonalityDrift, ...] = Field(default_factory=tuple)
     baseline_year: int | None = None
+    # Spec §6.2 : dimensions relationnelles par NPC cible
+    relational_dimensions: dict[str, dict[PersonalityDimension, float]] = Field(
+        default_factory=dict,
+    )
 
     @model_validator(mode="after")
     def _check_dimensions_complete(self) -> NPCPersonality:
@@ -193,6 +204,19 @@ class NPCPersonality(BaseModel):
     def baseline(self, dim: PersonalityDimension) -> float:
         """Lecture rapide d'une dimension du baseline canon."""
         return self.canon_baseline[dim]
+
+    def relational_value(
+        self, other_npc_id: str, dim: PersonalityDimension,
+    ) -> float:
+        """Spec §6.2 : 'loyalty envers X'. Lecture d'une dimension
+        relationnelle envers un PNJ specifique. Default neutre (0.5)
+        si pas de drift relationnel enregistre."""
+        npc_dims = self.relational_dimensions.get(other_npc_id, {})
+        return npc_dims.get(dim, DEFAULT_NEUTRAL_VALUE)
+
+    def relational_targets(self) -> list[str]:
+        """NPCs avec qui ce PNJ a une relation relationnelle drifee."""
+        return sorted(self.relational_dimensions.keys())
 
 
 __all__ = [

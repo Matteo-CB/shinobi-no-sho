@@ -15,10 +15,15 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from shinobi.personality.dimensions import ALL_DIMENSIONS, PersonalityDimension
+from shinobi.personality.dimensions import (
+    ALL_DIMENSIONS,
+    DEFAULT_NEUTRAL_VALUE,
+    PersonalityDimension,
+)
 from shinobi.personality.drift_rules import (
     apply_delta_with_saturation,
     compose_drift_for_event,
+    compose_relational_drift_for_event,
     get_rule_for_category,
 )
 from shinobi.personality.types import (
@@ -68,6 +73,28 @@ class PersonalityEngine:
             duration_years=event.duration_years,
         )
         new_vector, applied = self._apply_deltas(personality.vector, deltas_raw)
+
+        # Spec §6.2 : applique deltas relationnels envers event.related_npc_id
+        # si la rule en a et que related_npc_id est defini.
+        new_relational = dict(personality.relational_dimensions)
+        if event.related_npc_id and rule.relational_deltas:
+            relational_deltas_raw = compose_relational_drift_for_event(
+                rule,
+                intensity=event.intensity,
+                duration_years=event.duration_years,
+            )
+            current_target_dims = dict(
+                personality.relational_dimensions.get(event.related_npc_id, {}),
+            )
+            # Initialise dimensions manquantes au neutre
+            for dim in relational_deltas_raw:
+                if dim not in current_target_dims:
+                    current_target_dims[dim] = DEFAULT_NEUTRAL_VALUE
+            new_target_dims, _applied_rel = self._apply_deltas(
+                current_target_dims, relational_deltas_raw,
+            )
+            new_relational[event.related_npc_id] = new_target_dims
+
         drift = PersonalityDrift(
             npc_id=event.npc_id,
             rule_name=rule.name,
@@ -84,6 +111,7 @@ class PersonalityEngine:
         return personality.model_copy(update={
             "vector": new_vector,
             "drift_history": new_history,
+            "relational_dimensions": new_relational,
         })
 
     def apply_events(

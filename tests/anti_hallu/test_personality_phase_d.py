@@ -183,14 +183,17 @@ class TestDriftRules:
         assert abs(d_full[D.fear] / 2 - d_half[D.fear]) < 1e-9
 
     def test_compose_drift_with_duration_log_factor(self) -> None:
+        # Spec §6.2 round 18 : long_term_companionship loyalty est devenue
+        # relational. Le test verifie maintenant l'amplification sur empathy
+        # qui reste global.
         rule = get_rule_for_category(EventCategory.long_term_companionship)
         assert rule is not None
         # Pas de duration -> facteur = 1.0, delta brut conserve
         d_no_dur = compose_drift_for_event(rule, intensity=1.0)
-        assert d_no_dur[D.loyalty] == rule.deltas[D.loyalty]
+        assert d_no_dur[D.empathy] == rule.deltas[D.empathy]
         # 5 ans -> log(6)*1 ~= 1.79 -> delta amplifie
         d_5y = compose_drift_for_event(rule, intensity=1.0, duration_years=5)
-        assert d_5y[D.loyalty] > rule.deltas[D.loyalty] * 1.5
+        assert d_5y[D.empathy] > rule.deltas[D.empathy] * 1.5
 
 
 class TestSaturationSigmoid:
@@ -447,6 +450,30 @@ class TestPersonalityStore:
             assert store.delete_personality("a") is True
             assert store.get_personality("a") is None
 
+    def test_relational_dimensions_persisted(self, tmp_path: Path) -> None:
+        """Spec §6.2 round 18 : relational_dimensions roundtrip via SQLite."""
+        path = tmp_path / "p.sqlite"
+        eng = PersonalityEngine()
+        p = NPCPersonality(npc_id="naruto")
+        ev = ExperiencedEvent(
+            npc_id="naruto", category=EventCategory.betrayal_witnessed,
+            year=12, related_npc_id="sasuke",
+        )
+        p_drifted = eng.apply_event(p, ev)
+        # Verifie que la dimension relationnelle est non-neutre apres drift
+        assert p_drifted.relational_value("sasuke", D.loyalty) != 0.5
+
+        with PersonalityStore(path) as store:
+            store.upsert_personality(p_drifted)
+        # Reload + verifie persistance
+        with PersonalityStore(path) as store2:
+            loaded = store2.get_personality("naruto")
+            assert loaded is not None
+            # Loyalty envers sasuke preservee a travers SQLite roundtrip
+            assert loaded.relational_value("sasuke", D.loyalty) == \
+                p_drifted.relational_value("sasuke", D.loyalty)
+            assert "sasuke" in loaded.relational_targets()
+
     def test_in_memory_store(self) -> None:
         with PersonalityStore(None) as store:
             store.upsert_personality(NPCPersonality(npc_id="x"))
@@ -592,6 +619,59 @@ class TestSasukeScenario:
         assert EventCategory.witnessed_atrocity in cats
         assert EventCategory.achieved_goal in cats
 
+    def test_betrayal_witnessed_drops_loyalty_envers_betrayer_only(self) -> None:
+        """Spec §6.2 : 'loyalty envers betrayer -0.1, paranoia +0.1'.
+
+        Verifie que :
+        - loyalty envers le betrayer (relational) descend
+        - loyalty global ne descend PAS (autres relations preservees)
+        - paranoia global monte
+        """
+        eng = PersonalityEngine()
+        p = NPCPersonality(npc_id="naruto")
+        ev = ExperiencedEvent(
+            npc_id="naruto", category=EventCategory.betrayal_witnessed,
+            year=12, related_npc_id="sasuke",
+        )
+        p2 = eng.apply_event(p, ev)
+        # Loyalty envers sasuke : relational descend
+        assert p2.relational_value("sasuke", D.loyalty) < p.value(D.loyalty)
+        # Loyalty global INCHANGE (pas dans deltas globaux)
+        assert p2.value(D.loyalty) == p.value(D.loyalty)
+        # Paranoia globale monte
+        assert p2.value(D.paranoia) > p.value(D.paranoia)
+        # Pas d'effet sur loyalty envers d'autres NPCs
+        assert p2.relational_value("itachi", D.loyalty) == 0.5
+
+    def test_long_companionship_increases_relational_loyalty(self) -> None:
+        """Spec §6.2 : 'loyalty envers lui +log(years)*0.05'."""
+        eng = PersonalityEngine()
+        p = NPCPersonality(npc_id="naruto")
+        ev = ExperiencedEvent(
+            npc_id="naruto",
+            category=EventCategory.long_term_companionship,
+            year=12, intensity=1.0,
+            related_npc_id="iruka",
+            duration_years=5,
+        )
+        p2 = eng.apply_event(p, ev)
+        # loyalty envers iruka monte (relational)
+        assert p2.relational_value("iruka", D.loyalty) > 0.5
+
+    def test_relational_targets_listed(self) -> None:
+        """Apres plusieurs drifts relationnels, relational_targets() liste
+        tous les NPCs avec qui ce PNJ a une relation drifee."""
+        eng = PersonalityEngine()
+        p = NPCPersonality(npc_id="naruto")
+        for target in ("sasuke", "iruka", "kakashi"):
+            ev = ExperiencedEvent(
+                npc_id="naruto",
+                category=EventCategory.long_term_companionship,
+                year=12, related_npc_id=target,
+            )
+            p = eng.apply_event(p, ev)
+        assert set(p.relational_targets()) == {"sasuke", "iruka", "kakashi"}
+
     def test_naruto_long_companionship_increases_loyalty(self) -> None:
         """Naruto a long-term Iruka -> loyaute envers Iruka montait. Test que
         compagnonnage de 5 ans applique le facteur duration log."""
@@ -613,8 +693,13 @@ class TestSasukeScenario:
         )
         p_short = eng.apply_event(p, ev_short)
         p_long = eng.apply_event(p, ev_long)
-        # 5 ans amplifie plus que 1 an
-        assert p_long.value(D.loyalty) > p_short.value(D.loyalty)
+        # Spec §6.2 round 18 : loyalty envers Iruka est RELATIONNELLE.
+        # 5 ans amplifie plus que 1 an sur la dimension relationnelle.
+        loyalty_short = p_short.relational_value("umino_iruka", D.loyalty)
+        loyalty_long = p_long.relational_value("umino_iruka", D.loyalty)
+        assert loyalty_long > loyalty_short
+        # Empathy globale aussi monte (rule deltas garde empathy global)
+        assert p_long.value(D.empathy) > p_short.value(D.empathy)
 
 
 # ============================================================================
