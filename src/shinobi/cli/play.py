@@ -1554,7 +1554,7 @@ async def _run_fast_forward(
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
-    def canon_scheduler_callable(state, year, tick, *, actions=()):
+    async def canon_scheduler_callable(state, year, tick, *, actions=()):
         """Tick canon scheduler + advance world time. Spec §6.5.
 
         Spec §6.5 'events canon ... selon les actions agents' :
@@ -1605,18 +1605,13 @@ async def _run_fast_forward(
             except Exception:
                 pass
 
-        # Phase C §5.3 : TensionDetector deterministe a chaque tick (sans
-        # LLM, instantane). Le LLM analyst (1 inf/3 mois) est expose via
-        # /tensions command (pas auto-trigger en fast-forward pour eviter
-        # les calls LLM en mode passif).
+        # Phase C §5.3 : TensionScheduler.tick = detector deterministe (sync,
+        # gratuit) + LLM analyst si interval 3 mois ecoule (1 inf/3 mois).
+        # Le scheduler gere le throttling intelligement.
         if tension_scheduler is not None:
             try:
                 month = int(cur_world.current_date.split("-")[0])
-                # Run detector seulement (sync, gratuit)
-                tension_scheduler._detector.detect(year)
-                # Track is_due pour log future analyst opportunity
-                if tension_scheduler.is_due(year, month):
-                    tension_scheduler._state.detector_runs_count += 1
+                await tension_scheduler.tick(year, month=month)
             except Exception:
                 pass
 

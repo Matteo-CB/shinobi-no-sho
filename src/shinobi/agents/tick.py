@@ -506,15 +506,27 @@ class TickEngine:
                     tick_actions = [r.action for r in results]
                     import inspect
                     sig = inspect.signature(canon_scheduler_fn)
+                    is_async = inspect.iscoroutinefunction(canon_scheduler_fn)
                     if "actions" in sig.parameters:
-                        canon_state, fired, cancelled = canon_scheduler_fn(
-                            canon_state, cur_year, cur_tick,
-                            actions=tick_actions,
-                        )
+                        if is_async:
+                            canon_state, fired, cancelled = await canon_scheduler_fn(
+                                canon_state, cur_year, cur_tick,
+                                actions=tick_actions,
+                            )
+                        else:
+                            canon_state, fired, cancelled = canon_scheduler_fn(
+                                canon_state, cur_year, cur_tick,
+                                actions=tick_actions,
+                            )
                     else:
-                        canon_state, fired, cancelled = canon_scheduler_fn(
-                            canon_state, cur_year, cur_tick,
-                        )
+                        if is_async:
+                            canon_state, fired, cancelled = await canon_scheduler_fn(
+                                canon_state, cur_year, cur_tick,
+                            )
+                        else:
+                            canon_state, fired, cancelled = canon_scheduler_fn(
+                                canon_state, cur_year, cur_tick,
+                            )
                     for ev in fired:
                         digest_entries.append(DigestEntry(
                             year=cur_year,

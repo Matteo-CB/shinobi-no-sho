@@ -1302,6 +1302,40 @@ class TestEmbeddingsIndexBGE:
         # Pas de mutation : meme objet retourne
         assert new_world is world
 
+    def test_fast_forward_supports_async_canon_scheduler(self) -> None:
+        """Spec §5.3 + §6.5 : canon_scheduler_fn peut etre async pour
+        permettre l'invocation de TensionScheduler.tick (LLM analyst)."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            received_async = []
+
+            async def async_scheduler(state, year, tick, *, actions=()):
+                received_async.append((year, tick))
+                return state, [], []
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+            )
+            await engine.fast_forward(
+                from_year=12, months=1,
+                canon_scheduler_fn=async_scheduler,
+                canon_scheduler_state={},
+            )
+            # 4 ticks -> async scheduler appele 4 fois
+            assert len(received_async) == 4
+
+        asyncio.run(run())
+
     def test_fast_forward_passes_actions_to_canon_scheduler(self) -> None:
         """Spec §6.5 : canon_scheduler_fn recoit `actions=` kwarg si supporte."""
         async def run() -> None:
