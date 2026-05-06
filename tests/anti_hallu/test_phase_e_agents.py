@@ -852,6 +852,79 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_tick_engine_uses_batch_selector_for_secondary_tier(self) -> None:
+        """Spec §6.4 : 'PNJ secondaires (~50) : simulation par lot toutes les
+        10 ticks (1 inference batchee pour le groupe via prompt batched)'.
+
+        TickEngine doit utiliser BatchActionSelector pour le tier secondary
+        au lieu du selector individuel. Verifie en comptant les llm_calls."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                BatchActionSelector,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            llm_call_count = 0
+
+            async def mock_batch_llm(sys_p, user_p, schema, model, temp):
+                nonlocal llm_call_count
+                llm_call_count += 1
+                # 5 actions par batch (BatchActionSelector batch_size=5)
+                return {
+                    "actions": [
+                        {"type": "idle", "content": f"act_{i}", "importance": 0.2}
+                        for i in range(5)
+                    ],
+                }
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            individual_selector = ActionSelector()
+            batch_selector = BatchActionSelector(
+                llm_call=mock_batch_llm, batch_size=5,
+            )
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=individual_selector,
+                reflector=Reflector(),
+                batch_selector=batch_selector,
+            )
+            # tick=10 -> secondary actifs (% 10 == 0)
+            await engine.tick(year=12, tick=10)
+            # ~52 secondary -> ceil(52/5) = 11 batches -> 11 inferences LLM
+            assert llm_call_count >= 10
+            assert llm_call_count <= 12
+
+        asyncio.run(run())
+
+    def test_tick_engine_no_batch_selector_falls_back_to_individual(self) -> None:
+        """Sans batch_selector, le tier secondary utilise le selector
+        individuel (compatibilite)."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+                batch_selector=None,
+            )
+            results = await engine.tick(year=12, tick=10)
+            # 15 majors + ~52 secondary
+            assert len(results) >= 60
+
+        asyncio.run(run())
+
     def test_apply_action_to_world_state_travel_updates_location(self) -> None:
         """Spec §6.5 : agent travel -> world.npc_states.current_location."""
         from shinobi.agents import apply_action_to_world_state

@@ -28,10 +28,11 @@ from shinobi.agents.agent import (
     AgentTickResult,
     MajorAgent,
 )
+from shinobi.agents.batch_selector import BatchActionSelector
 from shinobi.agents.cache import LLMCache
 from shinobi.agents.reflector import Reflector
 from shinobi.agents.roster import AgentRoster
-from shinobi.agents.selector import ActionSelector
+from shinobi.agents.selector import ActionSelector, SelectionContext
 from shinobi.agents.store import AgentMemoryStore
 from shinobi.agents.types import (
     AgentTier,
@@ -78,6 +79,7 @@ class TickEngine:
         sample_majors_k: int | None = None,
         sampling_seed: int = 0,
         embeddings_index=None,
+        batch_selector: BatchActionSelector | None = None,
     ) -> None:
         self._roster = roster
         self._store = memory_store
@@ -93,6 +95,11 @@ class TickEngine:
         self._sampling_seed = sampling_seed
         # Spec §6.1 : embeddings BGE-M3 propage a chaque MajorAgent
         self._embeddings_index = embeddings_index
+        # Spec §6.4 : 'PNJ secondaires (~50) : simulation par lot toutes les
+        # 10 ticks (1 inference batchee pour le groupe via prompt batched)'.
+        # Si fourni, le tier secondary utilise BatchActionSelector au lieu
+        # du selector individuel.
+        self._batch_selector = batch_selector
         # Cache d'instances MajorAgent par npc_id (eviter re-load memory)
         self._agents: dict[str, MajorAgent] = {}
 
@@ -132,11 +139,18 @@ class TickEngine:
         return agent
 
     def _select_npcs_for_tick(self, tick: int) -> list[str]:
-        """Liste des PNJ a simuler ce tick selon roster.tier + tick number.
+        """Liste plate des PNJ a simuler ce tick (compat backward).
 
-        Spec §11.1 : si `sample_majors_k` est defini, on tire K majors aleatoirement
-        (deterministe avec seed=sampling_seed+tick) au lieu de simuler les 15.
-        Les secondary restent batches tous les 10 ticks (logique inchangee).
+        Pour le batch path, voir _select_npcs_partitioned.
+        """
+        majors, secondaries = self._select_npcs_partitioned(tick)
+        return [*majors, *secondaries]
+
+    def _select_npcs_partitioned(self, tick: int) -> tuple[list[str], list[str]]:
+        """Retourne (majors_a_simuler, secondaries_a_simuler) pour ce tick.
+
+        Spec §11.1 : sample_majors_k applique aux majors.
+        Spec §6.4 : secondary actifs uniquement si tick % 10 == 0.
         """
         majors: list[str] = []
         secondary_active: list[str] = []
@@ -156,7 +170,7 @@ class TickEngine:
             rng = random.Random(self._sampling_seed + tick)
             majors = rng.sample(sorted(majors), self._sample_majors_k)
 
-        return [*sorted(majors), *sorted(secondary_active)]
+        return sorted(majors), sorted(secondary_active)
 
     # --- single tick -------------------------------------------------------
 
@@ -168,36 +182,139 @@ class TickEngine:
         context_provider: TickContextProvider | None = None,
         observations_per_npc: dict[str, list[Observation]] | None = None,
     ) -> list[AgentTickResult]:
-        """Lance un tick : simulate top-15 + secondary (si tick%10==0).
+        """Lance un tick : simulate top-15 individuels + secondary batches.
+
+        Spec §6.4 : secondary tier utilise BatchActionSelector si fourni
+        (1 inference par lot de batch_size). Sinon, fallback selector individuel.
 
         `context_provider` : callable optionnel pour fournir le AgentTickInputs
         de chaque PNJ. Si None, un input minimal est genere.
-        `observations_per_npc` : permet d'injecter des observations exterieures
-        (ex: le bridge qui detecte qu'un PNJ a perceived un event).
+        `observations_per_npc` : permet d'injecter des observations exterieures.
         """
-        active_npcs = self._select_npcs_for_tick(tick)
+        majors, secondaries = self._select_npcs_partitioned(tick)
         results: list[AgentTickResult] = []
-        for npc_id in active_npcs:
+
+        # 1. Top-15 majors : selector individuel (1 inference / agent)
+        for npc_id in majors:
+            inputs = self._build_inputs(
+                npc_id, year, tick, context_provider, observations_per_npc,
+            )
             agent = self._get_or_create_agent(npc_id)
-            if context_provider is not None:
-                inputs = context_provider(npc_id, year, tick)
-            else:
-                inputs = AgentTickInputs(year=year, tick=tick)
-            # Inject pre-built observations
-            if observations_per_npc and npc_id in observations_per_npc:
-                inputs = AgentTickInputs(
-                    year=inputs.year,
-                    tick=inputs.tick,
-                    location_id=inputs.location_id,
-                    present_npc_ids=inputs.present_npc_ids,
-                    new_observations=tuple(observations_per_npc[npc_id]),
-                    world_summary=inputs.world_summary,
-                    relations_summary=inputs.relations_summary,
-                    extras=inputs.extras,
-                )
             result = await agent.act(inputs)
             self._roster.mark_active(npc_id, year=year, tick=tick)
             results.append(result)
+
+        # 2. Secondary tier (~50) : batch via BatchActionSelector si fourni
+        # Spec §6.4 : '1 inference batchee pour le groupe via prompt batched'
+        if secondaries:
+            if self._batch_selector is not None:
+                results.extend(
+                    await self._batch_act_secondaries(
+                        secondaries, year, tick,
+                        context_provider, observations_per_npc,
+                    )
+                )
+            else:
+                # Fallback : selector individuel par agent
+                for npc_id in secondaries:
+                    inputs = self._build_inputs(
+                        npc_id, year, tick,
+                        context_provider, observations_per_npc,
+                    )
+                    agent = self._get_or_create_agent(npc_id)
+                    result = await agent.act(inputs)
+                    self._roster.mark_active(npc_id, year=year, tick=tick)
+                    results.append(result)
+        return results
+
+    def _build_inputs(
+        self, npc_id: str, year: int, tick: int,
+        context_provider, observations_per_npc,
+    ) -> AgentTickInputs:
+        """Construit le AgentTickInputs pour un agent."""
+        if context_provider is not None:
+            inputs = context_provider(npc_id, year, tick)
+        else:
+            inputs = AgentTickInputs(year=year, tick=tick)
+        if observations_per_npc and npc_id in observations_per_npc:
+            inputs = AgentTickInputs(
+                year=inputs.year, tick=inputs.tick,
+                location_id=inputs.location_id,
+                present_npc_ids=inputs.present_npc_ids,
+                new_observations=tuple(observations_per_npc[npc_id]),
+                world_summary=inputs.world_summary,
+                relations_summary=inputs.relations_summary,
+                extras=inputs.extras,
+            )
+        return inputs
+
+    async def _batch_act_secondaries(
+        self,
+        npc_ids: list[str],
+        year: int,
+        tick: int,
+        context_provider,
+        observations_per_npc,
+    ) -> list[AgentTickResult]:
+        """Spec §6.4 : 1 inference batchee pour le groupe secondary.
+
+        Pour chaque agent secondary :
+        1. perceive (observations injectees)
+        2. reflect_if_due (sequentiel, peu frequent)
+        3. SelectionContext build
+        Puis BatchActionSelector.select_batch -> N actions en
+        ceil(N/batch_size) inferences. Distribution des actions aux agents.
+        """
+        items: list[tuple] = []
+        agents: list[MajorAgent] = []
+        observations_added: list[int] = []
+        reflections_added: list[int] = []
+
+        for npc_id in npc_ids:
+            agent = self._get_or_create_agent(npc_id)
+            inputs = self._build_inputs(
+                npc_id, year, tick, context_provider, observations_per_npc,
+            )
+            # 1. Perceive
+            n_obs = agent.perceive(inputs.new_observations)
+            # 2. Reflect periodique
+            reflections = await agent.reflect_if_due(year)
+            # 3. Build context
+            active_plans_text = tuple(
+                p.description for p in agent.memory.active_plans()
+            )
+            ctx = SelectionContext(
+                npc_id=npc_id, year=year,
+                location_id=inputs.location_id,
+                present_npc_ids=inputs.present_npc_ids,
+                personality=agent.personality,
+                active_plans_text=active_plans_text,
+                world_summary=inputs.world_summary,
+                relations_summary=inputs.relations_summary,
+                extras=inputs.extras,
+            )
+            items.append((agent.memory, ctx))
+            agents.append(agent)
+            observations_added.append(n_obs)
+            reflections_added.append(len(reflections))
+
+        # Batch inference (1 call par batch_size agents)
+        actions = await self._batch_selector.select_batch(items)
+
+        # Distribute + persist
+        results: list[AgentTickResult] = []
+        for agent, action, n_obs, n_refl in zip(
+            agents, actions, observations_added, reflections_added, strict=False,
+        ):
+            self._store.log_action(action, tick=tick)
+            self._roster.mark_active(agent.npc_id, year=year, tick=tick)
+            results.append(AgentTickResult(
+                action=action,
+                new_observations_count=n_obs,
+                new_reflections_count=n_refl,
+                cache_hit=False,  # batch path : approxime
+                used_llm=True,
+            ))
         return results
 
     # --- fast-forward ------------------------------------------------------

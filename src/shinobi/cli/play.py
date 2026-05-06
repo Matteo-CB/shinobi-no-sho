@@ -16,6 +16,7 @@ from shinobi.agents import (
     AgentMemoryStore,
     AgentRoster,
     AgentTier,
+    BatchActionSelector,
     EmbeddingsIndex,
     LLMCache,
     Reflector,
@@ -1508,6 +1509,7 @@ async def _run_fast_forward(
             initialize_roster(store, included_since_year=current_year)
             roster = AgentRoster(store)
         # LLM call=None : utilise le fallback deterministe (frugal)
+        # Spec §6.4 : BatchActionSelector pour le tier secondary
         engine = TickEngine(
             roster=roster, memory_store=store,
             selector=ActionSelector(cache=cache),
@@ -1515,6 +1517,7 @@ async def _run_fast_forward(
             cache=cache,
             embeddings_index=emb_idx,
             personality_store=p_store,
+            batch_selector=BatchActionSelector(cache=cache, batch_size=5),
         )
         digest = await engine.fast_forward(
             from_year=current_year, months=months,
