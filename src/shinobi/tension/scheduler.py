@@ -98,12 +98,16 @@ class TensionScheduler:
         analyst: LLMTensionAnalyst | None = None,
         config: LLMAnalystConfig | None = None,
         state: SchedulerState | None = None,
+        social_network=None,  # type: SocialNetwork | None
     ) -> None:
         self._store = store
         self._config = config or LLMAnalystConfig()
         self._detector = detector or TensionDetector(store)
+        # Spec §5.3 : LLMTensionAnalyst recoit social_network pour
+        # inclure les relations dans le snapshot
         self._analyst = analyst or LLMTensionAnalyst(
             store, llm_client=None, config=self._config,
+            social_network=social_network,
         )
         self._state = state or SchedulerState()
 

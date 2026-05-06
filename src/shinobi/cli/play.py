@@ -105,7 +105,8 @@ META_HELP = {
     "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
     "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
     "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
-    "/tensions": "Detecte les tensions narratives via les 20 invariants Phase C",
+    "/tensions": "Detecte les tensions narratives via les 20 invariants Phase C (detector + analyst si due)",
+    "/tensions-llm": "Force l'analyst LLM Qwen3-4B (snapshot KG -> opportunites narratives)",
     "/agents": "Liste les agents Phase E (top-15 + secondary 50)",
     "/agent <npc_id>": "Inspecte la memoire 3-niveaux + dernieres actions d'un agent",
     "/fast-forward <mois>": "Simule N mois sans le joueur (digest des events)",
@@ -755,6 +756,8 @@ def _handle_meta(
             _print_personality(save_id, parts[1].strip())
     elif command == "/tensions":
         _print_tensions(save_id, year=world.current_year)
+    elif command == "/tensions-llm":
+        asyncio.run(_run_tensions_llm_analyst(save_id, year=world.current_year))
     elif command == "/agents":
         _print_agents_roster(save_id)
     elif command.startswith("/agent "):
@@ -1354,6 +1357,70 @@ def _ensure_agents_initialized(
                 )
 
 
+async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
+    """Spec §5.3 : force LLM analyst Qwen3-4B sur snapshot KG.
+
+    Affiche les opportunites narratives identifiees par l'analyst.
+    """
+    from shinobi.kg.social import SocialNetwork
+    from shinobi.kg.store import KnowledgeGraphStore
+
+    kg_db = save_module.kg_db_path(save_id)
+    if not kg_db.exists():
+        console.print(
+            "[yellow]KG non initialise (Phase A requise).[/yellow]"
+        )
+        return
+    console.print("[cyan]Snapshot KG + analyst LLM en cours...[/cyan]")
+    with KnowledgeGraphStore(kg_db) as kg:
+        social = SocialNetwork(kg.conn)
+        scheduler = TensionScheduler(kg, social_network=social)
+        try:
+            result = await scheduler.tick(year, month=1, force_analyst=True)
+        except Exception as exc:
+            console.print(
+                f"[red]Analyst LLM echoue : {type(exc).__name__}: {exc}[/red]"
+            )
+            return
+
+    if not result.tensions.tensions:
+        console.print(
+            Panel(
+                "[dim]Aucune opportunite narrative identifiee.[/dim]",
+                title="LLM Analyst", border_style="magenta",
+            )
+        )
+        return
+    sev_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+    sorted_t = sorted(
+        result.tensions.tensions,
+        key=lambda t: sev_order.get(t.severity.value, 99),
+    )
+    lines = []
+    for t in sorted_t[:15]:
+        sev_color = {
+            "critical": "red", "high": "magenta",
+            "medium": "yellow", "low": "dim",
+        }.get(t.severity.value, "white")
+        lines.append(
+            f"  [{sev_color}]{t.severity.value:8s}[/{sev_color}] "
+            f"[{t.type.value}] {t.description[:80]}"
+        )
+        if t.involved_entities:
+            lines.append(
+                f"    [dim]impliques : {', '.join(t.involved_entities[:5])}[/dim]"
+            )
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title=(
+                f"LLM Analyst : {len(sorted_t)} opportunites (an {year})"
+            ),
+            border_style="magenta",
+        )
+    )
+
+
 def _print_tensions(save_id: str, *, year: int) -> None:
     """Spec §5.3 : detecte les opportunites narratives via les 20 invariants
     sur le KG courant. Affichage ordre severity descendant."""
@@ -1547,9 +1614,13 @@ async def _run_fast_forward(
 
     # Phase C §5.3 : TensionScheduler - 1 inf LLM analyst tous les 3 mois
     # in-game. Le detector deterministe tourne a chaque tick (gratuit).
+    # social_network passe a l'analyst pour le snapshot avec relations.
     tension_scheduler = (
-        TensionScheduler(kg_store_ref) if kg_store_ref is not None else None
+        TensionScheduler(kg_store_ref, social_network=social_net)
+        if kg_store_ref is not None else None
     )
+    # Accumulateur de tensions analyst pour le digest
+    analyst_tensions_acc: list = []
 
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
@@ -1611,7 +1682,11 @@ async def _run_fast_forward(
         if tension_scheduler is not None:
             try:
                 month = int(cur_world.current_date.split("-")[0])
-                await tension_scheduler.tick(year, month=month)
+                tick_result = await tension_scheduler.tick(year, month=month)
+                # Si l'analyst a tourne, capture les tensions detectees
+                # pour les inclure dans le digest fast-forward.
+                if tick_result.analyst_ran and tick_result.tensions.tensions:
+                    analyst_tensions_acc.extend(tick_result.tensions.tensions)
             except Exception:
                 pass
 
@@ -1683,6 +1758,24 @@ async def _run_fast_forward(
     else:
         lines.append("")
         lines.append("[dim]Aucun event marquant detecte (importance < seuil).[/dim]")
+
+    # Phase C §5.3 : afficher les tensions LLM analyst capturees
+    if analyst_tensions_acc:
+        lines.append("")
+        lines.append(
+            f"[magenta]Tensions narratives detectees par l'analyst LLM "
+            f"({len(analyst_tensions_acc)}) :[/magenta]"
+        )
+        # Trie par severity descendant
+        sev_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+        sorted_t = sorted(
+            analyst_tensions_acc,
+            key=lambda t: sev_order.get(t.severity.value, 99),
+        )
+        for t in sorted_t[:8]:
+            lines.append(
+                f"  [{t.severity.value}] [{t.type.value}] {t.description[:80]}"
+            )
 
     console.print(
         Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
