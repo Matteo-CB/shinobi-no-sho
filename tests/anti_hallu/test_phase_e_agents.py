@@ -852,6 +852,126 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_full_integrated_pipeline_30_days(self) -> None:
+        """Test end-to-end : TickEngine avec TOUS les modules wired ensemble
+        (rounds 1-16 reunis). Verifie qu'un fast-forward de 30 jours avec
+        toute l'infrastructure fonctionne sans crash et produit un etat
+        coherent.
+
+        Modules verifies : roster + memory_store + selector + reflector +
+        cache + embeddings_index + personality_store + batch_selector +
+        kg_store + social_network + canon_scheduler_fn (mock).
+        """
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                BatchActionSelector,
+                EmbeddingsIndex,
+                LLMCache,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+            from shinobi.kg.schema import Fact, ObjectType, SocialLink
+            from shinobi.kg.social import SocialNetwork
+            from shinobi.kg.store import KnowledgeGraphStore
+            from shinobi.personality import (
+                NPCPersonality,
+                PersonalityDimension,
+                PersonalityStore,
+            )
+
+            # Encoder mock pour BGE-M3
+            def encoder(texts):
+                return [[0.1 * (hash(t) % 10), 0.5, 0.5] for t in texts]
+
+            # Tous les modules
+            with KnowledgeGraphStore(None) as kg, \
+                    PersonalityStore(None) as p_store, \
+                    LLMCache(None) as cache, \
+                    EmbeddingsIndex(
+                        None, encoder=encoder,
+                        query_encoder=lambda t: encoder([t])[0],
+                    ) as emb_idx:
+                # Seed le KG avec des facts pour Naruto
+                kg.add_fact(Fact(
+                    subject="hatake_kakashi", relation="said_to",
+                    object="uzumaki_naruto",
+                    object_type=ObjectType.entity, valid_from_year=12,
+                    known_by_npc_ids=["uzumaki_naruto"],
+                ))
+                # Seed une relation sociale
+                social = SocialNetwork(kg.conn)
+                social.add_link(SocialLink(
+                    npc_a="uzumaki_naruto", npc_b="hatake_kakashi",
+                    link_type="mentor", strength=0.8,
+                ))
+                # Seed une personality custom pour Naruto
+                p_store.upsert_personality(NPCPersonality(
+                    npc_id="uzumaki_naruto",
+                    vector={
+                        d: 0.7 if d == PersonalityDimension.ambition else 0.5
+                        for d in PersonalityDimension
+                    },
+                    canon_baseline=dict.fromkeys(PersonalityDimension, 0.5),
+                ))
+
+                store = AgentMemoryStore(None)
+                roster = initialize_roster(store, included_since_year=12)
+
+                # Mock canon scheduler
+                canon_calls = []
+
+                def scheduler(state, year, tick, *, actions=()):
+                    canon_calls.append((year, tick, len(actions)))
+                    return state, [], []
+
+                engine = TickEngine(
+                    roster=roster, memory_store=store,
+                    selector=ActionSelector(cache=cache),
+                    reflector=Reflector(cache=cache),
+                    cache=cache,
+                    embeddings_index=emb_idx,
+                    personality_store=p_store,
+                    batch_selector=BatchActionSelector(
+                        cache=cache, batch_size=5,
+                    ),
+                    kg_store=kg,
+                    social_network=social,
+                )
+                # Fast-forward 1 mois (= ~30 jours, 4 ticks)
+                digest = await engine.fast_forward(
+                    from_year=12, months=1,
+                    canon_scheduler_fn=scheduler,
+                    canon_scheduler_state={},
+                )
+
+                # Coherence checks integrees :
+                # 1. Pipeline fini sans exception
+                assert digest is not None
+                # 2. Tous les majors ont au moins agi
+                assert len(digest.npcs_active) >= 15
+                # 3. Canon scheduler appele sur tous les ticks
+                assert len(canon_calls) == digest.ticks_simulated
+                # 4. Actions passees au scheduler (round 11)
+                assert all(n_actions > 0 for _, _, n_actions in canon_calls)
+                # 5. KG facts inseres (round 15)
+                facts_after = kg.count(source_prefix="player_action:agent_")
+                assert facts_after > 0
+                # 6. Embeddings index : non vide pour les agents avec obs
+                # (peut etre 0 si aucune perceive externe injectee)
+                # 7. Personality preservee (round 9)
+                naruto = p_store.get_personality("uzumaki_naruto")
+                assert naruto is not None
+                # ambition reste a 0.7 (pas drifte sans events fired)
+                assert naruto.value(PersonalityDimension.ambition) == 0.7
+                # 8. Roster mark_active fonctionne
+                naruto_entry = roster.get("uzumaki_naruto")
+                assert naruto_entry is not None
+                assert naruto_entry.last_active_year == 12
+
+        asyncio.run(run())
+
     def test_phase_d_drift_applies_during_fast_forward(self) -> None:
         """Phase D <-> Phase E integration : pendant fast-forward, les canon
         events fired declenchent le drift de personnalite (event_bridge)."""
