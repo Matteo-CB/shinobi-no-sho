@@ -387,6 +387,18 @@ def play_session(save_id: str) -> None:
         )
         character, world, result = apply_action_to_state(character, world, result)
 
+        # Phase B §5.4 use case : le joueur agit -> KG fact -> propagation
+        # rumeur vers les PNJ via cascade sociale. Permet le scenario
+        # 'joueur sauve Itachi en year 8 -> Sasuke apprend en year 9, etc.'
+        if main_loop_kg_store is not None:
+            try:
+                _push_player_action_to_kg(
+                    main_loop_kg_store, character.name, action, result,
+                    world.current_year,
+                )
+            except Exception:
+                pass
+
         # Auto-completion des breadcrumbs : verifie si l'action complete une condition
         completed_now = _check_breadcrumb_completions(save_id, character, result, world.current_year)
         for bc_desc in completed_now:
@@ -1614,6 +1626,87 @@ async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
             border_style="magenta",
         )
     )
+
+
+# Mapping ActionType -> relation KG pour push_player_action_to_kg
+_PLAYER_ACTION_RELATIONS: dict[str, str] = {
+    "move": "moved_to",
+    "talk": "talked_to",
+    "fight": "fought",
+    "spy": "spied_on",
+    "steal": "stole_from",
+    "challenge": "challenged",
+    "seduce": "seduced",
+    "intimidate": "intimidated",
+    "bribe": "bribed",
+    "use_technique": "used_jutsu",
+    "submit_mission": "completed_mission",
+    "accept_mission": "accepted_mission",
+    # Actions privees / sans target visible : pas de fact public
+    "rest": None,
+    "meditate": None,
+    "train_stat": None,
+    "train_technique": None,
+    "research": None,
+    "declare_goal": None,
+    "request_objective_path": None,
+    "pay_for_information": None,
+    "buy": None,
+    "sell": None,
+    "work": None,
+    "pray": None,
+    "wait": None,
+    "custom": None,
+}
+
+# Actions importantes (importance 0.7+) qui peuvent generer une rumeur
+_NOTABLE_PLAYER_ACTIONS: frozenset[str] = frozenset({
+    "fight", "challenge", "steal", "spy", "submit_mission",
+    "use_technique",
+})
+
+
+def _push_player_action_to_kg(
+    kg_store, character_name: str, action, result, year: int,
+) -> int | None:
+    """Spec §5.4 use case : 'le joueur sauve Itachi en year 8'.
+
+    Convertit une Action joueur en Fact KG pour que la propagation rumeur
+    puisse l'amener aux PNJ. Retourne fact_id ou None (action privee).
+    """
+    from shinobi.kg.schema import Canonicity, Fact, ObjectType
+
+    atype = action.action_type.value if hasattr(
+        action.action_type, "value",
+    ) else str(action.action_type)
+    relation = _PLAYER_ACTION_RELATIONS.get(atype)
+    if relation is None:
+        return None  # action privee/triviale, pas de fact
+
+    target = action.target_id or action.parameters.get("target_id") or ""
+    if not target:
+        # Pour les actions sans target explicite, fact = sujet+verbe
+        target = action.summary[:100] if action.summary else atype
+        obj_type = ObjectType.value
+    else:
+        obj_type = ObjectType.entity
+
+    importance = 0.8 if atype in _NOTABLE_PLAYER_ACTIONS else 0.5
+
+    fact = Fact(
+        subject=character_name,
+        relation=relation,
+        object=target,
+        object_type=obj_type,
+        valid_from_year=year,
+        valid_to_year=year,  # action ponctuelle
+        source=f"player_action:{atype}",
+        canonicity=Canonicity.divergent,
+        confidence=importance,
+        # Le joueur lui-meme connait le fait (sub-KG perso)
+        known_by_npc_ids=[character_name],
+    )
+    return kg_store.add_fact(fact)
 
 
 def _print_npc_beliefs(save_id: str, npc_id: str, *, year: int) -> None:
