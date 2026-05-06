@@ -34,6 +34,10 @@ from shinobi.agents.context_builder import (
     build_relations_summary_for_npc,
     build_world_summary_for_npc,
 )
+from shinobi.agents.kg_bridge import (
+    collect_witness_observations,
+    push_actions_to_kg_batch,
+)
 from shinobi.agents.reflector import Reflector
 from shinobi.agents.roster import AgentRoster
 from shinobi.agents.selector import ActionSelector, SelectionContext
@@ -235,7 +239,66 @@ class TickEngine:
                     result = await agent.act(inputs)
                     self._roster.mark_active(npc_id, year=year, tick=tick)
                     results.append(result)
+
+        # Spec §6.3 : 'Ces actions modifient le KG, qui a son tour change ce
+        # que les autres PNJ peuvent observer'.
+        if results:
+            self._propagate_actions_to_kg_and_witnesses(
+                [r.action for r in results], year=year, tick=tick,
+            )
         return results
+
+    def _propagate_actions_to_kg_and_witnesses(
+        self, actions, *, year: int, tick: int,
+    ) -> None:
+        """Spec §6.3 : KG mutation + witness observations.
+
+        1. Insere chaque action comme Fact dans le KG (kg_store).
+        2. Genere observations pour les temoins (target + bystanders meme
+           location). Les observations sont ajoutees aux memoires des agents
+           concernes pour le PROCHAIN tick.
+        """
+        # 1. KG facts
+        if self._kg_store is not None:
+            try:
+                push_actions_to_kg_batch(actions, kg_store=self._kg_store)
+            except Exception:
+                pass
+
+        # 2. Witness observations : groupe par location
+        scene_npcs: dict[str, set[str]] = {}
+        for action in actions:
+            if action.location_id:
+                scene_npcs.setdefault(
+                    action.location_id, set(),
+                ).add(action.npc_id)
+        # Ajoute tous les agents actifs comme potentiels temoins par location
+        for entry in self._roster.all_entries:
+            if entry.tier == AgentTier.background:
+                continue
+            for loc_set in scene_npcs.values():
+                loc_set.add(entry.npc_id)
+
+        try:
+            obs_per_witness = collect_witness_observations(
+                actions, npcs_in_scene_per_location=scene_npcs,
+            )
+        except Exception:
+            return
+
+        # Inject les observations dans les memoires des agents temoins
+        for witness_id, observations in obs_per_witness.items():
+            if witness_id not in self._agents:
+                continue
+            agent = self._agents[witness_id]
+            for obs in observations:
+                if obs.npc_id != witness_id:
+                    continue
+                try:
+                    agent.memory.add_observation(obs)
+                    self._store.insert_observation(obs)
+                except Exception:
+                    pass
 
     def _build_inputs(
         self, npc_id: str, year: int, tick: int,

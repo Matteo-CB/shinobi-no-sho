@@ -852,6 +852,35 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_tick_auto_pushes_actions_to_kg(self) -> None:
+        """Spec §6.3 : 'Ces actions modifient le KG'. Apres tick, les actions
+        des agents doivent etre presentes dans le KG."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+            from shinobi.kg.store import KnowledgeGraphStore
+
+            with KnowledgeGraphStore(None) as kg:
+                store = AgentMemoryStore(None)
+                roster = initialize_roster(store)
+                engine = TickEngine(
+                    roster=roster, memory_store=store,
+                    selector=ActionSelector(),
+                    reflector=Reflector(),
+                    kg_store=kg,
+                )
+                facts_before = kg.count(source_prefix="player_action:agent_")
+                await engine.tick(year=12, tick=1)
+                facts_after = kg.count(source_prefix="player_action:agent_")
+                # Les actions non-idle -> facts inseres
+                assert facts_after > facts_before
+
+        asyncio.run(run())
+
     def test_tick_engine_auto_fills_world_summary_from_kg(self) -> None:
         """Spec §6.3 : 'L'etat du monde local (KG filtre sur ce qu'il sait)'.
         TickEngine doit auto-fill world_summary depuis le KG si configure."""
