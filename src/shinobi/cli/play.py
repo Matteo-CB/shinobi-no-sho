@@ -1952,6 +1952,38 @@ async def _run_fast_forward(
                 f"  [{t.severity.value}] [{t.type.value}] {t.description[:80]}"
             )
 
+    # Phase C §5.3 : afficher aussi les tensions detector finales (apres
+    # fast-forward, l'etat KG a evolue -> nouvelles configurations
+    # detectees par les 20 invariants statiques).
+    if kg_store_ref is not None:
+        try:
+            from shinobi.tension import TensionDetector
+            final_detector = TensionDetector(kg_store_ref)
+            final_det = final_detector.detect(final_world.current_year)
+            if final_det.tensions:
+                # Filtre severity >= medium pour eviter spam
+                sev_order_d = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+                medium_plus = [
+                    t for t in final_det.tensions
+                    if sev_order_d.get(t.severity.value, 99) <= 2
+                ]
+                if medium_plus:
+                    lines.append("")
+                    lines.append(
+                        f"[cyan]Tensions detector deterministe en fin "
+                        f"de fast-forward ({len(medium_plus)}) :[/cyan]"
+                    )
+                    medium_plus.sort(
+                        key=lambda t: sev_order_d.get(t.severity.value, 99),
+                    )
+                    for t in medium_plus[:8]:
+                        lines.append(
+                            f"  [{t.severity.value}] [{t.type.value}] "
+                            f"{t.description[:80]}"
+                        )
+        except Exception:
+            pass
+
     console.print(
         Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
     )
