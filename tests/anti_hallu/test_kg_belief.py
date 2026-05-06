@@ -236,6 +236,63 @@ def test_propagate_cascade_floor(
     assert "h" not in spread
 
 
+def test_propagate_cascade_temporal_offset(
+    store: KnowledgeGraphStore, propagator: BeliefPropagator,
+) -> None:
+    """Spec §5.4 : 'Sasuke year 9, Madara year 12, Pain year 14'.
+
+    Avec year_offset_per_hop > 0, chaque hop incremente learned_at_year.
+    Modelise la propagation temporelle (vs immediate cascade)."""
+    for a, b in [
+        ("witness", "sasuke"),
+        ("sasuke", "madara"),
+        ("madara", "pain"),
+    ]:
+        propagator.social.add_link(SocialLink(npc_a=a, npc_b=b, strength=0.9))
+    fid = store.add_fact(Fact(subject="x", relation="saved", object="itachi"))
+    propagator.propagate_cascade(
+        "witness", fid,
+        year=8, max_depth=3,
+        channel="rumor", min_fidelity=0.2,
+        initial_fidelity=1.0,
+        year_offset_per_hop=2,  # Each hop adds 2 years
+    )
+    # Recupere les beliefs et verifie learned_at_year
+    rows = store.conn.execute(
+        "SELECT npc_id, learned_at_year FROM kg_beliefs",
+    ).fetchall()
+    learned_by = {r["npc_id"]: r["learned_at_year"] for r in rows}
+    # witness : year 8 (depth 0)
+    # sasuke : year 8 + 2 = 10 (depth 1)
+    # madara : year 8 + 4 = 12 (depth 2)
+    # pain : year 8 + 6 = 14 (depth 3)
+    assert learned_by.get("sasuke") == 10
+    assert learned_by.get("madara") == 12
+    assert learned_by.get("pain") == 14
+
+
+def test_propagate_cascade_default_no_temporal_offset(
+    store: KnowledgeGraphStore, propagator: BeliefPropagator,
+) -> None:
+    """Default (year_offset_per_hop=0) : tous les hops au meme year (back-compat)."""
+    for a, b in [("a", "b"), ("b", "c"), ("c", "d")]:
+        propagator.social.add_link(SocialLink(npc_a=a, npc_b=b, strength=0.9))
+    fid = store.add_fact(Fact(subject="x", relation="r"))
+    propagator.propagate_cascade(
+        "a", fid, year=10, max_depth=3,
+        channel="rumor", min_fidelity=0.1,
+        # year_offset_per_hop default = 0
+    )
+    rows = store.conn.execute(
+        "SELECT npc_id, learned_at_year FROM kg_beliefs",
+    ).fetchall()
+    learned_by = {r["npc_id"]: r["learned_at_year"] for r in rows}
+    # Tous au meme year (back-compat)
+    assert learned_by.get("b") == 10
+    assert learned_by.get("c") == 10
+    assert learned_by.get("d") == 10
+
+
 # --- Belief view ------------------------------------------------------------
 
 

@@ -1741,6 +1741,9 @@ def _sync_rumors_to_kg_with_propagation(
             continue
         for npc in npcs[:3]:  # Limit cascade depth
             try:
+                # Spec §5.4 : year_offset_per_hop=1 -> chaque hop ajoute
+                # 1 annee au learned_at_year, modelisant la propagation
+                # temporelle ('Sasuke year+1, Madara year+2, ...').
                 propagator.propagate_cascade(
                     witness_npc=npc,
                     fact_id=fact_id,
@@ -1749,6 +1752,7 @@ def _sync_rumors_to_kg_with_propagation(
                     max_depth=2,
                     min_fidelity=0.3,
                     initial_fidelity=0.7,
+                    year_offset_per_hop=1,
                 )
             except Exception:
                 continue

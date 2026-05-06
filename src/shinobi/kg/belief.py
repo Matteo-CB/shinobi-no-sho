@@ -195,8 +195,14 @@ class BeliefPropagator:
         channel: str = "rumor",
         min_fidelity: float = DEFAULT_MIN_FIDELITY,
         initial_fidelity: float = 1.0,
+        year_offset_per_hop: int = 0,
     ) -> dict[str, float]:
         """BFS dans le reseau social a partir du temoin, propage avec decay.
+
+        Spec §5.4 : 'Sasuke ne sait peut-etre pas en year 9, Madara apprend
+        en year 12, Pain en year 14'. Pour modeler la propagation TEMPORELLE,
+        utiliser `year_offset_per_hop > 0` : chaque hop ajoute N annees au
+        learned_at_year. Default 0 = propagation instantanee (back-compat).
 
         Retourne un dict {npc_id: fidelity_finale} de tous les NPCs qui ont
         appris le fact (incluant le temoin a `initial_fidelity`, default 1.0).
@@ -221,10 +227,17 @@ class BeliefPropagator:
             ))
         propagated: dict[str, float] = {witness_npc: initial_fidelity}
 
-        # BFS niveau par niveau, en partant de la fidelity initiale
+        # BFS niveau par niveau, en partant de la fidelity initiale.
+        # Spec §5.4 : `year_offset_per_hop` ajoute N annees au learned_at
+        # pour chaque hop, modelisant la propagation temporelle ('Sasuke
+        # year 9, Madara year 12, Pain year 14').
         frontier: list[tuple[str, float]] = [(witness_npc, initial_fidelity)]
-        for _depth in range(max_depth):
+        for depth in range(max_depth):
             next_frontier: list[tuple[str, float]] = []
+            # Year offset pour ce depth (depth=0 = 1er hop)
+            hop_year = year
+            if year is not None and year_offset_per_hop > 0:
+                hop_year = year + (depth + 1) * year_offset_per_hop
             for src, src_fid in frontier:
                 for link in self._social.neighbors(src, year=year):
                     target = link.other(src)
@@ -241,7 +254,7 @@ class BeliefPropagator:
                         fact_id=fact_id,
                         npc_id=target,
                         fidelity=new_fid,
-                        learned_at_year=year,
+                        learned_at_year=hop_year,
                         learned_via_npc_id=src,
                         learned_via_channel=channel,
                     ))
