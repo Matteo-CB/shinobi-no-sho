@@ -392,10 +392,33 @@ def play_session(save_id: str) -> None:
         # 'joueur sauve Itachi en year 8 -> Sasuke apprend en year 9, etc.'
         if main_loop_kg_store is not None:
             try:
-                _push_player_action_to_kg(
+                fid = _push_player_action_to_kg(
                     main_loop_kg_store, character.name, action, result,
                     world.current_year,
                 )
+                # Si action notable + target NPC, lance la cascade temporelle
+                # (joueur = witness direct, fidelity 1.0 -> cascade rumeur)
+                if fid is not None and action.target_id:
+                    atype = (
+                        action.action_type.value
+                        if hasattr(action.action_type, "value")
+                        else str(action.action_type)
+                    )
+                    if atype in _NOTABLE_PLAYER_ACTIONS:
+                        from shinobi.kg.belief import BeliefPropagator
+                        propagator = BeliefPropagator(
+                            main_loop_kg_store.conn, main_loop_social,
+                        )
+                        propagator.propagate_cascade(
+                            witness_npc=character.name,
+                            fact_id=fid,
+                            year=world.current_year,
+                            channel="rumor",
+                            max_depth=2,
+                            min_fidelity=0.3,
+                            initial_fidelity=1.0,
+                            year_offset_per_hop=1,
+                        )
             except Exception:
                 pass
 
