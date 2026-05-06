@@ -54,7 +54,10 @@ from shinobi.agents.embeddings_index import (
 )
 from shinobi.agents.kg_bridge import (
     SECRET_ACTION_TYPES,
+    WORLD_IMPACT_THRESHOLD,
     action_to_fact,
+    apply_action_to_world_state,
+    apply_actions_to_world_state,
     collect_witness_observations,
     push_action_to_kg,
     push_actions_to_kg_batch,
@@ -120,6 +123,7 @@ __all__ = [
     "REFLECT_JSON_SCHEMA",
     "SECRET_ACTION_TYPES",
     "TRIVIAL_ACTION_TYPES",
+    "WORLD_IMPACT_THRESHOLD",
     "ActionSelector",
     "AgentAction",
     "AgentActionType",
@@ -148,6 +152,8 @@ __all__ = [
     "TickContextProvider",
     "TickEngine",
     "action_to_fact",
+    "apply_action_to_world_state",
+    "apply_actions_to_world_state",
     "auto_fill_selection_context",
     "build_batch_user_prompt",
     "build_reflect_prompt",

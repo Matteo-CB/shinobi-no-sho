@@ -20,6 +20,7 @@ from shinobi.agents import (
     LLMCache,
     Reflector,
     TickEngine,
+    apply_actions_to_world_state,
     initialize_roster,
     load_eras_data,
     try_load_bge_encoders,
@@ -1459,12 +1460,22 @@ async def _run_fast_forward(
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
-    def canon_scheduler_callable(state, year, tick):
-        """Tick canon scheduler + advance world time. Spec §6.5."""
+    def canon_scheduler_callable(state, year, tick, *, actions=()):
+        """Tick canon scheduler + advance world time. Spec §6.5.
+
+        Spec §6.5 'events canon ... selon les actions agents' :
+        - Les actions high-impact mutent world.npc_states avant tick_scheduler
+        - tick_scheduler lit world.npc_states pour evaluer preconditions
+        - Le link causal agents -> canon est ainsi etabli
+        """
         from shinobi.engine.time import advance_time
         from shinobi.utils.time_utils import GameDate
 
         cur_world = world_ref[0]
+        # Spec §6.5 : applique les mutations world des actions agents
+        # de ce tick AVANT le tick scheduler.
+        if actions:
+            cur_world = apply_actions_to_world_state(actions, cur_world)
         # Advance time : 1 semaine par tick
         prev_date = GameDate(
             year=cur_world.current_year,
@@ -1480,7 +1491,7 @@ async def _run_fast_forward(
             hour=new_date.hour,
             minute=new_date.minute,
         )
-        # Tick canon scheduler
+        # Tick canon scheduler (lit npc_states deja mutes par actions agents)
         cur_world, fired, cancelled = tick_scheduler(
             cur_world, canon, turn_number=tick,
         )

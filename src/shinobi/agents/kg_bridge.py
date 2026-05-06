@@ -204,10 +204,88 @@ def push_actions_to_kg_batch(
     return n
 
 
+# Spec §6.5 : 'events canon se declenchent ou s'annulent selon les actions
+# agents'. Pour que le canon scheduler reagisse vraiment aux actions, les
+# actions HIGH-IMPACT doivent muter l'etat du monde lu par evaluate_precondition
+# (world.npc_states notamment).
+
+# Threshold importance pour qu'une action mute l'etat du monde
+WORLD_IMPACT_THRESHOLD: float = 0.7
+
+
+def apply_action_to_world_state(action, world):
+    """Applique une AgentAction high-impact aux mutations du WorldState.
+
+    Spec §6.5 : 'events canon ... selon les actions agents'. Mappings :
+    - travel : update NPCState.current_location pour l'acteur
+    - attack (importance>=THRESHOLD) : mark target.psychological_state='threatened'
+    - speak (importance>=0.85) : mark target.psychological_state='socially_affected'
+
+    Retourne un nouveau WorldState (ou le meme si pas de mutation).
+    Le WorldState est immutable : on utilise model_copy.
+    """
+    new_npc_states = dict(world.npc_states)
+    mutated = False
+
+    if action.type == AgentActionType.travel and action.location_id:
+        actor_state = new_npc_states.get(action.npc_id)
+        if actor_state is not None:
+            new_npc_states[action.npc_id] = actor_state.model_copy(update={
+                "current_location": action.location_id,
+                "last_updated_year": action.year,
+            })
+            mutated = True
+
+    if (
+        action.type == AgentActionType.attack
+        and action.target_npc_id
+        and action.importance >= WORLD_IMPACT_THRESHOLD
+    ):
+        target_state = new_npc_states.get(action.target_npc_id)
+        if target_state is not None:
+            new_npc_states[action.target_npc_id] = target_state.model_copy(
+                update={
+                    "psychological_state": "threatened",
+                    "last_updated_year": action.year,
+                },
+            )
+            mutated = True
+
+    if (
+        action.type == AgentActionType.speak
+        and action.target_npc_id
+        and action.importance >= 0.85
+    ):
+        target_state = new_npc_states.get(action.target_npc_id)
+        if target_state is not None:
+            new_npc_states[action.target_npc_id] = target_state.model_copy(
+                update={
+                    "psychological_state": "socially_affected",
+                    "last_updated_year": action.year,
+                },
+            )
+            mutated = True
+
+    if not mutated:
+        return world
+    return world.model_copy(update={"npc_states": new_npc_states})
+
+
+def apply_actions_to_world_state(actions: Iterable, world):
+    """Bulk : applique toutes les actions high-impact au monde sequentiellement."""
+    cur = world
+    for a in actions:
+        cur = apply_action_to_world_state(a, cur)
+    return cur
+
+
 __all__ = [
     "SECRET_ACTION_TYPES",
     "WITNESS_OBSERVATION_THRESHOLD",
+    "WORLD_IMPACT_THRESHOLD",
     "action_to_fact",
+    "apply_action_to_world_state",
+    "apply_actions_to_world_state",
     "collect_witness_observations",
     "push_action_to_kg",
     "push_actions_to_kg_batch",

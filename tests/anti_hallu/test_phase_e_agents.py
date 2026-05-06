@@ -852,6 +852,107 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_apply_action_to_world_state_travel_updates_location(self) -> None:
+        """Spec §6.5 : agent travel -> world.npc_states.current_location."""
+        from shinobi.agents import apply_action_to_world_state
+        from shinobi.engine.world import NPCState, WorldState
+
+        npc_state = NPCState(
+            character_id="naruto", current_location="konoha",
+            current_year=12, current_age=12, current_rank="genin",
+        )
+        world = WorldState(
+            current_year=12, current_date="01-01",
+            current_hour=8, current_minute=0,
+            seed=42, npc_states={"naruto": npc_state},
+        )
+        action = AgentAction(
+            npc_id="naruto", type=AgentActionType.travel, year=12,
+            location_id="suna", content="part en mission",
+            importance=0.7,
+        )
+        new_world = apply_action_to_world_state(action, world)
+        assert new_world.npc_states["naruto"].current_location == "suna"
+
+    def test_apply_action_to_world_state_attack_marks_threatened(self) -> None:
+        """Spec §6.5 : attack high-impact -> target.psychological_state."""
+        from shinobi.agents import apply_action_to_world_state
+        from shinobi.engine.world import NPCState, WorldState
+
+        target = NPCState(
+            character_id="hokage", current_location="konoha",
+            current_year=12, current_age=70, current_rank="kage",
+        )
+        world = WorldState(
+            current_year=12, current_date="01-01",
+            current_hour=8, current_minute=0,
+            seed=42, npc_states={"hokage": target},
+        )
+        action = AgentAction(
+            npc_id="orochimaru", type=AgentActionType.attack, year=12,
+            target_npc_id="hokage", content="invasion konoha",
+            importance=0.9,
+        )
+        new_world = apply_action_to_world_state(action, world)
+        assert new_world.npc_states["hokage"].psychological_state == "threatened"
+
+    def test_apply_action_low_importance_no_mutation(self) -> None:
+        """Action attack avec importance < 0.7 ne mute PAS le world."""
+        from shinobi.agents import apply_action_to_world_state
+        from shinobi.engine.world import NPCState, WorldState
+
+        target = NPCState(
+            character_id="hokage", current_location="konoha",
+            current_year=12, current_age=70, current_rank="kage",
+        )
+        world = WorldState(
+            current_year=12, current_date="01-01",
+            current_hour=8, current_minute=0,
+            seed=42, npc_states={"hokage": target},
+        )
+        action = AgentAction(
+            npc_id="genin", type=AgentActionType.attack, year=12,
+            target_npc_id="hokage", content="provocation mineure",
+            importance=0.4,  # below threshold 0.7
+        )
+        new_world = apply_action_to_world_state(action, world)
+        # Pas de mutation : meme objet retourne
+        assert new_world is world
+
+    def test_fast_forward_passes_actions_to_canon_scheduler(self) -> None:
+        """Spec §6.5 : canon_scheduler_fn recoit `actions=` kwarg si supporte."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            received_actions = []
+
+            def scheduler(state, year, tick, *, actions=()):
+                received_actions.append(list(actions))
+                return state, [], []
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+            )
+            await engine.fast_forward(
+                from_year=12, months=1,
+                canon_scheduler_fn=scheduler,
+                canon_scheduler_state={},
+            )
+            # 4 ticks, chaque tick a passe 15 actions (top-15 majors)
+            assert len(received_actions) == 4
+            assert all(len(acts) >= 15 for acts in received_actions)
+
+        asyncio.run(run())
+
     def test_fast_forward_world_time_advances_via_scheduler(self) -> None:
         """Spec §6.5 : 'le monde tourne sans le joueur ... events canon se
         declenchent'. canon_scheduler_fn doit etre appele a chaque tick

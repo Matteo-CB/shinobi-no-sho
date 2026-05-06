@@ -275,9 +275,21 @@ class TickEngine:
             # selon les actions agents accumulees dans le KG (§6.5).
             if canon_scheduler_fn is not None and canon_state is not None:
                 try:
-                    canon_state, fired, cancelled = canon_scheduler_fn(
-                        canon_state, cur_year, cur_tick,
-                    )
+                    # Spec §6.5 : on peut passer les actions du tick courant
+                    # au scheduler pour qu'il puisse muter le world avant
+                    # d'evaluer les preconditions canon.
+                    tick_actions = [r.action for r in results]
+                    import inspect
+                    sig = inspect.signature(canon_scheduler_fn)
+                    if "actions" in sig.parameters:
+                        canon_state, fired, cancelled = canon_scheduler_fn(
+                            canon_state, cur_year, cur_tick,
+                            actions=tick_actions,
+                        )
+                    else:
+                        canon_state, fired, cancelled = canon_scheduler_fn(
+                            canon_state, cur_year, cur_tick,
+                        )
                     for ev in fired:
                         digest_entries.append(DigestEntry(
                             year=cur_year,
