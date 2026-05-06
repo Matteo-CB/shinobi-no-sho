@@ -852,6 +852,128 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_arc_relevant_npcs_returns_era_key_figures(self) -> None:
+        """Spec §6.1 'top-15 + dynamique selon arc'. arc_relevant_npcs(year)
+        retourne les key_figures de l'era contenant year."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        eras_data = [
+            {
+                "id": "warring_states",
+                "year_start": -100, "year_end": -55,
+                "key_figures": ["senju_hashirama", "uchiha_madara"],
+            },
+            {
+                "id": "part_2",
+                "year_start": 15, "year_end": 17,
+                "key_figures": ["uzumaki_naruto", "uchiha_sasuke", "pain_nagato"],
+            },
+        ]
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            assert "senju_hashirama" in roster.arc_relevant_npcs(-80, eras_data)
+            assert "pain_nagato" in roster.arc_relevant_npcs(16, eras_data)
+            # Year hors de toute ere
+            assert roster.arc_relevant_npcs(99999, eras_data) == []
+            # Pas de eras_data
+            assert roster.arc_relevant_npcs(16, None) == []
+
+    def test_promote_arc_relevant_promotes_to_secondary(self) -> None:
+        """Apres promote_arc_relevant, les key_figures non-major sont en secondary."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        eras_data = [
+            {
+                "id": "test_era", "year_start": 10, "year_end": 20,
+                "key_figures": ["new_npc_xyz"],  # Pas dans top-15 par defaut
+            },
+        ]
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            # new_npc_xyz est background avant
+            assert roster.tier_for("new_npc_xyz") == AgentTier.background
+            promoted = roster.promote_arc_relevant(15, eras_data)
+            assert "new_npc_xyz" in promoted
+            assert roster.tier_for("new_npc_xyz") == AgentTier.secondary
+
+    def test_promote_arc_relevant_skips_existing_majors(self) -> None:
+        """Les NPCs deja major ne sont pas demotes/repromus."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        eras_data = [
+            {
+                "id": "konoha_modern", "year_start": 10, "year_end": 20,
+                "key_figures": ["uzumaki_naruto"],  # deja major
+            },
+        ]
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            assert roster.tier_for("uzumaki_naruto") == AgentTier.major
+            promoted = roster.promote_arc_relevant(15, eras_data)
+            assert "uzumaki_naruto" not in promoted
+            assert roster.tier_for("uzumaki_naruto") == AgentTier.major
+
+    def test_on_player_interaction_promotes_background(self) -> None:
+        """Spec §6.4 : promote background -> secondary quand joueur interagit."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            assert roster.tier_for("ghost_npc") == AgentTier.background
+            entry = roster.on_player_interaction(
+                "ghost_npc", year=12, tick=5,
+            )
+            assert entry is not None
+            assert roster.tier_for("ghost_npc") == AgentTier.secondary
+            assert entry.last_active_year == 12
+            assert entry.last_active_tick == 5
+
+    def test_on_player_interaction_marks_active_for_existing(self) -> None:
+        """Si le NPC est deja major/secondary, on marque just last_active."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            tier_before = roster.tier_for("uzumaki_naruto")
+            roster.on_player_interaction("uzumaki_naruto", year=15, tick=42)
+            assert roster.tier_for("uzumaki_naruto") == tier_before
+            entry = roster.get("uzumaki_naruto")
+            assert entry is not None
+            assert entry.last_active_year == 15
+
+    def test_on_event_impact_promotes_involved_npcs(self) -> None:
+        """Spec §6.4 : NPCs impactes par event majeur -> secondary."""
+        from shinobi.agents import AgentMemoryStore, initialize_roster
+
+        with AgentMemoryStore(None) as store:
+            roster = initialize_roster(store)
+            promoted = roster.on_event_impact(
+                ["bg_npc_a", "bg_npc_b", "uzumaki_naruto"],
+                year=12, tick=5,
+            )
+            # Naruto est deja major, pas promu
+            assert "uzumaki_naruto" not in promoted
+            # bg_npc_a et bg_npc_b promus
+            assert set(promoted) == {"bg_npc_a", "bg_npc_b"}
+            assert roster.tier_for("bg_npc_a") == AgentTier.secondary
+
+    def test_load_eras_data_reads_canon_file(self) -> None:
+        """load_eras_data charge eras.json si present."""
+        from shinobi.agents import load_eras_data
+
+        path = Path("data/canonical/eras.json")
+        if not path.exists():
+            pytest.skip("eras.json absent")
+        eras = load_eras_data(path)
+        assert isinstance(eras, list)
+        assert len(eras) > 0
+        # Verifier schema attendu
+        assert all("year_start" in e and "year_end" in e for e in eras if isinstance(e, dict))
+
+    def test_load_eras_data_missing_returns_empty(self) -> None:
+        from shinobi.agents import load_eras_data
+        assert load_eras_data("/nonexistent/eras.json") == []
+
     def test_speculative_decoding_args_disabled_by_default(self) -> None:
         """Spec §13 + §11.4 : speculative decoding off par defaut.
         build_llama_server_args ne contient PAS --model-draft."""

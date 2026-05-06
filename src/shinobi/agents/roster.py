@@ -12,14 +12,18 @@ docs/02 §6.1 + 6.4 :
 
 Le roster est :
 - Initialise au demarrage (top-15 statique + 50 secondary derives)
-- Dynamique : un PNJ background peut etre 'eleve' major si le joueur
-  interagit avec lui de facon recurrente
+- Dynamique selon arc : `arc_relevant_npcs(year, eras_data)` retourne les
+  key_figures de l'ere courante (eras.json) pour eleves automatiquement.
+- Auto-promotion : `on_player_interaction` (joueur cite un PNJ) +
+  `on_event_impact` (PNJ implique dans event canon firing).
 - Persiste dans `agent_roster` SQLite (per-save)
 """
 
 from __future__ import annotations
 
+import json
 from collections.abc import Iterable
+from pathlib import Path
 
 from shinobi.agents.store import AgentMemoryStore
 from shinobi.agents.types import AgentTier, RosterEntry
@@ -211,6 +215,134 @@ class AgentRoster:
             return tick % secondary_period == 0
         return False
 
+    # --- dynamique arc + auto-promote (spec §6.1 + §6.4) -------------------
+
+    def arc_relevant_npcs(
+        self, year: int, eras_data: list[dict] | None = None,
+    ) -> list[str]:
+        """Retourne les key_figures de l'ere canonique contenant `year`.
+
+        Spec §6.1 : 'top-15 majeurs ... + dynamique selon arc'. Les key_figures
+        de eras.json correspondent aux personnages dramatiquement importants
+        pour cette ere (ex: Hashirama+Madara pour warring_states, Naruto+Sasuke
+        pour part_2, Boruto+Kawaki pour boruto era).
+
+        Si `eras_data` est None, retourne []. Le caller doit charger eras.json.
+        """
+        if not eras_data:
+            return []
+        for era in eras_data:
+            if not isinstance(era, dict):
+                continue
+            ys = era.get("year_start")
+            ye = era.get("year_end")
+            if ys is None or ye is None:
+                continue
+            if ys <= year <= ye:
+                key_figs = era.get("key_figures") or []
+                return [
+                    nid for nid in key_figs
+                    if isinstance(nid, str) and nid
+                ]
+        return []
+
+    def promote_arc_relevant(
+        self,
+        year: int,
+        eras_data: list[dict],
+        *,
+        target_tier: AgentTier = AgentTier.secondary,
+    ) -> list[str]:
+        """Eleve les key_figures de l'ere courante au tier cible (secondary
+        par defaut). Les NPCs deja major restent major. Retourne les NPCs
+        nouvellement promus.
+        """
+        relevant = self.arc_relevant_npcs(year, eras_data)
+        promoted: list[str] = []
+        for npc_id in relevant:
+            current = self.tier_for(npc_id)
+            if current == AgentTier.major:
+                continue  # deja au top
+            if current == AgentTier.secondary and target_tier != AgentTier.major:
+                continue  # deja secondary
+            self.add(
+                npc_id, target_tier,
+                included_since_year=year,
+                notes=f"arc_relevant year={year}",
+            )
+            promoted.append(npc_id)
+        return promoted
+
+    def on_player_interaction(
+        self,
+        npc_id: str,
+        *,
+        year: int | None = None,
+        tick: int | None = None,
+    ) -> RosterEntry | None:
+        """Spec §6.4 : 'eleves au statut d'agent uniquement si le joueur
+        interagit avec eux'. Promote background -> secondary.
+
+        Si le PNJ est deja major ou secondary, marque just `last_active`.
+        Retourne le RosterEntry resultant (avec last_active a jour) ou None
+        si invalide.
+        """
+        if not npc_id:
+            return None
+        tier = self.tier_for(npc_id)
+        if tier == AgentTier.background:
+            self.add(
+                npc_id, AgentTier.secondary,
+                included_since_year=year,
+                notes="player_interaction",
+            )
+        if year is not None and tick is not None:
+            self.mark_active(npc_id, year=year, tick=tick)
+        return self._cache.get(npc_id)
+
+    def on_event_impact(
+        self,
+        involved_npc_ids: Iterable[str],
+        *,
+        year: int,
+        tick: int | None = None,
+    ) -> list[str]:
+        """Spec §6.4 : 'eleves au statut d'agent ... ou s'ils sont impactes
+        par un event majeur'. Pour chaque NPC implique dans un event canon
+        firing : promote background -> secondary.
+
+        Retourne la liste des NPCs nouvellement promus.
+        """
+        promoted: list[str] = []
+        for npc_id in involved_npc_ids:
+            if not npc_id:
+                continue
+            tier = self.tier_for(npc_id)
+            if tier == AgentTier.background:
+                self.add(
+                    npc_id, AgentTier.secondary,
+                    included_since_year=year,
+                    notes="event_impact",
+                )
+                promoted.append(npc_id)
+            if tick is not None:
+                self.mark_active(npc_id, year=year, tick=tick)
+        return promoted
+
+
+def load_eras_data(path: Path | str) -> list[dict]:
+    """Charge eras.json (helper). Retourne [] si absent ou invalide."""
+    p = Path(path)
+    if not p.exists():
+        return []
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            return data
+    except (json.JSONDecodeError, OSError):
+        pass
+    return []
+
 
 def initialize_roster(
     store: AgentMemoryStore,
@@ -246,4 +378,5 @@ __all__ = [
     "DEFAULT_TOP_15",
     "AgentRoster",
     "initialize_roster",
+    "load_eras_data",
 ]

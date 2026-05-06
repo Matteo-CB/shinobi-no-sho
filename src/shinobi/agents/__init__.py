@@ -82,6 +82,7 @@ from shinobi.agents.roster import (
     DEFAULT_TOP_15,
     AgentRoster,
     initialize_roster,
+    load_eras_data,
 )
 from shinobi.agents.selector import (
     DEFAULT_SYSTEM_PROMPT,
@@ -163,6 +164,7 @@ __all__ = [
     "is_trivial_action",
     "is_trivial_state",
     "jaccard_similarity",
+    "load_eras_data",
     "push_action_to_kg",
     "push_actions_to_kg_batch",
     "recency_score",

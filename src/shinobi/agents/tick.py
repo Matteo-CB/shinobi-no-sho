@@ -286,6 +286,15 @@ class TickEngine:
                             importance=0.9,
                             related_event_id=ev.event_id,
                         ))
+                        # Spec §6.4 : auto-promote NPCs impactes par un event
+                        # majeur. Le caller peut fournir `involved_characters`
+                        # via attribut sur l'event.
+                        involved = getattr(ev, "involved_characters", None) \
+                            or getattr(ev, "npc_ids", None) or []
+                        if involved:
+                            self._roster.on_event_impact(
+                                involved, year=cur_year, tick=cur_tick,
+                            )
                     for ev in cancelled:
                         digest_entries.append(DigestEntry(
                             year=cur_year,

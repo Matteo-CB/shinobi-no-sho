@@ -14,12 +14,14 @@ from rich.text import Text
 from shinobi.agents import (
     ActionSelector,
     AgentMemoryStore,
+    AgentRoster,
     AgentTier,
     EmbeddingsIndex,
     LLMCache,
     Reflector,
     TickEngine,
     initialize_roster,
+    load_eras_data,
     try_load_bge_encoders,
 )
 from shinobi.canon.loader import load_canon
@@ -411,6 +413,15 @@ def play_session(save_id: str) -> None:
         present_npcs = _detect_present_npcs(intent_text, canon)
         if present_npcs:
             world, character = _touch_present_npcs(world, character, present_npcs, canon)
+            # Spec §6.4 : 'eleves au statut d'agent uniquement si le joueur
+            # interagit avec eux'. Auto-promote background -> secondary.
+            try:
+                _promote_npcs_on_player_interaction(
+                    save_id, present_npcs,
+                    year=world.current_year, tick=turn,
+                )
+            except Exception:
+                pass
 
         # Verification automatique des Goals declares
         completed_goals = _check_goal_completions(save_id, character, world.current_year)
@@ -1282,10 +1293,26 @@ def _ensure_kg_initialized(save_id: str, canon, *, console=None) -> None:
                         )
 
 
+def _promote_npcs_on_player_interaction(
+    save_id: str, npc_ids: list[str], *, year: int, tick: int,
+) -> None:
+    """Spec §6.4 : promote chaque NPC cite par le joueur (background -> secondary)."""
+    db_path = save_module.agents_db_path(save_id)
+    if not db_path.exists():
+        return
+    with AgentMemoryStore(db_path) as store:
+        roster = AgentRoster(store)
+        for nid in npc_ids:
+            roster.on_player_interaction(nid, year=year, tick=tick)
+
+
 def _ensure_agents_initialized(
     save_id: str, current_year: int, *, console=None,
 ) -> None:
-    """Initialise le roster Phase E (top-15 + secondary 50). Idempotent."""
+    """Initialise le roster Phase E (top-15 + secondary 50 + arc dynamique).
+    Idempotent. Spec §6.1 'top-15 + dynamique selon arc'."""
+    from shinobi.config import settings as _s
+
     db_path = save_module.agents_db_path(save_id)
     db_path.parent.mkdir(parents=True, exist_ok=True)
     with AgentMemoryStore(db_path) as store:
@@ -1297,6 +1324,20 @@ def _ensure_agents_initialized(
                     f"[dim]Agents Phase E initialises : "
                     f"{roster.major_count} majors + "
                     f"{roster.secondary_count} secondary[/dim]"
+                )
+        else:
+            roster = AgentRoster(store)
+
+        # Spec §6.1 'dynamique selon arc' : promote les key_figures de l'ere
+        # courante en secondary (s'ils ne sont pas deja major).
+        eras_path = _s.canonical_data_dir / "eras.json"
+        eras_data = load_eras_data(eras_path)
+        if eras_data:
+            promoted = roster.promote_arc_relevant(current_year, eras_data)
+            if promoted and console is not None:
+                console.print(
+                    f"[dim]Arc-relevant NPCs promus : "
+                    f"{', '.join(promoted)}[/dim]"
                 )
 
 
