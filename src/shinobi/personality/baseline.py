@@ -1,26 +1,30 @@
-"""Extraction de baselines vectoriels canon depuis `psycho_notes.json`.
+"""Extraction de baselines vectoriels canon depuis `psycho_notes.json` ET
+`characters.json` (champ `wiki_sections.Personality` + `personality_fr`).
 
-L'objectif (docs/02 §6.2 + Phase D) est de fournir un point de depart canon
-au vecteur de personnalite de chaque PNJ majeur. Phase H (offline batch)
-remplacera ce module par une extraction LLM massive sur wiki_sections, mais
-pour atteindre 100% strict de la Phase D on derive les baselines depuis les
-sources canon deja indexees.
+L'objectif (docs/02 §6.2 + roadmap Phase D §13) est de fournir un point de
+depart canon au vecteur de personnalite de chaque PNJ majeur, EN TIRANT
+PARTI de `wiki_sections` (offline batch) comme demande par la spec.
+
+Sources couvertes :
+- `psycho_notes.json` : 36 NPCs avec notes par tranche d'age (FR)
+- `characters.json` : 1359 NPCs avec `wiki_sections.Personality` (EN) + texte
+  `personality_fr` (mix EN/FR depuis Narutopedia)
 
 Strategie deterministe :
 
-1. Charger psycho_notes.json (notes par tranche d'age).
-2. Concatener toutes les notes pour un NPC en un texte.
-3. Pour chaque dimension, calculer un score base sur des heuristiques
-   declenchees par des keywords FR + romaji, ponderees par la frequence et
-   l'intensite.
-4. Ajuster vers le neutre si pas d'info, vers les extremes si signaux
-   convergents.
-5. Si le NPC n'a pas de note, retourner le vecteur neutre (0.5 partout).
+1. Pour chaque NPC, concatener tout le texte canon disponible (psycho_notes
+   FR + wiki_sections.Personality EN + personality_fr brut).
+2. Normaliser (lower + strip accents).
+3. Pour chaque dimension, scanner avec deux dictionnaires de keywords :
+   FR (`_DIMENSION_KEYWORDS_FR`) ET EN (`_DIMENSION_KEYWORDS_EN`).
+4. Sommer les contributions, clipper [-0.4, +0.4], ajouter au neutre 0.5.
 
 Cette approche est volontairement simple : elle ne pretend pas remplacer
-une extraction LLM, mais elle est REPRODUCTIBLE, deterministe, et donne un
-baseline qui differencie par exemple Itachi (haute discipline + secrecy +
-sacrifice) de Naruto (haute openness + ambition + idealism).
+une extraction LLM (qui viendra en Phase H), mais elle est REPRODUCTIBLE,
+deterministe, et donne un baseline qui differencie par exemple Itachi
+(haute discipline + secrecy + sacrifice) de Naruto (haute openness +
+ambition + idealism), confirme par les tests `TestSasukeScenario` et
+`TestTop50Coverage`.
 """
 
 from __future__ import annotations
@@ -40,12 +44,12 @@ from shinobi.personality.dimensions import (
 )
 from shinobi.personality.types import NPCPersonality
 
-# Heuristiques par dimension : keywords (FR sans accent) -> contribution
-#
+# Heuristiques FR par dimension : keywords (FR sans accent) -> contribution.
 # Clefs en MINUSCULE et SANS ACCENT (on normalise le texte avant scan).
 # Valeurs : score de poussee vers la dimension (positif = +, negatif = -).
-# Les FR sont prioritaires car psycho_notes.json est en FR.
-_DIMENSION_KEYWORDS: dict[D, dict[str, float]] = {
+# Source primaire : psycho_notes.json (FR). Voir `_DIMENSION_KEYWORDS_EN`
+# plus bas pour le scan parallele de wiki_sections.Personality (EN).
+_DIMENSION_KEYWORDS_FR: dict[D, dict[str, float]] = {
     D.aggression: {
         "agressif": 0.18, "violent": 0.15, "frappe": 0.10, "rage": 0.15,
         "colere": 0.15, "brute": 0.12, "combat": 0.05, "haine": 0.12,
@@ -148,6 +152,115 @@ _DIMENSION_KEYWORDS: dict[D, dict[str, float]] = {
 }
 
 
+# Heuristiques EN par dimension : pour scan de wiki_sections.Personality et
+# personality_fr (qui est en realite Narutopedia EN raw). Cle en minuscule.
+# Valeurs choisies pour exprimer la SAME semantique que les keys FR.
+_DIMENSION_KEYWORDS_EN: dict[D, dict[str, float]] = {
+    D.aggression: {
+        "aggressive": 0.18, "violent": 0.15, "rage": 0.15, "anger": 0.10,
+        "brutal": 0.18, "ruthless": 0.15, "hostile": 0.12,
+        "calm": -0.10, "gentle": -0.10, "peaceful": -0.15,
+    },
+    D.recklessness: {
+        "reckless": 0.20, "impulsive": 0.20, "headstrong": 0.18,
+        "rash": 0.15, "hot-headed": 0.20, "hotheaded": 0.20,
+        "cautious": -0.15, "careful": -0.10, "measured": -0.10,
+    },
+    D.discipline: {
+        "disciplined": 0.20, "rigorous": 0.18, "studious": 0.15,
+        "methodical": 0.20, "training": 0.06, "diligent": 0.15,
+        "lazy": -0.20, "undisciplined": -0.20, "slacker": -0.15,
+    },
+    D.loyalty: {
+        "loyal": 0.25, "faithful": 0.18, "devoted": 0.20, "protective": 0.10,
+        "betrays": -0.15, "betrayed": -0.10, "betrayal": -0.10,
+        "defected": -0.20, "defector": -0.20, "deserter": -0.20,
+    },
+    D.empathy: {
+        "empathetic": 0.25, "compassion": 0.20, "kind": 0.10, "caring": 0.18,
+        "altruistic": 0.20, "tender": 0.10,
+        "cold": -0.15, "indifferent": -0.15, "cruel": -0.20, "sadistic": -0.20,
+    },
+    D.isolationism: {
+        "lonely": 0.20, "isolated": 0.20, "outcast": 0.15, "ostracized": 0.15,
+        "rejected": 0.12, "exiled": 0.20, "loner": 0.20,
+        "sociable": -0.15, "warm": -0.10,
+    },
+    D.secrecy: {
+        "secretive": 0.18, "hidden": 0.10, "concealed": 0.18, "spy": 0.20,
+        "espionage": 0.15, "anbu": 0.18, "infiltrator": 0.20, "discreet": 0.10,
+        "transparent": -0.15, "open": -0.05,
+    },
+    D.manipulation: {
+        "manipulative": 0.25, "manipulate": 0.18, "deceitful": 0.20,
+        "cunning": 0.18, "calculating": 0.18, "machiavellian": 0.20,
+        "scheming": 0.15,
+        "naive": -0.10, "honest": -0.10,
+    },
+    D.pragmatism: {
+        "pragmatic": 0.20, "realistic": 0.15, "rational": 0.15,
+        "logical": 0.10, "practical": 0.12,
+        "dreamer": -0.10, "unrealistic": -0.15, "utopian": -0.10,
+    },
+    D.fear: {
+        "fear": 0.10, "terrified": 0.20, "trauma": 0.15, "afraid": 0.15,
+        "anxious": 0.15, "phobia": 0.18, "trembling": 0.10,
+        "courageous": -0.15, "fearless": -0.20, "brave": -0.10,
+    },
+    D.melancholy: {
+        "melancholic": 0.25, "sad": 0.10, "depressed": 0.20, "pain": 0.05,
+        "suffering": 0.10, "grief": 0.20, "orphan": 0.15, "mourning": 0.18,
+        "joyful": -0.20, "optimistic": -0.10, "cheerful": -0.15,
+    },
+    D.paranoia: {
+        "paranoid": 0.25, "suspicious": 0.18, "distrustful": 0.18,
+        "wary": 0.10, "conspiracy": 0.10,
+        "trusting": -0.15, "carefree": -0.10,
+    },
+    D.idealism: {
+        "ideal": 0.15, "ideologue": 0.20, "utopian": 0.20, "dreamer": 0.15,
+        "noble cause": 0.15, "convictions": 0.15, "hope": 0.05,
+        "cynical": -0.20, "disillusioned": -0.15, "bitter": -0.10,
+    },
+    D.honor: {
+        "honor": 0.25, "honorable": 0.20, "code": 0.10, "samurai": 0.20,
+        "noble": 0.10, "integrity": 0.15, "righteous": 0.15,
+        "dishonor": -0.15, "vile": -0.20, "traitor": -0.10,
+    },
+    D.vengeance: {
+        "vengeance": 0.30, "avenge": 0.25, "revenge": 0.25, "grudge": 0.20,
+        "retaliation": 0.18, "hatred": 0.10, "obsession": 0.10,
+        "forgive": -0.20, "forget": -0.10, "absolve": -0.15,
+    },
+    D.ambition: {
+        "ambition": 0.25, "ambitious": 0.25, "hokage": 0.10, "surpass": 0.15,
+        "powerful": 0.05, "domination": 0.20, "conquer": 0.15,
+        "modest": -0.15, "humble": -0.15,
+    },
+    D.confidence: {
+        "confident": 0.20, "self-assured": 0.20, "decisive": 0.10,
+        "assertive": 0.15,
+        "hesitant": -0.15, "doubt": -0.10, "uncertain": -0.10, "shy": -0.18,
+    },
+    D.pride: {
+        "proud": 0.15, "pride": 0.15, "arrogant": 0.20, "vain": 0.18,
+        "haughty": 0.20, "noble": 0.05,
+        "humble": -0.20, "modest": -0.15, "self-effacing": -0.15,
+    },
+    D.openness: {
+        "curious": 0.25, "open-minded": 0.20, "explorer": 0.18,
+        "sociable": 0.15, "extroverted": 0.20, "communicative": 0.18,
+        "friendly": 0.10,
+        "closed": -0.15, "introverted": -0.10, "reserved": -0.10,
+    },
+    D.humor: {
+        "joke": 0.10, "prank": 0.20, "laughter": 0.18, "comedic": 0.18,
+        "playful": 0.15, "cheerful": 0.10, "lighthearted": 0.15,
+        "serious": -0.10, "austere": -0.15, "grim": -0.10,
+    },
+}
+
+
 def _normalize_text(text: str) -> str:
     """Lower + strip accents (NFD)."""
     if not text:
@@ -158,11 +271,14 @@ def _normalize_text(text: str) -> str:
 
 
 def _score_dimension(text_norm: str, dim: D) -> float:
-    """Score brut pour une dimension : somme des contributions des keywords."""
+    """Score brut pour une dimension : somme des contributions des keywords FR + EN."""
     if not text_norm:
         return 0.0
     score = 0.0
-    for kw, weight in _DIMENSION_KEYWORDS.get(dim, {}).items():
+    for kw, weight in _DIMENSION_KEYWORDS_FR.get(dim, {}).items():
+        if kw in text_norm:
+            score += weight
+    for kw, weight in _DIMENSION_KEYWORDS_EN.get(dim, {}).items():
         if kw in text_norm:
             score += weight
     return score
@@ -268,9 +384,143 @@ def extract_baselines_from_file(
     return out
 
 
+# ----------------------------------------------------------------------------
+# Extraction depuis characters.json (wiki_sections + personality_fr)
+# ----------------------------------------------------------------------------
+
+
+_RELEVANT_WIKI_SECTIONS: tuple[str, ...] = (
+    "Personality", "Background", "Part I", "Part II",
+    "Blank Period", "Interlude", "New Era: Part I", "New Era: Part II",
+)
+
+
+def _extract_text_from_character(char: dict) -> str:
+    """Concatene les champs textuels canon utiles d'un character payload.
+
+    Sources :
+    - `wiki_sections.Personality` (et autres sections cles, peu pondere)
+    - `personality_fr` (raw brut depuis Narutopedia, mix EN/FR)
+    """
+    parts: list[str] = []
+    pf = char.get("personality_fr")
+    if isinstance(pf, str) and pf:
+        parts.append(pf)
+    ws = char.get("wiki_sections")
+    if isinstance(ws, dict):
+        # Personality : poids x2 (concatene 2x)
+        personality_section = ws.get("Personality")
+        if isinstance(personality_section, str) and personality_section:
+            parts.append(personality_section)
+            parts.append(personality_section)
+        # Autres sections : poids x1
+        for key in _RELEVANT_WIKI_SECTIONS:
+            if key == "Personality":
+                continue
+            section = ws.get(key)
+            if isinstance(section, str) and section:
+                parts.append(section)
+    return "\n".join(parts)
+
+
+def extract_baseline_from_character(
+    char: dict,
+    *,
+    psycho_text: str = "",
+) -> BaselineExtractionResult | None:
+    """Extrait un baseline depuis un dict character (characters.json schema).
+
+    Optionnellement, `psycho_text` peut etre passe pour combiner avec
+    psycho_notes du NPC (FR). Retourne None si le character n'a pas de
+    texte exploitable (no `personality_fr` ni `wiki_sections`).
+    """
+    npc_id = char.get("id")
+    if not npc_id:
+        return None
+    char_text = _extract_text_from_character(char)
+    combined = f"{psycho_text}\n{char_text}".strip()
+    if not combined:
+        return None
+    return extract_baseline_from_text(npc_id, combined)
+
+
+def extract_baselines_combined(
+    *,
+    psycho_notes_path: Path | str | None = None,
+    characters_path: Path | str | None = None,
+    only_npc_ids: Iterable[str] | None = None,
+    require_text: bool = True,
+) -> dict[str, NPCPersonality]:
+    """Extrait baselines combinant `psycho_notes.json` (FR) + `characters.json`
+    (wiki_sections + personality_fr).
+
+    Pour chaque NPC :
+    - Si present dans psycho_notes : concatene son texte FR
+    - Si present dans characters.json : concatene wiki_sections.Personality
+      + personality_fr
+    - Lance le scan FR + EN, produit le NPCPersonality
+
+    `require_text=True` (default) : skip les NPCs sans texte exploitable
+    (laissent neutre 0.5 partout).
+    """
+    psycho_data: dict = {}
+    if psycho_notes_path is not None:
+        p = Path(psycho_notes_path)
+        if p.exists():
+            psycho_data = json.loads(p.read_text(encoding="utf-8"))
+
+    chars_list: list[dict] = []
+    if characters_path is not None:
+        cp = Path(characters_path)
+        if cp.exists():
+            data = json.loads(cp.read_text(encoding="utf-8"))
+            if isinstance(data, list):
+                chars_list = data
+
+    psycho_notes_dict = (
+        psycho_data.get("notes") or {}
+    ) if isinstance(psycho_data, dict) else {}
+
+    target_ids: set[str] | None = (
+        set(only_npc_ids) if only_npc_ids is not None else None
+    )
+
+    out: dict[str, NPCPersonality] = {}
+
+    # Index characters par id pour join rapide
+    chars_by_id: dict[str, dict] = {
+        c["id"]: c for c in chars_list if isinstance(c, dict) and c.get("id")
+    }
+
+    # Liste des NPCs a traiter : union psycho + characters (filtre par target_ids)
+    all_ids: set[str] = set(psycho_notes_dict.keys()) | set(chars_by_id.keys())
+    if target_ids is not None:
+        all_ids &= target_ids
+
+    for npc_id in all_ids:
+        psycho_text = ""
+        notes = psycho_notes_dict.get(npc_id) or []
+        if notes:
+            psycho_text, _ = _collect_notes_text(notes)
+        char = chars_by_id.get(npc_id, {})
+        char_text = _extract_text_from_character(char) if char else ""
+        combined = f"{psycho_text}\n{char_text}".strip()
+        if require_text and not combined:
+            continue
+        result = extract_baseline_from_text(npc_id, combined)
+        out[npc_id] = NPCPersonality(
+            npc_id=npc_id,
+            vector=dict(result.vector),
+            canon_baseline=dict(result.vector),
+        )
+    return out
+
+
 __all__ = [
     "BaselineExtractionResult",
     "extract_baseline_for_npc",
+    "extract_baseline_from_character",
     "extract_baseline_from_text",
+    "extract_baselines_combined",
     "extract_baselines_from_file",
 ]

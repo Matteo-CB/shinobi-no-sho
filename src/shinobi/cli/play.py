@@ -53,7 +53,7 @@ from shinobi.personality import (
     PersonalityEngine,
     PersonalityStore,
     collect_experienced_events,
-    extract_baselines_from_file,
+    extract_baselines_combined,
 )
 from shinobi.rag.retriever import Retriever
 from shinobi.rag.store import ChromaStore
@@ -1242,7 +1242,8 @@ def _ensure_kg_initialized(save_id: str, canon, *, console=None) -> None:
 
 def _ensure_personality_initialized(save_id: str, *, console=None) -> None:
     """Initialise le store de personnalite si vide : extrait baselines pour
-    tous les NPCs presents dans psycho_notes.json. Idempotent.
+    TOUS les NPCs presents dans psycho_notes.json + characters.json
+    (wiki_sections + personality_fr). Idempotent.
 
     Si la base est deja peuplee, on ne fait rien (les drifts deja accumules
     en cours de partie sont preserves).
@@ -1252,12 +1253,16 @@ def _ensure_personality_initialized(save_id: str, *, console=None) -> None:
     db_path = save_module.personality_db_path(save_id)
     db_path.parent.mkdir(parents=True, exist_ok=True)
     psycho_path = _s.canonical_data_dir / "psycho_notes.json"
-    if not psycho_path.exists():
+    chars_path = _s.canonical_data_dir / "characters.json"
+    if not psycho_path.exists() and not chars_path.exists():
         return
 
     with PersonalityStore(db_path) as store:
         existing = {p.npc_id for p in store.list_personalities()}
-        baselines = extract_baselines_from_file(psycho_path)
+        baselines = extract_baselines_combined(
+            psycho_notes_path=psycho_path if psycho_path.exists() else None,
+            characters_path=chars_path if chars_path.exists() else None,
+        )
         new_count = 0
         for npc_id, p in baselines.items():
             if npc_id in existing:
@@ -1266,7 +1271,8 @@ def _ensure_personality_initialized(save_id: str, *, console=None) -> None:
             new_count += 1
         if new_count > 0 and console is not None:
             console.print(
-                f"[dim]Personality baselines extraits : {new_count} PNJ[/dim]",
+                f"[dim]Personality baselines extraits : {new_count} PNJ "
+                f"(wiki_sections + psycho_notes)[/dim]",
             )
 
 

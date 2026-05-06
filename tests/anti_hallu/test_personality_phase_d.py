@@ -38,7 +38,9 @@ from shinobi.personality import (
     experienced_events_from_mission,
     experienced_events_from_timeline_event,
     extract_baseline_for_npc,
+    extract_baseline_from_character,
     extract_baseline_from_text,
+    extract_baselines_combined,
     extract_baselines_from_file,
     get_rule_for_category,
 )
@@ -613,3 +615,143 @@ class TestSasukeScenario:
         p_long = eng.apply_event(p, ev_long)
         # 5 ans amplifie plus que 1 an
         assert p_long.value(D.loyalty) > p_short.value(D.loyalty)
+
+
+# ============================================================================
+# 8. Extraction wiki_sections (Phase D spec : "depuis wiki_sections offline batch")
+# ============================================================================
+
+
+class TestWikiSectionsExtraction:
+    """Phase D spec : 'Extraction baseline canon depuis wiki_sections (offline
+    batch)'. On consomme `characters.json` -> wiki_sections.Personality +
+    personality_fr (Narutopedia EN raw) avec scan keyword FR + EN."""
+
+    def test_extract_from_character_payload_minimal(self) -> None:
+        char = {
+            "id": "test_npc",
+            "personality_fr": "He is a loyal and devoted ninja, ambitious.",
+        }
+        result = extract_baseline_from_character(char)
+        assert result is not None
+        assert result.npc_id == "test_npc"
+        # 'loyal' + 'devoted' + 'ambitious' -> loyalty/ambition shifts
+        assert result.vector[D.loyalty] > DEFAULT_NEUTRAL_VALUE
+        assert result.vector[D.ambition] > DEFAULT_NEUTRAL_VALUE
+
+    def test_extract_from_character_no_text_returns_none(self) -> None:
+        # Pas de personality_fr ni wiki_sections -> None
+        result = extract_baseline_from_character({"id": "ghost"})
+        assert result is None
+
+    def test_extract_from_character_wiki_sections_personality(self) -> None:
+        char = {
+            "id": "test_npc",
+            "wiki_sections": {
+                "Personality": (
+                    "Cold, manipulative and paranoid. Plotting in secret. "
+                    "Cruel and ruthless schemer."
+                ),
+            },
+        }
+        result = extract_baseline_from_character(char)
+        assert result is not None
+        # Devrait pousser empathy- et paranoia/manipulation+
+        assert result.vector[D.empathy] < DEFAULT_NEUTRAL_VALUE
+        assert result.vector[D.paranoia] > DEFAULT_NEUTRAL_VALUE
+        assert result.vector[D.manipulation] > DEFAULT_NEUTRAL_VALUE
+
+    def test_extract_baselines_combined_covers_top_50(self) -> None:
+        """Phase D spec strict : 'top-50 PNJ'. Couverture > 50 NPCs."""
+        psycho_path = Path("data/canonical/psycho_notes.json")
+        chars_path = Path("data/canonical/characters.json")
+        if not psycho_path.exists() or not chars_path.exists():
+            pytest.skip("dataset canon manquant")
+
+        baselines = extract_baselines_combined(
+            psycho_notes_path=psycho_path,
+            characters_path=chars_path,
+        )
+        assert len(baselines) >= 50, (
+            f"Phase D requires top-50 NPCs, got {len(baselines)}"
+        )
+
+    def test_combined_extraction_differentiates_npcs(self) -> None:
+        """L'extraction doit produire des vecteurs DIFFERENTS pour Naruto vs
+        Sasuke vs Itachi (sinon le baseline est inutile pour le drift)."""
+        psycho_path = Path("data/canonical/psycho_notes.json")
+        chars_path = Path("data/canonical/characters.json")
+        if not psycho_path.exists() or not chars_path.exists():
+            pytest.skip("dataset canon manquant")
+
+        baselines = extract_baselines_combined(
+            psycho_notes_path=psycho_path,
+            characters_path=chars_path,
+            only_npc_ids=["uzumaki_naruto", "uchiha_sasuke", "uchiha_itachi"],
+        )
+        if len(baselines) < 3:
+            pytest.skip("NPCs cles absents")
+
+        naruto = baselines["uzumaki_naruto"]
+        sasuke = baselines["uchiha_sasuke"]
+        itachi = baselines["uchiha_itachi"]
+
+        # Distance L2 entre paires : doit etre > 0 (vecteurs distincts)
+        def _dist(a: NPCPersonality, b: NPCPersonality) -> float:
+            return sum(
+                (a.vector[d] - b.vector[d]) ** 2 for d in ALL_DIMENSIONS
+            ) ** 0.5
+
+        d_naruto_sasuke = _dist(naruto, sasuke)
+        d_naruto_itachi = _dist(naruto, itachi)
+        d_sasuke_itachi = _dist(sasuke, itachi)
+
+        # Au moins une paire doit avoir une distance significative
+        assert max(d_naruto_sasuke, d_naruto_itachi, d_sasuke_itachi) > 0.2
+
+    def test_combined_extraction_psycho_only(self) -> None:
+        """Si seul psycho_notes est fourni, marche aussi (mode degrade)."""
+        psycho_path = Path("data/canonical/psycho_notes.json")
+        if not psycho_path.exists():
+            pytest.skip("psycho_notes.json absent")
+
+        baselines = extract_baselines_combined(
+            psycho_notes_path=psycho_path,
+            characters_path=None,
+        )
+        # 36 NPCs dans psycho_notes
+        assert len(baselines) >= 30
+
+    def test_combined_extraction_chars_only(self) -> None:
+        """Si seul characters.json est fourni, marche aussi (mode degrade)."""
+        chars_path = Path("data/canonical/characters.json")
+        if not chars_path.exists():
+            pytest.skip("characters.json absent")
+
+        baselines = extract_baselines_combined(
+            psycho_notes_path=None,
+            characters_path=chars_path,
+        )
+        # >> 50 NPCs avec wiki_sections
+        assert len(baselines) >= 100
+
+    def test_sasuke_wiki_baseline_aligned_with_canon(self) -> None:
+        """Sasuke baseline canon doit refleter son canon : vengeance > neutre,
+        empathy < neutre, melancholy > neutre."""
+        psycho_path = Path("data/canonical/psycho_notes.json")
+        chars_path = Path("data/canonical/characters.json")
+        if not psycho_path.exists() or not chars_path.exists():
+            pytest.skip("dataset canon manquant")
+
+        baselines = extract_baselines_combined(
+            psycho_notes_path=psycho_path,
+            characters_path=chars_path,
+            only_npc_ids=["uchiha_sasuke"],
+        )
+        if "uchiha_sasuke" not in baselines:
+            pytest.skip("Sasuke absent")
+        sasuke = baselines["uchiha_sasuke"]
+        # Sasuke canon : vengeance haute (a venger Uchiha)
+        assert sasuke.value(D.vengeance) > DEFAULT_NEUTRAL_VALUE
+        # Empathy basse (froid, distant)
+        assert sasuke.value(D.empathy) <= DEFAULT_NEUTRAL_VALUE

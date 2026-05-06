@@ -16,7 +16,9 @@ from __future__ import annotations
 from shinobi.personality.baseline import (
     BaselineExtractionResult,
     extract_baseline_for_npc,
+    extract_baseline_from_character,
     extract_baseline_from_text,
+    extract_baselines_combined,
     extract_baselines_from_file,
 )
 from shinobi.personality.dimensions import (
@@ -76,7 +78,9 @@ __all__ = [
     "experienced_events_from_mission",
     "experienced_events_from_timeline_event",
     "extract_baseline_for_npc",
+    "extract_baseline_from_character",
     "extract_baseline_from_text",
+    "extract_baselines_combined",
     "extract_baselines_from_file",
     "get_rule_for_category",
 ]
