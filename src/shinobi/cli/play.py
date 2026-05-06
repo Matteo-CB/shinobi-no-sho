@@ -1460,24 +1460,43 @@ class _PhaseCTickResult:
 async def _phase_c_tick_with_llm(
     *, kg_store, social, state, year: int, month: int,
 ):
-    """Spec §5.3 : tick TensionScheduler avec LLMClient cree LAZY (HTTP
-    context valide seulement dans `async with`)."""
-    from shinobi.llm.client import LLMClient
+    """Spec §5.3 : tick TensionScheduler.
+
+    Optimisation perf : on n'ouvre LLMClient QUE si l'analyst est due
+    (chaque 3 mois). Pour les 99% de ticks ou seul le detector tourne
+    (gratuit, sync), on evite l'overhead de l'HTTP client setup.
+    """
     from shinobi.tension import LLMTensionAnalyst
 
-    async with LLMClient() as llm_client:
-        analyst = LLMTensionAnalyst(
-            kg_store, llm_client=llm_client, social_network=social,
+    # 1. Check is_due SANS ouvrir LLMClient
+    pre_scheduler = TensionScheduler(
+        kg_store, social_network=social, state=state,
+    )
+    should_run_analyst = pre_scheduler.is_due(year, month)
+
+    if should_run_analyst:
+        # 2a. Analyst due : ouvre LLMClient + run avec analyst reel
+        from shinobi.llm.client import LLMClient
+        async with LLMClient() as llm_client:
+            analyst = LLMTensionAnalyst(
+                kg_store, llm_client=llm_client, social_network=social,
+            )
+            scheduler = TensionScheduler(
+                kg_store, analyst=analyst,
+                social_network=social, state=state,
+            )
+            tick_result = await scheduler.tick(year, month=month)
+        return _PhaseCTickResult(
+            tensions=tick_result.tensions,
+            analyst_ran=tick_result.analyst_ran,
+            new_state=scheduler.state,
         )
-        scheduler = TensionScheduler(
-            kg_store, analyst=analyst,
-            social_network=social, state=state,
-        )
-        tick_result = await scheduler.tick(year, month=month)
+    # 2b. Analyst pas due : detector seulement, pas d'HTTP client
+    tick_result = await pre_scheduler.tick(year, month=month)
     return _PhaseCTickResult(
         tensions=tick_result.tensions,
         analyst_ran=tick_result.analyst_ran,
-        new_state=scheduler.state,
+        new_state=pre_scheduler.state,
     )
 
 
