@@ -852,6 +852,71 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_tick_engine_uses_personality_store_for_agent_vector(self) -> None:
+        """Spec §6.3 : 'Son vecteur de personnalite actuel'. Quand
+        TickEngine recoit un PersonalityStore, _get_or_create_agent charge
+        la personality du PNJ et le MajorAgent l'expose."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+            from shinobi.personality import (
+                NPCPersonality,
+                PersonalityDimension,
+                PersonalityStore,
+            )
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            with PersonalityStore(None) as p_store:
+                # Inject une personality avec aggression elevee
+                custom = NPCPersonality(
+                    npc_id="uzumaki_naruto",
+                    vector={dim: 0.9 if dim == PersonalityDimension.aggression
+                            else 0.5 for dim in PersonalityDimension},
+                    canon_baseline=dict.fromkeys(PersonalityDimension, 0.5),
+                )
+                p_store.upsert_personality(custom)
+
+                engine = TickEngine(
+                    roster=roster, memory_store=store,
+                    selector=ActionSelector(),
+                    reflector=Reflector(),
+                    personality_store=p_store,
+                )
+                agent = engine._get_or_create_agent("uzumaki_naruto")
+                assert agent.personality is not None
+                assert agent.personality.value(PersonalityDimension.aggression) == 0.9
+
+        asyncio.run(run())
+
+    def test_tick_engine_no_personality_store_returns_none(self) -> None:
+        """Sans personality_store, MajorAgent.personality reste None
+        (graceful : action_selector skip personality dans le prompt)."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+                personality_store=None,
+            )
+            agent = engine._get_or_create_agent("uzumaki_naruto")
+            assert agent.personality is None
+
+        asyncio.run(run())
+
     def test_arc_relevant_npcs_returns_era_key_figures(self) -> None:
         """Spec §6.1 'top-15 + dynamique selon arc'. arc_relevant_npcs(year)
         retourne les key_figures de l'era contenant year."""

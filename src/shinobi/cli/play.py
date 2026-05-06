@@ -1433,9 +1433,15 @@ async def _run_fast_forward(
     if bge_encoder is not None:
         console.print("[dim]BGE-M3 actif pour retrieval semantique[/dim]")
 
-    with AgentMemoryStore(db_path) as store, LLMCache(cache_path) as cache, \
-            embeddings_idx as emb_idx:
-        from shinobi.agents import AgentRoster
+    # Spec §6.3 : 'Son vecteur de personnalite actuel'. Le PersonalityStore
+    # Phase D doit etre passe au TickEngine pour que les agents recoivent
+    # leur vector dans SelectionContext.
+    personality_db = save_module.personality_db_path(save_id)
+
+    with AgentMemoryStore(db_path) as store, \
+            LLMCache(cache_path) as cache, \
+            embeddings_idx as emb_idx, \
+            PersonalityStore(personality_db) as p_store:
 
         roster = AgentRoster(store)
         if roster.major_count == 0:
@@ -1448,6 +1454,7 @@ async def _run_fast_forward(
             reflector=Reflector(cache=cache),
             cache=cache,
             embeddings_index=emb_idx,
+            personality_store=p_store,
         )
         digest = await engine.fast_forward(
             from_year=current_year, months=months,
