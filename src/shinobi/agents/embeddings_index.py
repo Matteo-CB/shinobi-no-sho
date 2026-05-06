@@ -291,4 +291,26 @@ class EmbeddingsIndex:
         return scored[:top_k]
 
 
-__all__ = ["EmbeddingsIndex", "cosine_similarity"]
+def try_load_bge_encoders() -> tuple:
+    """Tente de charger les encoders BGE-M3 reels via shinobi.rag.embedder.
+
+    Retourne (encoder, query_encoder) ou (None, None) si BGE-M3 indisponible
+    (sentence-transformers non installe, modele manquant, etc.). Permet a
+    `play.py` ou autre CLI d'activer BGE-M3 gracieusement sans crash.
+    """
+    try:
+        from shinobi.rag.embedder import embed_query, embed_texts
+
+        # Test une encode rapide pour valider que le modele charge
+        # Si ce probe echoue (model file absent), on retourne (None, None)
+        try:
+            _ = embed_query("__probe__")
+        except Exception:
+            return (None, None)
+
+        return (embed_texts, embed_query)
+    except Exception:
+        return (None, None)
+
+
+__all__ = ["EmbeddingsIndex", "cosine_similarity", "try_load_bge_encoders"]

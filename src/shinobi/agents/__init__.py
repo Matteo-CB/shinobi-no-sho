@@ -50,6 +50,7 @@ from shinobi.agents.context_builder import (
 from shinobi.agents.embeddings_index import (
     EmbeddingsIndex,
     cosine_similarity,
+    try_load_bge_encoders,
 )
 from shinobi.agents.kg_bridge import (
     SECRET_ACTION_TYPES,
@@ -166,5 +167,6 @@ __all__ = [
     "push_actions_to_kg_batch",
     "recency_score",
     "relevance_score",
+    "try_load_bge_encoders",
     "witness_observation",
 ]

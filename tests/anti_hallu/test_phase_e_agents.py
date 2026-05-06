@@ -852,6 +852,24 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_try_load_bge_encoders_returns_tuple_or_none(self) -> None:
+        """Helper safe-load BGE-M3 : retourne (encoder, query_encoder) ou
+        (None, None) si modele indisponible. Ne crash JAMAIS."""
+        from shinobi.agents import try_load_bge_encoders
+
+        result = try_load_bge_encoders()
+        assert isinstance(result, tuple)
+        assert len(result) == 2
+        encoder, query_encoder = result
+        # Cas 1 : modele dispo -> les 2 sont callables
+        # Cas 2 : modele absent -> les 2 sont None
+        assert (encoder is None) == (query_encoder is None)
+        if encoder is not None:
+            # Test rapide : encode une string
+            vec = query_encoder("test")
+            assert isinstance(vec, list)
+            assert len(vec) > 0
+
     def test_tick_engine_propagates_embeddings_index(self) -> None:
         """TickEngine -> MajorAgent -> AgentMemory : index BGE-M3 auto-attache."""
         async def run() -> None:

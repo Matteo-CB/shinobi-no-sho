@@ -15,10 +15,12 @@ from shinobi.agents import (
     ActionSelector,
     AgentMemoryStore,
     AgentTier,
+    EmbeddingsIndex,
     LLMCache,
     Reflector,
     TickEngine,
     initialize_roster,
+    try_load_bge_encoders,
 )
 from shinobi.canon.loader import load_canon
 from shinobi.cli.display import (
@@ -1376,12 +1378,22 @@ async def _run_fast_forward(
         return
     db_path = save_module.agents_db_path(save_id)
     cache_path = save_module.llm_cache_db_path(save_id)
+    emb_path = save_module.agents_embeddings_db_path(save_id)
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
     console.print(
         f"[cyan]Fast-forward {months} mois en cours (mode passif)...[/cyan]"
     )
-    with AgentMemoryStore(db_path) as store, LLMCache(cache_path) as cache:
+    # Spec §6.1 : BGE-M3 wired si dispo. Fallback gracieux Jaccard sinon.
+    bge_encoder, bge_query = try_load_bge_encoders()
+    embeddings_idx = EmbeddingsIndex(
+        emb_path, encoder=bge_encoder, query_encoder=bge_query,
+    )
+    if bge_encoder is not None:
+        console.print("[dim]BGE-M3 actif pour retrieval semantique[/dim]")
+
+    with AgentMemoryStore(db_path) as store, LLMCache(cache_path) as cache, \
+            embeddings_idx as emb_idx:
         from shinobi.agents import AgentRoster
 
         roster = AgentRoster(store)
@@ -1394,6 +1406,7 @@ async def _run_fast_forward(
             selector=ActionSelector(cache=cache),
             reflector=Reflector(cache=cache),
             cache=cache,
+            embeddings_index=emb_idx,
         )
         digest = await engine.fast_forward(
             from_year=current_year, months=months,

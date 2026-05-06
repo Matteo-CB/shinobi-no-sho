@@ -100,6 +100,11 @@ def llm_cache_db_path(save_id: str) -> Path:
     return _save_dir(save_id) / "llm_cache.sqlite"
 
 
+def agents_embeddings_db_path(save_id: str) -> Path:
+    """Chemin de l'index BGE-M3 multi-agent (Phase E §6.1)."""
+    return _save_dir(save_id) / "agents_embeddings.sqlite"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []
