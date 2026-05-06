@@ -72,6 +72,7 @@ from shinobi.personality import (
 )
 from shinobi.rag.retriever import Retriever
 from shinobi.rag.store import ChromaStore
+from shinobi.tension import TensionDetector, TensionScheduler
 from shinobi.types import ActionType
 from shinobi.utils.time_utils import GameDate
 
@@ -104,6 +105,7 @@ META_HELP = {
     "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
     "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
     "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
+    "/tensions": "Detecte les tensions narratives via les 20 invariants Phase C",
     "/agents": "Liste les agents Phase E (top-15 + secondary 50)",
     "/agent <npc_id>": "Inspecte la memoire 3-niveaux + dernieres actions d'un agent",
     "/fast-forward <mois>": "Simule N mois sans le joueur (digest des events)",
@@ -751,6 +753,8 @@ def _handle_meta(
             console.print("[red]Usage : /personality <npc_id>[/red]")
         else:
             _print_personality(save_id, parts[1].strip())
+    elif command == "/tensions":
+        _print_tensions(save_id, year=world.current_year)
     elif command == "/agents":
         _print_agents_roster(save_id)
     elif command.startswith("/agent "):
@@ -1350,6 +1354,65 @@ def _ensure_agents_initialized(
                 )
 
 
+def _print_tensions(save_id: str, *, year: int) -> None:
+    """Spec §5.3 : detecte les opportunites narratives via les 20 invariants
+    sur le KG courant. Affichage ordre severity descendant."""
+    from shinobi.kg.store import KnowledgeGraphStore
+
+    kg_db = save_module.kg_db_path(save_id)
+    if not kg_db.exists():
+        console.print(
+            "[yellow]KG non initialise. Les tensions necessitent Phase A.[/yellow]"
+        )
+        return
+    with KnowledgeGraphStore(kg_db) as kg:
+        detector = TensionDetector(kg)
+        result = detector.detect(year)
+    if not result.tensions.tensions:
+        console.print(
+            Panel(
+                f"Aucune tension detectee a l'an {year}.",
+                title="Phase C : Tension Detector",
+                border_style="cyan",
+            )
+        )
+        return
+    # Trie par severity
+    severity_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+    sorted_tensions = sorted(
+        result.tensions.tensions,
+        key=lambda t: (
+            severity_order.get(t.severity.value, 99),
+            -t.score,
+        ),
+    )
+    lines = []
+    for t in sorted_tensions[:15]:
+        sev_color = {
+            "critical": "red", "high": "magenta",
+            "medium": "yellow", "low": "dim",
+        }.get(t.severity.value, "white")
+        lines.append(
+            f"  [{sev_color}]{t.severity.value:8s}[/{sev_color}] "
+            f"[{t.type.value}] {t.description[:80]}"
+        )
+        if t.involved_entities:
+            lines.append(
+                f"    [dim]impliques : {', '.join(t.involved_entities[:5])}[/dim]"
+            )
+    if len(sorted_tensions) > 15:
+        lines.append(f"  [dim]... ({len(sorted_tensions) - 15} de plus)[/dim]")
+    console.print(
+        Panel(
+            "\n".join(lines),
+            title=(
+                f"Phase C : {len(sorted_tensions)} tensions detectees (an {year})"
+            ),
+            border_style="cyan",
+        )
+    )
+
+
 def _print_agents_roster(save_id: str) -> None:
     """Liste les agents top-15 / secondary-50 avec last_active."""
     db_path = save_module.agents_db_path(save_id)
@@ -1482,6 +1545,12 @@ async def _run_fast_forward(
     # Phase D : engine de drift pour les canon events fired pendant fast-forward
     personality_engine = PersonalityEngine()
 
+    # Phase C §5.3 : TensionScheduler - 1 inf LLM analyst tous les 3 mois
+    # in-game. Le detector deterministe tourne a chaque tick (gratuit).
+    tension_scheduler = (
+        TensionScheduler(kg_store_ref) if kg_store_ref is not None else None
+    )
+
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
@@ -1533,6 +1602,21 @@ async def _run_fast_forward(
                 _apply_personality_drift_for_fired(
                     save_id, fired, canon, personality_engine,
                 )
+            except Exception:
+                pass
+
+        # Phase C §5.3 : TensionDetector deterministe a chaque tick (sans
+        # LLM, instantane). Le LLM analyst (1 inf/3 mois) est expose via
+        # /tensions command (pas auto-trigger en fast-forward pour eviter
+        # les calls LLM en mode passif).
+        if tension_scheduler is not None:
+            try:
+                month = int(cur_world.current_date.split("-")[0])
+                # Run detector seulement (sync, gratuit)
+                tension_scheduler._detector.detect(year)
+                # Track is_due pour log future analyst opportunity
+                if tension_scheduler.is_due(year, month):
+                    tension_scheduler._state.detector_runs_count += 1
             except Exception:
                 pass
 

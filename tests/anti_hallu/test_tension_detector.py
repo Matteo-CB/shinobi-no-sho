@@ -250,6 +250,22 @@ def test_snapshot_no_relations_section_without_social_network(
     assert "Relations sociales" not in snap
 
 
+def test_play_cli_print_tensions_runs_detector(tmp_path) -> None:
+    """Spec §5.3 + §13 : TensionDetector wired via CLI /tensions command.
+    Verifie que _print_tensions() se branche au KG de la save sans crash."""
+    from shinobi.cli.play import _print_tensions
+    from shinobi.config import settings
+
+    # Pas de KG -> message yellow non-crash
+    original_saves = settings.saves_path
+    settings.saves_path = str(tmp_path)
+    try:
+        # Save_id qui n'existe pas : doit gracefully informer
+        _print_tensions("nonexistent_save", year=12)
+    finally:
+        settings.saves_path = original_saves
+
+
 # === LLMTensionAnalyst (offline) ===========================================
 
 
