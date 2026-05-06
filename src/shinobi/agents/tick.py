@@ -30,6 +30,10 @@ from shinobi.agents.agent import (
 )
 from shinobi.agents.batch_selector import BatchActionSelector
 from shinobi.agents.cache import LLMCache
+from shinobi.agents.context_builder import (
+    build_relations_summary_for_npc,
+    build_world_summary_for_npc,
+)
 from shinobi.agents.reflector import Reflector
 from shinobi.agents.roster import AgentRoster
 from shinobi.agents.selector import ActionSelector, SelectionContext
@@ -80,6 +84,8 @@ class TickEngine:
         sampling_seed: int = 0,
         embeddings_index=None,
         batch_selector: BatchActionSelector | None = None,
+        kg_store=None,  # type: KnowledgeGraphStore | None
+        social_network=None,  # type: SocialNetwork | None
     ) -> None:
         self._roster = roster
         self._store = memory_store
@@ -100,6 +106,10 @@ class TickEngine:
         # Si fourni, le tier secondary utilise BatchActionSelector au lieu
         # du selector individuel.
         self._batch_selector = batch_selector
+        # Spec §6.3 : KG (filtre par known_by_npc_ids) + SocialNetwork pour
+        # auto-build world_summary + relations_summary sur chaque tick.
+        self._kg_store = kg_store
+        self._social_network = social_network
         # Cache d'instances MajorAgent par npc_id (eviter re-load memory)
         self._agents: dict[str, MajorAgent] = {}
 
@@ -231,19 +241,54 @@ class TickEngine:
         self, npc_id: str, year: int, tick: int,
         context_provider, observations_per_npc,
     ) -> AgentTickInputs:
-        """Construit le AgentTickInputs pour un agent."""
+        """Construit le AgentTickInputs pour un agent.
+
+        Spec §6.3 : auto-fill world_summary (KG known_by) + relations_summary
+        (SocialNetwork) si non fournis par context_provider et si KG/social
+        sont configures sur le TickEngine.
+        """
         if context_provider is not None:
             inputs = context_provider(npc_id, year, tick)
         else:
             inputs = AgentTickInputs(year=year, tick=tick)
+
+        # Spec §6.3 : auto-fill summaries depuis KG + SocialNetwork
+        world_summary = inputs.world_summary
+        relations_summary = inputs.relations_summary
+        if not world_summary and self._kg_store is not None:
+            try:
+                world_summary = build_world_summary_for_npc(
+                    kg_store=self._kg_store, npc_id=npc_id, year=year,
+                )
+            except Exception:
+                world_summary = ""
+        if not relations_summary and self._social_network is not None:
+            try:
+                relations_summary = build_relations_summary_for_npc(
+                    social_network=self._social_network,
+                    npc_id=npc_id,
+                    present_npc_ids=inputs.present_npc_ids,
+                )
+            except Exception:
+                relations_summary = ""
+
+        new_obs = inputs.new_observations
         if observations_per_npc and npc_id in observations_per_npc:
+            new_obs = tuple(observations_per_npc[npc_id])
+
+        # Re-build inputs avec auto-filled fields
+        if (
+            new_obs is not inputs.new_observations
+            or world_summary != inputs.world_summary
+            or relations_summary != inputs.relations_summary
+        ):
             inputs = AgentTickInputs(
                 year=inputs.year, tick=inputs.tick,
                 location_id=inputs.location_id,
                 present_npc_ids=inputs.present_npc_ids,
-                new_observations=tuple(observations_per_npc[npc_id]),
-                world_summary=inputs.world_summary,
-                relations_summary=inputs.relations_summary,
+                new_observations=new_obs,
+                world_summary=world_summary,
+                relations_summary=relations_summary,
                 extras=inputs.extras,
             )
         return inputs

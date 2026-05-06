@@ -1467,6 +1467,18 @@ async def _run_fast_forward(
     # leur vector dans SelectionContext.
     personality_db = save_module.personality_db_path(save_id)
 
+    # Spec §6.3 : KG + SocialNetwork pour auto-fill world_summary +
+    # relations_summary dans SelectionContext de chaque agent.
+    from shinobi.kg.social import SocialNetwork
+    from shinobi.kg.store import KnowledgeGraphStore
+    kg_db = save_module.kg_db_path(save_id)
+    kg_store_ref = (
+        KnowledgeGraphStore(kg_db) if kg_db.exists() else None
+    )
+    social_net = (
+        SocialNetwork(kg_store_ref.conn) if kg_store_ref is not None else None
+    )
+
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
@@ -1519,6 +1531,7 @@ async def _run_fast_forward(
             roster = AgentRoster(store)
         # LLM call=None : utilise le fallback deterministe (frugal)
         # Spec §6.4 : BatchActionSelector pour le tier secondary
+        # Spec §6.3 : KG + SocialNetwork pour auto-fill summaries
         engine = TickEngine(
             roster=roster, memory_store=store,
             selector=ActionSelector(cache=cache),
@@ -1527,6 +1540,8 @@ async def _run_fast_forward(
             embeddings_index=emb_idx,
             personality_store=p_store,
             batch_selector=BatchActionSelector(cache=cache, batch_size=5),
+            kg_store=kg_store_ref,
+            social_network=social_net,
         )
         digest = await engine.fast_forward(
             from_year=current_year, months=months,
@@ -1575,6 +1590,13 @@ async def _run_fast_forward(
     console.print(
         Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
     )
+
+    # Cleanup KG store
+    if kg_store_ref is not None:
+        try:
+            kg_store_ref.close()
+        except Exception:
+            pass
 
     # Spec §6.5 : retourne (character, world) refreshes pour que le caller
     # puisse mettre a jour son state in-memory.

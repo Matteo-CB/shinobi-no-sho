@@ -852,6 +852,79 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_tick_engine_auto_fills_world_summary_from_kg(self) -> None:
+        """Spec §6.3 : 'L'etat du monde local (KG filtre sur ce qu'il sait)'.
+        TickEngine doit auto-fill world_summary depuis le KG si configure."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+            from shinobi.kg.schema import Fact, ObjectType
+            from shinobi.kg.store import KnowledgeGraphStore
+
+            with KnowledgeGraphStore(None) as kg:
+                kg.add_fact(Fact(
+                    subject="kakashi", relation="said_to", object="naruto",
+                    object_type=ObjectType.entity, valid_from_year=12,
+                    known_by_npc_ids=["uzumaki_naruto"],
+                ))
+                store = AgentMemoryStore(None)
+                roster = initialize_roster(store)
+                engine = TickEngine(
+                    roster=roster, memory_store=store,
+                    selector=ActionSelector(),
+                    reflector=Reflector(),
+                    kg_store=kg,
+                )
+                inputs = engine._build_inputs(
+                    "uzumaki_naruto", year=12, tick=1,
+                    context_provider=None, observations_per_npc=None,
+                )
+                assert inputs.world_summary
+                assert "kakashi" in inputs.world_summary
+
+        asyncio.run(run())
+
+    def test_tick_engine_auto_fills_relations_summary_from_social(self) -> None:
+        """Spec §6.3 : 'Sa relation avec les autres PNJ presents'.
+        TickEngine doit auto-fill relations_summary depuis SocialNetwork."""
+        async def run() -> None:
+            from shinobi.agents import (
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+            from shinobi.kg.schema import SocialLink
+            from shinobi.kg.social import SocialNetwork
+            from shinobi.kg.store import KnowledgeGraphStore
+
+            with KnowledgeGraphStore(None) as kg:
+                net = SocialNetwork(kg.conn)
+                net.add_link(SocialLink(
+                    npc_a="uzumaki_naruto", npc_b="hatake_kakashi",
+                    link_type="mentor", strength=0.8,
+                ))
+                store = AgentMemoryStore(None)
+                roster = initialize_roster(store)
+                engine = TickEngine(
+                    roster=roster, memory_store=store,
+                    selector=ActionSelector(),
+                    reflector=Reflector(),
+                    social_network=net,
+                )
+                inputs = engine._build_inputs(
+                    "uzumaki_naruto", year=12, tick=1,
+                    context_provider=None, observations_per_npc=None,
+                )
+                assert inputs.relations_summary
+                assert "kakashi" in inputs.relations_summary
+
+        asyncio.run(run())
+
     def test_save_passive_state_persists_world_without_action_result(
         self, tmp_path: Path,
     ) -> None:
