@@ -108,6 +108,33 @@ def build_user_prompt(ctx: SelectionContext) -> str:
     return "\n\n".join(blocks)
 
 
+def is_trivial_state(ctx: SelectionContext) -> bool:
+    """Spec §11.1 : 'Decision deterministe simplifiee si le PNJ est dans un
+    etat trivial (sleeping, traveling, training routine)'.
+
+    Heuristique deterministe :
+    - aucun PNJ present (pas d'interaction sociale a gerer)
+    - aucun memoire pertinente recuperee (pas de stimulus)
+    - aucun plan actif OU plan trivial (texte 'meditate', 'rest', 'sleep',
+      'travel', 'train' sans target_npc)
+    - pas de personality fortement saillante
+    -> retourne True : on peut court-circuiter le LLM.
+    """
+    if ctx.present_npc_ids:
+        return False
+    if ctx.top_memories:
+        # Si les memoires recuperees ont importance > 0.6 -> non trivial
+        if any(getattr(m, "importance", 0.0) > 0.6 for m in ctx.top_memories):
+            return False
+    plans_text = " ".join(ctx.active_plans_text).lower() if ctx.active_plans_text else ""
+    if plans_text:
+        trivial_keywords = ("medit", "repos", "dormir", "sommeil", "voyag",
+                            "entrain", "routine", "train")
+        if not any(k in plans_text for k in trivial_keywords):
+            return False
+    return True
+
+
 def deterministic_fallback_action(ctx: SelectionContext) -> AgentAction:
     """Action deterministe quand le LLM n'est pas dispo / cache miss + fallback.
 
@@ -162,14 +189,23 @@ class ActionSelector:
         model_id: str = "qwen3-4b",
         temperature: float = 0.7,
         system_prompt: str = DEFAULT_SYSTEM_PROMPT,
+        trivial_state_shortcut: bool = True,
     ) -> None:
         self._llm_call = llm_call
         self._cache = cache
         self._model_id = model_id
         self._temperature = temperature
         self._system_prompt = system_prompt
+        # Spec §11.1 : si True, court-circuite le LLM pour les etats triviaux
+        self._trivial_state_shortcut = trivial_state_shortcut
         self._cache_hits = 0
         self._cache_misses = 0
+        self._trivial_shortcuts = 0
+
+    @property
+    def trivial_shortcuts(self) -> int:
+        """Compteur d'inferences LLM evitees grace au trivial state shortcut."""
+        return self._trivial_shortcuts
 
     @property
     def cache_hits(self) -> int:
@@ -199,6 +235,13 @@ class ActionSelector:
                 top_k=5,
             )
             ctx = _replace_top_memories(ctx, tuple(e for _s, e in scored))
+
+        # Spec §11.1 : trivial state shortcut. Skip LLM si l'etat ne necessite
+        # pas de decision creative (pas de presents, pas de stimulus, plan
+        # routinier). Reduit la latence pour les ticks de masse.
+        if self._trivial_state_shortcut and is_trivial_state(ctx):
+            self._trivial_shortcuts += 1
+            return deterministic_fallback_action(ctx)
 
         user_prompt = build_user_prompt(ctx)
         cache_key = compute_cache_key(
@@ -291,4 +334,5 @@ __all__ = [
     "SelectionContext",
     "build_user_prompt",
     "deterministic_fallback_action",
+    "is_trivial_state",
 ]

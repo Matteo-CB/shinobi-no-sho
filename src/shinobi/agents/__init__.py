@@ -89,6 +89,7 @@ from shinobi.agents.selector import (
     SelectionContext,
     build_user_prompt,
     deterministic_fallback_action,
+    is_trivial_state,
 )
 from shinobi.agents.store import AgentMemoryStore
 from shinobi.agents.tick import TickContextProvider, TickEngine
@@ -159,6 +160,7 @@ __all__ = [
     "deterministic_fallback_reflections",
     "initialize_roster",
     "is_trivial_action",
+    "is_trivial_state",
     "jaccard_similarity",
     "push_action_to_kg",
     "push_actions_to_kg_batch",

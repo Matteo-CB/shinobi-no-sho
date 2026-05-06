@@ -440,7 +440,11 @@ class TestActionSelector:
                 return {"type": "speak", "content": "bonjour", "importance": 0.5}
 
             with LLMCache(None) as cache:
-                selector = ActionSelector(llm_call=mock_llm, cache=cache)
+                # trivial_state_shortcut=False : on teste le path LLM
+                selector = ActionSelector(
+                    llm_call=mock_llm, cache=cache,
+                    trivial_state_shortcut=False,
+                )
                 mem = AgentMemory(npc_id="x")
                 ctx = SelectionContext(npc_id="x", year=12)
                 a1 = await selector.select(mem, ctx)
@@ -1141,6 +1145,149 @@ class TestBatchInferences:
             ctx = SelectionContext(npc_id="sasuke", year=12)
             new_ctx = auto_fill_selection_context(ctx, kg_store=kg)
             assert new_ctx.world_summary  # non-vide
+
+    def test_sample_majors_k_strategy(self) -> None:
+        """Spec §11.1 strategie 1 : 'Sampling top-K agents (5 sur 15) actifs
+        ce tick'. TickEngine.sample_majors_k=5 -> 5 majors simules au lieu de 15."""
+        async def run() -> None:
+            from shinobi.agents import (
+                ActionSelector,
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+                sample_majors_k=5,
+                sampling_seed=42,
+            )
+            results = await engine.tick(year=12, tick=1)
+            # 5 majors sampled, 0 secondary (tick 1 % 10 != 0)
+            assert len(results) == 5
+            # Determinisme : meme seed + meme tick -> meme sample
+            results2 = await engine.tick(year=12, tick=1)
+            assert {r.action.npc_id for r in results} == {
+                r.action.npc_id for r in results2
+            }
+
+        asyncio.run(run())
+
+    def test_sample_majors_k_none_simulates_all(self) -> None:
+        """Sans sample_majors_k, on simule TOUS les majors (default behavior)."""
+        async def run() -> None:
+            from shinobi.agents import (
+                ActionSelector,
+                AgentMemoryStore,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(),
+                reflector=Reflector(),
+                sample_majors_k=None,  # default
+            )
+            results = await engine.tick(year=12, tick=1)
+            assert len(results) == 15  # tous les majors
+
+        asyncio.run(run())
+
+    def test_trivial_state_shortcut_skips_llm(self) -> None:
+        """Spec §11.1 strategie 4 : 'Decision deterministe simplifiee si le
+        PNJ est dans un etat trivial'. Le LLM n'est PAS appele."""
+        async def run() -> None:
+            from shinobi.agents import is_trivial_state
+
+            llm_calls = 0
+
+            async def mock_llm(*args, **kwargs):
+                nonlocal llm_calls
+                llm_calls += 1
+                return {"type": "speak", "content": "x", "importance": 0.5}
+
+            selector = ActionSelector(
+                llm_call=mock_llm, trivial_state_shortcut=True,
+            )
+            mem = AgentMemory(npc_id="x")
+            # Etat trivial : pas de presents, plan 'mediter'
+            ctx = SelectionContext(
+                npc_id="x", year=12,
+                active_plans_text=("mediter en silence",),
+            )
+            assert is_trivial_state(ctx) is True
+            await selector.select(mem, ctx)
+            assert llm_calls == 0  # SHORTCUT applique
+            assert selector.trivial_shortcuts == 1
+
+        asyncio.run(run())
+
+    def test_trivial_state_shortcut_disabled_calls_llm(self) -> None:
+        """Si trivial_state_shortcut=False, le LLM est appele meme en etat trivial."""
+        async def run() -> None:
+            llm_calls = 0
+
+            async def mock_llm(*args, **kwargs):
+                nonlocal llm_calls
+                llm_calls += 1
+                return {"type": "speak", "content": "x", "importance": 0.5}
+
+            selector = ActionSelector(
+                llm_call=mock_llm, trivial_state_shortcut=False,
+            )
+            mem = AgentMemory(npc_id="x")
+            ctx = SelectionContext(
+                npc_id="x", year=12,
+                active_plans_text=("mediter",),
+            )
+            await selector.select(mem, ctx)
+            assert llm_calls == 1  # LLM appele
+            assert selector.trivial_shortcuts == 0
+
+        asyncio.run(run())
+
+    def test_trivial_state_detection_logic(self) -> None:
+        """is_trivial_state retourne True/False selon les heuristiques spec."""
+        from shinobi.agents import is_trivial_state
+
+        # Cas trivial : pas de presents, pas de memoires saillantes, plan trivial
+        trivial = SelectionContext(
+            npc_id="x", year=12, active_plans_text=("entrainement routine",),
+        )
+        assert is_trivial_state(trivial) is True
+
+        # Cas non-trivial : presents
+        busy = SelectionContext(
+            npc_id="x", year=12,
+            present_npc_ids=("y",),
+        )
+        assert is_trivial_state(busy) is False
+
+        # Cas non-trivial : plan ambitieux
+        ambitious = SelectionContext(
+            npc_id="x", year=12,
+            active_plans_text=("comploter contre le hokage",),
+        )
+        assert is_trivial_state(ambitious) is False
+
+        # Cas non-trivial : memoire saillante
+        from shinobi.agents.types import Observation
+        salient = SelectionContext(
+            npc_id="x", year=12,
+            top_memories=(Observation(
+                npc_id="x", text="trauma majeur", year=8, importance=0.9,
+            ),),
+        )
+        assert is_trivial_state(salient) is False
 
     def test_fast_forward_with_canon_scheduler_wiring(self) -> None:
         """Spec §6.5 : 'events canon se declenchent ou s'annulent selon les

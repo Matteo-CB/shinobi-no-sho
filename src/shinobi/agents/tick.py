@@ -1,9 +1,10 @@
 """TickEngine : orchestrateur multi-agent + tick autonome + fast-forward.
 
-Spec docs/02 §6.4 + §6.5 :
+Spec docs/02 §6.4 + §6.5 + §11.1 :
 - Top-15 simulation active a chaque tick
 - PNJ secondaires : par lot toutes les 10 ticks
 - Mode fast-forward : tick N mois sans le joueur, digest a la fin
+- Strategie latence §11.1 : Sampling top-K agents (5 sur 15) actifs ce tick
 
 L'engine consomme :
 - AgentRoster (qui simuler ce tick)
@@ -19,6 +20,7 @@ Output :
 
 from __future__ import annotations
 
+import random
 from collections.abc import Callable
 
 from shinobi.agents.agent import (
@@ -73,6 +75,8 @@ class TickEngine:
         personality_store: PersonalityStore | None = None,
         secondary_period_ticks: int = 10,
         ticks_per_month: int = DEFAULT_TICKS_PER_MONTH,
+        sample_majors_k: int | None = None,
+        sampling_seed: int = 0,
     ) -> None:
         self._roster = roster
         self._store = memory_store
@@ -82,6 +86,10 @@ class TickEngine:
         self._personality_store = personality_store
         self._secondary_period_ticks = secondary_period_ticks
         self._ticks_per_month = ticks_per_month
+        # Spec §11.1 : Sampling top-K agents actifs ce tick (default = simulate all)
+        # Si sample_majors_k est defini, on tire K majors par tick (deterministe avec seed).
+        self._sample_majors_k = sample_majors_k
+        self._sampling_seed = sampling_seed
         # Cache d'instances MajorAgent par npc_id (eviter re-load memory)
         self._agents: dict[str, MajorAgent] = {}
 
@@ -120,17 +128,31 @@ class TickEngine:
         return agent
 
     def _select_npcs_for_tick(self, tick: int) -> list[str]:
-        """Liste des PNJ a simuler ce tick selon roster.tier + tick number."""
-        out: list[str] = []
+        """Liste des PNJ a simuler ce tick selon roster.tier + tick number.
+
+        Spec §11.1 : si `sample_majors_k` est defini, on tire K majors aleatoirement
+        (deterministe avec seed=sampling_seed+tick) au lieu de simuler les 15.
+        Les secondary restent batches tous les 10 ticks (logique inchangee).
+        """
+        majors: list[str] = []
+        secondary_active: list[str] = []
         for entry in self._roster.all_entries:
             if entry.tier == AgentTier.background:
                 continue
-            if self._roster.should_simulate_this_tick(
+            if entry.tier == AgentTier.major:
+                majors.append(entry.npc_id)
+            elif self._roster.should_simulate_this_tick(
                 entry.npc_id, tick=tick,
                 secondary_period=self._secondary_period_ticks,
             ):
-                out.append(entry.npc_id)
-        return out
+                secondary_active.append(entry.npc_id)
+
+        # Sampling top-K majors ce tick (deterministe par seed+tick)
+        if self._sample_majors_k is not None and len(majors) > self._sample_majors_k:
+            rng = random.Random(self._sampling_seed + tick)
+            majors = rng.sample(sorted(majors), self._sample_majors_k)
+
+        return [*sorted(majors), *sorted(secondary_active)]
 
     # --- single tick -------------------------------------------------------
 
