@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 from rich.console import Console
@@ -199,51 +200,37 @@ def play_session(save_id: str) -> None:
 
     # Phase C §5.3 : TensionScheduler pour la boucle de jeu normale.
     # Spec '1 inf/3 mois in-game' s'applique a TOUS les modes (normal +
-    # fast-forward). En normal, on tick a chaque tour pour que l'analyst
-    # se declenche quand 3 mois sont passes. Detector tourne chaque tour
-    # (gratuit, sync).
+    # fast-forward). En normal, on tick a chaque tour. Detector tourne
+    # chaque tour (gratuit, sync). L'analyst LLM est cree LAZY a chaque
+    # tick via `async with LLMClient()` (le contexte HTTP n'est valide
+    # qu'a l'interieur du with).
     main_loop_kg = save_module.kg_db_path(save_id)
-    main_loop_tension_scheduler = None
     main_loop_kg_store = None
-    main_loop_llm_client = None
+    main_loop_social = None
+    main_loop_scheduler_state = None
     if main_loop_kg.exists():
         try:
             from shinobi.kg.social import SocialNetwork
             from shinobi.kg.store import KnowledgeGraphStore
-            from shinobi.llm.client import LLMClient
-            from shinobi.tension import LLMTensionAnalyst, SchedulerState
+            from shinobi.tension import SchedulerState
 
             main_loop_kg_store = KnowledgeGraphStore(main_loop_kg)
             main_loop_social = SocialNetwork(main_loop_kg_store.conn)
 
-            # Spec §5.3 : LLM client wired pour que l'analyst soit ACTIF.
-            # Sans LLMClient, analyze() retourne TensionList vide.
-            main_loop_llm_client = LLMClient()
-            main_loop_analyst = LLMTensionAnalyst(
-                main_loop_kg_store,
-                llm_client=main_loop_llm_client,
-                social_network=main_loop_social,
-            )
             # Spec §5.3 : scheduler_state persiste entre sessions pour
             # respecter '1 inf/3 mois' au-dela d'une session.
             scheduler_state_path = save_module.tension_scheduler_state_path(save_id)
-            initial_state = SchedulerState()
+            main_loop_scheduler_state = SchedulerState()
             if scheduler_state_path.exists():
                 try:
                     state_data = json.loads(
                         scheduler_state_path.read_text(encoding="utf-8"),
                     )
-                    initial_state = SchedulerState.from_dict(state_data)
+                    main_loop_scheduler_state = SchedulerState.from_dict(state_data)
                 except (json.JSONDecodeError, OSError):
-                    initial_state = SchedulerState()
-            main_loop_tension_scheduler = TensionScheduler(
-                main_loop_kg_store,
-                analyst=main_loop_analyst,
-                social_network=main_loop_social,
-                state=initial_state,
-            )
+                    main_loop_scheduler_state = SchedulerState()
         except Exception:
-            main_loop_tension_scheduler = None
+            main_loop_kg_store = None
 
     console.print(
         Panel.fit(
@@ -566,19 +553,26 @@ def play_session(save_id: str) -> None:
             console.print(f"[red]Erreur de sauvegarde : {type(exc).__name__}: {exc}[/red]")
 
         # Phase C §5.3 : tick le TensionScheduler apres chaque tour normal.
-        # Detector tourne sync (gratuit). Analyst LLM tourne uniquement si
-        # 3 mois in-game ecoules depuis le dernier appel (intelligent throttling).
-        if main_loop_tension_scheduler is not None:
+        # Spec '1 inf/3 mois in-game'. Le LLMClient est cree LAZY pour ce
+        # tick (le contexte HTTP n'est valide qu'a l'interieur du `async with`).
+        if main_loop_kg_store is not None:
             try:
                 month = int(world.current_date.split("-")[0])
                 tick_result = asyncio.run(
-                    main_loop_tension_scheduler.tick(
-                        world.current_year, month=month,
+                    _phase_c_tick_with_llm(
+                        kg_store=main_loop_kg_store,
+                        social=main_loop_social,
+                        state=main_loop_scheduler_state,
+                        year=world.current_year, month=month,
                     ),
                 )
+                # Update state in-place pour le prochain tour
+                if tick_result is not None and tick_result.new_state is not None:
+                    main_loop_scheduler_state = tick_result.new_state
                 # Si l'analyst a tourne ce tour : affiche les opportunites
                 if (
-                    tick_result.analyst_ran
+                    tick_result is not None
+                    and tick_result.analyst_ran
                     and tick_result.tensions.tensions
                 ):
                     console.print(
@@ -590,15 +584,13 @@ def play_session(save_id: str) -> None:
                             f"  [dim][{t.severity.value}][/dim] "
                             f"{t.description[:80]}"
                         )
-                # Persiste le state apres chaque tick pour preserver le
-                # throttling 3-mois entre sessions.
-                if tick_result.analyst_ran:
+                    # Persiste le state apres analyst run
                     try:
                         state_path = save_module.tension_scheduler_state_path(save_id)
                         state_path.parent.mkdir(parents=True, exist_ok=True)
                         state_path.write_text(
                             json.dumps(
-                                main_loop_tension_scheduler.state.to_dict(),
+                                main_loop_scheduler_state.to_dict(),
                                 ensure_ascii=False, indent=2,
                             ),
                             encoding="utf-8",
@@ -606,7 +598,6 @@ def play_session(save_id: str) -> None:
                     except Exception:
                         pass
             except Exception:
-                # Defensif : ne crash pas le tour si scheduler echoue
                 pass
 
     # Cleanup KG store du main loop
@@ -1457,6 +1448,39 @@ def _ensure_agents_initialized(
                 )
 
 
+@dataclass
+class _PhaseCTickResult:
+    """Resultat d'un tick Phase C wrapping TickResult + new_state."""
+
+    tensions: object  # TensionList
+    analyst_ran: bool
+    new_state: object  # SchedulerState | None
+
+
+async def _phase_c_tick_with_llm(
+    *, kg_store, social, state, year: int, month: int,
+):
+    """Spec §5.3 : tick TensionScheduler avec LLMClient cree LAZY (HTTP
+    context valide seulement dans `async with`)."""
+    from shinobi.llm.client import LLMClient
+    from shinobi.tension import LLMTensionAnalyst
+
+    async with LLMClient() as llm_client:
+        analyst = LLMTensionAnalyst(
+            kg_store, llm_client=llm_client, social_network=social,
+        )
+        scheduler = TensionScheduler(
+            kg_store, analyst=analyst,
+            social_network=social, state=state,
+        )
+        tick_result = await scheduler.tick(year, month=month)
+    return _PhaseCTickResult(
+        tensions=tick_result.tensions,
+        analyst_ran=tick_result.analyst_ran,
+        new_state=scheduler.state,
+    )
+
+
 async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
     """Spec §5.3 : force LLM analyst Qwen3-4B sur snapshot KG.
 
@@ -1746,37 +1770,25 @@ async def _run_fast_forward(
     # Phase D : engine de drift pour les canon events fired pendant fast-forward
     personality_engine = PersonalityEngine()
 
-    # Phase C §5.3 : TensionScheduler - 1 inf LLM analyst tous les 3 mois
-    # in-game. Le detector deterministe tourne a chaque tick (gratuit).
-    # social_network passe a l'analyst pour le snapshot avec relations.
-    # LLMClient + state persiste (idem main loop) pour que l'analyst soit
-    # ACTIF et le throttling 3 mois preserve entre sessions.
-    tension_scheduler = None
-    fast_forward_llm_client = None
+    # Phase C §5.3 : TensionScheduler - 1 inf LLM analyst tous les 3 mois.
+    # Le LLMClient est cree LAZY dans canon_scheduler_callable via async
+    # with (HTTP context valide seulement la). On charge le state initial
+    # ici pour respecter le throttling entre sessions.
+    ff_state_path = save_module.tension_scheduler_state_path(save_id)
+    ff_scheduler_state = None
     if kg_store_ref is not None:
         try:
-            from shinobi.llm.client import LLMClient
-            from shinobi.tension import LLMTensionAnalyst, SchedulerState
-            fast_forward_llm_client = LLMClient()
-            ff_analyst = LLMTensionAnalyst(
-                kg_store_ref, llm_client=fast_forward_llm_client,
-                social_network=social_net,
-            )
-            ff_state_path = save_module.tension_scheduler_state_path(save_id)
-            ff_initial_state = SchedulerState()
+            from shinobi.tension import SchedulerState
+            ff_scheduler_state = SchedulerState()
             if ff_state_path.exists():
                 try:
-                    ff_initial_state = SchedulerState.from_dict(
+                    ff_scheduler_state = SchedulerState.from_dict(
                         json.loads(ff_state_path.read_text(encoding="utf-8")),
                     )
                 except (json.JSONDecodeError, OSError):
-                    ff_initial_state = SchedulerState()
-            tension_scheduler = TensionScheduler(
-                kg_store_ref, analyst=ff_analyst,
-                social_network=social_net, state=ff_initial_state,
-            )
+                    ff_scheduler_state = SchedulerState()
         except Exception:
-            tension_scheduler = None
+            ff_scheduler_state = None
     # Accumulateur de tensions analyst pour le digest
     analyst_tensions_acc: list = []
 
@@ -1834,15 +1846,20 @@ async def _run_fast_forward(
             except Exception:
                 pass
 
-        # Phase C §5.3 : TensionScheduler.tick = detector deterministe (sync,
-        # gratuit) + LLM analyst si interval 3 mois ecoule (1 inf/3 mois).
-        # Le scheduler gere le throttling intelligement.
-        if tension_scheduler is not None:
+        # Phase C §5.3 : TensionScheduler tick avec LLMClient cree LAZY
+        # (HTTP context valide seulement dans `async with`).
+        nonlocal ff_scheduler_state
+        if kg_store_ref is not None and ff_scheduler_state is not None:
             try:
                 month = int(cur_world.current_date.split("-")[0])
-                tick_result = await tension_scheduler.tick(year, month=month)
-                # Si l'analyst a tourne, capture les tensions detectees
-                # pour les inclure dans le digest fast-forward.
+                tick_result = await _phase_c_tick_with_llm(
+                    kg_store=kg_store_ref,
+                    social=social_net,
+                    state=ff_scheduler_state,
+                    year=year, month=month,
+                )
+                if tick_result.new_state is not None:
+                    ff_scheduler_state = tick_result.new_state
                 if tick_result.analyst_ran and tick_result.tensions.tensions:
                     analyst_tensions_acc.extend(tick_result.tensions.tensions)
             except Exception:
@@ -1941,13 +1958,12 @@ async def _run_fast_forward(
 
     # Spec §5.3 : persiste le scheduler state apres fast-forward pour
     # preserver le throttling 3 mois entre sessions.
-    if tension_scheduler is not None:
+    if ff_scheduler_state is not None:
         try:
-            ff_state_path = save_module.tension_scheduler_state_path(save_id)
             ff_state_path.parent.mkdir(parents=True, exist_ok=True)
             ff_state_path.write_text(
                 json.dumps(
-                    tension_scheduler.state.to_dict(),
+                    ff_scheduler_state.to_dict(),
                     ensure_ascii=False, indent=2,
                 ),
                 encoding="utf-8",
@@ -1955,15 +1971,10 @@ async def _run_fast_forward(
         except Exception:
             pass
 
-    # Cleanup KG store + LLM client fast-forward
+    # Cleanup KG store
     if kg_store_ref is not None:
         try:
             kg_store_ref.close()
-        except Exception:
-            pass
-    if fast_forward_llm_client is not None:
-        try:
-            await fast_forward_llm_client.aclose()
         except Exception:
             pass
 
