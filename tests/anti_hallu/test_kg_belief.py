@@ -276,6 +276,61 @@ def test_propagate_cascade_syncs_known_by_for_all_targets(
     assert "madara" in fact.known_by_npc_ids
 
 
+def test_push_player_action_creates_kg_fact(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Spec §5.4 use case : action joueur -> Fact KG."""
+    from shinobi.cli.play import _push_player_action_to_kg
+    from shinobi.engine.actions import Action
+    from shinobi.types import ActionType
+
+    action = Action(
+        action_type=ActionType.fight,
+        summary="combat avec Itachi",
+        target_id="uchiha_itachi",
+    )
+    fid = _push_player_action_to_kg(
+        store, character_name="naruto", action=action, result=None, year=8,
+    )
+    assert fid is not None
+    fact = store.get_fact(fid)
+    assert fact is not None
+    assert fact.subject == "naruto"
+    assert fact.relation == "fought"
+    assert fact.object == "uchiha_itachi"
+    assert fact.valid_from_year == 8
+    assert fact.source.startswith("player_action:")
+    # Le joueur connait son propre acte
+    assert "naruto" in fact.known_by_npc_ids
+
+
+def test_push_player_action_private_returns_none(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Actions privees (rest, train, meditate) ne creent pas de fact public."""
+    from shinobi.cli.play import _push_player_action_to_kg
+    from shinobi.engine.actions import Action
+    from shinobi.types import ActionType
+
+    for atype in (ActionType.rest, ActionType.train_stat, ActionType.meditate):
+        action = Action(action_type=atype, summary="...")
+        fid = _push_player_action_to_kg(
+            store, character_name="naruto",
+            action=action, result=None, year=8,
+        )
+        assert fid is None
+
+
+def test_notable_player_actions_includes_social_scandals(self=None) -> None:
+    """Spec §5.4 : actions sociales (seduce/bribe/intimidate) sont notables."""
+    from shinobi.cli.play import _NOTABLE_PLAYER_ACTIONS
+
+    for atype in ("seduce", "bribe", "intimidate", "fight", "challenge"):
+        assert atype in _NOTABLE_PLAYER_ACTIONS, (
+            f"{atype} devrait etre notable (genere rumeur)"
+        )
+
+
 def test_propagate_cascade_temporal_offset(
     store: KnowledgeGraphStore, propagator: BeliefPropagator,
 ) -> None:

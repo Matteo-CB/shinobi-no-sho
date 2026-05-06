@@ -1682,10 +1682,15 @@ _PLAYER_ACTION_RELATIONS: dict[str, str] = {
     "custom": None,
 }
 
-# Actions importantes (importance 0.7+) qui peuvent generer une rumeur
+# Actions importantes (importance 0.7+) qui peuvent generer une rumeur.
+# Spec §5.4 use case : actions dramatiquement notables propagent via cascade.
+# Inclut combat, conflit, et actions sociales 'scandaleuses' qui sont
+# typiquement rapportees par les temoins (potin / rumeur).
 _NOTABLE_PLAYER_ACTIONS: frozenset[str] = frozenset({
     "fight", "challenge", "steal", "spy", "submit_mission",
     "use_technique",
+    # Actions sociales qui se propagent comme rumeurs canon
+    "seduce", "bribe", "intimidate",
 })
 
 
