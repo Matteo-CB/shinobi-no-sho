@@ -852,6 +852,36 @@ class TestEmbeddingsIndexBGE:
         top = m.retrieve("massacre", top_k=2)
         assert "massacre" in top[0][1].text
 
+    def test_phase_d_drift_applies_during_fast_forward(self) -> None:
+        """Phase D <-> Phase E integration : pendant fast-forward, les canon
+        events fired declenchent le drift de personnalite (event_bridge)."""
+        from shinobi.personality import (
+            EventCategory,
+            ExperiencedEvent,
+            NPCPersonality,
+            PersonalityDimension,
+            PersonalityEngine,
+        )
+
+        engine = PersonalityEngine()
+        baseline = NPCPersonality(npc_id="uchiha_sasuke")
+        ev = ExperiencedEvent(
+            npc_id="uchiha_sasuke",
+            category=EventCategory.massacre_against_self_clan,
+            year=8, intensity=1.0,
+            related_event_id="event_uchiha_massacre",
+        )
+        drifted = engine.apply_event(baseline, ev)
+
+        # Drift doit avoir bouge vengeance + isolationism
+        assert drifted.value(PersonalityDimension.vengeance) > baseline.value(
+            PersonalityDimension.vengeance,
+        )
+        assert drifted.value(PersonalityDimension.isolationism) > baseline.value(
+            PersonalityDimension.isolationism,
+        )
+        assert len(drifted.drift_history) == 1
+
     def test_tick_auto_pushes_actions_to_kg(self) -> None:
         """Spec §6.3 : 'Ces actions modifient le KG'. Apres tick, les actions
         des agents doivent etre presentes dans le KG."""

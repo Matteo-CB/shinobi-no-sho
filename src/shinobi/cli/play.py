@@ -1479,6 +1479,9 @@ async def _run_fast_forward(
         SocialNetwork(kg_store_ref.conn) if kg_store_ref is not None else None
     )
 
+    # Phase D : engine de drift pour les canon events fired pendant fast-forward
+    personality_engine = PersonalityEngine()
+
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
@@ -1489,6 +1492,9 @@ async def _run_fast_forward(
         - Les actions high-impact mutent world.npc_states avant tick_scheduler
         - tick_scheduler lit world.npc_states pour evaluer preconditions
         - Le link causal agents -> canon est ainsi etabli
+
+        Phase D ↔ Phase E : les canon events fired declenchent le drift de
+        personnalite des PNJ impliques (idem main loop joueur).
         """
         from shinobi.engine.time import advance_time
         from shinobi.utils.time_utils import GameDate
@@ -1518,6 +1524,18 @@ async def _run_fast_forward(
             cur_world, canon, turn_number=tick,
         )
         world_ref[0] = cur_world
+
+        # Phase D ↔ Phase E : drift de personnalite sur les events fired
+        # (idem main loop joueur). Les NPCs impliques voient leur vecteur
+        # bouger selon les rules deterministes (event_bridge).
+        if fired:
+            try:
+                _apply_personality_drift_for_fired(
+                    save_id, fired, canon, personality_engine,
+                )
+            except Exception:
+                pass
+
         return state, fired, cancelled
 
     with AgentMemoryStore(db_path) as store, \
