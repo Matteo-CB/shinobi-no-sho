@@ -49,6 +49,12 @@ from shinobi.engine.world import NPCState
 from shinobi.llm.client import LLMClient
 from shinobi.llm.narration import NarrationRequest, Narrator
 from shinobi.persistence import saves as save_module
+from shinobi.personality import (
+    PersonalityEngine,
+    PersonalityStore,
+    collect_experienced_events,
+    extract_baselines_from_file,
+)
 from shinobi.rag.retriever import Retriever
 from shinobi.rag.store import ChromaStore
 from shinobi.types import ActionType
@@ -82,6 +88,7 @@ META_HELP = {
     "/journal": "Indique ou se trouve le journal",
     "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
     "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
+    "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
     "/help": "Affiche cette aide",
     "/quit": "Sauvegarde et retourne au menu principal",
 }
@@ -149,6 +156,15 @@ def play_session(save_id: str) -> None:
         _ensure_kg_initialized(save_id, canon, console=console)
     except Exception as exc:
         console.print(f"[dim]KG init ignore : {type(exc).__name__}[/dim]")
+
+    # Phase D : extrait baselines vectorielles + restaure les drifts
+    # accumules en cours de partie (per-save). Idempotent : ne re-extrait
+    # baseline que si la base est vide pour ce NPC.
+    try:
+        _ensure_personality_initialized(save_id, console=console)
+    except Exception as exc:
+        console.print(f"[dim]Personality init ignore : {type(exc).__name__}[/dim]")
+    personality_engine = PersonalityEngine()
 
     console.print(
         Panel.fit(
@@ -350,6 +366,17 @@ def play_session(save_id: str) -> None:
 
         # Annonce des rumeurs nouvellement nees que le joueur peut entendre
         world = _announce_new_rumors(world, character, fired_event_ids={f.event_id for f in fired}, canon=canon)
+
+        # Phase D : drift de personnalite des PNJ impliques dans les events
+        # fired ce tour. Le bridge convertit canon TimelineEvent -> ExperiencedEvent
+        # et l'engine applique avec saturation sigmoid + persiste l'historique.
+        if fired:
+            try:
+                _apply_personality_drift_for_fired(
+                    save_id, fired, canon, personality_engine,
+                )
+            except Exception as exc:
+                console.print(f"[dim]Drift Phase D ignore : {type(exc).__name__}[/dim]")
 
         # Vieillissement : si l'annee a change, remettre l'age en phase et appliquer aging_decay/growth
         character = _age_character_if_needed(character, world)
@@ -682,6 +709,12 @@ def _handle_meta(
         default_path = _s.saves_dir / save_id / "vn_dialogues.json"
         target = Path(parts[1].strip()) if len(parts) > 1 and parts[1].strip() else default_path
         _export_vn_dialogues(dialogue_log, target)
+    elif command.startswith("/personality"):
+        parts = command.split(maxsplit=1)
+        if len(parts) < 2 or not parts[1].strip():
+            console.print("[red]Usage : /personality <npc_id>[/red]")
+        else:
+            _print_personality(save_id, parts[1].strip())
     else:
         console.print(f"[red]Commande inconnue : {command}[/red] (tape [cyan]/help[/cyan])")
     return True, character, world
@@ -711,6 +744,48 @@ def _print_dialogue_log(dialogue_log: DialogueLog | None) -> None:
             title=f"Dialogues VN ({dialogue_log.size}/{dialogue_log.max_size})",
             border_style="cyan",
         )
+    )
+
+
+def _print_personality(save_id: str, npc_id: str) -> None:
+    """Affiche le vecteur courant + baseline + top-3 drifts d'un NPC."""
+    db_path = save_module.personality_db_path(save_id)
+    if not db_path.exists():
+        console.print(
+            "[yellow]Aucune base de personnalite (Phase D non initialisee).[/yellow]"
+        )
+        return
+    with PersonalityStore(db_path) as store:
+        personality = store.get_personality(npc_id)
+    if personality is None:
+        console.print(f"[yellow]Aucune personnalite enregistree pour {npc_id}.[/yellow]")
+        return
+    engine = PersonalityEngine()
+    top_drifted = engine.top_drifted_dimensions(personality, n=5)
+    lines = [
+        f"  Divergence canon : [bold magenta]{personality.divergence_from_canon():.3f}[/bold magenta]",
+        f"  Drifts appliques : {len(personality.drift_history)}",
+        "",
+        "  [cyan]Top dimensions ayant drifte :[/cyan]",
+    ]
+    for dim, _mag in top_drifted:
+        cur = personality.value(dim)
+        base = personality.baseline(dim)
+        delta = cur - base
+        sign = "+" if delta >= 0 else ""
+        lines.append(
+            f"    {dim.value:14s} {base:.2f} -> {cur:.2f} ({sign}{delta:.3f})"
+        )
+    if personality.drift_history:
+        lines.append("")
+        lines.append("  [cyan]5 derniers drifts :[/cyan]")
+        for d in list(personality.drift_history)[-5:]:
+            lines.append(
+                f"    [dim]an {d.year}[/dim] {d.rule_name}"
+                + (f" (re: {d.related_npc_id})" if d.related_npc_id else "")
+            )
+    console.print(
+        Panel("\n".join(lines), title=f"Personnalite : {npc_id}", border_style="magenta")
     )
 
 
@@ -1163,6 +1238,75 @@ def _ensure_kg_initialized(save_id: str, canon, *, console=None) -> None:
                             f"{stats.get('missions_imported', 0)} missions, "
                             f"{stats.get('facts_inserted', 0)} facts[/dim]"
                         )
+
+
+def _ensure_personality_initialized(save_id: str, *, console=None) -> None:
+    """Initialise le store de personnalite si vide : extrait baselines pour
+    tous les NPCs presents dans psycho_notes.json. Idempotent.
+
+    Si la base est deja peuplee, on ne fait rien (les drifts deja accumules
+    en cours de partie sont preserves).
+    """
+    from shinobi.config import settings as _s
+
+    db_path = save_module.personality_db_path(save_id)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    psycho_path = _s.canonical_data_dir / "psycho_notes.json"
+    if not psycho_path.exists():
+        return
+
+    with PersonalityStore(db_path) as store:
+        existing = {p.npc_id for p in store.list_personalities()}
+        baselines = extract_baselines_from_file(psycho_path)
+        new_count = 0
+        for npc_id, p in baselines.items():
+            if npc_id in existing:
+                continue
+            store.upsert_personality(p)
+            new_count += 1
+        if new_count > 0 and console is not None:
+            console.print(
+                f"[dim]Personality baselines extraits : {new_count} PNJ[/dim]",
+            )
+
+
+def _apply_personality_drift_for_fired(
+    save_id: str,
+    fired,
+    canon,
+    engine: PersonalityEngine,
+) -> None:
+    """Applique le drift de personnalite aux PNJ impliques dans les events
+    fired ce tour. Le bridge transcrit canon -> ExperiencedEvent.
+    """
+    if not fired:
+        return
+    canon_events = []
+    for f in fired:
+        ev = canon.timeline_events.get(f.event_id)
+        if ev is not None:
+            canon_events.append(ev)
+    if not canon_events:
+        return
+    experienced = collect_experienced_events(timeline_events=canon_events)
+    if not experienced:
+        return
+
+    db_path = save_module.personality_db_path(save_id)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    # Group by npc pour minimiser les ouvertures
+    per_npc: dict[str, list] = {}
+    for e in experienced:
+        per_npc.setdefault(e.npc_id, []).append(e)
+    with PersonalityStore(db_path) as store:
+        for npc_id, events in per_npc.items():
+            personality = store.get_personality(npc_id)
+            if personality is None:
+                # Pas de baseline pour ce NPC : on skip (vector neutre n'est
+                # pas utile a drifter sans canon_baseline informatif)
+                continue
+            personality = engine.apply_events(personality, events)
+            store.save_personality_with_history(personality)
 
 
 async def _attempt_narration(

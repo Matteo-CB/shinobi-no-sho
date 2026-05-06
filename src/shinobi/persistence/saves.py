@@ -85,6 +85,11 @@ def kg_db_path(save_id: str) -> Path:
     return _save_dir(save_id) / "kg.sqlite"
 
 
+def personality_db_path(save_id: str) -> Path:
+    """Chemin de la base SQLite des personnalites vectorielles (Phase D)."""
+    return _save_dir(save_id) / "personality.sqlite"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []
