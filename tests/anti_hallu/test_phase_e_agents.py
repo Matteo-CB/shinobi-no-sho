@@ -1078,6 +1078,123 @@ class TestBatchInferences:
 
         asyncio.run(run())
 
+    def test_context_auto_builder_world_summary(self) -> None:
+        """Spec §6.3 : 'L'etat du monde local (KG filtre sur ce qu'il sait)'."""
+        from shinobi.agents import build_world_summary_for_npc
+        from shinobi.kg.schema import Fact, ObjectType
+        from shinobi.kg.store import KnowledgeGraphStore
+
+        with KnowledgeGraphStore(None) as kg:
+            kg.add_fact(Fact(
+                subject="naruto", relation="traveled_to", object="suna",
+                object_type=ObjectType.entity, valid_from_year=12,
+                known_by_npc_ids=["naruto", "sakura"],
+            ))
+            # Fact connu de sakura
+            summary_sakura = build_world_summary_for_npc(
+                kg_store=kg, npc_id="sakura", year=12,
+            )
+            assert "naruto" in summary_sakura
+            # Fact pas connu de sasuke
+            summary_sasuke = build_world_summary_for_npc(
+                kg_store=kg, npc_id="sasuke", year=12,
+            )
+            assert summary_sasuke == ""
+
+    def test_context_auto_builder_relations_summary(self) -> None:
+        """Spec §6.3 : 'Sa relation avec les autres PNJ presents'."""
+        from shinobi.agents import build_relations_summary_for_npc
+        from shinobi.kg.schema import SocialLink
+        from shinobi.kg.social import SocialNetwork
+        from shinobi.kg.store import KnowledgeGraphStore
+
+        with KnowledgeGraphStore(None) as kg:
+            net = SocialNetwork(kg.conn)
+            net.add_link(SocialLink(
+                npc_a="naruto", npc_b="sasuke",
+                link_type="rival", strength=0.8,
+            ))
+            net.add_link(SocialLink(
+                npc_a="naruto", npc_b="iruka",
+                link_type="mentor", strength=0.9,
+            ))
+            summary = build_relations_summary_for_npc(
+                social_network=net, npc_id="naruto",
+                present_npc_ids=["sasuke"],
+            )
+            # Sasuke present -> tag [present]
+            assert "sasuke" in summary
+            assert "[present]" in summary
+
+    def test_auto_fill_selection_context(self) -> None:
+        """L'auto-fill remplit world+relations vides depuis KG/SocialNetwork."""
+        from shinobi.agents import auto_fill_selection_context
+        from shinobi.kg.schema import Fact, ObjectType
+        from shinobi.kg.store import KnowledgeGraphStore
+
+        with KnowledgeGraphStore(None) as kg:
+            kg.add_fact(Fact(
+                subject="x", relation="said_to", object="y",
+                object_type=ObjectType.entity, valid_from_year=12,
+                known_by_npc_ids=["sasuke"],
+            ))
+            ctx = SelectionContext(npc_id="sasuke", year=12)
+            new_ctx = auto_fill_selection_context(ctx, kg_store=kg)
+            assert new_ctx.world_summary  # non-vide
+
+    def test_fast_forward_with_canon_scheduler_wiring(self) -> None:
+        """Spec §6.5 : 'events canon se declenchent ou s'annulent selon les
+        actions agents'. Le fast_forward tick canon scheduler a chaque tick."""
+        async def run() -> None:
+            from shinobi.agents import (
+                ActionSelector,
+                AgentMemoryStore,
+                LLMCache,
+                Reflector,
+                TickEngine,
+                initialize_roster,
+            )
+
+            # Mock canon scheduler : retourne 1 fired tous les 5 ticks
+            scheduler_calls = []
+
+            def mock_scheduler(state, year, tick):
+                scheduler_calls.append((year, tick))
+                fired = []
+                cancelled = []
+                if tick % 5 == 0:
+                    # Mock CompletedEvent simple
+                    class MockEv:
+                        def __init__(self, eid):
+                            self.event_id = eid
+                    fired.append(MockEv(f"event_year_{year}_tick_{tick}"))
+                return state, fired, cancelled
+
+            store = AgentMemoryStore(None)
+            roster = initialize_roster(store)
+            cache = LLMCache(None)
+            engine = TickEngine(
+                roster=roster, memory_store=store,
+                selector=ActionSelector(cache=cache),
+                reflector=Reflector(cache=cache),
+                cache=cache,
+            )
+            digest = await engine.fast_forward(
+                from_year=12, months=1,
+                canon_scheduler_fn=mock_scheduler,
+                canon_scheduler_state={},
+            )
+            # 4 ticks (1 mois * 4) -> scheduler appele 4 fois
+            assert len(scheduler_calls) == 4
+            # Au moins 1 canon event dans le digest (tick 0 % 5 == 0)
+            canon_entries = [
+                e for e in digest.entries
+                if e.related_event_id is not None
+            ]
+            assert len(canon_entries) >= 1
+
+        asyncio.run(run())
+
     def test_batch_cache_hit(self) -> None:
         """2eme appel avec memes contextes -> cache hit, 1 seule inference."""
         async def run() -> None:

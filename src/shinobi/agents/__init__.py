@@ -42,6 +42,11 @@ from shinobi.agents.batch_selector import (
     build_batch_user_prompt,
 )
 from shinobi.agents.cache import LLMCache, compute_cache_key
+from shinobi.agents.context_builder import (
+    auto_fill_selection_context,
+    build_relations_summary_for_npc,
+    build_world_summary_for_npc,
+)
 from shinobi.agents.embeddings_index import (
     EmbeddingsIndex,
     cosine_similarity,
@@ -140,9 +145,12 @@ __all__ = [
     "TickContextProvider",
     "TickEngine",
     "action_to_fact",
+    "auto_fill_selection_context",
     "build_batch_user_prompt",
     "build_reflect_prompt",
+    "build_relations_summary_for_npc",
     "build_user_prompt",
+    "build_world_summary_for_npc",
     "collect_witness_observations",
     "composite_score",
     "compute_cache_key",

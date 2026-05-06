@@ -184,6 +184,8 @@ class TickEngine:
         starting_tick: int = 0,
         context_provider: TickContextProvider | None = None,
         digest_importance_threshold: float | None = None,
+        canon_scheduler_fn=None,
+        canon_scheduler_state=None,
     ) -> FastForwardDigest:
         """Tick N mois sans joueur. Aggrege un digest des events importants.
 
@@ -192,6 +194,14 @@ class TickEngine:
         - On itere `months * ticks_per_month` ticks
         - Year increments tous les 12 mois (loop sur n)
         - On accumule les actions importance >= threshold dans le digest
+
+        Spec docs/02 §6.5 : 'events canon se declenchent ou s'annulent
+        selon les actions agents'. On supporte ce wiring via deux callables :
+        - `canon_scheduler_fn(state, year, tick) -> (new_state, fired, cancelled)`
+        - `canon_scheduler_state` : etat opaque passe a chaque tick
+
+        Si `canon_scheduler_fn` est fourni, on tick le canon scheduler a chaque
+        tick agent et on ajoute les events fired/cancelled au digest.
         """
         threshold = (
             digest_importance_threshold
@@ -204,6 +214,7 @@ class TickEngine:
         actions_total = 0
         cache_hits = 0
         cache_misses = 0
+        canon_state = canon_scheduler_state
 
         for offset in range(total_ticks):
             cur_tick = starting_tick + offset
@@ -233,6 +244,33 @@ class TickEngine:
                         importance=r.action.importance,
                         location_id=r.action.location_id,
                     ))
+
+            # Tick canon scheduler : permet aux events canon de fire/cancel
+            # selon les actions agents accumulees dans le KG (§6.5).
+            if canon_scheduler_fn is not None and canon_state is not None:
+                try:
+                    canon_state, fired, cancelled = canon_scheduler_fn(
+                        canon_state, cur_year, cur_tick,
+                    )
+                    for ev in fired:
+                        digest_entries.append(DigestEntry(
+                            year=cur_year,
+                            headline=f"Canon event declenche : {ev.event_id}",
+                            npc_ids=(),
+                            importance=0.9,
+                            related_event_id=ev.event_id,
+                        ))
+                    for ev in cancelled:
+                        digest_entries.append(DigestEntry(
+                            year=cur_year,
+                            headline=f"Canon event annule : {ev.event_id}",
+                            npc_ids=(),
+                            importance=0.85,
+                            related_event_id=ev.event_id,
+                        ))
+                except Exception:
+                    # Defensive : on n'interrompt pas la simulation si scheduler echoue
+                    pass
 
         total_calls = cache_hits + cache_misses
         cache_hit_rate = cache_hits / total_calls if total_calls > 0 else 0.0
