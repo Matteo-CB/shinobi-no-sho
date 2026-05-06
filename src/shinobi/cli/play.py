@@ -769,7 +769,14 @@ def _handle_meta(
             except ValueError:
                 console.print("[red]Mois doit etre un entier[/red]")
             else:
-                asyncio.run(_run_fast_forward(save_id, world.current_year, months))
+                # Spec §6.5 : 'le monde tourne sans le joueur'. Le retour
+                # actualise character + world in-memory pour que le tour
+                # suivant du joueur reprenne dans l'etat advance.
+                refreshed = asyncio.run(
+                    _run_fast_forward(save_id, world.current_year, months),
+                )
+                if refreshed is not None:
+                    character, world = refreshed
     else:
         console.print(f"[red]Commande inconnue : {command}[/red] (tape [cyan]/help[/cyan])")
     return True, character, world
@@ -1414,7 +1421,7 @@ def _print_agent_detail(save_id: str, npc_id: str) -> None:
 
 async def _run_fast_forward(
     save_id: str, current_year: int, months: int,
-) -> None:
+):
     """Simule N mois sans player input. Le MONDE tourne (spec §6.5).
 
     Spec §6.5 : 'le monde tourne sans le joueur ... events canon se
@@ -1423,10 +1430,12 @@ async def _run_fast_forward(
     - A chaque tick agent : advance world time (1 semaine), tick canon
       scheduler, age character si annee passe
     - Persiste la save mise a jour a la fin
+    - Retourne (aged_character, final_world) pour refresh in-memory du
+      play_session, ou None si erreur.
     """
     if months <= 0 or months > 60:
         console.print("[red]Mois doit etre dans [1, 60][/red]")
-        return
+        return None
     db_path = save_module.agents_db_path(save_id)
     cache_path = save_module.llm_cache_db_path(save_id)
     emb_path = save_module.agents_embeddings_db_path(save_id)
@@ -1566,6 +1575,10 @@ async def _run_fast_forward(
     console.print(
         Panel("\n".join(lines), title=f"Fast-forward {months} mois", border_style="magenta")
     )
+
+    # Spec §6.5 : retourne (character, world) refreshes pour que le caller
+    # puisse mettre a jour son state in-memory.
+    return aged_character, final_world
 
 
 def _ensure_personality_initialized(save_id: str, *, console=None) -> None:
