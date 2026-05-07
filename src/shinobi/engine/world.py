@@ -133,6 +133,11 @@ class WorldState(BaseModel):
     political_climate: PoliticalClimate = Field(default_factory=PoliticalClimate)
     economy: EconomyState = Field(default_factory=EconomyState)
 
+    # Phase F : registry des SubstituteEvent runtime injectes par
+    # WorldResolverPipeline. Stocke comme dict[str, dict] (Pydantic-safe)
+    # pour eviter dependance circulaire avec shinobi.world_resolver.
+    substitute_events: dict[str, dict] = Field(default_factory=dict)
+
     def with_seed(self, seed: int) -> WorldState:
         return self.model_copy(update={"seed": seed})
 

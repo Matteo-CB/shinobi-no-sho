@@ -276,7 +276,14 @@ class SnapshotBuilder:
         for npc_id in top_ids:
             try:
                 neighbors = self._social_network.neighbors(npc_id, year=year)
-            except Exception:
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : un bug signature SocialNetwork.neighbors
+                # ferait disparaitre toutes les relations du snapshot.
+                logger.warning(
+                    "llm_analyst_neighbors_lookup_failed",
+                    npc_id=npc_id, year=year,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
                 continue
             for link in neighbors:
                 other = link.other(npc_id)

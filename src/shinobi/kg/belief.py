@@ -31,6 +31,9 @@ from collections.abc import Iterable
 
 from shinobi.kg.schema import Belief, belief_columns
 from shinobi.kg.social import SocialNetwork
+from shinobi.logging_setup import get_logger
+
+logger = get_logger(__name__)
 
 # Coefficient de decay par canal de transmission
 CHANNEL_DECAY: dict[str, float] = {
@@ -76,6 +79,9 @@ class BeliefPropagator:
         coherent avec kg_beliefs (storage). Sans ce sync, les 2 vues du
         sub-KG divergent.
         """
+        # Respect transaction utilisateur : ne commit que si on n'est pas
+        # deja dans une transaction parente (eviterait son rollback).
+        in_user_tx = self._conn.in_transaction
         row = belief.to_row()
         cur = self._conn.execute(
             "INSERT INTO kg_beliefs "
@@ -114,10 +120,23 @@ class BeliefPropagator:
                         "UPDATE kg_facts SET known_by_npc_ids = ? WHERE id = ?",
                         (_json.dumps(sorted(known)), belief.fact_id),
                     )
-        except Exception:
-            pass
-        self._conn.commit()
-        return int(cur.lastrowid or 0)
+        except Exception as exc:  # noqa: BLE001
+            # Audit anti-silent : si la sync known_by_npc_ids echoue, le
+            # belief est inscrit mais le sub-KG du Fact (utilise par les
+            # tension invariants 'hidden_truth_about_to_surface') divergerait
+            # silencieusement. Log pour exposer l'incoherence.
+            logger.warning(
+                "kg_belief_known_by_sync_failed",
+                fact_id=belief.fact_id, npc_id=belief.npc_id,
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
+        if not in_user_tx:
+            self._conn.commit()
+        # Spec Phase A round 39 : mute belief.id pour UX (cf store.add_fact).
+        new_id = int(cur.lastrowid or 0)
+        if new_id > 0:
+            belief.id = new_id
+        return new_id
 
     def get_belief(self, fact_id: int, npc_id: str) -> Belief | None:
         sql = (
@@ -298,8 +317,8 @@ class BeliefPropagator:
         return int(row["c"])
 
     def clear_all(self) -> None:
-        self._conn.execute("DELETE FROM kg_beliefs")
-        self._conn.commit()
+        from shinobi.kg.schema import execute_dml
+        execute_dml(self._conn, "DELETE FROM kg_beliefs")
 
     def add_beliefs_batch(self, beliefs: Iterable[Belief]) -> int:
         n = 0

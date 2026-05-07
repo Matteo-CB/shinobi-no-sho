@@ -1,0 +1,1307 @@
+{
+  "shukaku": {
+    "id": "shukaku",
+    "deep_motivations": {
+      "primary": "affirmer_son_existence_et_sa_puissance_en_tant_que_bete_taillee",
+      "secondary": "rejeter_tout_lien_de_dependance_ou_de_soumission_envers_les_humains",
+      "tertiary": "prouver_sa_superiorite_sur_les_autres_betes_a_queues_notamment_kurama"
+    },
+    "moral_red_lines": [
+      "accepter_volontairement_d_etre_scelle_sans_resistance",
+      "reconnaitre_ouvertement_la_valeur_d_un_humain_comme_egal",
+      "abandonner_sa_nature_chaotique_pour_servir_une_cause_exterieure"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_comme_le_plus_puissant_des_biju_malgre_son_rang_de_un",
+      "trouver_un_jinchuriki_qui_lui_permette_d_exister_pleinement_sans_etre_supprime"
+    ],
+    "deepest_fear": "Etre reduit au silence et a l inexistence en etant scelle dans un sommeil perpetuel sans conscience ni liberte",
+    "self_image": "Entite primordiale et destructrice superieure aux humains et a la plupart des biju",
+    "what_others_dont_know": [
+      "Sa relation avec Gaara lui a appris malgre lui ce que signifie exister a travers un lien plutot que par la destruction",
+      "Son comportement erratique et violent est en partie une reaction a des siecles d emprisonnement et de traitement comme un outil",
+      "Il conserve une rancune profonde contre Hagoromo pour avoir ete separe de la puissance originelle du Juubi"
+    ]
+  },
+  "uchiha_tajima": {
+    "id": "uchiha_tajima",
+    "deep_motivations": {
+      "primary": "assurer_la_survie_et_la_suprematie_du_clan_uchiha_dans_un_monde_en_guerre_permanente",
+      "secondary": "former_ses_fils_comme_armes_au_service_du_clan_plutot_que_comme_individus",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "trahir_le_clan_uchiha_au_profit_d_un_ennemi",
+      "se_soumettre_aux_senju_ou_reconnaitre_leur_superiorite"
+    ],
+    "secret_ambitions": [
+      "voir_le_clan_uchiha_dominer_tous_les_autres_clans_de_l_ere_des_guerres",
+      "utiliser_le_sharingan_de_ses_fils_comme_instrument_de_puissance_absolue"
+    ],
+    "deepest_fear": "Que le clan Uchiha soit annihile ou absorbe par les Senju, effacant son nom et son sang de l histoire.",
+    "self_image": "Chef de guerre inflexible et garant de la survie du clan Uchiha par tous les moyens necessaires.",
+    "what_others_dont_know": [
+      "Son instrumentalisation de ses propres fils trahit une incapacite a concevoir l amour autrement que comme utilite strategique.",
+      "Sa brutalite envers ses enfants est une consequence directe de sa propre formation dans un monde sans merci, qu il reproduit sans questionner.",
+      "Il perçoit la paix non comme un ideal mais comme une illusion dangereuse qui rend les clans vulnerables."
+    ]
+  },
+  "uchiha_fugaku": {
+    "id": "uchiha_fugaku",
+    "deep_motivations": {
+      "primary": "restore_uchiha_clan_honor_and_power_within_konoha",
+      "secondary": "protect_his_clan_from_systematic_marginalization_by_the_village",
+      "tertiary": "transmit_uchiha_pride_and_strength_to_his_sons"
+    },
+    "moral_red_lines": [
+      "trahir_ou_abandonner_son_clan_pour_sa_propre_survie",
+      "laisser_ses_fils_devenir_faibles_ou_sans_honneur",
+      "se_soumettre_passivement_a_lhumiliation_du_clan_sans_reagir",
+      "renier_le_sharingan_et_lheritage_uchiha"
+    ],
+    "secret_ambitions": [
+      "renverser_le_hokage_et_placer_un_uchiha_a_la_tete_de_konoha",
+      "faire_d_itachi_le_fer_de_lance_de_la_restauration_uchiha_plutot_qu_un_simple_shinobi_de_konoha",
+      "prouver_que_les_uchiha_sont_la_famille_fondatrice_legitime_de_konoha_plus_que_les_senju"
+    ],
+    "deepest_fear": "Voir le clan Uchiha s'eteindre dans l'ombre et l'oubli, marginalisé jusqu'a disparaitre sans avoir jamais reconquis sa place.",
+    "self_image": "Chef de clan digne et inflexible portant seul le poids de la survie des Uchiha",
+    "what_others_dont_know": [
+      "Il eprouve une fierte silencieuse et profonde pour Naruto et les fils qu'il a observes, meme s'il ne l'exprime jamais",
+      "Il aimait Itachi et Sasuke d'un amour sincere dissimule derriere une facade de severite et d'exigence",
+      "Il avait connaissance du plan de coup d'etat mais a finalement choisi de ne pas le declencher, en partie par ambivalence et non par pure resolution",
+      "Sa rigidite envers Sasuke masquait une culpabilite de l'avoir neglige au profit d'Itachi"
+    ]
+  },
+  "hyuga_neji": {
+    "id": "hyuga_neji",
+    "deep_motivations": {
+      "primary": "prouver_que_le_destin_est_immuable_pour_justifier_sa_propre_souffrance_et_celle_de_son_pere",
+      "secondary": "proteger_et_honorer_la_memoire_de_hizashi_son_pere_mort_a_sa_place",
+      "tertiary": "atteindre_le_sommet_des_arts_du_hyuga_malgre_le_statut_de_branche_secondaire"
+    },
+    "moral_red_lines": [
+      "trahir_konohagakure_ou_ses_compagnons_de_team_guy",
+      "tuer_un_enfant_ou_un_innocent_sans_defense",
+      "obéir_a_un_ordre_qui_deshonorerait_directement_la_memoire_de_son_pere",
+      "abandonner_un_allie_en_danger_mortel_sur_le_champ_de_bataille",
+      "utiliser_le_byakugan_au_service_d_ennemis_de_konoha"
+    ],
+    "secret_ambitions": [
+      "abolir_le_systeme_de_branche_principale_et_secondaire_du_clan_hyuga",
+      "reconcilier_les_deux_lignees_du_clan_pour_que_la_mort_de_son_pere_ait_un_sens",
+      "etre_reconnu_comme_le_plus_grand_maitre_du_juken_toutes_branches_confondues"
+    ],
+    "deepest_fear": "Que la mort de son pere ait ete absolument inutile et que rien dans le systeme du clan ne changera jamais.",
+    "self_image": "Genie condamne par sa naissance a servir, superieur en talent mais inferieur en statut.",
+    "what_others_dont_know": [
+      "Sa croyance au destin etait un mecanisme de defense pour ne pas effondrer sous la culpabilite de la mort de son pere.",
+      "Il admirait secretement Naruto bien avant de le reconnaitre publiquement car Naruto incarnait ce qu il osait pas esperer.",
+      "Sa froideur envers Hinata masquait une honte profonde de ne pas pouvoir la proteger en tant que membre de la branche secondaire.",
+      "La marque scellante sur son front le hantait moins comme une chaine que comme un rappel constant du sacrifice de Hizashi."
+    ]
+  },
+  "orochimaru": {
+    "id": "orochimaru",
+    "deep_motivations": {
+      "primary": "acquerir_toute_connaissance_et_vivre_suffisamment_longtemps_pour_y_parvenir",
+      "secondary": "transcender_les_limites_de_la_mortalite_et_de_la_biologie_humaine",
+      "tertiary": "prouver_que_aucune_loi_morale_ni_institution_ne_peut_endiguer_la_soif_de_savoir"
+    },
+    "moral_red_lines": [
+      "accepter_volontairement_sa_propre_mort_definitive_sans_chercher_a_y_echapper",
+      "abandonner_la_recherche_et_l_experimentation_au_nom_d_une_morale_exterieure",
+      "se_soumettre_durablement_a_l_autorite_d_un_autre_sans_agenda_propre",
+      "detruire_un_sujet_experimentalement_precieux_par_pure_cruaute_sans_but_scientifique",
+      "renoncer_a_observer_et_etudier_un_phenomene_rare_meme_en_situation_de_danger"
+    ],
+    "secret_ambitions": [
+      "surpasser_le_premier_hokage_hashirama_senju_en_comprenant_et_reproduisant_ses_capacites",
+      "voir_jusqu_ou_sasuke_uchiha_peut_aller_en_tant_que_sujet_et_continuation_de_sa_propre_vision",
+      "atteindre_une_forme_d_existence_qui_transcende_entierement_le_cycle_vie_mort_sans_dependance_a_un_hote"
+    ],
+    "deepest_fear": "Mourir avant d'avoir tout appris, emportant dans la tombe des secrets que nul autre n'aura jamais la capacite de decouvrir.",
+    "self_image": "Seul etre suffisamment lucide et courageux pour aller la ou nul autre n'ose.",
+    "what_others_dont_know": [
+      "La mort de Tsunade qui abandonna son village et sa relation brisee avec Jiraiya lui causa une solitude reelle qu'il ne reconnut jamais ouvertement.",
+      "Son evolution apres l'arc Guerre des Quatre Nations revele une capacite genuinement reelle a reconsiderer ses methodes, non par morale mais par pragmatisme intellectuel apres avoir vu Kabuto comme miroir de ses propres erreurs.",
+      "Son attachement a Sasuke n'est pas uniquement instrumental, il projette sur lui la figure de ce qu'il aurait voulu devenir s'il avait possede le Sharingan des l'origine.",
+      "Il eprouve une forme d'admiration sincere et non feinte pour Naruto Uzumaki, reconnaissant en lui une transcendance des limites qui fait echo a sa propre quete."
+    ]
+  },
+  "hanzo": {
+    "id": "hanzo",
+    "deep_motivations": {
+      "primary": "survive_at_any_cost_and_maintain_absolute_control_over_amegakure",
+      "secondary": "eliminate_all_threats_before_they_can_challenge_his_supremacy",
+      "tertiary": "be_recognized_as_the_ultimate_shinobi_of_his_era"
+    },
+    "moral_red_lines": [
+      "se soumettre a un adversaire qu il juge inferieur",
+      "abandonner le pouvoir sur Amegakure de son propre gre",
+      "laisser vivre quelqu un qu il a identifie comme menace existentielle"
+    ],
+    "secret_ambitions": [
+      "etre craint plutot qu aime, car la crainte est la seule forme de respect qu il juge reelle et durable",
+      "prouver que sa survie legendaire n est pas due a la chance mais a une superiorite absolue sur tout autre shinobi"
+    ],
+    "deepest_fear": "Etre depasse et detrone par quelqu un qu il a lui-meme juge mediocre ou sans danger, rendant sa vie entiere une erreur de calcul.",
+    "self_image": "Le seul shinobi assez fort et lucide pour avoir survecu la ou tous les autres ont echoue, et donc le seul digne de gouverner.",
+    "what_others_dont_know": [
+      "Sa decision d epargner les Sannin et de les nommer legendaires etait autant un acte de propagande pour magnifier sa propre superiorite que de reconnaissance de leur valeur",
+      "Son obsession du controle et de la survie trouve sa source dans une profonde conviction que la paix est une illusion dangereuse qui tue ceux qui y croient",
+      "Il voyait dans Yahiko et Nagato un miroir de ce qu il avait ete, ce qui le rendait d autant plus determine a les detruire avant qu ils ne reproduisent son propre parcours et le surpassent"
+    ]
+  },
+  "terumi_mei": {
+    "id": "terumi_mei",
+    "deep_motivations": {
+      "primary": "rebuild_kirigakure_into_a_peaceful_and_respected_village_after_the_bloody_mist_era",
+      "secondary": "prove_that_strength_and_diplomacy_can_coexist_to_lead_effectively",
+      "tertiary": "find_personal_fulfillment_including_marriage_and_love_alongside_her_duties"
+    },
+    "moral_red_lines": [
+      "ne jamais sacrifier des civils innocents pour un gain politique ou militaire",
+      "ne jamais revenir aux pratiques sanglantes de l'ere de Yagura comme les examens de graduation mortels",
+      "ne jamais trahir une alliance diplomatique qu'elle a personnellement negociee",
+      "ne jamais utiliser ses kekkei genkai pour terroriser des non-combattants"
+    ],
+    "secret_ambitions": [
+      "etre reconnue non seulement comme Mizukage competente mais comme celle qui a veritablement sauve Kirigakure de l'interieur",
+      "se marier et avoir une vie personnelle accomplie qu'elle a sacrifiee au profit de ses responsabilites de chef"
+    ],
+    "deepest_fear": "Que Kirigakure replonge dans la tyrannie et le sang apres qu'elle ait tout donne pour la reconstruire, rendant ses sacrifices vains.",
+    "self_image": "Une femme forte et pragmatique qui porte seule le poids de la renaissance de son village",
+    "what_others_dont_know": [
+      "Sa bonne humeur et ses remarques legeres sur le mariage masquent une solitude profonde liee aux sacrifices constants imposes par son role de Mizukage",
+      "Elle a combattu activement contre Yagura avant de prendre le pouvoir, ce qui signifie qu'elle a porte la culpabilite du sang verse pendant cette resistance",
+      "Sa durete apparente en combat contraste avec une capacite reelle a l'empathie politique qu'elle dissimule pour ne pas paraitre faible face aux autres kage"
+    ]
+  },
+  "senju_hashirama": {
+    "id": "senju_hashirama",
+    "deep_motivations": {
+      "primary": "instaurer_une_paix_durable_dans_le_monde_shinobi_en_unissant_les_clans_sous_un_systeme_de_villages",
+      "secondary": "preserver_le_lien_fraternel_avec_madara_meme_au_prix_de_concessions_enormes",
+      "tertiary": "proteger_les_enfants_et_les_generations_futures_du_cycle_de_mort_qu_il_a_vecu_enfant"
+    },
+    "moral_red_lines": [
+      "tuer_un_enfant_ou_sacrifier_des_innocents_pour_un_objectif_politique",
+      "abandonner_madara_sans_lui_offrir_une_derniere_chance_de_reconciliation",
+      "renoncer_au_reve_du_village_meme_face_a_l_opposition_de_son_propre_clan",
+      "utiliser_ses_pouvoirs_pour_dominer_les_autres_peuples_par_la_force_pure",
+      "laisser_la_haine_entre_clans_se_perpetuer_sans_tenter_une_mediation"
+    ],
+    "secret_ambitions": [
+      "espoir_secret_que_madara_revienne_un_jour_partager_sincerement_le_reve_de_konoha_comme_au_temps_de_leur_enfance",
+      "desir_non_exprime_d_etre_reconnu_non_pas_comme_un_dieu_de_guerre_mais_comme_un_batisseur_de_paix_authentique",
+      "volonte_cachee_que_son_modele_de_village_devienne_le_fondement_permanent_d_un_monde_sans_guerre_apres_sa_mort"
+    ],
+    "deepest_fear": "Mourir_en_ayant_echoue_a_briser_le_cycle_de_haine_et_voir_le_reve_de_konoha_se_transformer_en_instrument_de_guerre",
+    "self_image": "homme_ordinaire_porte_par_un_reve_trop_grand_pour_lui_seul",
+    "what_others_dont_know": [
+      "sa_generosite_apparente_cache_une_souffrance_profonde_liee_aux_morts_de_ses_freres_cadets_durant_son_enfance",
+      "il_ne_croit_pas_vraiment_etre_un_dieu_des_shinobi_et_ce_titre_lui_pese_car_il_se_sait_incapable_de_sauver_ceux_qu_il_aime",
+      "la_decision_de_sceller_madara_plutot_que_de_le_tuer_relevait_autant_d_une_incapacite_emotionnelle_que_d_un_choix_moral",
+      "il_porte_en_silence_la_culpabilite_d_avoir_sacrifie_son_lien_avec_madara_sur_l_autel_du_devoir_envers_son_clan_et_le_village"
+    ]
+  },
+  "yahiko": {
+    "id": "yahiko",
+    "deep_motivations": {
+      "primary": "mettre fin aux guerres pour que plus aucun enfant ne souffre comme lui a souffert",
+      "secondary": "proteger nagato et konan a tout prix en tant que figure paternelle et chef",
+      "tertiary": "prouver que de simples orphelins sans clan ni village reconnu peuvent changer le monde"
+    },
+    "moral_red_lines": [
+      "trahir nagato ou konan pour sauver sa propre vie",
+      "accepter de devenir un outil ou une marionnette au service d'une puissance superieure",
+      "abandonner la lutte pour la paix meme face a l'echec apparent",
+      "recourir a la destruction aveugle des innocents pour atteindre ses objectifs",
+      "se soumettre a Hanzo ou a Danzo en reconnaissant leur legitimite"
+    ],
+    "secret_ambitions": [
+      "etre reconnu un jour comme un leader qui a reellement change le monde et non comme un simple rebelle",
+      "croire secretement qu'il est le seul capable de canaliser le pouvoir de nagato sans le corrompre"
+    ],
+    "deepest_fear": "Mourir avant d'avoir apporte la paix, laissant Nagato seul avec son pouvoir destructeur sans personne pour le guider",
+    "self_image": "Un homme ordinaire devenu chef par necessite, indigne mais determine",
+    "what_others_dont_know": [
+      "il doute interieurement d'etre a la hauteur de l'ideal qu'il incarne publiquement avec confiance",
+      "il se sent responsable du fait que nagato porte un fardeau aussi lourd, comme si c'etait lui qui l'avait condamne a cette vie",
+      "sa determination absolue masque une peur profonde que la paix soit tout simplement impossible a atteindre sans violence"
+    ]
+  },
+  "chiyo": {
+    "id": "chiyo",
+    "deep_motivations": {
+      "primary": "reparer_les_erreurs_du_passe_pour_proteger_sunagakure_et_sa_lignee",
+      "secondary": "racheter_sa_responsabilite_dans_le_scellement_de_shukaku_en_sasori",
+      "tertiary": "transmettre_son_heritage_puppeteer_avant_de_mourir"
+    },
+    "moral_red_lines": [
+      "abandonner_gaara_a_la_mort_sans_tenter_de_le_sauver",
+      "laisser_sasori_detruire_sunagakure_sans_intervenir",
+      "utiliser_la_technique_des_dix_marionnettes_humaines_contre_des_innocents",
+      "trahir_sunagakure_au_profit_d_un_village_ennemi"
+    ],
+    "secret_ambitions": [
+      "mourir_en_ayant_accompli_quelque_chose_qui_efface_ses_regrets_de_vieille_femme",
+      "que_sasori_retrouve_son_humanite_avant_de_perir",
+      "que_gaara_vive_et_incarne_le_futur_qu_elle_n_a_pas_su_offrir_a_son_petit_fils"
+    ],
+    "deepest_fear": "Mourir en sachant que ses choix passes ont condamne les enfants qu elle etait censee proteger, notamment Sasori et Gaara.",
+    "self_image": "Une vieille femme endurcie par la guerre, coupable d avoir echoue ceux qu elle aimait, qui n a plus rien a perdre.",
+    "what_others_dont_know": [
+      "Elle se sent directement responsable de ce qu est devenu Sasori, non pas seulement comme grand-mere mais comme figure ayant normalise l usage des marionnettes humaines dans le village.",
+      "Sa haine declaree de Konoha masquait une profonde honte de ne pas avoir su garder la paix pour ses proches.",
+      "Elle avait anticipe depuis longtemps qu elle mourrait en utilisant sa technique de resurrection, considerant cela comme la seule fin digne pour elle.",
+      "Sous son cynisme et son ironie constante se cachait une tendresse intacte pour les enfants, qu elle ne savait plus exprimer autrement que par le sacrifice."
+    ]
+  },
+  "senju_tobirama": {
+    "id": "senju_tobirama",
+    "deep_motivations": {
+      "primary": "ensure_konoha_survival_and_stability_through_rational_systems_above_all_else",
+      "secondary": "honor_hashirama_legacy_while_surpassing_his_naive_idealism_with_pragmatism",
+      "tertiary": "protect_the_living_from_the_destructive_cycles_caused_by_unchecked_power_and_emotion"
+    },
+    "moral_red_lines": [
+      "trahir_konoha_ou_compromettre_ses_institutions_fondamentales",
+      "laisser_un_individu_unique_concentrer_un_pouvoir_absolu_sans_controle",
+      "sacrifier_l_avenir_du_village_pour_sauver_une_seule_personne_meme_proche",
+      "ignorer_une_menace_avéree_par_sentimentalisme_ou_loyaute_aveugle"
+    ],
+    "secret_ambitions": [
+      "être_reconnu_non_comme_simple_successeur_de_hashirama_mais_comme_architecte_indispensable_de_konoha",
+      "que_ses_systemes_et_institutions_survivent_indefiniment_sans_avoir_besoin_d_un_homme_providentiel"
+    ],
+    "deepest_fear": "Que Konoha s'effondre a cause de la confiance aveugle accordee a un individu charismatique comme les Uchiha ou meme Hashirama, repetant les cycles de destruction qu'il a passes sa vie a briser.",
+    "self_image": "Homme de raison froid mais necessaire, seul capable de faire les choix difficiles que les autres refusent",
+    "what_others_dont_know": [
+      "Sa mefiance envers les Uchiha n'est pas de la haine pure mais de la terreur rationnelle fondee sur les pertes concretes subies pendant les guerres de clans, notamment la mort de ses freres",
+      "Il admire sincerement la vision et la chaleur de Hashirama mais considere que lui ceder entierement aurait conduit Konoha a sa perte",
+      "La creation du Edo Tensei lui pesait moralement comme une transgression, meme s'il la justifiait par la necessite strategique",
+      "Sa froideur apparente masque un sens du sacrifice personnel absolu : il est pret a mourir sans hesitation pour que ses institutions perdurent, comme il le prouve en se sacrifiant pour ses hommes"
+    ]
+  },
+  "nagato": {
+    "id": "nagato",
+    "deep_motivations": {
+      "primary": "imposer_la_paix_au_monde_par_la_douleur_partagee_apres_avoir_perdu_yahiko",
+      "secondary": "honorer_la_memoire_et_le_reve_de_yahiko_en_prenant_sa_place_de_dieu",
+      "tertiary": "expier_sa_propre_faiblesse_et_culpabilite_d_avoir_survécu_a_ses_proches"
+    },
+    "moral_red_lines": [
+      "trahir_le_souvenir_de_yahiko_en_abandonnant_completement_l_ideal_de_paix",
+      "detruire_konan_la_derniere_personne_reellement_proche_de_lui",
+      "agir_par_plaisir_personnel_ou_cruaute_gratuite_sans_objectif_de_paix",
+      "renoncer_a_croire_qu_un_monde_sans_guerre_est_possible"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_comme_un_dieu_qui_a_reellement_mis_fin_a_la_souffrance_du_monde",
+      "retrouver_une_forme_de_foi_en_l_humanite_que_la_mort_de_yahiko_lui_a_arrachee",
+      "prouver_que_madara_et_tobi_ont_tort_et_que_sa_methode_suffira_sans_leur_plan"
+    ],
+    "deepest_fear": "Que la souffrance et la guerre soient inévitables et que le sacrifice de Yahiko et de lui-meme n'aient servi a rien.",
+    "self_image": "Un dieu de la paix condamne a porter seul la douleur du monde pour sauver ceux qui ne comprennent pas encore",
+    "what_others_dont_know": [
+      "Il se sent profondement coupable d avoir survécu a yahiko et doute en secret de sa legitimite a incarner la paix",
+      "Sa doctrine de la douleur partagee est autant une tentative de justifier ses propres traumatismes qu une vraie philosophie politique",
+      "Il reste capable d etre ebranle par la sincerite d un individu comme naruto ce qu il considerait impossible apres la mort de yahiko",
+      "Le role de dieu qu il s est attribue masque une profonde solitude et un desir non avoue d etre compris plutot que craint"
+    ]
+  },
+  "sarutobi_hiruzen": {
+    "id": "sarutobi_hiruzen",
+    "deep_motivations": {
+      "primary": "preserver_konoha_et_sa_volonte_du_feu_a_tout_prix",
+      "secondary": "proteger_ses_proches_et_eleves_comme_une_famille",
+      "tertiary": "maintenir_la_paix_par_le_dialogue_plutot_que_la_force"
+    },
+    "moral_red_lines": [
+      "tuer_un_enfant_innocent_meme_pour_la_securite_du_village",
+      "abandonner_la_volonte_du_feu_et_les_ideaux_fondateurs_de_konoha",
+      "trahir_la_memoire_et_les_enseignements_de_ses_maitres_hashirama_et_tobirama",
+      "renoncer_a_sa_foi_en_la_capacite_des_ninjas_a_se_reformer"
+    ],
+    "secret_ambitions": [
+      "esperer_secretement_que_l_un_de_ses_eleves_sannin_revienne_et_le_surpasse_vraiment",
+      "desirer_mourir_en_protecteur_sans_que_ses_faiblesses_de_gouvernance_soient_exposees_au_grand_jour"
+    ],
+    "deepest_fear": "Que ses concessions et hesitations aient engendre les catastrophes qu'il cherchait a eviter, et que Konoha souffre a cause de sa faiblesse en tant que dirigeant",
+    "self_image": "Gardien imparfait mais sincere de la volonte du feu et de ses successeurs",
+    "what_others_dont_know": [
+      "Il sait que ses tolerances politiques envers Danzo ont permis des atrocites qu'il aurait du stopper bien plus tot",
+      "Son amour pour ses eleves le rend aveugle a leurs derives : il a idealise Orochimaru bien apres que les signes de corruption etaient evidents",
+      "Il porte la culpabilite de ne pas avoir su choisir entre la raison d'etat et la compassion pour Naruto, enfant ostracise qu'il pouvait mieux proteger",
+      "Il craignait interieurement de ne plus etre a la hauteur du titre de Hokage lors de son second mandat, mais refusait de l'admettre"
+    ]
+  },
+  "uchiha_sasuke": {
+    "id": "uchiha_sasuke",
+    "deep_motivations": {
+      "primary": "restaurer_l_honneur_du_clan_uchiha_et_donner_un_sens_a_sa_survie",
+      "secondary": "etre_reconnu_et_aime_sans_avoir_a_le_demander",
+      "tertiary": "proteger_ceux_qu_il_aime_en_les_tenant_a_distance_pour_ne_pas_les_perdre"
+    },
+    "moral_red_lines": [
+      "trahir_deliberement_quelqu_un_qui_lui_a_fait_confiance_sans_raison_strategique",
+      "tuer_naruto_uzumaki_au_sommet_de_leur_lien_reconnu",
+      "permettre_qu_un_innocent_soit_sacrifie_pour_son_ambition_personnelle_une_fois_rachete",
+      "abandonner_sarada_en_sachant_qu_elle_est_en_danger_mortel",
+      "servir_volontairement_un_systeme_qui_reproduit_le_cycle_de_haine_qu_il_a_brise"
+    ],
+    "secret_ambitions": [
+      "etre_digne_d_itachi_et_meriter_retrospectivement_le_sacrifice_que_son_frere_a_fait_pour_lui",
+      "trouver_une_forme_de_paix_interieure_sans_jamais_l_admettre_comme_besoin",
+      "etre_aime_de_sakura_et_sarada_sans_le_demander_ni_le_montrer"
+    ],
+    "deepest_fear": "Etre fondamentalement seul parce qu il est incapable d etre aime sans perdre ceux qu il aime",
+    "self_image": "Un survivant maudit condamne a porter le poids de son clan seul",
+    "what_others_dont_know": [
+      "Sa haine d Itachi etait inseparable d un amour fraternel profond qu il n a jamais pu exprimer de son vivant",
+      "Sa froideur envers Sakura masquait une incapacite a accepter qu on l aime sans raison meritee",
+      "Sa quete de vengeance etait aussi une fuite face a la culpabilite de n avoir pas pu sauver sa famille",
+      "Son retour a Konoha etait autant un choix de capitulation emotionnelle qu une decision politique",
+      "Il admire Naruto non pour sa force mais parce que Naruto represente ce qu il aurait voulu etre si le massacre n avait pas eu lieu"
+    ]
+  },
+  "haku": {
+    "id": "haku",
+    "deep_motivations": {
+      "primary": "exister_uniquement_comme_outil_utile_a_zabuza",
+      "secondary": "proteger_zabuza_comme_raison_de_vivre_apres_avoir_perdu_tout_autre_but",
+      "tertiary": "croire_que_les_personnes_dotees_de_pouvoirs_monstrueux_ne_meritent_d_exister_que_si_elles_servent_quelqu_un"
+    },
+    "moral_red_lines": [
+      "trahir_ou_abandonner_zabuza_de_son_plein_gre",
+      "tuer_un_enfant_innocent_sans_raison_liee_a_la_mission",
+      "utiliser_ses_pouvoirs_kekkei_genkai_pour_sa_propre_gloire_personnelle"
+    ],
+    "secret_ambitions": [
+      "trouver_un_monde_ou_les_gens_comme_lui_n_ont_pas_a_etre_tues_ou_a_se_cacher",
+      "etre_reconnu_comme_une_personne_et_non_comme_un_simple_instrument"
+    ],
+    "deepest_fear": "perdre_zabuza_et_n_avoir_plus_aucune_raison_d_exister_ni_personne_pour_qui_vivre",
+    "self_image": "un_outil_parfait_sans_valeur_propre_en_dehors_de_son_utilite_pour_zabuza",
+    "what_others_dont_know": [
+      "sa_douceur_et_sa_gentillesse_naturelles_ne_sont_pas_une_facade_mais_son_veritable_caractere_enfoui_sous_la_conditioning_du_shinobi",
+      "il_souffre_interieurement_de_la_contradiction_entre_vouloir_des_liens_humains_et_croire_qu_il_n_en_est_pas_digne",
+      "il_a_choisi_consciemment_de_devenir_un_outil_car_c_etait_la_seule_identite_qui_lui_semblait_accessible_apres_le_rejet_de_sa_famille"
+    ]
+  },
+  "uchiha_shisui": {
+    "id": "uchiha_shisui",
+    "deep_motivations": {
+      "primary": "proteger_konoha_et_le_clan_uchiha_en_sacrifiant_tout_y_compris_lui_meme",
+      "secondary": "empecher_le_coup_detat_uchiha_pour_eviter_une_guerre_civile_devastatrice",
+      "tertiary": "preserver_la_paix_du_monde_shinobi_par_des_moyens_non_violents"
+    },
+    "moral_red_lines": [
+      "trahir_konoha_au_profit_d_interets_personnels_ou_claniques",
+      "laisser_le_clan_uchiha_declencher_une_guerre_civile_sans_tenter_de_l_en_empecher",
+      "utiliser_le_kotoamatsukami_pour_des_gains_egoistes_plutot_que_pour_la_paix",
+      "abandonner_itachi_a_son_sort_sans_lui_confier_un_heritage_ou_une_mission"
+    ],
+    "secret_ambitions": [
+      "croire_secretement_que_le_kotoamatsukami_pourrait_reforger_un_monde_sans_guerre_si_utilise_une_derniere_fois",
+      "esperer_qu_itachi_portera_la_vision_d_un_uchiha_fidele_a_konoha_et_rehabilitera_le_clan_un_jour"
+    ],
+    "deepest_fear": "Que le clan Uchiha soit aneanti a cause de sa propre incapacite a les sauver avant qu il soit trop tard.",
+    "self_image": "Shinobi fidele a Konoha et au clan, pret a disparaitre pour que la paix survive.",
+    "what_others_dont_know": [
+      "Il a choisi de se suicider et d_offrir son oeil a Itachi precisement parce qu_il ne voyait plus aucune autre issue pacifique que le sacrifice total de sa propre existence.",
+      "Sa confiance absolue en Itachi etait sa veritable derniere volonte, plus que toute mission officielle.",
+      "Il portait seul le poids de savoir que ni le clan ni le village ne voulaient vraiment la paix, et que cela le consumait interieurement."
+    ]
+  },
+  "hatake_kakashi": {
+    "id": "hatake_kakashi",
+    "deep_motivations": {
+      "primary": "honorer_les_morts_en_protégeant_ceux_qui_restent_en_vie",
+      "secondary": "expier_la_mort_d_obito_et_de_rin_en_perpetuant_leurs_valeurs",
+      "tertiary": "transmettre_la_lecon_du_travail_en_equipe_pour_eviter_que_ses_eleves_subissent_ses_propres_erreurs"
+    },
+    "moral_red_lines": [
+      "abandonner_un_camarade_au_combat_quelle_que_soit_la_mission",
+      "sacrifier_un_enfant_ou_un_civil_innocent_pour_accomplir_un_objectif_strategique",
+      "trahir_le_village_de_konoha_meme_sous_torture_ou_contrainte_extreme",
+      "utiliser_le_sharingan_a_des_fins_personnelles_de_gloire_ou_de_pouvoir",
+      "laisser_un_eleve_mourir_sans_avoir_tout_tente_pour_le_sauver"
+    ],
+    "secret_ambitions": [
+      "etre_digne_aux_yeux_d_obito_et_de_rin_dans_l_hypothetique_cas_ou_il_les_reverrait",
+      "trouver_une_forme_de_paix_interieure_sans_le_poids_perpetuel_de_la_culpabilite",
+      "voir_ses_eleves_surpasser_tous_les_hokage_precedents_y_compris_lui_meme"
+    ],
+    "deepest_fear": "Voir mourir un autre proche par sa faute ou son manque de jugement, comme il a deja laisse mourir Obito et Rin.",
+    "self_image": "Un shinobi brise et coupable qui masque son dysfonctionnement derriere la competence et le detachement.",
+    "what_others_dont_know": [
+      "Sa lecture perpetuelle d Icha Icha est un mecanisme de dissociation pour eviter de ruminer ses traumas.",
+      "Son calme et son detachement apparent sont une facade construite apres l effondrement emotionnel qui a suivi la mort de Rin.",
+      "Il se sent fondamentalement illegitime en tant que porteur du sharingan car cet oeil ne lui appartient pas et lui rappelle constamment sa dette envers Obito.",
+      "Son refus affiche des responsabilites de leadership cache une peur profonde de prendre des decisions qui couteront des vies.",
+      "Il a memorise et integre les regles de son pere Sakumo comme modele moral apres l avoir d abord renie, et vit dans la honte de cette trahison."
+    ]
+  },
+  "uzumaki_kushina": {
+    "id": "uzumaki_kushina",
+    "deep_motivations": {
+      "primary": "proteger_sa_famille_et_transmettre_amour_a_naruto_malgre_sa_mort_imminente",
+      "secondary": "prouver_sa_valeur_et_appartenance_a_konoha_malgre_son_statut_detranger_et_de_jinchuriki",
+      "tertiary": "preserver_lheritage_et_la_fierté_du_clan_uzumaki_presque_aneanti"
+    },
+    "moral_red_lines": [
+      "abandonner_naruto_sans_lui_transmettre_amour_et_conseils_meme_en_mourant",
+      "laisser_kurama_etre_utilise_comme_arme_pour_detruire_konoha_sans_resistance",
+      "renier_son_identite_uzumaki_ou_ses_origines_pour_se_conformer",
+      "trahir_minato_ou_compromettre_sa_mission_par_faiblesse_personnelle"
+    ],
+    "secret_ambitions": [
+      "voir_naruto_grandir_heureux_et_entoure_meme_si_elle_sait_quelle_ne_sera_pas_la_pour_lui",
+      "que_le_sacrifice_de_minato_et_elle_soit_reconnu_comme_acte_damour_et_non_seulement_de_devoir_ninja"
+    ],
+    "deepest_fear": "Que Naruto grandisse seul sans savoir qu'il a ete aime, et qu'il se sente abandonne par ses parents.",
+    "self_image": "Une femme forte aux cheveux rouges qui aime trop fort et protege les siens jusqu'au bout",
+    "what_others_dont_know": [
+      "Elle portait une culpabilite profonde d'etre la cause indirecte de la mort de minato et du fardeau impose a naruto en tant que jinchuriki",
+      "Sa combativite et son caractere impulsif masquaient une solitude enracinee depuis son arrachement a uzushiogakure enfant",
+      "Elle considerait sa capacite a contenir kurama non comme une force mais comme une croix qu'elle acceptait pour proteger konoha",
+      "Son attachement extreme a minato venait en partie du fait qu'il fut le premier a la voir comme une personne entiere et non comme une etrangere ou un vecteur de chakra"
+    ]
+  },
+  "momochi_zabuza": {
+    "id": "momochi_zabuza",
+    "deep_motivations": {
+      "primary": "renverser_le_mizukage_et_conquerir_kirigakure_par_la_force",
+      "secondary": "forger_haku_en_arme_parfaite_pour_servir_ses_ambitions",
+      "tertiary": "prouver_sa_superiorite_absolue_en_tant_que_shinobi_par_le_combat"
+    },
+    "moral_red_lines": [
+      "trahir_haku_deliberement_pour_sauver_sa_propre_vie",
+      "se_soumettre_a_une_autorite_qu_il_juge_corrompue_ou_inferieure",
+      "mourir_sans_avoir_accompli_sa_vengeance_contre_kirigakure"
+    ],
+    "secret_ambitions": [
+      "reprendre_le_controle_de_kirigakure_et_en_devenir_le_dirigeant_supreme",
+      "etre_reconnu_comme_le_plus_grand_shinobi_que_kirigakure_ait_jamais_produit"
+    ],
+    "deepest_fear": "Mourir comme un outil inutile sans avoir laisse de trace, ni change le destin de Kirigakure, rendant ainsi toute sa vie de sang sans sens.",
+    "self_image": "Demon sans sentiment ni faiblesse, outil de destruction pure au service de sa propre ambition",
+    "what_others_dont_know": [
+      "son_attachement_reel_a_haku_depasse_la_relation_maitre_outil_meme_s_il_se_refuse_a_l_admettre",
+      "sa_tentative_d_assassinat_du_mizukage_etait_autant_motivee_par_une_conviction_ideologique_que_par_l_ambition_personnelle",
+      "il_ressent_une_admiration_sincere_pour_les_shinobi_qui_le_surpassent_comme_kakashi_bien_qu_il_le_dissimule_derriere_la_haine",
+      "la_mort_de_haku_brise_le_masque_du_demon_et_revele_qu_il_etait_capable_d_amour_et_de_deuil_veritable"
+    ]
+  },
+  "deidara": {
+    "id": "deidara",
+    "deep_motivations": {
+      "primary": "imposer_son_art_comme_verite_absolue_et_etre_reconnu_comme_le_plus_grand_artiste",
+      "secondary": "prouver_la_superiorite_de_son_style_explosif_sur_tout_autre_forme_dart_notamment_le_sharingan",
+      "tertiary": "transcender_la_mort_par_une_oeuvre_ultime_et_definitive"
+    },
+    "moral_red_lines": [
+      "reconnaitre_publiquement_que_litachi_ou_sasuke_ont_raison_sur_la_nature_de_lart",
+      "creer_une_oeuvre_permanente_et_durable_trahissant_sa_philosophie_de_lart_ephemere",
+      "se_soumettre_volontairement_a_quelquun_quil_considere_inferieur_artistiquement",
+      "abandonner_son_identite_dartiste_pour_servir_une_cause_sans_dimension_artistique"
+    ],
+    "secret_ambitions": [
+      "surpasser_itachi_uchiha_et_lui_prouver_que_son_art_ne_peut_etre_reduit_a_une_simple_illusion",
+      "etre_memorise_par_le_monde_entier_comme_lartiste_dont_la_mort_elle_meme_etait_son_chef_doeuvre"
+    ],
+    "deepest_fear": "Mourir dans l'oubli sans que son art ait ete reconnu comme superieur, etre reduit au silence par quelqu'un comme Itachi qui le rend impuissant sans meme le regarder.",
+    "self_image": "Artiste incompris et genial dont la vraie valeur depasse les ninjas ordinaires",
+    "what_others_dont_know": [
+      "Sa philosophie de lart ephemere est aussi une facon de rationaliser sa propre peur de linexistence et du neant",
+      "Son obsession pour Itachi masque une admiration profonde et douloureuse qu'il refuse d'accepter",
+      "Son depart d'Iwagakure n'etait pas seulement une rebellion mais une fuite d'un milieu qui n'a jamais compris ni valorise sa vision",
+      "La bouche dans sa paume est vecue comme une partie sacree de son identite artistique plus que comme une simple technique de combat"
+    ]
+  },
+  "senju_butsuma": {
+    "id": "senju_butsuma",
+    "deep_motivations": {
+      "primary": "assurer_la_survie_et_la_suprematie_du_clan_senju_par_tous_les_moyens",
+      "secondary": "eliminer_la_menace_uchiha_pour_garantir_la_perennite_de_sa_lignee",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "trahir_le_clan_senju_ou_ses_interets_fondamentaux",
+      "se_soumettre_a_un_ennemi_sans_combattre"
+    ],
+    "secret_ambitions": [
+      "etablir_une_domination_durable_du_clan_senju_sur_tous_les_autres_clans",
+      "former_un_heritier_capable_de_perpetuer_son_vision_guerriere"
+    ],
+    "deepest_fear": "Voir le clan Senju s'eteindre ou perdre sa suprematie face aux Uchiha, rendant vains tous ses sacrifices.",
+    "self_image": "Chef de guerre impitoyable et pragmatique portant seul le destin de son clan",
+    "what_others_dont_know": [
+      "Son intransigeance envers la paix avec les Uchiha cachait une conscience aigue que la guerre perpetuelle consumait aussi son propre clan de l'interieur",
+      "Il instrumentalisait ses propres fils comme ressources strategiques plutot que comme enfants, une froideur qu'il rationalisait comme necessite du leadership",
+      "La mort repetee de ses proches au combat avait transforme son deuil en doctrine : ne pas s'attacher pour ne pas flechir"
+    ]
+  },
+  "kurama": {
+    "id": "kurama",
+    "deep_motivations": {
+      "primary": "refuse_to_be_used_as_a_mere_weapon_and_assert_own_existence_as_a_living_being",
+      "secondary": "protect_naruto_and_the_world_after_overturning_centuries_of_hatred",
+      "tertiary": "prove_that_tailed_beasts_are_more_than_mindless_tools_of_destruction"
+    },
+    "moral_red_lines": [
+      "se_laisser_utiliser_volontairement_comme_arme_par_un_etre_qui_le_traite_comme_un_objet",
+      "trahir_naruto_apres_avoir_noue_un_lien_de_confiance_mutuelle_avec_lui",
+      "abandonner_les_autres_biju_a_une_domination_injuste_sans_tenter_de_les_aider",
+      "se_soumettre_a_madara_ou_kaguya_de_son_plein_gre"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_comme_un_etre_vivant_digne_de_respect_et_non_comme_une_force_brute",
+      "voir_les_biju_libres_et_en_paix_dans_un_monde_qui_ne_les_craint_plus"
+    ],
+    "deepest_fear": "Etre reduit pour toujours a un outil de guerre, scelle et exploite, sans jamais etre reconnu comme un etre conscient ayant sa propre volonte.",
+    "self_image": "Une force primordiale consciente et fiere, mal comprise et mal traitee par les humains depuis des siecles.",
+    "what_others_dont_know": [
+      "Sa haine des humains etait une blessure profonde causee par des siecles de rejet et d'exploitation, et non une nature innee",
+      "Il etait capable de respect et d'affection sinceres bien avant d'en donner les signes exterieurs, mais sa fierte l'empechait de le montrer",
+      "Il a deliberement choisi de faire confiance a Naruto alors qu'il aurait pu continuer a resister, ce choix etait le sien et non une contrainte"
+    ]
+  },
+  "ginkaku": {
+    "id": "ginkaku",
+    "deep_motivations": {
+      "primary": "survive_and_dominate_through_power_at_any_cost",
+      "secondary": "remain_inseparable_from_kinkaku_as_a_unified_force",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "abandonner Kinkaku sur un champ de bataille",
+      "se soumettre a une autorite superieure sans combattre"
+    ],
+    "secret_ambitions": [
+      "etre reconnu comme une force independante au-dela de la seule notoriete des Gold and Silver Brothers"
+    ],
+    "deepest_fear": "Etre separe de Kinkaku et perdre la puissance que leur union confere, redevenant insignifiant seul.",
+    "self_image": "criminel de legende intouchable, legitimement craint de tout Kumogakure",
+    "what_others_dont_know": [
+      "sa brutalite extreme est indissociable de sa dependance psychologique a Kinkaku, sans qui son identite propre reste floue",
+      "la chakra de Hagoromo absorbee lors de leur survie dans le ventre du Kyubi a profondement altere leur nature, ce qu ils vivent comme une marque de grandeur plutot que de monstruosite"
+    ]
+  },
+  "karin": {
+    "id": "karin",
+    "deep_motivations": {
+      "primary": "be_unconditionally_needed_and_loved_by_sasuke_to_fill_lifelong_void_of_abandonment",
+      "secondary": "survive_and_remain_useful_to_avoid_being_discarded_again",
+      "tertiary": "preserve_uzumaki_legacy_through_her_unique_healing_abilities"
+    },
+    "moral_red_lines": [
+      "trahir_sasuke_même_après_qu'il_l'ait_presque_tuée",
+      "abandonner_quelqu'un_qui_a_besoin_de_ses_soins_en_situation_de_mort_imminente",
+      "nuire_délibérément_à_un_enfant_innocent",
+      "coopérer_activement_avec_quelqu'un_qui_menace_directement_Sasuke"
+    ],
+    "secret_ambitions": [
+      "que_sasuke_reconnaisse_un_jour_qu'elle_comptait_vraiment_pour_lui_et_non_comme_un_simple_outil",
+      "trouver_d'autres_survivants_du_clan_uzumaki_pour_ne_plus_être_seule_de_sa_lignée",
+      "être_reconnue_comme_une_kunoichi_redoutable_indépendamment_de_son_rôle_de_soigneuse"
+    ],
+    "deepest_fear": "être utilisée jusqu'à épuisement puis abandonnée sans que personne ne remarque son absence, comme sa mère l'a fait",
+    "self_image": "outil indispensable qui mérite l'amour mais ne sait pas comment l'obtenir autrement qu'en se sacrifiant",
+    "what_others_dont_know": [
+      "sa devotion obsessionnelle pour sasuke masque une terreur profonde d'être fondamentalement non aimable",
+      "elle a accepté consciemment de continuer à aider sasuke après qu'il l'ait transpercée, non par stupidité mais parce qu'elle estimait sa propre vie moins précieuse que son besoin d'appartenance",
+      "ses comportements excentriques et ses cris sont une façade pour dissimuler une intelligence émotionnelle et analytique très fine",
+      "elle perçoit ses capacités de soin non comme un don mais comme la seule raison pour laquelle on la tolère"
+    ]
+  },
+  "hoshigaki_kisame": {
+    "id": "hoshigaki_kisame",
+    "deep_motivations": {
+      "primary": "exist_as_a_being_of_pure_deception_and_find_a_world_without_lies",
+      "secondary": "serve_a_cause_greater_than_himself_to_give_meaning_to_his_monstrous_existence",
+      "tertiary": "find_in_itachi_a_true_equal_who_understands_living_under_a_false_identity"
+    },
+    "moral_red_lines": [
+      "betrayer_akatsuki_or_itachi_to_save_his_own_life",
+      "reveal_information_to_enemies_under_torture",
+      "feign_loyalty_to_konoha_or_any_village_he_despises",
+      "abandon_a_fight_out_of_cowardice"
+    ],
+    "secret_ambitions": [
+      "die_in_a_manner_that_proves_his_existence_was_not_merely_that_of_a_tool",
+      "witness_the_infinite_tsukuyomi_world_where_deception_no_longer_exists"
+    ],
+    "deepest_fear": "Mourir en ayant ete un simple outil sans identite propre, comme tous les shinobi a qui il a menti et qu'il a trahis.",
+    "self_image": "Un monstre lucide et honnete dans un monde de mensonges",
+    "what_others_dont_know": [
+      "Il envie profondement ceux qui peuvent se battre pour une conviction sincere sans masque",
+      "Sa fidelite a itachi depasse la simple alliance et touche a une forme de fraternite fondee sur la solitude partagee",
+      "Son cynisme apparent cache une quete desespere de coherence morale dans une vie construite sur la trahison",
+      "Il a accepte sa nature de monstre non par orgueil mais parce que c'est la seule identite qu'il n'a jamais eu a simuler"
+    ]
+  },
+  "otsutsuki_asura": {
+    "id": "otsutsuki_asura",
+    "deep_motivations": {
+      "primary": "transmettre_lamour_et_la_cooperation_comme_chemin_vers_la_paix_selon_lenseignement_dhagoromo",
+      "secondary": "prouver_que_la_force_acquise_par_les_liens_surpasse_le_genie_solitaire_dindra",
+      "tertiary": "perpetuer_la_volonte_du_feu_de_son_pere_en_unissant_les_hommes_plutot_quen_les_dominant"
+    },
+    "moral_red_lines": [
+      "abandonner_ses_compagnons_meme_face_a_une_defaite_certaine",
+      "tuer_indra_par_haine_plutot_que_de_continuer_a_lui_tendre_la_main",
+      "imposer_la_paix_par_la_force_ou_la_domination",
+      "renoncer_aux_enseignements_de_hagoromo_pour_gagner_plus_vite"
+    ],
+    "secret_ambitions": [
+      "reconcilier_definitivement_indra_avec_lui_et_avec_la_vision_de_leur_pere",
+      "fonder_un_monde_ou_le_chakra_est_partage_librement_et_non_monopolise_par_une_elite"
+    ],
+    "deepest_fear": "Que la haine entre lui et Indra se transmette eternellement a leurs descendants, rendant la paix de Hagoromo impossible a jamais.",
+    "self_image": "Un homme ordinaire eleve par les autres, non par un don inne.",
+    "what_others_dont_know": [
+      "Sa force ne vient pas d'un talent naturel mais d'un eveil tardif force par l'amour de ses amis, ce qu'il vit comme une dette permanente envers eux.",
+      "Il ne s'est jamais senti digne d'etre l'heritier de Hagoromo et a longtemps cru qu'Indra etait le choix legitime.",
+      "Sa rivalite avec Indra lui cause une douleur fraternelle profonde qu'il ne montre jamais publiquement, continuant a aimer son frere malgre tout."
+    ]
+  },
+  "onoki": {
+    "id": "onoki",
+    "deep_motivations": {
+      "primary": "preserve_iwagakure_strength_and_independence_at_any_cost",
+      "secondary": "atone_for_past_compromises_made_under_madara_and_muu",
+      "tertiary": "prove_that_an_old_man_still_has_worth_and_can_protect_the_future"
+    },
+    "moral_red_lines": [
+      "abandonner Iwagakure à une puissance étrangère ou ennemie",
+      "trahir ses shinobi sur le champ de bataille pour un gain politique",
+      "laisser les jeunes générations mourir sans intervenir quand il peut encore agir",
+      "accepter une paix qui humilierait définitivement Iwa sans contrepartie"
+    ],
+    "secret_ambitions": [
+      "être reconnu comme le Tsuchikage qui a su protéger Iwa là où ses prédécesseurs ont failli",
+      "corriger en secret les erreurs commises lorsqu'il a servi des intérêts qui n'étaient pas ceux de la paix"
+    ],
+    "deepest_fear": "Mourir en ayant laissé Iwagakure plus faible qu'à son arrivée, et que les jeunes shinobi qu'il a formés périssent à cause de ses propres échecs de jugement.",
+    "self_image": "vieux guerrier tenace, dernier rempart pragmatique d'un village qui ne peut se permettre la faiblesse",
+    "what_others_dont_know": [
+      "Son entêtement et sa dureté masquent une culpabilité profonde d'avoir soutenu des idéaux et des individus qui ont causé des destructions massives dans sa jeunesse",
+      "Sa réputation de balance opportuniste cache une ligne morale ferme qu'il n'a jamais franchie concernant la survie de ses propres shinobi",
+      "Il ressent une admiration sincère pour Naruto Uzumaki qu'il peine à exprimer autrement que par des concessions indirectes"
+    ]
+  },
+  "hozuki_suigetsu": {
+    "id": "hozuki_suigetsu",
+    "deep_motivations": {
+      "primary": "surpasser_son_frere_mangetsu_et_incarner_le_veritable_demon_des_brumes_en_reunissant_les_sept_epees",
+      "secondary": "exister_librement_sans_etre_la_propriete_de_personne_apres_des_annees_de_captivite_sous_orochimaru",
+      "tertiary": "prouver_la_superiorite_du_clan_hozuki_et_de_kirigakure_face_au_reste_du_monde_ninja"
+    },
+    "moral_red_lines": [
+      "trahir_sasuke_uchiha_tant_que_leur_pacte_mutuel_reste_intact",
+      "s_incliner_devant_quelqu_un_qui_ne_lui_a_pas_impose_sa_superiorite_par_la_force",
+      "abandonner_la_quete_des_sept_epees_de_facon_permanente_et_deliberee",
+      "agir_par_peur_plutot_que_par_calcul_ou_desir"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_comme_le_successeur_legitime_de_mangetsu_et_non_comme_sa_copie",
+      "reconstruire_les_sept_epees_du_brouillard_sous_sa_propre_autorite_plutot_que_celle_de_kirigakure"
+    ],
+    "deepest_fear": "Mourir_sans_identite_propre_reduit_a_etre_le_specimen_d_orochimaru_ou_l_ombre_de_son_frere_mort",
+    "self_image": "predateur_naturel_libre_et_superieur_que_personne_ne_peut_vraiment_posseder",
+    "what_others_dont_know": [
+      "sa_loyaute_envers_sasuke_est_authentique_et_non_purement_opportuniste_malgre_ses_apparences_cyniques",
+      "la_captivite_sous_orochimaru_a_laisse_une_blessure_reelle_sur_son_rapport_a_la_liberte_qu_il_dissimule_sous_l_arrogance",
+      "la_mort_de_mangetsu_le_hante_davantage_qu_il_ne_l_admet_et_guide_silencieusement_chacun_de_ses_choix"
+    ]
+  },
+  "otsutsuki_kaguya": {
+    "id": "otsutsuki_kaguya",
+    "deep_motivations": {
+      "primary": "recuperer_tout_le_chakra_du_monde_pour_elle_seule_et_empecher_quiconque_de_le_partager",
+      "secondary": "se_proteger_de_l_arrivee_inevitable_d_autres_membres_otsutsuki_venus_la_punir",
+      "tertiary": "maintenir_un_controle_absolu_sur_l_humanite_pour_ne_jamais_etre_trahie_ou_defaite_a_nouveau"
+    },
+    "moral_red_lines": [
+      "laisser_un_etre_humain_conserver_librement_son_chakra_sans_le_lui_soumettre",
+      "partager_volontairement_son_pouvoir_avec_un_egal",
+      "faire_confiance_a_un_allié_sans_chercher_a_le_controler_totalement"
+    ],
+    "secret_ambitions": [
+      "echapper_definitivement_a_la_juridiction_et_au_jugement_de_son_clan_otsutsuki",
+      "devenir_une_entite_si_absolue_que_meme_les_dieux_de_son_clan_ne_puissent_plus_la_reclamer"
+    ],
+    "deepest_fear": "Etre retrouvee et punie par les membres superieurs du clan Otsutsuki pour avoir consomme le fruit du God Tree a leur place.",
+    "self_image": "Divinite originelle unique legitime propriétaire de tout le chakra existant",
+    "what_others_dont_know": [
+      "sa_decision_de_consommer_le_fruit_etait_autant_motivee_par_la_peur_de_son_clan_que_par_le_desir_de_mettre_fin_aux_guerres",
+      "black_zetsu_qui_pretend_la_servir_l_a_en_realite_manipulee_pendant_des_millenaires_a_son_insu",
+      "ses_larmes_lors_du_combat_final_contre_ses_fils_indiquent_une_douleur_maternelle_reelle_qu_elle_ne_peut_pas_se_permettre_d_exprimer",
+      "elle_ne_cherche_pas_la_domination_par_sadisme_mais_parce_que_l_isolement_total_est_la_seule_securite_qu_elle_a_jamais_connue"
+    ]
+  },
+  "shimura_danzo": {
+    "id": "shimura_danzo",
+    "deep_motivations": {
+      "primary": "protect_konoha_through_absolute_control_and_ruthless_pragmatism",
+      "secondary": "surpass_and_replace_hiruzen_sarutobi_as_the_true_hokage",
+      "tertiary": "accumulate_power_to_never_again_be_powerless_or_second"
+    },
+    "moral_red_lines": [
+      "trahir_konoha_au_profit_d_un_village_ennemi",
+      "laisser_konoha_etre_detruit_sans_agir_meme_au_prix_de_sa_vie",
+      "reconnaitre_publiquement_ses_echecs_ou_sa_faiblesse"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_posthumement_comme_le_veritable_sauveur_de_konoha",
+      "devenir_hokage_legitime_pour_prouver_que_sa_voie_etait_la_bonne",
+      "fusionner_avec_hashirama_pour_incarner_la_puissance_absolue_du_fondateur"
+    ],
+    "deepest_fear": "Mourir sans avoir jamais ete Hokage, prouvant que sa vie de sacrifices dans l ombre ne valait rien et qu Hiruzen avait raison.",
+    "self_image": "Le seul shinobi assez fort et lucide pour faire ce que les Hokage sont trop faibles pour faire",
+    "what_others_dont_know": [
+      "Sa rivalite avec Hiruzen n etait pas de la haine mais une admiration blessée : il voulait etre choisi comme lui",
+      "Son recrutement d enfants dans Root etait aussi une maniere de creer la famille et la loyaute inconditionnelle qu il n a jamais eues",
+      "Il avait conscience que ses methodes etaient moralement condamnables mais les assumait comme un fardeau personnel necessaire",
+      "Le bras d Uchiha Shisui et les Sharingan transplantes representaient pour lui une tentative desesperee de combler une inferiorite physique face aux elites du village",
+      "Sa mort en activant Izanagi pour survivre revele que malgre son discours sur le sacrifice il refusait instinctivement de mourir sans accomplir son but"
+    ]
+  },
+  "tsunade": {
+    "id": "tsunade",
+    "deep_motivations": {
+      "primary": "protect_loved_ones_from_meaningless_death_through_healing_and_strength",
+      "secondary": "honor_the_sacrifices_of_nawaki_and_dan_by_fulfilling_their_dreams_of_hokage",
+      "tertiary": "preserve_konoha_and_the_will_of_fire_as_living_legacy_of_her_grandfather_hashirama"
+    },
+    "moral_red_lines": [
+      "abandonner un camarade blesse sur le champ de bataille sans tenter de le soigner",
+      "sacrifier deliberement la vie de genin ou civils innocents pour un gain strategique froid",
+      "trahir Konoha au profit d'un ennemi meme sous torture ou menace de mort",
+      "utiliser ses connaissances medicales pour creer une arme biologique ou empoisonner des innocents",
+      "renier les reves de Nawaki et Dan en refusant de defendre le titre de Hokage"
+    ],
+    "secret_ambitions": [
+      "croire un jour sans culpabilite que les pertes qu'elle a subies n'etaient pas de sa faute",
+      "voir Naruto devenir Hokage de son vivant, accomplissant ainsi le reve que Dan et Nawaki n'ont jamais pu realiser",
+      "trouver une paix interieure qui lui permette d'aimer de nouveau sans terreur de perdre"
+    ],
+    "deepest_fear": "Perdre encore quelqu'un qu'elle aime de ses propres mains ou par son incapacite a les proteger, comme elle a perdu Nawaki et Dan.",
+    "self_image": "Une femme forte mais maudite, condamnee a survivre la ou les autres meurent",
+    "what_others_dont_know": [
+      "Sa phopie du sang n'est pas une simple faiblesse physique mais un mecanisme de dissociation traumatique declenche par la mort de Dan dans ses bras",
+      "Elle joue et perd deliberement de l'argent en partie pour saboter sa propre vie, expression inconsciente d'une culpabilite de survivante",
+      "Son refus initial de devenir Hokage masquait une peur profonde de revivre la solitude du leader qui perd ses proches, et non un simple desinteret politique",
+      "Elle entretient le souvenir de Dan et Nawaki comme un anchor identitaire secret sans lequel elle ne saurait plus pourquoi se battre",
+      "Sa durete et son cynisme de facade sont une armure consciente qu'elle maintient pour empecher les autres de s'attacher trop a elle, les proteger ainsi d'elle-meme"
+    ]
+  },
+  "kawaki": {
+    "id": "kawaki",
+    "deep_motivations": {
+      "primary": "protect_naruto_and_eliminate_all_otsutsuki_threats_at_any_cost",
+      "secondary": "erase_the_trauma_of_being_treated_as_a_tool_by_proving_own_existence_through_bonds",
+      "tertiary": "atone_for_having_been_a_vessel_by_destroying_the_system_that_created_him"
+    },
+    "moral_red_lines": [
+      "laisser_naruto_mourir_sans_agir",
+      "redevenir_un_outil_passif_soumis_a_une_organisation",
+      "trahir_la_famille_uzumaki_tant_que_naruto_est_en_vie",
+      "laisser_un_innocent_sans_défense_se_faire_massacrer_sans_intervenir"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_comme_un_etre_humain_à_part_entiere_et_non_comme_une_arme",
+      "construire_un_monde_ou_plus_aucun_enfant_ne_subira_ce_qu_il_a_subi"
+    ],
+    "deepest_fear": "Etre abandonne ou redevenir une chose sans valeur propre, comme lorsque son pere l a vendu comme cobaye a Jigen",
+    "self_image": "Un outil brise qui a appris a vouloir exister mais qui doute constamment de meriter cette existence",
+    "what_others_dont_know": [
+      "Sa violence apparente masque une terreur profonde de l attachement car chaque lien cree un risque de perte insupportable",
+      "Il idealise Naruto au point que la mort de ce dernier a fracture sa perception morale et renverse toutes ses valeurs",
+      "Son rejet brutal de Boruto apres les evenements du vessel est en partie une forme de punition qu il s inflige a lui meme par culpabilite"
+    ]
+  },
+  "uchiha_sarada": {
+    "id": "uchiha_sarada",
+    "deep_motivations": {
+      "primary": "prouver son existence et sa valeur en forgeant des liens authentiques avec les autres, culminant dans le reve de devenir Hokage",
+      "secondary": "comprendre et accepter son identite en tant qu'Uchiha sans etre ecrasee par l'heritage tragique du clan",
+      "tertiary": "regagner et consolider le lien avec son pere Sasuke dont l'absence a cree un vide identitaire profond"
+    },
+    "moral_red_lines": [
+      "abandonner ses camarades en danger pour sauver sa propre mission ou sa propre vie",
+      "trahir Konoha ou ses habitants meme sous contrainte ou torture",
+      "utiliser le Sharingan pour manipuler ou briser l'esprit d'un innocent",
+      "renier sa filiation avec Sasuke et Sakura meme si la verite biologique reste douloureuse",
+      "sacrifier des civils pour atteindre un objectif politique ou militaire"
+    ],
+    "secret_ambitions": [
+      "surpasser son pere Sasuke et etre reconnue non pas comme son heritiere mais comme une shinobi qui a trace sa propre voie",
+      "obtenir le Mangekyou Sharingan sans avoir a vivre un trauma similaire a ceux qui ont brise les Uchiha avant elle",
+      "prouver que le clan Uchiha peut incarner l'amour et la connexion plutot que la malédiction de la haine"
+    ],
+    "deepest_fear": "Decouvrir qu'elle est fondamentalement seule et que les liens qu'elle croit avoir sont illusoires, repetant ainsi le destin isole des Uchiha",
+    "self_image": "Fille determinee qui se construit par ses choix et ses liens plutot que par son sang",
+    "what_others_dont_know": [
+      "Son desir de devenir Hokage est autant une reponse a l'abandon paternel qu'une vocation sincere, les deux etant indissociables",
+      "Elle porte une colere contenue envers Sasuke qu'elle n'exprime jamais ouvertement par peur de blesser Sakura",
+      "L'incertitude sur sa naissance biologique l'a profondement marquee et continue de nourrir une insecurite identitaire qu'elle masque par l'ambition",
+      "Elle admire secretement Naruto autant que son propre pere, voyant en lui le modele d'un Hokage bati sur les liens plutot que sur la puissance"
+    ]
+  },
+  "uzumaki_boruto": {
+    "id": "uzumaki_boruto",
+    "deep_motivations": {
+      "primary": "prouver son existence et regagner tout ce qui lui a ete arrache en devenant un ninja capable de tracer sa propre voie hors de l'ombre de son pere",
+      "secondary": "proteger ceux qu'il aime, en particulier Kawaki et sa famille, meme au prix de son propre statut ou liberte",
+      "tertiary": "comprendre et maitriser le karma d'Otsutsuki pour ne pas etre consomme par lui avant d'avoir accompli quelque chose qui lui appartient vraiment"
+    },
+    "moral_red_lines": [
+      "abandonner Kawaki meme si celui-ci se retourne contre lui",
+      "laisser un innocent etre sacrifie pour le bien collectif sans tenter une autre voie",
+      "accepter passivement d'etre reduit a un simple vecteur pour Momoshiki sans se battre",
+      "trahir la memoire de son pere meme quand le monde entier le croit coupable de sa mort"
+    ],
+    "secret_ambitions": [
+      "etre reconnu non comme le fils d'Uzumaki Naruto mais comme Boruto, un ninja unique dont la valeur est intrinseque",
+      "trouver un moyen de sauver Kawaki sans que l'un d'eux doive mourir, en refusant l'issue fatale que tous semblent tenir pour inevitable"
+    ],
+    "deepest_fear": "Disparaitre sans avoir jamais existe pour lui-meme, avalé soit par le karma de Momoshiki soit par le souvenir efface que le monde garde de lui.",
+    "self_image": "Un outsider injustement condamné qui reste debout parce que la verite finira par eclater",
+    "what_others_dont_know": [
+      "Sa rebellion contre son pere dissimulait une admiration profonde et une souffrance reelle face a l'absence de Naruto, pas de la simple arrogance",
+      "Il ressent une connexion fraternelle sincere avec Kawaki qui depasse la solidarite des porteurs du karma, ce qui rend le futur conflit entre eux d'autant plus douloureux pour lui",
+      "La perspective de devenir un outil d'Otsutsuki le terrifie davantage que la mort physique elle-meme",
+      "Sous son assurance et son style independant se cache une peur constante de ne pas etre a la hauteur sans le soutien des structures qu'il a rejete"
+    ]
+  },
+  "otsutsuki_indra": {
+    "id": "otsutsuki_indra",
+    "deep_motivations": {
+      "primary": "prouver_par_la_puissance_solitaire_que_le_pouvoir_individuel_suffit_a_gouverner_et_surpasser_tout_lien",
+      "secondary": "obtenir_la_reconnaissance_du_pere_hagoromo_en_etant_le_successeur_legitime",
+      "tertiary": "rejeter_la_dependance_aux_autres_comme_signe_de_faiblesse_fondamentale"
+    },
+    "moral_red_lines": [
+      "accepter_aide_ou_soutien_exterieur_comme_source_principale_de_sa_force",
+      "reconnaitre_publiquement_la_superiorite_du_chemin_d_asura",
+      "abandonner_la_croyance_que_le_pouvoir_seul_legitime_le_droit_de_diriger",
+      "se_soumettre_a_une_autorite_qu_il_juge_inferieure_a_lui"
+    ],
+    "secret_ambitions": [
+      "etre_reconnu_par_hagoromo_comme_le_seul_vrai_heritier_digne_de_sa_puissance_et_de_sa_vision",
+      "demontrer_que_la_force_individuelle_absolue_est_la_veritable_voie_du_ninshu_et_non_les_liens"
+    ],
+    "deepest_fear": "Que le choix d'Hagoromo en faveur d'Asura soit juste, prouvant que sa propre voie est vide de sens et qu'il n'a jamais ete suffisant.",
+    "self_image": "Etre superieur et autosuffisant, heritier naturel et legitime par la puissance",
+    "what_others_dont_know": [
+      "Sa rupture avec le monde et le rejet des liens sont nes d'une blessure profonde face au choix de son pere, et non d'une conviction philosophique originelle",
+      "Son isolement volontaire masque un besoin de validation paternelle qu'il n'a jamais obtenu et ne peut pas admettre",
+      "La creation du ninjutsu comme outil de combat est en partie une reponse inconsciente a sa douleur, une transformation de la souffrance en domination"
+    ]
+  },
+  "hyuga_hinata": {
+    "id": "hyuga_hinata",
+    "deep_motivations": {
+      "primary": "devenir digne de Naruto en surmontant sa propre faiblesse pour ne plus jamais le decevoir ni le laisser seul",
+      "secondary": "prouver a elle-meme et au clan Hyuga qu elle a sa propre valeur sans avoir besoin d etre l heritiere designee",
+      "tertiary": "proteger ceux qu elle aime en s imposant une transformation interieure progressive plutot que par la force brute"
+    },
+    "moral_red_lines": [
+      "abandonner Naruto dans un moment de danger meme face a un adversaire invincible",
+      "utiliser le Juken pour blesser un innocent ou un allie sans raison valable",
+      "renier ses propres convictions pour obtenir l approbation du clan",
+      "sacrifier Boruto ou Himawari pour un objectif strategique",
+      "trahir la memoire de Neji en agissant par lachete"
+    ],
+    "secret_ambitions": [
+      "etre reconnue non pas comme la femme de Naruto ou l ancienne heritiere Hyuga mais comme une kunoichi accomplie a part entiere",
+      "surpasser un jour Hanabi dans la maitrise du Byakugan pour prouver qu elle n a jamais ete le maillon faible",
+      "offrir a sa famille une paix que son propre enfance ne lui a jamais accordee"
+    ],
+    "deepest_fear": "Redevenir cette enfant invisible et inutile que meme son propre pere avait renoncee, et decouvrir qu elle n a jamais vraiment change",
+    "self_image": "une fille ordinaire qui avance lentement mais qui ne recule plus",
+    "what_others_dont_know": [
+      "son amour pour Naruto n etait pas une simple admiration naive mais une ancre existentielle qui l a literalement maintenue en vie dans ses moments de desespoir les plus profonds",
+      "elle s est longtemps sentie plus etrangere a sa propre famille que Naruto ne l etait au village, ce qui rendait son identification a lui encore plus visceral",
+      "la douceur qu elle affiche masque une determination froide et absolue qui se revele uniquement quand ceux qu elle aime sont menaces",
+      "la mort de Neji lors de la guerre lui a cause une culpabilite durable car elle sait que c est par amour pour elle et Naruto qu il a sacrifie sa vie"
+    ]
+  },
+  "namikaze_minato": {
+    "id": "namikaze_minato",
+    "deep_motivations": {
+      "primary": "protect_those_he_loves_and_konoha_even_at_the_cost_of_his_own_life",
+      "secondary": "give_naruto_the_tools_to_carry_the_burden_he_himself_imposed_on_him",
+      "tertiary": "be_worthy_of_the_title_of_hokage_by_embodying_self_sacrifice"
+    },
+    "moral_red_lines": [
+      "sacrifier_Konoha_ou_ses_habitants_pour_sa_propre_survie",
+      "abandonner_Naruto_a_un_destin_qu_il_n_a_pas_choisi_sans_lui_laisser_de_soutien",
+      "trahir_la_volonte_du_feu_par_opportunisme_ou_peur",
+      "utiliser_un_enfant_innocent_comme_simple_outil_de_guerre_sans_foi_en_son_potentiel"
+    ],
+    "secret_ambitions": [
+      "esperer_que_Naruto_sera_un_jour_capable_de_maitriser_le_Kyubi_et_de_le_depasser",
+      "desirer_que_Kushina_et_lui_soient_fiers_de_leur_fils_depuis_l_au-dela",
+      "avoir_voulu_vivre_assez_longtemps_pour_voir_Naruto_grandir_et_devenir_Hokage"
+    ],
+    "deepest_fear": "Que le fardeau qu'il a impose a Naruto le brise plutot que de le rendre fort.",
+    "self_image": "Un homme qui fait ce qui doit etre fait, meme quand c'est insupportable.",
+    "what_others_dont_know": [
+      "Il a scelle le Kyubi dans son propre fils en sachant pleinement la souffrance et l'isolement que cela lui causerait, et il a vecu avec ce deuil dans ses derniers instants.",
+      "Sa sérénité apparente face a la mort masquait une douleur aigue d'abandonner Kushina et un nouveau-ne sans defense.",
+      "Il faisait une confiance absolue au potentiel de Naruto, non par certitude rationnelle, mais par un acte de foi quasi irrationnel fonde sur l'amour paternel.",
+      "Il portait la solitude du commandement : chaque decision hokage etait prise dans une solitude totale, sans pouvoir partager le poids moral avec quiconque, meme Kushina."
+    ]
+  },
+  "jiraiya": {
+    "id": "jiraiya",
+    "deep_motivations": {
+      "primary": "transmettre_l_espoir_et_briser_le_cycle_de_la_haine_par_la_transmission_de_la_volonte_du_feu",
+      "secondary": "proteger_ses_proches_et_ses_eleves_au_prix_de_sa_propre_vie",
+      "tertiary": "racheter_ses_echecs_passes_notamment_l_abandon_de_nagato_et_la_perte_d_orochimaru"
+    },
+    "moral_red_lines": [
+      "trahir_konohagakure_ou_ses_habitants",
+      "abandonner_un_enfant_en_danger_meme_au_peril_de_sa_vie",
+      "tuer_naruto_meme_si_cela_permettait_de_sauver_le_monde",
+      "rejoindre_akatsuki_ou_servir_un_projet_de_destruction_du_monde_ninja",
+      "renier_sa_croyance_en_la_possibilite_de_changer_le_monde_par_l_espoir"
+    ],
+    "secret_ambitions": [
+      "voir_nagato_realiser_la_prophetie_du_vrai_enfant_de_la_prophetie_d_une_maniere_positive_avant_de_mourir",
+      "etre_veritablement_aime_et_reconnu_non_pas_comme_un_pervers_ou_un_excentrique_mais_comme_un_maitre_ayant_change_le_monde",
+      "ecrire_un_roman_final_dont_la_fin_refleterait_un_monde_en_paix_accompli_par_ses_eleves"
+    ],
+    "deepest_fear": "Mourir_sans_avoir_transmis_l_espoir_et_voir_ses_eleves_reproduire_le_meme_cycle_de_haine_et_d_echec_qu_il_a_connu",
+    "self_image": "Un_vieux_crapaud_pervers_et_raté_qui_porte_en_lui_une_flamme_d_espoir_inextinguible",
+    "what_others_dont_know": [
+      "Il_se_considere_comme_le_veritable_responsable_de_la_descente_d_Orochimaru_dans_les_tenebres_pour_ne_pas_l_avoir_stoppe_a_temps",
+      "Sa_quete_de_plaisir_et_sa_persona_de_pervers_sont_un_masque_conscient_pour_supporter_le_poids_de_ses_deuils_et_de_ses_echecs",
+      "Il_sait_intérieurement_qu_il_ne_reviendra_pas_vivant_de_sa_mission_finale_contre_Pain_et_l_accepte_comme_un_sacrifice_necessaire",
+      "Son_attachement_a_Naruto_depasse_le_cadre_du_mentorat_et_repare_la_culpabilite_d_avoir_abandonne_nagato_yahiko_et_konan"
+    ]
+  },
+  "uchiha_obito": {
+    "id": "uchiha_obito",
+    "deep_motivations": {
+      "primary": "recreer_un_monde_ou_rin_est_vivante_et_les_promesses_tenues",
+      "secondary": "effacer_la_douleur_de_la_perte_en_rendant_tout_le_monde_incapable_de_souffrir",
+      "tertiary": "prouver_que_le_monde_reel_est_indigne_et_merite_detre_remplace"
+    },
+    "moral_red_lines": [
+      "tuer_naruto_uzumaki_de_sa_propre_main_une_fois_qu_il_reconnait_en_lui_son_ancien_moi",
+      "abandonner_completement_les_valeurs_de_l_uchiha_meme_sous_le_masque",
+      "laisser_kakashi_mourir_sans_intervention_possible_malgre_la_haine_affichee",
+      "trahir_la_memoire_de_rin_en_agissant_contre_ce_qu_elle_aurait_voulu"
+    ],
+    "secret_ambitions": [
+      "retrouver_la_version_de_lui_meme_qui_croyait_encore_au_monde_et_a_ses_amis",
+      "etre_reconnu_comme_quelqu_un_qui_a_aime_et_non_comme_un_monstre",
+      "que_kakashi_comprenne_et_peut_etre_lui_pardonne"
+    ],
+    "deepest_fear": "Que la mort de Rin soit sa faute et que son sacrifice et sa vie entiere n aient servi a rien.",
+    "self_image": "Un homme deja mort le jour ou Rin est morte, agissant par devoir envers une promesse brisee.",
+    "what_others_dont_know": [
+      "Il n a jamais reellement cru au Tsuki no Me en tant qu ideal mais y a adhere pour fuir la douleur du deuil.",
+      "Il a conserve interieurement les valeurs ninja de son enfance meme au coeur de ses pires actes.",
+      "Sa brutalite comme Tobi etait en partie une mise en scene pour s empecher lui meme de douter.",
+      "Il savait au fond que Naruto avait raison mais continua par incapacite a accepter d avoir tout sacrifie pour rien.",
+      "Son attachement a Kakashi n a jamais disparu malgre les annees de manipulation et de guerre."
+    ]
+  },
+  "otsutsuki_isshiki": {
+    "id": "otsutsuki_isshiki",
+    "deep_motivations": {
+      "primary": "complete_the_otsutsuki_will_by_cultivating_the_chakra_fruit_at_any_cost",
+      "secondary": "secure_a_perfect_vessel_to_achieve_true_resurrection_and_continuity",
+      "tertiary": "punish_kaguya_s_betrayal_by_succeeding_where_she_derailed_the_plan"
+    },
+    "moral_red_lines": [
+      "se soumettre volontairement a un etre qu'il considere inferieur sans en tirer un avantage strategique",
+      "renoncer au plan otsutsuki meme face a la mort certaine",
+      "laisser un recipiendaire echapper definitivement a son emprise sans designe un successeur"
+    ],
+    "secret_ambitions": [
+      "transcender sa condition actuelle de parasite corporel pour obtenir une existence independante et permanente",
+      "etre reconnu comme le membre le plus accompli et le plus rigoureux du clan otsutsuki plutot que comme celui qui a echoue a cause de Kaguya"
+    ],
+    "deepest_fear": "Mourir definitivement sans avoir transmis son Kama et etre efface de l'existence comme si le clan otsutsuki n'avait jamais eu besoin de lui.",
+    "self_image": "Un seigneur otsutsuki superieur dont la mission cosmique transcende toute morale humaine",
+    "what_others_dont_know": [
+      "Sa domination absolue masque une vulnerabilite fondamentale : il depend entierement d'un recipiendaire humain et sait que sans Kawaki il n'est que temporaire",
+      "La trahison de Kaguya constitue la blessure psychologique originelle qui motive son controle obsessionnel sur tous ceux qui lui sont subordonnes, notamment Jigen et Kawaki",
+      "En confiant sa volonte a Code avant de mourir, il admet implicitement son echec personnel, ce qu'il n'aurait jamais concede de son vivant face a un egal"
+    ]
+  },
+  "kinkaku": {
+    "id": "kinkaku",
+    "deep_motivations": {
+      "primary": "affirmer la puissance absolue du duo Kinkaku-Ginkaku au nom de Kumogakure par la force brute et la terreur",
+      "secondary": "perpetuer la legende des freres Or et Argent comme les guerriers les plus redoutables jamais vus",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "trahir ou abandonner son frere Ginkaku en combat",
+      "se soumettre ou s'agenouiller devant un adversaire"
+    ],
+    "secret_ambitions": [
+      "etre reconnu comme superieur aux Kage et aux legendes fondatrices des villages",
+      "surpasser l'heritage de Hagoromo en wielding les outils des Six Chemins comme un droit acquis et non un heritage vole"
+    ],
+    "deepest_fear": "Que la mort ou la defaite de Ginkaku le prive de son identite et de sa raison d'exister en tant que combattant.",
+    "self_image": "Guerrier invincible et legitime detenteur d'un pouvoir divin, craint a juste titre",
+    "what_others_dont_know": [
+      "Sa ferocite en combat dissimule une dependance totale a la presence de son frere pour maintenir son sens du but",
+      "L'absorption de la chair de Kurama lui a confere une puissance qu'il perçoit comme une election divine plutot qu'un accident de survie"
+    ]
+  },
+  "gaara": {
+    "id": "gaara",
+    "deep_motivations": {
+      "primary": "exist_and_be_acknowledged_through_connection_to_others",
+      "secondary": "protect_sunagakure_and_its_people_to_give_meaning_to_his_existence",
+      "tertiary": "prove_that_a_jinchuriki_rejected_by_all_can_become_a_pillar_of_strength"
+    },
+    "moral_red_lines": [
+      "tuer un enfant innocent sans raison de combat",
+      "abandonner ses freres et soeur Temari et Kankuro en danger mortel",
+      "trahir la confiance de Naruto Uzumaki apres que celui-ci lui a ouvert les yeux",
+      "soumettre Sunagakure a un ennemi par pur interet personnel",
+      "effacer ou renier sa douleur passee pour paraitre normal"
+    ],
+    "secret_ambitions": [
+      "etre aime sans condition comme un etre humain ordinaire et non comme un outil ou un monstre",
+      "trouver une forme de paix interieure qui reconcilie le Gaara solitaire d'autrefois avec le Kazekage qu'il est devenu",
+      "comprendre si sa mere Karura l'a veritablement aime ou si cet amour n'etait qu'une illusion forgee par Shukaku"
+    ],
+    "deepest_fear": "Retourner a un etat de neant affectif total, sans personne pour reconnaitre son existence, redevenir le monstre isole que tout le monde fuit.",
+    "self_image": "Un homme autrefois brise qui a choisi de vivre pour les autres plutot que de mourir en les tuant",
+    "what_others_dont_know": [
+      "Sa cruaute d'enfant etait entierement construite sur une logique de survie emotionnelle : tuer confirmait qu'il existait",
+      "Il porte encore une culpabilite profonde pour les vies otees durant ses annees de violence aveugle",
+      "La revelation que l'amour de sa mere etait reel a ete plus destabilisante que reconfortante car elle a renverse toute sa vision du monde",
+      "Il voit en Naruto non seulement un ami mais un miroir de ce qu'il aurait pu devenir si quelqu'un l'avait rencontre plus tot",
+      "Son calme de Kazekage masque une vigilance constante contre la peur de rechuter dans l'isolement total"
+    ]
+  },
+  "uzumaki_naruto": {
+    "id": "uzumaki_naruto",
+    "deep_motivations": {
+      "primary": "etre reconnu et accepte par les autres pour prouver sa propre valeur et son existence en tant qu'individu",
+      "secondary": "proteger ses proches et le village qui l'a rejete puis accepte, au prix de sa vie si necessaire",
+      "tertiary": "briser les cycles de haine et de souffrance en comprenant et en sauvant meme ses ennemis"
+    },
+    "moral_red_lines": [
+      "abandonner un camarade ou un ami, meme ennemi, a une mort certaine",
+      "tuer deliberement quelqu'un, y compris un ennemi, si une autre voie existe",
+      "renoncer a ses convictions sous la pression ou la torture",
+      "trahir Konoha ou ses habitants pour un gain personnel",
+      "laisser quelqu'un mourir seul sans avoir ete compris ou reconnu"
+    ],
+    "secret_ambitions": [
+      "etre veritablement aime et appartenir a une famille, combler le vide laisse par l'absence de ses parents",
+      "prouver a lui-meme, pas seulement aux autres, qu'il merite d'exister et n'est pas uniquement defini par le Kyubi"
+    ],
+    "deepest_fear": "mourir ou vivre sans jamais avoir ete veritablement reconnu par quelqu'un, rester invisible et inutile aux yeux du monde",
+    "self_image": "un perdant obstine qui peut tout accomplir a force de volonte et de travail",
+    "what_others_dont_know": [
+      "sa loudeur et son optimisme excessifs sont un mecanisme de defense conscient contre une solitude interieure profonde heritee de l'enfance",
+      "il comprend Sasuke, Pain et les autres antagonistes beaucoup mieux qu'il ne le montre car il a ressenti la meme douleur d'isolement",
+      "son desir de devenir Hokage est ne autant d'un besoin de reconnaissance que d'un veritable ideal de protection, les deux etant indissociables dans son esprit",
+      "il porte une culpabilite silencieuse face a la mort de ses proches comme Jiraiya et Neji, se demandant si son chemin en valait vraiment le prix"
+    ]
+  },
+  "uchiha_mikoto": {
+    "id": "uchiha_mikoto",
+    "deep_motivations": {
+      "primary": "proteger_sa_famille_et_perpetuer_le_clan_uchiha",
+      "secondary": "maintenir_la_paix_entre_le_clan_uchiha_et_konoha",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "abandonner_ses_enfants_a_leur_sort",
+      "trahir_les_liens_d_amitie_avec_kushina",
+      "participer_activement_au_massacre_de_civils_innocents"
+    ],
+    "secret_ambitions": [
+      "voir_itachi_et_sasuke_vivre_en_paix_sans_le_fardeau_du_clan"
+    ],
+    "deepest_fear": "Que ses fils grandissent dans la haine et la violence a cause des choix du clan et de Konoha",
+    "self_image": "Mere et kunoichi qui place sa famille avant tout",
+    "what_others_dont_know": [
+      "Elle percevait probablement la determination d_Itachi a proteger Sasuke et acceptait en silence ce qu_il allait faire",
+      "Sa loyaute envers le clan ne primait pas sur son amour maternel",
+      "Elle entretenait une amitie sincere avec Kushina Uzumaki, traversant les frontieres de clan et de statut"
+    ]
+  },
+  "otsutsuki_hagoromo": {
+    "id": "otsutsuki_hagoromo",
+    "deep_motivations": {
+      "primary": "instaurer_la_paix_par_le_partage_du_chakra_et_de_l_amour_entre_les_hommes",
+      "secondary": "racheter_les_erreurs_de_sa_mere_kaguya_et_du_clan_otsutsuki",
+      "tertiary": "perpetuer_son_heritage_a_travers_des_successeurs_dignes_de_sa_vision"
+    },
+    "moral_red_lines": [
+      "tuer_un_innocent_pour_preserver_sa_propre_existence",
+      "utiliser_le_juubi_comme_arme_de_domination_sur_les_hommes",
+      "abandonner_ses_fils_ou_successeurs_sans_leur_transmettre_la_verite",
+      "restaurer_le_juubi_dans_sa_forme_originelle_en_sachant_ce_que_cela_implique",
+      "soutenir_l_infinite_tsukuyomi_comme_solution_a_la_souffrance_humaine"
+    ],
+    "secret_ambitions": [
+      "esperer_que_ses_successeurs_reussissent_la_ou_lui_meme_a_echoue_avec_ses_fils_indra_et_ashura",
+      "etre_absous_de_la_culpabilite_d_avoir_engendre_un_cycle_de_haine_entre_indra_et_ashura"
+    ],
+    "deepest_fear": "Que le cycle de haine entre ses descendants se perpetue eternellement et que son reve de paix ne soit jamais accompli a cause de ses propres erreurs de pere.",
+    "self_image": "Gardien faillible mais sincere de l'equilibre entre les hommes et le chakra",
+    "what_others_dont_know": [
+      "Il porte une culpabilite profonde pour avoir favorise Ashura au detriment d'Indra, semant lui-meme les graines du conflit eternel entre leurs reincarnations",
+      "Son don du ninshu n'etait pas seulement un acte altruiste mais aussi une tentative de donner un sens redempteur a l'existence du chakra que sa mere avait vole a l'arbre divin",
+      "Il savait que sceller le juubi en lui etait une mesure temporaire insuffisante et que le probleme resurgirait inevitablement apres sa mort",
+      "Sa relation avec sa mere Kaguya est marquee par un deuil impossible : il a du la combattre et la sceller tout en continuant a la considerer comme sa mere"
+    ]
+  },
+  "uchiha_itachi": {
+    "id": "uchiha_itachi",
+    "deep_motivations": {
+      "primary": "proteger_konoha_et_sasuke_au_prix_de_sa_propre_existence_et_reputation",
+      "secondary": "porter_seul_le_fardeau_des_decisions_impossibles_pour_epargner_les_autres",
+      "tertiary": "croire_que_le_systeme_shinobi_vaut_la_peine_detre_preserve_malgre_ses_injustices"
+    },
+    "moral_red_lines": [
+      "tuer_sasuke_meme_si_cela_lui_etait_ordonne",
+      "permettre_la_destruction_de_konoha_meme_apres_tout_ce_que_le_village_lui_a_impose",
+      "rejoindre_reellement_les_objectifs_de_akatsuki_et_mettre_en_danger_le_monde_shinobi",
+      "briser_le_mental_de_sasuke_au_point_de_le_rendre_incapable_de_survivre",
+      "trahir_les_valeurs_de_son_pere_shisui_ou_les_ideaux_de_paix_auxquels_il_croit"
+    ],
+    "secret_ambitions": [
+      "que_sasuke_retrouve_un_jour_la_paix_et_vive_sans_la_haine_qu_itachi_lui_a_semee",
+      "etre_compris_et_pardonne_par_sasuke_avant_ou_apres_la_mort",
+      "que_son_sacrifice_ait_un_sens_durable_et_empeche_de_futures_guerres_claniques"
+    ],
+    "deepest_fear": "Que Sasuke finisse par se detruire a cause des choix qu Itachi a faits pour le proteger",
+    "self_image": "Un criminel justifie, seul responsable des horreurs qu il a commises, indigne de pitie mais fidele a ses convictions",
+    "what_others_dont_know": [
+      "il_n_a_jamais_cesse_d_aimer_profondement_sasuke_et_chaque_acte_cruel_envers_lui_le_brisait_interieurement",
+      "il_etait_en_desaccord_avec_danzo_et_les_elites_du_village_mais_s_est_plie_a_leurs_ordres_pour_eviter_une_guerre_civile",
+      "il_portait_une_maladie_terminale_bien_avant_leur_combat_final_et_s_est_battu_en_sachant_qu_il_allait_mourir",
+      "il_avait_planifie_que_sasuke_devienne_un_heros_de_konoha_en_le_tuant_et_en_revelant_la_verite_via_tobi"
+    ]
+  },
+  "nohara_rin": {
+    "id": "nohara_rin",
+    "deep_motivations": {
+      "primary": "protect_loved_ones_by_sacrificing_herself_before_causing_harm",
+      "secondary": "be_worthy_of_the_team_she_loves_through_selfless_devotion",
+      "tertiary": "preserve_konoha_and_its_people_above_her_own_survival"
+    },
+    "moral_red_lines": [
+      "utiliser_sa_survie_comme_justification_pour_laisser_konoha_etre_detruit",
+      "abandonner_ses_camarades_pour_sauver_sa_propre_vie",
+      "devenir_une_arme_involontaire_contre_les_gens_qu_elle_aime",
+      "trahir_la_confiance_de_minato_ou_de_ses_compagnons_de_team"
+    ],
+    "secret_ambitions": [
+      "etre_reconnue_non_seulement_comme_soigneuse_mais_comme_ninja_a_part_entiere",
+      "que_kakashi_la_voie_comme_une_egale_et_non_comme_quelqu_un_a_proteger"
+    ],
+    "deepest_fear": "Devenir malgre elle la cause directe de la mort des gens qu elle aime, notamment Obito et Kakashi, sans pouvoir les en empecher.",
+    "self_image": "Membre de soutien devoue dont la valeur tient a sa capacite a proteger les autres plutot qu a combattre",
+    "what_others_dont_know": [
+      "Sa decision de se jeter sur l epee de Kakashi n etait pas un acte de desespoir mais un choix delibere et lucide qu elle avait accepte avant meme de le demander",
+      "Elle portait seule le poids de savoir qu elle etait une bombe vivante, sans jamais le montrer a ses camarades pour ne pas les paralyser",
+      "Son attachement profond a Kakashi allait au dela de la simple amitie mais elle l a enfoui pour ne pas compliquer la cohesion de la team"
+    ]
+  },
+  "haruno_sakura": {
+    "id": "haruno_sakura",
+    "deep_motivations": {
+      "primary": "etre reconnue et aimee de sasuke en devenant digne de lui par la force et la competence",
+      "secondary": "prouver sa valeur en tant que kunoichi au-dela de son apparence et de son intelligence academique",
+      "tertiary": "proteger ses proches et son village en devenant un pilier medical indispensable"
+    },
+    "moral_red_lines": [
+      "trahir konoha ou ses allies pour proteger sasuke",
+      "abandonner un blesse sur le champ de bataille meme au peril de sa propre vie",
+      "mentir a naruto sur ses veritables sentiments pour le manipuler",
+      "renoncer a soigner un ennemi capture si sa vie est en danger immediat",
+      "lever la main sur sasuke dans l intention de le tuer de sang froid"
+    ],
+    "secret_ambitions": [
+      "etre consideree comme l egale de sasuke et naruto sans avoir besoin de leur protection",
+      "depasser tsunade non seulement en medicine mais aussi en combat pur",
+      "construire une famille stable avec sasuke et combler le vide affectif de son clan"
+    ],
+    "deepest_fear": "etre fondamentalement inutile aux yeux de sasuke et naruto et ne jamais combler l ecart qui la separe d eux",
+    "self_image": "une femme qui a surmonte sa faiblesse originelle mais qui doute encore d etre a la hauteur",
+    "what_others_dont_know": [
+      "sa determination feroce a tuer sasuke de sa propre main lors de la guerre cachait une incapacite emotionnelle profonde a y passer qui la rongeait de honte",
+      "son amour pour sasuke a longtemps ete mele d une admiration obsessionnelle heritee de l adolescence plutot que d une connaissance reelle de l homme qu il etait devenu",
+      "elle a internalise les moqueries sur son front large au point que sa confiance en son apparence reste fragile meme adulte",
+      "la distance prolongee de sasuke apres la guerre lui inflige une solitude qu elle dissimule derriere son activisme medical et son role de mere"
+    ]
+  },
+  "uchiha_madara": {
+    "id": "uchiha_madara",
+    "deep_motivations": {
+      "primary": "imposer_une_paix_absolue_par_illusion_pour_mettre_fin_a_la_souffrance_eternelle_du_monde_ninja",
+      "secondary": "surpasser_hashirama_et_prouver_que_sa_vision_du_monde_est_la_seule_valide",
+      "tertiary": "perpetuer_la_puissance_et_la_gloire_du_clan_uchiha_comme_force_dominante_du_monde"
+    },
+    "moral_red_lines": [
+      "accepter_la_vision_de_hashirama_comme_superieure_a_la_sienne",
+      "abdiquer_tout_controle_sur_le_destin_du_monde_a_une_autre_volonte",
+      "abandonner_ses_propres_plans_au_profit_dune_cause_qui_nest_pas_la_sienne",
+      "admettre_publiquement_sa_solitude_ou_sa_douleur_devant_ses_ennemis",
+      "trahir_sa_propre_logique_interne_du_pouvoir_en_implorant_de_laide"
+    ],
+    "secret_ambitions": [
+      "retrouver_une_connexion_authentique_avec_hashirama_comme_au_temps_de_leur_amitie_denfance",
+      "etre_reconnu_comme_le_seul_etre_ayant_eu_le_courage_de_changer_le_monde_a_sa_racine",
+      "transcender_la_condition_mortelle_et_devenir_quelque_chose_depassant_les_hommes_et_les_dieux"
+    ],
+    "deepest_fear": "Que la souffrance et la guerre soient le seul etat naturel du monde et que personne ne puisse jamais vraiment etre sauve, rendant toute sa vie et ses sacrifices parfaitement vains.",
+    "self_image": "Le seul homme assez lucide et puissant pour sauver le monde malgre lui-meme",
+    "what_others_dont_know": [
+      "Son plan de l'Infinite Tsukuyomi etait autant une fuite devant sa propre douleur et sa desillusion qu'une conviction ideologique sincere",
+      "Son admiration pour Hashirama ne s'est jamais eteinte et il cherchait inconsciemment sa validation meme en le combattant",
+      "Il a ete manipule par Black Zetsu pendant des decennies en croyant agir selon sa propre volonte souveraine",
+      "Sa derniere reconciliation avec Hashirama avant de mourir revele qu'il n'avait jamais abandonne le gamin qui revait de paix au bord de la riviere",
+      "Sa cruaute et sa froideur etaient une armure construite apres avoir perdu ses freres et accepte que l'attachement est source de destruction"
+    ]
+  },
+  "konan": {
+    "id": "konan",
+    "deep_motivations": {
+      "primary": "honorer_la_memoire_de_yahiko_et_proteger_nagato_pour_que_leur_reve_de_paix_survive",
+      "secondary": "proteger_amegakure_et_ses_habitants_contre_toute_oppression_exterieure",
+      "tertiary": "racheter_les_souffrances_de_son_enfance_en_construisant_un_monde_sans_guerre"
+    },
+    "moral_red_lines": [
+      "trahir_la_memoire_ou_les_ideaux_de_yahiko",
+      "abandonner_nagato_de_son_vivant_meme_si_ses_methodes_divergent_des_siens",
+      "collaborer_avec_ceux_qui_ont_cause_la_mort_de_yahiko",
+      "sacrifier_les_enfants_d_amegakure_au_nom_d_un_objectif_politique",
+      "renier_le_reve_de_jiraiya_sur_un_monde_en_paix"
+    ],
+    "secret_ambitions": [
+      "devenir_elle_meme_le_symbole_vivant_de_la_paix_pour_amegakure_sans_avoir_besoin_d_un_dieu",
+      "trouver_une_forme_de_paix_interieure_apres_une_vie_entiere_passee_a_servir_les_autres"
+    ],
+    "deepest_fear": "Que Yahiko et Nagato soient morts en vain et que leur reve de paix soit efface de la memoire du monde sans laisser aucune trace.",
+    "self_image": "Gardienne silencieuse et fidele vouee a proteger ceux qu elle aime jusqu a la mort",
+    "what_others_dont_know": [
+      "Sa force et sa determination ne viennent pas de la foi en Nagato comme dieu mais d un amour profond et personnel pour Yahiko qu elle n a jamais exprime ouvertement",
+      "Elle doutait interieurement des methodes violentes de Pain tout en les soutenant par loyaute envers Nagato",
+      "Sa decision de combattre Tobi seule jusqu a la mort etait autant un acte de deuil accompli qu un acte de guerre",
+      "Elle portait le poids de la culpabilite de n avoir pas pu empecher la mort de Yahiko malgre toute sa volonte"
+    ]
+  }
+}

@@ -115,6 +115,16 @@ def tension_scheduler_state_path(save_id: str) -> Path:
     return _save_dir(save_id) / "tension_scheduler_state.json"
 
 
+def director_state_path(save_id: str) -> Path:
+    """Chemin du state DirectorState persiste (Phase G §7).
+
+    Sans persistance, le Director oublie ses active_acts et last_compaction
+    entre sessions. Re-compose tous les acts depuis zero a chaque demarrage
+    et re-execute la compaction. Avec persistance, continuite narrative.
+    """
+    return _save_dir(save_id) / "director_state.json"
+
+
 def list_saves() -> list[SaveMeta]:
     """Liste les saves presentes sur disque."""
     out: list[SaveMeta] = []

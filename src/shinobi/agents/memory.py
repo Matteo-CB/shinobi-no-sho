@@ -34,6 +34,9 @@ from shinobi.agents.types import (
     PlanStatus,
     Reflection,
 )
+from shinobi.logging_setup import get_logger
+
+logger = get_logger(__name__)
 
 # Decay : 30 jours -> recency ~0.5
 # exp(-decay * 30*86400) = 0.5  =>  decay = ln(2) / (30*86400)
@@ -187,8 +190,15 @@ class AgentMemory:
             self._embeddings_index.index_entry(
                 self._npc_id, entry_id=entry.id, kind=entry.kind, text=text,
             )
-        except Exception:
-            pass
+        except Exception as exc:  # noqa: BLE001
+            # Audit anti-silent : un bug d'embeddings (BGE-M3 non dispo,
+            # signature change) retombait silencieusement sur retrieval
+            # par overlap mots. On log pour visibilite.
+            logger.warning(
+                "memory_index_entry_failed",
+                npc_id=self._npc_id, entry_id=entry.id, kind=entry.kind,
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
 
     @property
     def npc_id(self) -> str:
@@ -300,7 +310,12 @@ class AgentMemory:
                     top_k=max(top_k * 4, 20),
                 )
                 cosines = {entry_id: score for score, entry_id, _k in semantic}
-            except Exception:
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "memory_retrieve_semantic_failed",
+                    npc_id=self._npc_id,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
                 cosines = {}
 
         scored: list[tuple[float, MemoryEntry]] = []

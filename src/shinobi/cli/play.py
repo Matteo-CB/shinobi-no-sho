@@ -209,6 +209,7 @@ def play_session(save_id: str) -> None:
     main_loop_kg_store = None
     main_loop_social = None
     main_loop_scheduler_state = None
+    main_loop_director_state = None
     if main_loop_kg.exists():
         try:
             from shinobi.kg.social import SocialNetwork
@@ -230,7 +231,37 @@ def play_session(save_id: str) -> None:
                     main_loop_scheduler_state = SchedulerState.from_dict(state_data)
                 except (json.JSONDecodeError, OSError):
                     main_loop_scheduler_state = SchedulerState()
-        except Exception:
+
+            # Phase G §7 : DirectorState persiste entre sessions pour
+            # preserver active_acts + last_compaction.
+            from shinobi.director import DirectorState
+
+            director_state_path = save_module.director_state_path(save_id)
+            main_loop_director_state = DirectorState()
+            if director_state_path.exists():
+                try:
+                    director_data = json.loads(
+                        director_state_path.read_text(encoding="utf-8"),
+                    )
+                    main_loop_director_state = DirectorState.from_dict(
+                        director_data,
+                    )
+                except (json.JSONDecodeError, OSError) as exc:
+                    from shinobi.logging_setup import get_logger as _glog
+                    _glog(__name__).warning(
+                        "main_loop_director_state_load_corrupted",
+                        error=type(exc).__name__, msg=str(exc)[:200],
+                    )
+                    main_loop_director_state = DirectorState()
+        except Exception as exc:  # noqa: BLE001
+            # Audit anti-silent : si l'init main_loop_kg_store crash
+            # (DB locked, schema migration, etc), la session continue
+            # SANS Phase A KG actif - degradation majeure invisible.
+            from shinobi.logging_setup import get_logger as _glog
+            _glog(__name__).warning(
+                "main_loop_kg_init_failed",
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
             main_loop_kg_store = None
 
     console.print(
@@ -458,13 +489,37 @@ def play_session(save_id: str) -> None:
             console.print(f"  [yellow]>>> Evenement canon declenche : {f.event_id}[/yellow]")
         for c in cancelled:
             console.print(f"  [red]>>> Evenement canon annule : {c.event_id}[/red]")
-            # WorldResolver auto si strategy=narrative_resolution
+            # Phase F : WorldResolver auto si strategy declenche un substitute.
+            # Spec doc 02 §8.2 : 'substitute' (un event prend la place),
+            # 'cascade_cancel' (effets domino qui peuvent generer un substitute),
+            # et legacy 'narrative_resolution' (alias deprecated).
             canon_ev = canon.timeline_events.get(c.event_id)
-            if canon_ev and canon_ev.cancellation_strategy.type == "narrative_resolution":
+            triggers_substitute = canon_ev and canon_ev.cancellation_strategy.type in (
+                "substitute", "cascade_cancel", "narrative_resolution",
+            )
+            if triggers_substitute:
                 try:
-                    asyncio.run(_world_resolve_cancellation(canon_ev, c.reason, world.current_year, canon))
-                except Exception:
-                    pass
+                    # Spec round 6 : capture new_world pour que le substitute
+                    # injecte soit visible au tick suivant du scheduler.
+                    new_world = asyncio.run(_world_resolve_cancellation(
+                        canon_ev, c.reason, world.current_year, canon,
+                        kg_store=main_loop_kg_store, world=world,
+                    ))
+                    if new_world is not None:
+                        world = new_world
+                except Exception as exc:
+                    # Round 30 : logger au lieu de swallow silencieux.
+                    # Round 23 avait logge le bloc Phase F interne, mais
+                    # la narration (etape 1) etait hors-couverture - si LLM
+                    # crash sur resolve_cancelled_event, l'exception remontait
+                    # ici sans trace.
+                    from shinobi.logging_setup import get_logger
+                    get_logger(__name__).warning(
+                        "phase_f_outer_swallow",
+                        cancelled_event=c.event_id,
+                        error=type(exc).__name__,
+                        msg=str(exc)[:200],
+                    )
 
         # Annonce des rumeurs nouvellement nees que le joueur peut entendre
         world = _announce_new_rumors(world, character, fired_event_ids={f.event_id for f in fired}, canon=canon)
@@ -540,6 +595,19 @@ def play_session(save_id: str) -> None:
         )
 
         last_proposed = []
+        # Phase G+H wiring : compose le nudge depuis le DirectorState courant
+        # pour l'injecter dans le prompt narrator. Defensive : si le state
+        # n'a aucun act actif, on passe None (le narrator ignore le block).
+        # Phase G+H wiring : helper unique pour composer le nudge Director.
+        # Centralise la logique (contexts FR enrichis + select_relevant_*)
+        # qui etait duplique sur 3 call sites avant le refactor.
+        from shinobi.director import build_director_nudge_text
+        director_nudge_text: str | None = build_director_nudge_text(
+            canon=canon,
+            director_state=main_loop_director_state,
+            current_year=world.current_year,
+        ) or None
+
         try:
             narration = asyncio.run(
                 _attempt_narration(
@@ -554,6 +622,7 @@ def play_session(save_id: str) -> None:
                     dialogue_formatter=dialogue_formatter,
                     dialogue_log=dialogue_log,
                     turn_number=turn,
+                    director_nudge_text=director_nudge_text,
                 )
             )
             if narration is not None:
@@ -611,6 +680,7 @@ def play_session(save_id: str) -> None:
                         social=main_loop_social,
                         state=main_loop_scheduler_state,
                         year=world.current_year, month=month,
+                        canon=canon,
                     ),
                 )
                 # Update state in-place pour le prochain tour
@@ -642,10 +712,76 @@ def play_session(save_id: str) -> None:
                             ),
                             encoding="utf-8",
                         )
-                    except Exception:
-                        pass
-            except Exception:
-                pass
+                    except Exception as exc:  # noqa: BLE001
+                        from shinobi.logging_setup import get_logger as _glog
+                        _glog(__name__).warning(
+                            "main_loop_scheduler_state_persist_failed",
+                            error=type(exc).__name__, msg=str(exc)[:200],
+                        )
+
+                # Phase G §7 : tick Director apres le tension tick.
+                # Consume tick_result.tensions et compose des AbstractAct +
+                # invariants. Compaction LLM 1x/6 mois in-game.
+                if main_loop_director_state is not None and tick_result is not None:
+                    try:
+                        director_report = asyncio.run(
+                            _phase_g_tick_director(
+                                canon=canon,
+                                tensions=tick_result.tensions,
+                                world=world,
+                                director_state=main_loop_director_state,
+                                year=world.current_year, month=month,
+                            ),
+                        )
+                        if (
+                            director_report.new_acts
+                            or director_report.compaction_ran
+                        ):
+                            for act in director_report.new_acts[:2]:
+                                console.print(
+                                    f"  [dim cyan]Director : nouvel acte "
+                                    f"narratif '{act.id}' "
+                                    f"(urgency={act.urgency:.2f})[/dim cyan]"
+                                )
+                            if director_report.compaction_ran:
+                                console.print(
+                                    "  [dim cyan]Director : compaction "
+                                    "narrative regeneree[/dim cyan]"
+                                )
+                        # Persiste le DirectorState
+                        try:
+                            d_state_path = save_module.director_state_path(save_id)
+                            d_state_path.parent.mkdir(parents=True, exist_ok=True)
+                            d_state_path.write_text(
+                                json.dumps(
+                                    main_loop_director_state.to_dict(),
+                                    ensure_ascii=False, indent=2,
+                                ),
+                                encoding="utf-8",
+                            )
+                        except Exception as exc:
+                            from shinobi.logging_setup import get_logger
+                            get_logger(__name__).warning(
+                                "phase_g_director_state_persist_failed",
+                                error=type(exc).__name__,
+                                msg=str(exc)[:200],
+                            )
+                    except Exception as exc:
+                        from shinobi.logging_setup import get_logger
+                        get_logger(__name__).warning(
+                            "phase_g_director_tick_failed",
+                            error=type(exc).__name__,
+                            msg=str(exc)[:200],
+                        )
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : Phase C tick principal pouvait crasher
+                # silencieusement (signature drift, KG corrompu, etc).
+                from shinobi.logging_setup import get_logger as _glog
+                _glog(__name__).warning(
+                    "phase_c_tick_failed_in_main_loop",
+                    error=type(exc).__name__,
+                    msg=str(exc)[:200],
+                )
 
     # Cleanup KG store du main loop
     if main_loop_kg_store is not None:
@@ -899,9 +1035,11 @@ def _handle_meta(
         else:
             _print_npc_beliefs(save_id, parts[1].strip(), year=world.current_year)
     elif command == "/tensions":
-        _print_tensions(save_id, year=world.current_year)
+        _print_tensions(save_id, year=world.current_year, canon=canon)
     elif command == "/tensions-llm":
-        asyncio.run(_run_tensions_llm_analyst(save_id, year=world.current_year))
+        asyncio.run(_run_tensions_llm_analyst(
+            save_id, year=world.current_year, canon=canon,
+        ))
     elif command == "/agents":
         _print_agents_roster(save_id)
     elif command.startswith("/agent "):
@@ -1159,14 +1297,33 @@ def _check_breadcrumb_completions(save_id: str, character, action_result, curren
     return completed_descriptions
 
 
-async def _world_resolve_cancellation(canon_ev, reason: str, current_year: int, canon):
-    """Appelle WorldResolver LLM quand un event canon est annule narrativement."""
+async def _world_resolve_cancellation(
+    canon_ev, reason: str, current_year: int, canon,
+    *, kg_store=None, world=None,
+):
+    """WorldResolver Phase F : narration + boucle creative fermee.
+
+    Spec doc 02 §8 : extension du WorldResolver pour generer un
+    SubstituteEvent STRUCTURE (au-dela du texte) + valider + injecter
+    dans le scheduler + KG (si kg_store fourni).
+
+    `world` : WorldState live de la session (passe au validator pour les
+    checks runtime sherlock-equivalent). Si None, world fallback minimal.
+
+    Returns:
+        WorldState : nouveau world avec substitute injecte si Phase F a
+        produit un substitute valide. Retourne le world inchange sinon
+        (incluant si LLM indispo / kg_store None / silent_cancel).
+
+    Si pas de KG store actif, fallback narration text uniquement.
+    """
     from shinobi.llm.client import LLMClient
     from shinobi.llm.narration import WorldResolver
 
     async with LLMClient() as client:
         if not await client.health():
-            return
+            return world
+        # Etape 1 : narration texte (UX existante - feedback joueur immediat)
         resolver = WorldResolver(client, canon)
         resolution = await resolver.resolve_cancelled_event(
             event_id=canon_ev.id,
@@ -1182,6 +1339,60 @@ async def _world_resolve_cancellation(canon_ev, reason: str, current_year: int, 
                 border_style="yellow",
             )
         )
+
+        # Etape 2 : Phase F boucle fermee (SubstituteEvent structure + KG)
+        if kg_store is None:
+            return world
+        try:
+            from shinobi.engine.world import WorldState
+            from shinobi.world_resolver import (
+                WorldResolverPipeline,
+                build_kg_recent_facts,
+                build_world_state_summary,
+                select_validation_mode,
+            )
+            pipeline = WorldResolverPipeline(client, canon, kg_store)
+            effective_world = world if world is not None else WorldState(
+                current_year=current_year,
+                current_date=canon_ev.date or "01-01",
+            )
+            mode = select_validation_mode(kg_store)
+            phase_f_resolution, new_world = await pipeline.close_loop(
+                cancelled_event_id=canon_ev.id,
+                cancellation_reason=reason,
+                world=effective_world,
+                validation_mode=mode,
+                world_state_summary=build_world_state_summary(effective_world),
+                kg_recent_facts=build_kg_recent_facts(
+                    kg_store, current_year=current_year,
+                ),
+            )
+            if phase_f_resolution.status == "injected":
+                console.print(
+                    f"  [dim cyan]Phase F : SubstituteEvent {phase_f_resolution.substitute.id} "
+                    f"injecte dans KG ({len(phase_f_resolution.validation_attempts)} attempt(s))[/dim cyan]"
+                )
+                # Spec round 6 : retourne le new_world pour que le caller
+                # puisse l'assigner. Sans ca, la boucle reste ouverte
+                # cote runtime CLI.
+                return new_world
+            elif phase_f_resolution.status == "regen_exhausted":
+                console.print(
+                    "  [dim red]Phase F : silent_cancel (regen exhausted)[/dim red]"
+                )
+        except Exception as exc:
+            # Phase F best-effort : ne pas casser le gameplay si la pipeline echoue.
+            # Round 23 : on log au lieu de swallow silencieux. Avant, un crash
+            # de pipeline (KG corrompu, llama.cpp coupe, Pydantic cassant)
+            # disparaissait sans trace - debug impossible.
+            from shinobi.logging_setup import get_logger
+            get_logger(__name__).warning(
+                "phase_f_pipeline_failed_in_cli",
+                cancelled_event=canon_ev.id,
+                error=type(exc).__name__,
+                msg=str(exc)[:200],
+            )
+        return world
 
 
 def _shop_buy_flow(character):
@@ -1510,20 +1721,68 @@ class _PhaseCTickResult:
     new_state: object  # SchedulerState | None
 
 
+async def _phase_g_tick_director(
+    *,
+    canon,
+    tensions,
+    world,
+    director_state,
+    year: int,
+    month: int,
+):
+    """Phase G §7 : tick Director apres le tension tick.
+
+    Consume la TensionList, compose des AbstractAct, maintient les invariants
+    Naruto, et periodiquement (tous les 6 mois in-game) appelle le LLM pour
+    une compaction narrative NexusSum-style.
+
+    Optimisation perf comme phase C : LLM client cree LAZY uniquement si
+    is_compaction_due (eviter le setup HTTP pour les ticks ou seul le
+    composer deterministe tourne).
+    """
+    from shinobi.director import Director, is_compaction_due
+    from shinobi.director.scheduler import (  # for default interval
+        DEFAULT_COMPACTION_INTERVAL_MONTHS,
+    )
+
+    needs_llm = is_compaction_due(
+        director_state,
+        current_year=year, current_month=month,
+        interval_months=DEFAULT_COMPACTION_INTERVAL_MONTHS,
+    )
+    if needs_llm:
+        from shinobi.llm.client import LLMClient
+        async with LLMClient() as llm:
+            director = Director(canon, llm_client=llm)
+            return await director.tick(
+                tensions=tensions, world=world, state=director_state,
+                current_year=year, current_month=month,
+            )
+    # Pas de compaction due : pas besoin du LLM, fallback offline-only Director.
+    director = Director(canon, llm_client=None)
+    return await director.tick(
+        tensions=tensions, world=world, state=director_state,
+        current_year=year, current_month=month,
+    )
+
+
 async def _phase_c_tick_with_llm(
-    *, kg_store, social, state, year: int, month: int,
+    *, kg_store, social, state, year: int, month: int, canon=None,
 ):
     """Spec §5.3 : tick TensionScheduler.
 
     Optimisation perf : on n'ouvre LLMClient QUE si l'analyst est due
     (chaque 3 mois). Pour les 99% de ticks ou seul le detector tourne
     (gratuit, sync), on evite l'overhead de l'HTTP client setup.
+
+    Phase H wiring 9.3 : `canon` propage au TensionScheduler -> son
+    detector interne active la 21eme regle political_alliance_brittle.
     """
     from shinobi.tension import LLMTensionAnalyst
 
     # 1. Check is_due SANS ouvrir LLMClient
     pre_scheduler = TensionScheduler(
-        kg_store, social_network=social, state=state,
+        kg_store, social_network=social, state=state, canon=canon,
     )
     should_run_analyst = pre_scheduler.is_due(year, month)
 
@@ -1536,7 +1795,7 @@ async def _phase_c_tick_with_llm(
             )
             scheduler = TensionScheduler(
                 kg_store, analyst=analyst,
-                social_network=social, state=state,
+                social_network=social, state=state, canon=canon,
             )
             tick_result = await scheduler.tick(year, month=month)
         return _PhaseCTickResult(
@@ -1553,7 +1812,9 @@ async def _phase_c_tick_with_llm(
     )
 
 
-async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
+async def _run_tensions_llm_analyst(
+    save_id: str, *, year: int, canon=None,
+) -> None:
     """Spec §5.3 : force LLM analyst Qwen3-4B sur snapshot KG.
 
     Affiche les opportunites narratives identifiees par l'analyst.
@@ -1590,6 +1851,7 @@ async def _run_tensions_llm_analyst(save_id: str, *, year: int) -> None:
             scheduler = TensionScheduler(
                 kg, analyst=analyst,
                 social_network=social, state=initial_state,
+                canon=canon,
             )
             try:
                 result = await scheduler.tick(
@@ -1938,9 +2200,14 @@ def _sync_rumors_to_kg_with_propagation(
                 continue
 
 
-def _print_tensions(save_id: str, *, year: int) -> None:
-    """Spec §5.3 : detecte les opportunites narratives via les 20 invariants
-    sur le KG courant. Affichage ordre severity descendant."""
+def _print_tensions(save_id: str, *, year: int, canon=None) -> None:
+    """Spec §5.3 : detecte les opportunites narratives via les 21 invariants
+    sur le KG courant. Affichage ordre severity descendant.
+
+    Phase H wiring 9.3 : `canon` (optionnel) permet d'activer la 21eme regle
+    `political_alliance_brittle_via_dead_leader` qui croise political_forces
+    et death_year pour signaler des alliances fragilisees.
+    """
     from shinobi.kg.store import KnowledgeGraphStore
 
     kg_db = save_module.kg_db_path(save_id)
@@ -1950,7 +2217,7 @@ def _print_tensions(save_id: str, *, year: int) -> None:
         )
         return
     with KnowledgeGraphStore(kg_db) as kg:
-        detector = TensionDetector(kg)
+        detector = TensionDetector(kg, canon=canon)
         result = detector.detect(year)
     if not result.tensions.tensions:
         console.print(
@@ -2151,6 +2418,38 @@ async def _run_fast_forward(
     # Accumulateur de tensions analyst pour le digest
     analyst_tensions_acc: list = []
 
+    # Phase G §7 : DirectorState charge en amont pour que canon_scheduler_callable
+    # puisse muter le state au gre des ticks Director (sinon nonlocal binding
+    # echoue car defini apres la closure).
+    ff_director_state = None
+    try:
+        from shinobi.director import DirectorState as _DState
+        d_state_path = save_module.director_state_path(save_id)
+        ff_director_state = _DState()
+        if d_state_path.exists():
+            try:
+                ff_director_state = _DState.from_dict(
+                    json.loads(d_state_path.read_text(encoding="utf-8")),
+                )
+            except (json.JSONDecodeError, OSError) as exc:
+                from shinobi.logging_setup import get_logger as _glog
+                _glog(__name__).warning(
+                    "ff_director_state_load_corrupted",
+                    path=str(d_state_path),
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
+                ff_director_state = _DState()
+    except Exception as exc:  # noqa: BLE001
+        # Audit anti-silent : si l'import DirectorState casse (ex refactor
+        # path) ou autre, on log au lieu de continuer en mode degraded
+        # silencieux (FF tournerait sans Director).
+        from shinobi.logging_setup import get_logger as _glog
+        _glog(__name__).warning(
+            "ff_director_state_init_failed",
+            error=type(exc).__name__, msg=str(exc)[:200],
+        )
+        ff_director_state = None
+
     # State partage entre les ticks pour faire avancer le monde
     world_ref = [world]
 
@@ -2207,7 +2506,8 @@ async def _run_fast_forward(
 
         # Phase C §5.3 : TensionScheduler tick avec LLMClient cree LAZY
         # (HTTP context valide seulement dans `async with`).
-        nonlocal ff_scheduler_state
+        nonlocal ff_scheduler_state, ff_director_state
+        tensions_for_director = None
         if kg_store_ref is not None and ff_scheduler_state is not None:
             try:
                 month = int(cur_world.current_date.split("-")[0])
@@ -2215,14 +2515,53 @@ async def _run_fast_forward(
                     kg_store=kg_store_ref,
                     social=social_net,
                     state=ff_scheduler_state,
-                    year=year, month=month,
+                    year=year, month=month, canon=canon,
                 )
                 if tick_result.new_state is not None:
                     ff_scheduler_state = tick_result.new_state
                 if tick_result.analyst_ran and tick_result.tensions.tensions:
                     analyst_tensions_acc.extend(tick_result.tensions.tensions)
-            except Exception:
-                pass
+                tensions_for_director = tick_result.tensions
+            except Exception as exc:  # noqa: BLE001
+                from shinobi.logging_setup import get_logger as _glog
+                _glog(__name__).warning(
+                    "phase_c_tick_failed_in_ff",
+                    error=type(exc).__name__,
+                    msg=str(exc)[:200],
+                    year=year, tick=tick,
+                )
+
+        # Phase G §7 : tick Director avec les tensions fraichement detectees.
+        # Avant : Director ne tickait pas en fast-forward -> acts figes a t0,
+        # nouveaux tensions jamais composees en acts. Avec ce tick, les acts
+        # evoluent au fil des mois et le _refresh_nudge du between_ticks_fn
+        # (cf engine.fast_forward) compose un nudge a jour pour les agents.
+        if (
+            ff_director_state is not None
+            and tensions_for_director is not None
+        ):
+            try:
+                month = int(cur_world.current_date.split("-")[0])
+                director_report = await _phase_g_tick_director(
+                    canon=canon,
+                    tensions=tensions_for_director,
+                    world=cur_world,
+                    director_state=ff_director_state,
+                    year=year, month=month,
+                )
+                # _phase_g_tick_director mute le state in-place via Director.tick
+                _ = director_report
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : log au lieu de pass nu (un bug de
+                # signature ou import casse Phase G en FF se voyait pas
+                # avant). Defensive : on continue la simulation.
+                from shinobi.logging_setup import get_logger as _glog
+                _glog(__name__).warning(
+                    "phase_g_tick_director_failed_in_ff",
+                    error=type(exc).__name__,
+                    msg=str(exc)[:200],
+                    year=year, tick=tick,
+                )
 
         return state, fired, cancelled
 
@@ -2248,11 +2587,57 @@ async def _run_fast_forward(
             batch_selector=BatchActionSelector(cache=cache, batch_size=5),
             kg_store=kg_store_ref,
             social_network=social_net,
+            # Phase H wiring 9.2 : deep_motivations injecte dans les
+            # SelectionContext de chaque agent via _build_inputs.
+            deep_motivations_dataset=canon.deep_motivations or None,
+            # Phase H 9.2 fallback : canon.characters pour deriver un
+            # profil minimal aux 1310 NPCs sans entry 9.2 enrichie.
+            canon_characters=canon.characters,
         )
+        # Phase G+E wiring : compose le nudge initial depuis le DirectorState
+        # deja charge en amont (cf init avant canon_scheduler_callable). Le
+        # state evolue dans canon_scheduler_callable via _phase_g_tick_director
+        # entre les ticks agents.
+        # Phase G+H wiring : nudge initial via helper unifie.
+        from shinobi.director import build_director_nudge_text
+        nudge_text_init = build_director_nudge_text(
+            canon=canon,
+            director_state=ff_director_state,
+            current_year=current_year,
+        )
+        if nudge_text_init:
+            engine.set_director_nudge_text(nudge_text_init)
+
+        # Phase G+E wiring : hook between_ticks_fn pour re-builder le nudge
+        # apres chaque tick canon scheduler. Cap a 1x par mois (= ticks_per_month)
+        # pour amortir le cout de build_nudge_text : sans ce throttle,
+        # 4 builds/tick * 4 tick/mois = 16 builds/mois pour le meme nudge.
+        ticks_per_month = engine._ticks_per_month  # noqa: SLF001
+        last_nudge_built_tick = [-1]
+
+        def _refresh_nudge(eng, cur_year: int, cur_tick: int) -> None:
+            if cur_tick - last_nudge_built_tick[0] < ticks_per_month:
+                return
+            try:
+                # Phase G+H wiring : helper unifie, meme logique que main loop
+                # et FF init. Les acts evoluent via _phase_g_tick_director
+                # appele depuis canon_scheduler_callable.
+                nudge_text_n = build_director_nudge_text(
+                    canon=canon,
+                    director_state=ff_director_state,
+                    current_year=cur_year,
+                )
+                if nudge_text_n:
+                    eng.set_director_nudge_text(nudge_text_n)
+                    last_nudge_built_tick[0] = cur_tick
+            except Exception:
+                pass
+
         digest = await engine.fast_forward(
             from_year=current_year, months=months,
             canon_scheduler_fn=canon_scheduler_callable,
             canon_scheduler_state={},  # opaque, used as placeholder
+            between_ticks_fn=_refresh_nudge,
         )
 
     # Persiste world state mis a jour + age character
@@ -2317,7 +2702,9 @@ async def _run_fast_forward(
     if kg_store_ref is not None:
         try:
             from shinobi.tension import TensionDetector
-            final_detector = TensionDetector(kg_store_ref)
+            # Phase H wiring 9.3 : canon passe pour activer la 21eme regle
+            # political_alliance_brittle_via_dead_leader.
+            final_detector = TensionDetector(kg_store_ref, canon=canon)
             final_det = final_detector.detect(final_world.current_year)
             if final_det.tensions:
                 # Filtre severity >= medium pour eviter spam
@@ -2359,8 +2746,38 @@ async def _run_fast_forward(
                 ),
                 encoding="utf-8",
             )
-        except Exception:
-            pass
+        except Exception as exc:  # noqa: BLE001
+            from shinobi.logging_setup import get_logger as _glog
+            _glog(__name__).warning(
+                "ff_scheduler_state_persist_failed",
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
+
+    # Phase G+E wiring : persiste le DirectorState apres fast-forward.
+    # Avant : le state evoluait dans canon_scheduler_callable mais n'etait
+    # jamais ecrit sur disque -> reload de la save ramenait l'etat pre-FF
+    # et les acts composes pendant le FF disparaissaient.
+    if ff_director_state is not None:
+        try:
+            d_state_path = save_module.director_state_path(save_id)
+            d_state_path.parent.mkdir(parents=True, exist_ok=True)
+            d_state_path.write_text(
+                json.dumps(
+                    ff_director_state.to_dict(),
+                    ensure_ascii=False, indent=2,
+                ),
+                encoding="utf-8",
+            )
+        except Exception as exc:  # noqa: BLE001
+            # Audit anti-silent : si la persistence DirectorState echoue,
+            # le reload de save aura un state stale -> acts composes pendant
+            # FF perdus. On log pour exposer (ex permission denied, JSON
+            # serialization error sur acts mal formes).
+            from shinobi.logging_setup import get_logger as _glog
+            _glog(__name__).warning(
+                "ff_director_state_persist_failed",
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
 
     # Cleanup KG store
     if kg_store_ref is not None:
@@ -2455,6 +2872,7 @@ async def _attempt_narration(
     dialogue_formatter=None,
     dialogue_log=None,
     turn_number: int | None = None,
+    director_nudge_text: str | None = None,
 ):
     async with LLMClient() as client:
         if not await client.health():
@@ -2502,8 +2920,69 @@ async def _attempt_narration(
             turn_number=turn_number,
             in_game_year=world.current_year,
             in_game_date=world.current_date,
+            # Phase G+H wiring : directives Director (acts + invariants +
+            # narrative_patterns 9.5). Build par build_nudge_text en amont.
+            director_nudge_text=director_nudge_text,
+            # Phase H 9.2 wiring : profils psycho des NPCs presents pour
+            # dialogues en-character (drive principal + 1 red line).
+            present_npcs_motivations_text=(
+                _build_present_npcs_motivations_text(canon, present_npcs)
+                if present_npcs else None
+            ),
+            # Phase H 9.3 wiring : descriptions politiques des factions
+            # pertinentes (village current + clans des NPCs presents).
+            relevant_factions_text=_build_relevant_factions_text(
+                canon, character.current_location, present_npcs,
+            ),
         )
         return await narrator.narrate(request)
+
+
+def _build_relevant_factions_text(
+    canon, location_id: str | None, present_npcs: list[str],
+) -> str | None:
+    """Helper : 9.3 description_fr des factions pertinentes a la scene."""
+    try:
+        from shinobi.agents.context_builder import (
+            build_faction_descriptions_block,
+        )
+        text = build_faction_descriptions_block(
+            political_forces=canon.political_forces or None,
+            location_id=location_id,
+            present_npc_ids=tuple(present_npcs or ()),
+        )
+        return text or None
+    except Exception:  # noqa: BLE001
+        from shinobi.logging_setup import get_logger as _glog
+        _glog(__name__).warning(
+            "narrator_relevant_factions_failed",
+            location_id=location_id,
+        )
+        return None
+
+
+def _build_present_npcs_motivations_text(
+    canon, present_npcs: list[str],
+) -> str | None:
+    """Helper : compose le block 9.2 motivations pour le narrator. Retourne
+    None si rien a injecter (pour omettre le block dans le prompt).
+    """
+    try:
+        from shinobi.agents.context_builder import (
+            build_present_npcs_motivations_block,
+        )
+        text = build_present_npcs_motivations_block(
+            deep_motivations_dataset=canon.deep_motivations or None,
+            present_npc_ids=present_npcs,
+        )
+        return text or None
+    except Exception:  # noqa: BLE001
+        from shinobi.logging_setup import get_logger as _glog
+        _glog(__name__).warning(
+            "narrator_present_npcs_motivations_failed",
+            n_npcs=len(present_npcs),
+        )
+        return None
 
 
 def _announce_new_rumors(world, character, *, fired_event_ids: set[str], canon):

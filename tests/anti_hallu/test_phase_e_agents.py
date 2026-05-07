@@ -2288,3 +2288,568 @@ class TestBatchInferences:
                 assert llm_count == 1  # 2eme = cache hit
 
         asyncio.run(run())
+
+
+# --- Phase H wiring 9.2 : deep_motivations dans agent profile ---------
+
+
+def test_phase_e_no_memory_leak_in_fast_forward(tmp_path) -> None:
+    """Phase E perf : fast_forward 48 ticks puis +48 ticks, le delta memoire
+    du 2eme run < 200KB (cache agents stable).
+
+    Garde-fou contre :
+    - Cache d'agents qui grow unbounded
+    - digest_entries qui s'accumulent au-dela des limites raisonnables
+    - Quelconque struct interne de TickEngine qui retient des refs apres
+      chaque tick
+
+    Reference materiel local : ~5KB pour 48 ticks supplementaires apres
+    warm-up. Cap a 200KB pour CI partages / GC moins agressif.
+    """
+    import asyncio
+    import gc
+    import tracemalloc
+
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "memleak.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock(*a, **k):  # noqa: ANN001, ANN401
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    roster = AgentRoster(store)
+    for i in range(15):
+        roster.add(f"npc_{i}", AgentTier.major)
+
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=ActionSelector(llm_call=mock),
+        reflector=Reflector(llm_call=mock),
+    )
+
+    async def run() -> None:
+        # Warm-up : remplit le cache _agents
+        await engine.fast_forward(from_year=10, months=12)
+
+        gc.collect()
+        tracemalloc.start()
+        snap_before = tracemalloc.take_snapshot()
+
+        # 2eme FF : ne doit pas blow up la memoire
+        await engine.fast_forward(from_year=11, months=12)
+
+        gc.collect()
+        snap_after = tracemalloc.take_snapshot()
+        diff_kb = sum(
+            s.size_diff
+            for s in snap_after.compare_to(snap_before, "lineno")
+        ) // 1024
+        tracemalloc.stop()
+
+        assert diff_kb < 200, (
+            f"Phase E memory leak suspected : 2eme FF de 48 ticks ajoute "
+            f"{diff_kb}KB (reference : ~5KB apres warm-up)"
+        )
+
+    asyncio.run(run())
+    store.close()
+
+
+def test_build_fallback_motivations_uses_canon_clan_village() -> None:
+    """Phase H 9.2 fallback : un NPC sans profil 9.2 mais avec canon.Character
+    obtient un profil minimal clan + village.
+
+    Couverture canon partielle : 1310/1360 chars n'ont pas de profil 9.2.
+    Sans fallback, le LLM selector ne reçoit aucun [MOTIVATIONS PROFONDES]
+    pour 60% des secondaires roster -> prompt vide invite a l'invention.
+    """
+    from shinobi.agents.context_builder import (
+        build_fallback_motivations_from_canon,
+    )
+
+    class _FakeChar:
+        clan = "inuzuka"
+        village_of_origin = "konohagakure"
+
+    out = build_fallback_motivations_from_canon(
+        canon_character=_FakeChar(), npc_id="inuzuka_kiba",
+    )
+    assert "[fallback canon" in out
+    assert "inuzuka" in out
+    assert "konohagakure" in out
+    assert "Drive principal" in out
+    assert "Ne jamais" in out
+
+
+def test_build_fallback_motivations_returns_empty_when_no_canon() -> None:
+    """Phase H 9.2 fallback : sans canon_character, retourne ""."""
+    from shinobi.agents.context_builder import (
+        build_fallback_motivations_from_canon,
+    )
+
+    assert build_fallback_motivations_from_canon(
+        canon_character=None, npc_id="x",
+    ) == ""
+
+
+def test_build_deep_motivations_text_falls_back_when_npc_missing_profile() -> None:
+    """Phase H 9.2 fallback : npc absent du dataset 9.2 -> fallback canon."""
+    from shinobi.agents.context_builder import build_deep_motivations_text
+
+    class _FakeChar:
+        clan = "aburame"
+        village_of_origin = "konohagakure"
+
+    dataset = {"uchiha_itachi": {"deep_motivations": {"primary": "x"}}}
+    out = build_deep_motivations_text(
+        deep_motivations_dataset=dataset,
+        npc_id="aburame_shino",  # absent du dataset
+        canon_character=_FakeChar(),
+    )
+    assert "[fallback canon" in out
+    assert "aburame" in out
+
+
+def test_build_deep_motivations_text_prefers_9_2_profile_over_fallback() -> None:
+    """Phase H 9.2 : profil enrichi gagne contre le fallback canon."""
+    from shinobi.agents.context_builder import build_deep_motivations_text
+
+    class _FakeChar:
+        clan = "uchiha"
+        village_of_origin = "konohagakure"
+
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {"primary": "proteger_konoha_par_le_sacrifice"},
+        },
+    }
+    out = build_deep_motivations_text(
+        deep_motivations_dataset=dataset,
+        npc_id="uchiha_itachi",
+        canon_character=_FakeChar(),
+    )
+    assert "proteger_konoha_par_le_sacrifice" in out
+    assert "[fallback canon" not in out  # le profil 9.2 prend precedence
+
+
+def test_tick_engine_uses_canon_fallback_for_unprofiled_npc(tmp_path) -> None:
+    """Phase H 9.2 fallback : TickEngine remplit motivations meme pour
+    secondaire sans entry 9.2 (~38/52 cas en production).
+    """
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        AgentTier,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    class _FakeChar:
+        clan = "inuzuka"
+        village_of_origin = "konohagakure"
+
+    db = tmp_path / "audit_fallback.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock(*a, **k):  # noqa: ANN001, ANN401
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    roster = AgentRoster(store)
+    roster.add("inuzuka_kiba", AgentTier.major)
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=ActionSelector(llm_call=mock),
+        reflector=Reflector(llm_call=mock),
+        # PAS de profil 9.2 pour kiba mais canon_characters fourni
+        deep_motivations_dataset={},
+        canon_characters={"inuzuka_kiba": _FakeChar()},
+    )
+    inputs = engine._build_inputs(  # noqa: SLF001
+        "inuzuka_kiba", year=10, tick=0,
+        context_provider=None, observations_per_npc=None,
+    )
+    assert "[fallback canon" in inputs.deep_motivations_text
+    assert "inuzuka" in inputs.deep_motivations_text
+
+
+def test_build_deep_motivations_text_returns_empty_when_dataset_missing() -> None:
+    """Phase H 9.2 : si dataset None ou empty, retourne string vide.
+
+    Garantit que les tests legacy / canon sans 9.2 ne cassent pas.
+    """
+    from shinobi.agents.context_builder import build_deep_motivations_text
+
+    assert build_deep_motivations_text(
+        deep_motivations_dataset=None, npc_id="uchiha_itachi",
+    ) == ""
+    assert build_deep_motivations_text(
+        deep_motivations_dataset={}, npc_id="uchiha_itachi",
+    ) == ""
+
+
+def test_build_deep_motivations_text_returns_empty_for_unknown_npc() -> None:
+    """Phase H 9.2 : 50 chars seulement enrichis ; les autres -> empty.
+
+    Couverture partielle attendue, le builder doit silencieusement skip.
+    """
+    from shinobi.agents.context_builder import build_deep_motivations_text
+
+    dataset = {"uchiha_itachi": {"deep_motivations": {"primary": "x"}}}
+    assert build_deep_motivations_text(
+        deep_motivations_dataset=dataset, npc_id="random_npc_uncovered",
+    ) == ""
+
+
+def test_build_deep_motivations_text_includes_actionable_fields() -> None:
+    """Phase H 9.2 : block FR contient drive/red_lines/fear/self_image.
+
+    Les `what_others_dont_know` sont OMIS volontairement (meta-info auteur).
+    """
+    from shinobi.agents.context_builder import build_deep_motivations_text
+
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {
+                "primary": "proteger_son_petit_frere",
+                "secondary": "apaiser_le_clan",
+                "tertiary": None,
+            },
+            "moral_red_lines": [
+                "tuer_sasuke",
+                "trahir_konoha_par_egoisme",
+            ],
+            "secret_ambitions": ["voir_sasuke_devenir_hero"],
+            "deepest_fear": "Que Sasuke ne le pardonne jamais.",
+            "self_image": "Frere aine a la fois bourreau et protecteur.",
+            "what_others_dont_know": [
+                "Il est en realite un loyaliste de Konoha.",
+            ],
+        },
+    }
+    text = build_deep_motivations_text(
+        deep_motivations_dataset=dataset, npc_id="uchiha_itachi",
+    )
+    assert "proteger_son_petit_frere" in text  # primary
+    assert "apaiser_le_clan" in text  # secondary
+    assert "tuer_sasuke" in text  # red line
+    assert "voir_sasuke_devenir_hero" in text  # secret ambition
+    assert "Sasuke" in text  # fear
+    assert "bourreau et protecteur" in text  # self_image
+    # what_others_dont_know omis
+    assert "loyaliste" not in text
+
+
+def test_selection_context_has_deep_motivations_field() -> None:
+    """Phase H 9.2 : SelectionContext a un champ deep_motivations_text.
+
+    Default vide pour back-compat.
+    """
+    from shinobi.agents.selector import SelectionContext
+
+    ctx = SelectionContext(npc_id="test", year=10)
+    assert ctx.deep_motivations_text == ""
+
+
+def test_user_prompt_includes_motivations_block_when_set() -> None:
+    """Phase H 9.2 : build_user_prompt insere [MOTIVATIONS PROFONDES]."""
+    from shinobi.agents.selector import SelectionContext, build_user_prompt
+
+    ctx = SelectionContext(
+        npc_id="uchiha_itachi", year=10,
+        deep_motivations_text="Drive principal : proteger_son_petit_frere",
+    )
+    prompt = build_user_prompt(ctx)
+    assert "[MOTIVATIONS PROFONDES]" in prompt
+    assert "proteger_son_petit_frere" in prompt
+
+
+def test_user_prompt_omits_motivations_block_when_empty() -> None:
+    """Phase H 9.2 : si deep_motivations_text vide, le block n'apparait pas."""
+    from shinobi.agents.selector import SelectionContext, build_user_prompt
+
+    ctx = SelectionContext(npc_id="test_npc", year=10)
+    prompt = build_user_prompt(ctx)
+    assert "[MOTIVATIONS PROFONDES]" not in prompt
+
+
+def test_auto_fill_selection_context_populates_motivations() -> None:
+    """Phase H 9.2 : auto_fill remplit deep_motivations_text si dataset fourni."""
+    from shinobi.agents.context_builder import auto_fill_selection_context
+    from shinobi.agents.selector import SelectionContext
+
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {"primary": "proteger_son_petit_frere"},
+        },
+    }
+    ctx = SelectionContext(npc_id="uchiha_itachi", year=10)
+    enriched = auto_fill_selection_context(
+        ctx, deep_motivations_dataset=dataset,
+    )
+    assert "proteger_son_petit_frere" in enriched.deep_motivations_text
+
+
+def test_auto_fill_preserves_existing_motivations_text() -> None:
+    """Phase H 9.2 : si ctx a deja un deep_motivations_text, on le preserve."""
+    from shinobi.agents.context_builder import auto_fill_selection_context
+    from shinobi.agents.selector import SelectionContext
+
+    pre_filled = "Drive : custom"
+    ctx = SelectionContext(
+        npc_id="uchiha_itachi", year=10,
+        deep_motivations_text=pre_filled,
+    )
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {"primary": "should_not_appear"},
+        },
+    }
+    enriched = auto_fill_selection_context(
+        ctx, deep_motivations_dataset=dataset,
+    )
+    assert enriched.deep_motivations_text == pre_filled
+    assert "should_not_appear" not in enriched.deep_motivations_text
+
+
+def test_tick_engine_passes_deep_motivations_to_agent_inputs(tmp_path) -> None:
+    """Phase H 9.2 : TickEngine populate AgentTickInputs.deep_motivations_text.
+
+    Verifie qu'un dataset configure sur TickEngine se propage jusqu'a
+    l'AgentTickInputs au moment du _build_inputs (chemin que tous les
+    paths d'inference tiers traversent).
+    """
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "tick_motiv.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock_llm(*args, **kwargs):  # noqa: ANN001, ANN401, ARG001
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    selector = ActionSelector(llm_call=mock_llm)
+    reflector = Reflector(llm_call=mock_llm)
+    roster = AgentRoster(store)
+    roster.add("uchiha_itachi", AgentTier.major)
+
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {"primary": "proteger_son_petit_frere"},
+        },
+    }
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=selector, reflector=reflector,
+        deep_motivations_dataset=dataset,
+    )
+    inputs = engine._build_inputs(  # noqa: SLF001
+        "uchiha_itachi", year=10, tick=0,
+        context_provider=None, observations_per_npc=None,
+    )
+    assert "proteger_son_petit_frere" in inputs.deep_motivations_text
+
+
+def test_selection_context_has_director_nudge_field() -> None:
+    """Phase G+E wiring : SelectionContext expose director_nudge_text."""
+    from shinobi.agents.selector import SelectionContext
+
+    ctx = SelectionContext(npc_id="x", year=10)
+    assert ctx.director_nudge_text == ""
+
+
+def test_user_prompt_includes_director_nudge_when_set() -> None:
+    """Phase G+E wiring : build_user_prompt insere le nudge Director."""
+    from shinobi.agents.selector import SelectionContext, build_user_prompt
+
+    nudge = (
+        "[DIRECTIVES NARRATIVES / DIRECTOR]\n"
+        "Style Kishimoto a respecter :\n"
+        "  - Le pouvoir s'accompagne d'un cout"
+    )
+    ctx = SelectionContext(
+        npc_id="uchiha_itachi", year=10,
+        director_nudge_text=nudge,
+    )
+    prompt = build_user_prompt(ctx)
+    assert "DIRECTIVES NARRATIVES" in prompt
+    assert "Style Kishimoto" in prompt
+
+
+def test_user_prompt_omits_director_nudge_block_when_empty() -> None:
+    """Phase G+E wiring : pas de block parasite si nudge vide."""
+    from shinobi.agents.selector import SelectionContext, build_user_prompt
+
+    ctx = SelectionContext(npc_id="x", year=10)
+    prompt = build_user_prompt(ctx)
+    assert "DIRECTIVES NARRATIVES" not in prompt
+
+
+def test_fast_forward_calls_between_ticks_fn(tmp_path) -> None:
+    """Phase G+E wiring : fast_forward invoque between_ticks_fn entre chaque tick.
+
+    Sans ce hook, le nudge Director ne pouvait pas etre rafraichi pendant
+    une simulation passive multi-mois -> Phase G figee a t0.
+    """
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "tick_ff_hook.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock_llm(*a, **k):  # noqa: ANN001, ANN401, ARG001
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    selector = ActionSelector(llm_call=mock_llm)
+    reflector = Reflector(llm_call=mock_llm)
+    roster = AgentRoster(store)
+    roster.add("uchiha_itachi", AgentTier.major)
+
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=selector, reflector=reflector,
+    )
+
+    calls = []
+
+    def hook(eng, year, tick):  # noqa: ANN001
+        calls.append((year, tick))
+        eng.set_director_nudge_text(f"directive y={year} t={tick}")
+
+    async def run() -> None:
+        await engine.fast_forward(
+            from_year=10, months=1,
+            between_ticks_fn=hook,
+        )
+
+    asyncio.run(run())
+    # 1 mois * 4 ticks = 4 appels
+    assert len(calls) == engine._ticks_per_month  # noqa: SLF001
+    # Le dernier set_director_nudge_text doit etre actif
+    assert "directive" in engine._director_nudge_text  # noqa: SLF001
+
+
+def test_fast_forward_between_ticks_async_callable_supported(tmp_path) -> None:
+    """Phase G+E wiring : hook async fonctionne aussi (compat asyncio CLI)."""
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "tick_ff_async.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock_llm(*a, **k):  # noqa: ANN001, ANN401, ARG001
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    selector = ActionSelector(llm_call=mock_llm)
+    reflector = Reflector(llm_call=mock_llm)
+    roster = AgentRoster(store)
+    roster.add("npc_x", AgentTier.major)
+
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=selector, reflector=reflector,
+    )
+
+    calls = []
+
+    async def async_hook(eng, year, tick):  # noqa: ANN001, ARG001
+        calls.append(tick)
+
+    async def run() -> None:
+        await engine.fast_forward(
+            from_year=10, months=1, between_ticks_fn=async_hook,
+        )
+
+    asyncio.run(run())
+    assert len(calls) == engine._ticks_per_month  # noqa: SLF001
+
+
+def test_tick_engine_set_director_nudge_propagates_to_inputs(tmp_path) -> None:
+    """Phase G+E wiring : set_director_nudge_text -> AgentTickInputs."""
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "tick_nudge.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock_llm(*a, **k):  # noqa: ANN001, ANN401, ARG001
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    selector = ActionSelector(llm_call=mock_llm)
+    reflector = Reflector(llm_call=mock_llm)
+    roster = AgentRoster(store)
+    roster.add("uchiha_itachi", AgentTier.major)
+
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=selector, reflector=reflector,
+    )
+    engine.set_director_nudge_text(
+        "[DIRECTIVES NARRATIVES] Test directive Director"
+    )
+    inputs = engine._build_inputs(  # noqa: SLF001
+        "uchiha_itachi", year=10, tick=0,
+        context_provider=None, observations_per_npc=None,
+    )
+    assert "DIRECTIVES NARRATIVES" in inputs.director_nudge_text
+    assert "Test directive Director" in inputs.director_nudge_text
+
+
+def test_tick_engine_default_off_no_deep_motivations(tmp_path) -> None:
+    """Phase H 9.2 : sans dataset configure, deep_motivations_text reste vide."""
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+
+    db = tmp_path / "tick_default.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock_llm(*args, **kwargs):  # noqa: ANN001, ANN401, ARG001
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    selector = ActionSelector(llm_call=mock_llm)
+    reflector = Reflector(llm_call=mock_llm)
+    roster = AgentRoster(store)
+    roster.add("uchiha_itachi", AgentTier.major)
+
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=selector, reflector=reflector,
+        # PAS de deep_motivations_dataset
+    )
+    inputs = engine._build_inputs(  # noqa: SLF001
+        "uchiha_itachi", year=10, tick=0,
+        context_provider=None, observations_per_npc=None,
+    )
+    assert inputs.deep_motivations_text == ""

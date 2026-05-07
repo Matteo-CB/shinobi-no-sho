@@ -34,7 +34,10 @@ from shinobi.agents.action_space import (
 from shinobi.agents.cache import LLMCache, compute_cache_key
 from shinobi.agents.memory import AgentMemory
 from shinobi.agents.types import MemoryEntry
+from shinobi.logging_setup import get_logger
 from shinobi.personality.types import NPCPersonality
+
+logger = get_logger(__name__)
 
 # Type pour un appel LLM (mockable) :
 # (system_prompt, user_prompt, schema, model_id, temperature) -> dict ou None
@@ -57,6 +60,17 @@ class SelectionContext:
     active_plans_text: tuple[str, ...] = ()
     world_summary: str = ""
     relations_summary: str = ""
+    # Phase H wiring 9.2 : profil de motivations profondes du PNJ extrait
+    # de canon.deep_motivations (primary/secondary, moral_red_lines, deepest_fear,
+    # self_image). Permet au LLM selector de produire des actions coherentes
+    # avec l'arc psychologique canon. String preformattee FR (cf
+    # context_builder.build_deep_motivations_text).
+    deep_motivations_text: str = ""
+    # Phase G+E wiring : directives Director (acts + invariants + patterns
+    # 9.5 + recent_summary). Composees par CLI/TickEngine via build_nudge_text
+    # entre 2 ticks. Capacite ~1200 chars deja appliquee en amont. Default
+    # vide pour back-compat des tests qui ne configurent pas Director.
+    director_nudge_text: str = ""
     extras: dict[str, Any] = field(default_factory=dict)
 
 
@@ -99,6 +113,16 @@ def build_user_prompt(ctx: SelectionContext) -> str:
         )
     if ctx.relations_summary:
         blocks.append(f"[RELATIONS]\n{ctx.relations_summary}")
+    # Phase G+E wiring : directives Director inserees AVANT motivations et
+    # world summary, pour que le LLM lise les patterns Kishimoto + acts
+    # narratifs en premier (priorite tonal et arc-level).
+    if ctx.director_nudge_text:
+        blocks.append(ctx.director_nudge_text)
+    # Phase H wiring 9.2 : motivations profondes inserees AVANT l'etat du
+    # monde local pour que le LLM les ait fraiches en lisant les facts.
+    # Si vide, le block est skip (pas de "[MOTIVATIONS PROFONDES]\n" inutile).
+    if ctx.deep_motivations_text:
+        blocks.append(f"[MOTIVATIONS PROFONDES]\n{ctx.deep_motivations_text}")
     if ctx.world_summary:
         blocks.append(f"[ETAT DU MONDE LOCAL]\n{ctx.world_summary}")
     blocks.append(
@@ -282,9 +306,15 @@ class ActionSelector:
                                 prompt_chars=len(user_prompt),
                             )
                         return action
-            except Exception:
-                # LLM down ou parse error : fallback deterministe
-                pass
+            except Exception as exc:  # noqa: BLE001
+                # LLM down ou parse error : fallback deterministe.
+                # Audit anti-silent : log pour exposer un bug signature
+                # LLM ou parsing JSON casse.
+                logger.warning(
+                    "selector_llm_call_failed",
+                    npc_id=ctx.npc_id, year=ctx.year,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
 
         # 3. Deterministic fallback
         return deterministic_fallback_action(ctx)
@@ -323,6 +353,12 @@ def _replace_top_memories(
         active_plans_text=ctx.active_plans_text,
         world_summary=ctx.world_summary,
         relations_summary=ctx.relations_summary,
+        # Phase H wiring 9.2 : preserver deep_motivations_text. Avant : drop
+        # silencieux dans le path major (top-15) quand selector retrieve les
+        # top_memories -> motivations canon perdues entre fetch et inference.
+        deep_motivations_text=ctx.deep_motivations_text,
+        # Phase G+E wiring : preserver director_nudge_text idem.
+        director_nudge_text=ctx.director_nudge_text,
         extras=ctx.extras,
     )
 

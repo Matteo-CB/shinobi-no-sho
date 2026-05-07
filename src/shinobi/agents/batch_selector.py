@@ -41,6 +41,9 @@ from shinobi.agents.selector import (
     build_user_prompt,
     deterministic_fallback_action,
 )
+from shinobi.logging_setup import get_logger
+
+logger = get_logger(__name__)
 
 # JSON schema batch : array d'actions, une par agent
 BATCH_ACTIONS_JSON_SCHEMA: dict[str, Any] = {
@@ -199,8 +202,15 @@ class BatchActionSelector:
                                 prompt_chars=len(user_prompt),
                             )
                         return actions
-            except Exception:
-                pass
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : log au lieu de pass nu. Un bug
+                # signature LLM ou un parse_batch incorrect retombait
+                # silencieusement sur le fallback per-agent.
+                logger.warning(
+                    "batch_selector_llm_call_failed",
+                    batch_size=len(contexts),
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
 
         # Fallback : per-agent deterministic
         return [deterministic_fallback_action(ctx) for ctx in contexts]
@@ -249,6 +259,12 @@ def _replace_top_memories(
         active_plans_text=ctx.active_plans_text,
         world_summary=ctx.world_summary,
         relations_summary=ctx.relations_summary,
+        # Phase H wiring 9.2 : preserver deep_motivations_text. Avant : drop
+        # silencieux dans le batch path (~50 secondaries) -> motivations
+        # canon disparaissaient des prompts de la moitie des agents simules.
+        deep_motivations_text=ctx.deep_motivations_text,
+        # Phase G+E wiring : preserver director_nudge_text idem.
+        director_nudge_text=ctx.director_nudge_text,
         extras=ctx.extras,
     )
 

@@ -51,7 +51,12 @@ class SocialNetwork:
     # --- create -----------------------------------------------------------
 
     def add_link(self, link: SocialLink) -> int:
-        """Insert (ou remplace si conflit unique). Retourne id."""
+        """Insert (ou remplace si conflit unique). Retourne id.
+
+        Respect transaction utilisateur : si on est deja dans
+        `with store.transaction():`, on ne commit pas (delegue au parent).
+        """
+        in_user_tx = self._conn.in_transaction
         row = link.to_row()
         # Upsert sur (npc_a, npc_b, link_type, valid_from_year)
         cur = self._conn.execute(
@@ -64,8 +69,13 @@ class SocialNetwork:
             "notes=excluded.notes",
             row,
         )
-        self._conn.commit()
-        return int(cur.lastrowid or 0)
+        if not in_user_tx:
+            self._conn.commit()
+        # Spec Phase A round 39 : mute link.id pour UX (cf store.add_fact).
+        new_id = int(cur.lastrowid or 0)
+        if new_id > 0:
+            link.id = new_id
+        return new_id
 
     def add_links_batch(self, links: Iterable[SocialLink]) -> int:
         """Insert un batch dans une transaction. Retourne le nombre."""
@@ -134,13 +144,17 @@ class SocialNetwork:
     # --- delete -----------------------------------------------------------
 
     def delete_link(self, link_id: int) -> bool:
-        cur = self._conn.execute("DELETE FROM kg_social_links WHERE id = ?", (link_id,))
-        self._conn.commit()
+        from shinobi.kg.schema import execute_dml
+        cur = execute_dml(
+            self._conn,
+            "DELETE FROM kg_social_links WHERE id = ?",
+            (link_id,),
+        )
         return cur.rowcount > 0
 
     def clear_all(self) -> None:
-        self._conn.execute("DELETE FROM kg_social_links")
-        self._conn.commit()
+        from shinobi.kg.schema import execute_dml
+        execute_dml(self._conn, "DELETE FROM kg_social_links")
 
     def count(self) -> int:
         row = self._conn.execute("SELECT COUNT(*) AS c FROM kg_social_links").fetchone()

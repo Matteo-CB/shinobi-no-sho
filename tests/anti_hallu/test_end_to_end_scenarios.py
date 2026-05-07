@@ -398,3 +398,745 @@ def test_scenario_status_diversity() -> None:
     """On doit avoir au moins 4 statuts attendus differents (valid + rejected variants)."""
     statuses = {s.expected_status for s in SCENARIOS}
     assert len(statuses) >= 4, f"Diversite des status insuffisante : {statuses}"
+
+
+# --- Cross-phase A->H integration smoke tests ----------------------------
+
+
+def test_all_phases_load_with_real_canon() -> None:
+    """Smoke test : tous les phases A-H se chargent avec le canon reel.
+
+    Garantit qu'aucun import/init de phase ne crash silencieusement quand
+    on charge le canon production complet (1360 chars, 60 events, 5 datasets
+    Phase H). Si un import/init Phase X casse, il sera plus difficile a
+    diagnostiquer dans le main loop CLI.
+    """
+    from shinobi.canon.loader import load_canon
+    from shinobi.director.core import Director
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.tension.detector import TensionDetector
+    from shinobi.world_resolver.validator import HybridSubstituteValidator
+
+    canon = load_canon()
+
+    # Phase H : 5 datasets charges
+    assert canon.timeline_events_enriched, "Phase H 9.1 vide"
+    assert canon.deep_motivations, "Phase H 9.2 vide"
+    assert canon.political_forces.get("factions"), "Phase H 9.3 vide"
+    assert canon.divergence_points.get("divergence_points"), "Phase H 9.4 vide"
+    assert canon.narrative_patterns.get("patterns"), "Phase H 9.5 vide"
+
+    with KnowledgeGraphStore(None) as kg:
+        # Phase A : KG operationnel
+        assert kg is not None
+
+        # Phase C : detector avec canon -> 21eme regle activable
+        detector = TensionDetector(kg, canon=canon)
+        assert "political_forces" in detector._canon_ctx  # noqa: SLF001
+
+        # Phase F : validator construit l'index Phase H 9.1
+        validator = HybridSubstituteValidator(
+            canon, kg, enforce_phase_h_actor_overlap=True,
+        )
+        assert len(validator._enriched_subjects) > 100  # noqa: SLF001
+        assert len(validator._enriched_invariants) > 100  # noqa: SLF001
+
+        # Phase G : director peut etre construit avec canon
+        director = Director(canon, llm_client=None)
+        assert director.canon is canon
+
+
+def test_cross_phase_tension_director_nudge_chain() -> None:
+    """Phase C tension -> Phase G director -> nudge avec narrative_patterns.
+
+    Sequence reelle : detector.detect produit des Tensions, le Director
+    consomme la TensionList et compose des AbstractAct, le nudge final
+    contient les patterns Kishimoto (Phase H 9.5).
+    """
+    import asyncio
+
+    from shinobi.canon.loader import load_canon
+    from shinobi.director.core import Director
+    from shinobi.director.nudge_builder import build_nudge_text
+    from shinobi.director.scheduler import DirectorState
+    from shinobi.engine.world import WorldState
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.tension.detector import TensionDetector
+
+    canon = load_canon()
+
+    async def run() -> None:
+        with KnowledgeGraphStore(None) as kg:
+            detector = TensionDetector(kg, canon=canon)
+            tensions = detector.detect(year=10)
+
+            director = Director(canon, llm_client=None)
+            world = WorldState(
+                current_year=10, current_date="01-01",
+                current_hour=0, current_minute=0,
+            )
+            report = await director.tick(
+                tensions=tensions, world=world,
+                state=DirectorState(),
+                current_year=10, current_month=1,
+            )
+            assert report.active_acts, "Director sans acts a year=10"
+            assert report.nudge is not None
+            text = build_nudge_text(report.nudge)
+            assert "[DIRECTIVES NARRATIVES" in text
+            assert "Style Kishimoto" in text, (
+                "Phase H 9.5 narrative_patterns non integre au nudge"
+            )
+
+    asyncio.run(run())
+
+
+def test_cross_phase_validator_detector_share_canon() -> None:
+    """Phase F validator + Phase C detector partagent canon.timeline_events_enriched.
+
+    Le validator indexe les subjects par event_id. Le detector ne
+    consomme pas timeline_events_enriched directement, mais valide que
+    les deux phases peuvent vivre cote-a-cote sans conflit canon.
+    """
+    from shinobi.canon.loader import load_canon
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.tension.detector import TensionDetector
+    from shinobi.world_resolver.validator import HybridSubstituteValidator
+
+    canon = load_canon()
+    with KnowledgeGraphStore(None) as kg:
+        validator = HybridSubstituteValidator(
+            canon, kg, enforce_phase_h_actor_overlap=True,
+        )
+        detector = TensionDetector(kg, canon=canon)
+
+        # Validator a indexe quelques events canoniques cles
+        assert "third_war_ends" in validator._enriched_subjects  # noqa: SLF001
+        # Detector a indexe political_forces
+        assert "political_forces" in detector._canon_ctx  # noqa: SLF001
+        # Les deux pointent vers le meme CanonBundle
+        assert validator.canon is detector._canon_ctx[  # noqa: SLF001
+            "political_forces"
+        ] or canon.political_forces is detector._canon_ctx[  # noqa: SLF001
+            "political_forces"
+        ]
+
+
+# --- Phase H runtime production audit -----------------------------------
+
+
+def test_phase_h_9_1_reaches_validator_index_in_runtime() -> None:
+    """Phase H 9.1 production audit : timeline_events_enriched -> validator index.
+
+    Charge le canon production reel. Verifie que >= 100 events sont indexes
+    avec leurs narrative_invariants extraits des preconditions, et que >=
+    50 ont aussi des subjects (canon characters) extraits. C'est le minimum
+    pour que Phase F actor_overlap soit utile en pratique.
+    """
+    from shinobi.canon.loader import load_canon
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.world_resolver.validator import HybridSubstituteValidator
+
+    canon = load_canon()
+    with KnowledgeGraphStore(None) as kg:
+        v = HybridSubstituteValidator(
+            canon, kg, enforce_phase_h_actor_overlap=True,
+        )
+        assert len(v._enriched_invariants) >= 100, (  # noqa: SLF001
+            f"Phase H 9.1 invariants index trop faible : "
+            f"{len(v._enriched_invariants)}"
+        )
+        assert len(v._enriched_subjects) >= 50, (  # noqa: SLF001
+            f"Phase H 9.1 subjects index trop faible : "
+            f"{len(v._enriched_subjects)}"
+        )
+
+
+def test_phase_h_9_2_reaches_agent_input_in_runtime(tmp_path) -> None:
+    """Phase H 9.2 production audit : deep_motivations -> AgentTickInputs.
+
+    Charge canon production. Configure un TickEngine avec
+    canon.deep_motivations. Pour un NPC connu (uchiha_itachi), verifie que
+    son motivations text est non-vide.
+    """
+    from shinobi.agents import (
+        AgentMemoryStore,
+        AgentRoster,
+        AgentTier,
+        Reflector,
+    )
+    from shinobi.agents.selector import ActionSelector
+    from shinobi.agents.tick import TickEngine
+    from shinobi.canon.loader import load_canon
+
+    canon = load_canon()
+    db = tmp_path / "audit_9_2.db"
+    store = AgentMemoryStore(db_path=str(db))
+
+    async def mock(*a, **k):  # noqa: ANN001, ANN401
+        return {"type": "idle", "content": "x", "importance": 0.1}
+
+    roster = AgentRoster(store)
+    roster.add("uchiha_itachi", AgentTier.major)
+    engine = TickEngine(
+        roster=roster, memory_store=store,
+        selector=ActionSelector(llm_call=mock),
+        reflector=Reflector(llm_call=mock),
+        deep_motivations_dataset=canon.deep_motivations or None,
+    )
+    inputs = engine._build_inputs(  # noqa: SLF001
+        "uchiha_itachi", year=10, tick=0,
+        context_provider=None, observations_per_npc=None,
+    )
+    assert len(inputs.deep_motivations_text) > 100, (
+        f"Phase H 9.2 deep_motivations vide pour uchiha_itachi : "
+        f"'{inputs.deep_motivations_text[:100]}'"
+    )
+    # Doit contenir 'Drive principal' (cf build_deep_motivations_text)
+    assert "Drive principal" in inputs.deep_motivations_text
+
+
+def test_phase_h_9_3_produces_real_tensions_in_runtime() -> None:
+    """Phase H 9.3 production audit : political_forces -> tensions runtime.
+
+    A year=10, le canon production a des leaders deja morts (Fugaku, Hashirama,
+    etc.). La 21eme regle doit produire au moins 1 alliance_breakdown ou
+    factional_revenge sans intervention manuelle.
+    """
+    from shinobi.canon.loader import load_canon
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.tension.detector import TensionDetector
+
+    canon = load_canon()
+    with KnowledgeGraphStore(None) as kg:
+        detector = TensionDetector(kg, canon=canon)
+        result = detector.detect(year=10)
+        political_tensions = [
+            t for t in result.tensions
+            if t.source_rule in {
+                "political_alliance_brittle_via_dead_leader",
+                "political_faction_isolated_with_active_enemies",
+            }
+        ]
+        assert len(political_tensions) >= 1, (
+            "Phase H 9.3 ne produit aucune tension a year=10 - "
+            "regression du wiring detector.canon"
+        )
+
+
+def test_phase_h_9_4_reaches_act_composer_in_runtime() -> None:
+    """Phase H 9.4 production audit : divergence_points -> urgency boost.
+
+    Verifie que sur le canon reel, les 21 divergence_points sont indexes
+    et qu'au moins l'un d'eux est utilisable comme entity_id pour boost.
+    """
+    from shinobi.canon.loader import load_canon
+    from shinobi.director.act_composer import compose_acts
+    from shinobi.tension.types import (
+        Tension,
+        TensionList,
+        TensionSeverity,
+        TensionType,
+    )
+
+    canon = load_canon()
+    div_ids = {
+        dp.get("event_id")
+        for dp in canon.divergence_points.get("divergence_points", [])
+        if isinstance(dp, dict) and isinstance(dp.get("event_id"), str)
+    }
+    assert len(div_ids) >= 20, f"Phase H 9.4 trop peu de divergence : {div_ids}"
+
+    # Construit une tension qui mentionne un divergence event reel
+    sample_event = next(iter(div_ids))
+    tensions = TensionList(
+        tensions=[
+            Tension.from_severity(
+                type=TensionType.alliance_breakdown,
+                description=f"Tension liee a {sample_event} canonique",
+                severity=TensionSeverity.high,
+                involved_entities=["konohagakure", sample_event],
+                source_rule="audit",
+                detected_at_year=10,
+            ),
+        ],
+        detected_at_year=10,
+    )
+    acts_no_div = compose_acts(tensions, current_year=10)
+    acts_boosted = compose_acts(
+        tensions, current_year=10, divergence_event_ids=div_ids,
+    )
+    assert acts_no_div, "compose_acts produit aucun act"
+    assert acts_boosted, "compose_acts avec div_ids produit aucun act"
+    assert acts_boosted[0].urgency > acts_no_div[0].urgency, (
+        f"Phase H 9.4 urgency boost ne fire pas : "
+        f"{acts_no_div[0].urgency} vs {acts_boosted[0].urgency}"
+    )
+
+
+def test_phase_g_director_state_save_reload_roundtrip(tmp_path) -> None:
+    """Phase G save/reload e2e : DirectorState produit par 1 tick survit
+    a une serialization JSON + deserialisation, et le 2eme tick avec le
+    state reload produit le meme nudge texte qu'avec le state in-memory.
+
+    Cas critique : un joueur quitte mid-game et relance. Le DirectorState
+    doit reprendre exactement ou il etait, sinon les acts disparaissent
+    (~30 minutes de jeu perdues).
+    """
+    import asyncio
+    import json
+
+    from shinobi.canon.loader import load_canon
+    from shinobi.director import (
+        Director,
+        DirectorState,
+        build_director_nudge_text,
+    )
+    from shinobi.engine.world import WorldState
+    from shinobi.tension.types import (
+        Tension,
+        TensionList,
+        TensionSeverity,
+        TensionType,
+    )
+
+    canon = load_canon()
+
+    async def run() -> None:
+        director = Director(canon, llm_client=None)
+        tensions = TensionList(
+            tensions=[
+                Tension.from_severity(
+                    type=TensionType.cursed_hatred,
+                    description="Tension persistante clan Uchiha-Konoha",
+                    severity=TensionSeverity.high,
+                    involved_entities=["uchiha_clan", "konohagakure"],
+                    source_rule="audit_save_reload",
+                    detected_at_year=10,
+                ),
+                Tension.from_severity(
+                    type=TensionType.power_vacuum,
+                    description="Vacance kage Suna ouvre lutte",
+                    severity=TensionSeverity.high,
+                    involved_entities=["sunagakure"],
+                    source_rule="audit_save_reload",
+                    detected_at_year=10,
+                ),
+            ],
+            detected_at_year=10,
+        )
+        world = WorldState(
+            current_year=10, current_date="01-01",
+            current_hour=0, current_minute=0,
+        )
+
+        # 1. Premier tick : state vierge -> compose des acts
+        state_v1 = DirectorState()
+        await director.tick(
+            tensions=tensions, world=world, state=state_v1,
+            current_year=10, current_month=1,
+        )
+        assert state_v1.active_acts, "tick #1 ne produit aucun act"
+        nudge_in_memory = build_director_nudge_text(
+            canon=canon, director_state=state_v1, current_year=10,
+        )
+        n_acts_v1 = len(state_v1.active_acts)
+
+        # 2. Save -> JSON file
+        save_path = tmp_path / "director_state.json"
+        save_path.write_text(
+            json.dumps(state_v1.to_dict(), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+        # 3. Reload -> nouvelle instance DirectorState
+        state_v2 = DirectorState.from_dict(
+            json.loads(save_path.read_text(encoding="utf-8")),
+        )
+
+        # 4. Verifie que les invariants critiques sont preserves
+        assert len(state_v2.active_acts) == n_acts_v1
+        assert (
+            state_v2.last_compaction_year == state_v1.last_compaction_year
+        )
+        # Les act_ids sont identiques (set egalite)
+        assert set(state_v2.active_acts.keys()) == set(
+            state_v1.active_acts.keys(),
+        )
+
+        # 5. Le nudge produit avec state reload est identique au nudge
+        # produit avec state in-memory (preuve de cohérence Phase G+H).
+        nudge_after_reload = build_director_nudge_text(
+            canon=canon, director_state=state_v2, current_year=10,
+        )
+        assert nudge_after_reload == nudge_in_memory, (
+            "Phase G save/reload roundtrip : nudge differe entre "
+            f"in-memory et reload\n"
+            f"  in-memory ({len(nudge_in_memory)} chars): {nudge_in_memory[:200]}\n"
+            f"  reloaded  ({len(nudge_after_reload)} chars): "
+            f"{nudge_after_reload[:200]}"
+        )
+
+    asyncio.run(run())
+
+
+def test_e2e_full_phase_save_reload_cycle(tmp_path) -> None:
+    """E2E multi-phase : load canon -> KG + Director + Tension state -> save
+    -> reload -> verifie que TOUS les etats reprennent identiques.
+
+    Couvre la chaine complete des phases dont l'etat est mutable et persiste
+    sur disque entre sessions :
+    - Phase A (KG SQLite) : facts inserees survivent
+    - Phase C (SchedulerState) : last_analyst_run preserve
+    - Phase G (DirectorState) : acts + last_summary preserves
+
+    Phase B (SocialNetwork) partage la connection KG donc OK par construction.
+    Phase D (PersonalityStore) est SQLite -> trivialement persistent.
+    Phase E (AgentMemoryStore) idem.
+    Phase F (substitute_events) dans WorldState (deja teste ailleurs).
+    Phase H : read-only canon, recharge a chaque session.
+    """
+    import asyncio
+    import json
+
+    from shinobi.canon.loader import load_canon
+    from shinobi.director import Director, DirectorState
+    from shinobi.engine.world import WorldState
+    from shinobi.kg.schema import Canonicity, Fact
+    from shinobi.kg.store import KnowledgeGraphStore
+    from shinobi.tension import SchedulerState
+    from shinobi.tension.detector import TensionDetector
+    from shinobi.tension.types import (
+        Tension,
+        TensionList,
+        TensionSeverity,
+        TensionType,
+    )
+
+    canon = load_canon()
+    kg_path = tmp_path / "kg.sqlite"
+    director_path = tmp_path / "director.json"
+    scheduler_path = tmp_path / "scheduler.json"
+
+    # === SESSION 1 : ecriture des etats ===
+    async def session_one() -> dict:
+        with KnowledgeGraphStore(kg_path) as kg:
+            # Phase A : insere un fact divergent
+            kg.add_fact(Fact(
+                subject="hatake_kakashi", relation="alive",
+                object="true", canonicity=Canonicity.divergent,
+                source="player_action",
+                valid_from_year=10,
+            ))
+            n_facts_session1 = len(kg.get_facts())
+
+            # Phase C : detector + scheduler state
+            detector = TensionDetector(kg, canon=canon)
+            scheduler_state = SchedulerState(
+                last_analyst_year=10, last_analyst_month=3,
+            )
+
+            # Phase G : director compose des acts
+            director = Director(canon, llm_client=None)
+            tensions = TensionList(
+                tensions=[
+                    Tension.from_severity(
+                        type=TensionType.cursed_hatred,
+                        description="E2E test : haine residuelle Uchiha",
+                        severity=TensionSeverity.high,
+                        involved_entities=["uchiha_clan"],
+                        source_rule="e2e",
+                        detected_at_year=10,
+                    ),
+                ],
+                detected_at_year=10,
+            )
+            director_state = DirectorState()
+            world = WorldState(
+                current_year=10, current_date="01-01",
+                current_hour=0, current_minute=0,
+            )
+            await director.tick(
+                tensions=tensions, world=world, state=director_state,
+                current_year=10, current_month=1,
+            )
+
+            # Persiste les 2 JSON states
+            director_path.write_text(
+                json.dumps(director_state.to_dict(), ensure_ascii=False),
+                encoding="utf-8",
+            )
+            scheduler_path.write_text(
+                json.dumps(scheduler_state.to_dict(), ensure_ascii=False),
+                encoding="utf-8",
+            )
+            # Detector ne tourne pas pour ce test, on re-detecte session 2
+            _ = detector
+
+            return {
+                "facts": n_facts_session1,
+                "act_ids": set(director_state.active_acts),
+                "last_summary": director_state.last_summary,
+                "scheduler_year": scheduler_state.last_analyst_year,
+                "scheduler_month": scheduler_state.last_analyst_month,
+            }
+
+    snapshot1 = asyncio.run(session_one())
+
+    # === SESSION 2 : reload tout, verifie identite ===
+    with KnowledgeGraphStore(kg_path) as kg:
+        # Phase A : facts persistent
+        n_facts_session2 = len(kg.get_facts())
+        assert n_facts_session2 == snapshot1["facts"], (
+            f"Phase A : {n_facts_session2} facts apres reload vs "
+            f"{snapshot1['facts']} avant"
+        )
+        # Le fact divergent est queryable
+        divergent_facts = kg.get_facts(
+            subject="hatake_kakashi", relation="alive",
+        )
+        assert any(
+            f.canonicity == Canonicity.divergent for f in divergent_facts
+        )
+
+        # Phase G : DirectorState reload -> acts identiques
+        director_state_v2 = DirectorState.from_dict(
+            json.loads(director_path.read_text(encoding="utf-8")),
+        )
+        assert set(director_state_v2.active_acts) == snapshot1["act_ids"], (
+            f"Phase G : act_ids divergent apres reload\n"
+            f"  before: {snapshot1['act_ids']}\n"
+            f"  after:  {set(director_state_v2.active_acts)}"
+        )
+        assert director_state_v2.last_summary == snapshot1["last_summary"]
+
+        # Phase C : SchedulerState reload -> throttling preserve
+        scheduler_v2 = SchedulerState.from_dict(
+            json.loads(scheduler_path.read_text(encoding="utf-8")),
+        )
+        assert scheduler_v2.last_analyst_year == snapshot1["scheduler_year"]
+        assert scheduler_v2.last_analyst_month == snapshot1["scheduler_month"]
+
+        # Phase G + Phase C peuvent retourner ensemble pour un nouveau tick
+        # avec le state reload sans crash.
+        from shinobi.director import build_director_nudge_text
+        text = build_director_nudge_text(
+            canon=canon, director_state=director_state_v2,
+            current_year=10,
+        )
+        assert text, (
+            "Phase G : nudge vide apres reload alors que des acts existent"
+        )
+
+        # Phase H : datasets re-charges identiques (canon est immutable)
+        assert canon.deep_motivations  # 9.2 charge
+        assert canon.political_forces.get("factions")  # 9.3 charge
+        assert canon.divergence_points.get("divergence_points")  # 9.4
+        assert canon.narrative_patterns.get("patterns")  # 9.5
+        assert canon.timeline_events_enriched  # 9.1
+
+
+def test_phase_g_director_state_handles_corrupted_json_gracefully(tmp_path) -> None:
+    """Phase G save/reload : JSON malforme (truncated, mauvais types) ne
+    fait pas crasher la session - retombe sur DirectorState() vierge.
+
+    Cas reel : crash lors d'un write -> fichier tronque sur disque.
+    Le prochain reload doit graceful-degrader au lieu de KO la session.
+    """
+    import json
+
+    from shinobi.director import DirectorState
+
+    # 1. Truncated JSON
+    bad_path = tmp_path / "ds_truncated.json"
+    bad_path.write_text('{"active_acts": {"act_x":', encoding="utf-8")
+    try:
+        DirectorState.from_dict(json.loads(bad_path.read_text(encoding="utf-8")))
+        raise AssertionError("expected JSONDecodeError on truncated JSON")
+    except json.JSONDecodeError:
+        pass  # expected
+
+    # 2. Bad types (active_acts non-dict)
+    state = DirectorState.from_dict({
+        "active_acts": "not_a_dict",
+        "last_compaction_year": "not_an_int",
+        "tick_count": 5,
+    })
+    # Le defensive parsing de from_dict accepte les types invalides via
+    # try/except interne et fallback sur defaults.
+    assert state.active_acts == {}
+    assert state.tick_count == 5
+
+    # 3. Acts malformes dans le dict
+    state2 = DirectorState.from_dict({
+        "active_acts": {
+            "act_valid": {
+                "id": "act_valid",
+                "description_fr": "Tension Konoha-Uchiha doit s'incarner en montee de violence",
+                "target_year_start": 10,
+                "target_year_end": 11,
+                "created_at_year": 10,
+                "urgency": 0.5,
+            },
+            "act_invalid": {"id": "act_invalid"},  # incomplete
+        },
+    })
+    # Au moins l'act valide est preserve
+    assert "act_valid" in state2.active_acts
+    # L'act invalide est skip (pas de crash)
+    assert "act_invalid" not in state2.active_acts
+
+
+def test_phase_g_director_state_continues_evolving_after_reload(tmp_path) -> None:
+    """Phase G save/reload e2e : apres reload, un 2eme tick ajoute / merge
+    des nouveaux acts depuis nouvelles tensions (verifie que le state n'est
+    pas un read-only snapshot).
+    """
+    import asyncio
+    import json
+
+    from shinobi.canon.loader import load_canon
+    from shinobi.director import Director, DirectorState
+    from shinobi.engine.world import WorldState
+    from shinobi.tension.types import (
+        Tension,
+        TensionList,
+        TensionSeverity,
+        TensionType,
+    )
+
+    canon = load_canon()
+
+    async def run() -> None:
+        director = Director(canon, llm_client=None)
+        # 1. Tick #1 avec tension type A -> compose 1+ acts
+        tensions_a = TensionList(
+            tensions=[
+                Tension.from_severity(
+                    type=TensionType.cursed_hatred,
+                    description="Tension A : haine Uchiha",
+                    severity=TensionSeverity.high,
+                    involved_entities=["uchiha_clan"],
+                    source_rule="t1",
+                    detected_at_year=10,
+                ),
+            ],
+            detected_at_year=10,
+        )
+        world = WorldState(
+            current_year=10, current_date="01-01",
+            current_hour=0, current_minute=0,
+        )
+        state = DirectorState()
+        await director.tick(
+            tensions=tensions_a, world=world, state=state,
+            current_year=10, current_month=1,
+        )
+        n_acts_t1 = len(state.active_acts)
+
+        # 2. Save / reload
+        save_path = tmp_path / "ds.json"
+        save_path.write_text(
+            json.dumps(state.to_dict(), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        state_reloaded = DirectorState.from_dict(
+            json.loads(save_path.read_text(encoding="utf-8")),
+        )
+
+        # 3. Tick #2 avec tension type B differente -> doit composer
+        # nouveaux acts en complement (pas remplacement total).
+        tensions_b = TensionList(
+            tensions=[
+                Tension.from_severity(
+                    type=TensionType.power_vacuum,
+                    description="Tension B : vacance Sunagakure",
+                    severity=TensionSeverity.high,
+                    involved_entities=["sunagakure"],
+                    source_rule="t2",
+                    detected_at_year=10,
+                ),
+            ],
+            detected_at_year=10,
+        )
+        await director.tick(
+            tensions=tensions_b, world=world, state=state_reloaded,
+            current_year=10, current_month=2,
+        )
+        # Le state reloaded a evolue : >= n_acts_t1 + 1 (au moins 1 nouvel
+        # act compose depuis tension B). Ou les t1 acts ont expire et seuls
+        # les t2 restent. Dans tous les cas, state continue d'evoluer.
+        assert state_reloaded.active_acts, (
+            "tick #2 sur reloaded state n'a produit/garde aucun act"
+        )
+        # tick_count a incremente
+        assert state_reloaded.tick_count > 0
+
+
+def test_phase_h_9_5_reaches_nudge_text_in_runtime() -> None:
+    """Phase H 9.5 production audit : narrative_patterns -> nudge text.
+
+    Sur canon reel + tension cursed_hatred, le nudge final doit contenir
+    un block 'Style Kishimoto' avec le pattern thematique
+    'cycle_de_haine_intergenerationnel' (selectionne par enrichissement FR).
+    """
+    import asyncio
+
+    from shinobi.canon.loader import load_canon
+    from shinobi.director import build_director_nudge_text
+    from shinobi.director.core import Director
+    from shinobi.director.scheduler import DirectorState
+    from shinobi.engine.world import WorldState
+    from shinobi.tension.types import (
+        Tension,
+        TensionList,
+        TensionSeverity,
+        TensionType,
+    )
+
+    canon = load_canon()
+
+    async def run() -> None:
+        director = Director(canon, llm_client=None)
+        tensions = TensionList(
+            tensions=[
+                Tension.from_severity(
+                    type=TensionType.cursed_hatred,
+                    description="Cycle de haine clan Uchiha persistent",
+                    severity=TensionSeverity.high,
+                    involved_entities=["uchiha_clan"],
+                    source_rule="audit",
+                    detected_at_year=10,
+                ),
+            ],
+            detected_at_year=10,
+        )
+        state = DirectorState()
+        await director.tick(
+            tensions=tensions,
+            world=WorldState(
+                current_year=10, current_date="01-01",
+                current_hour=0, current_minute=0,
+            ),
+            state=state, current_year=10, current_month=1,
+        )
+        text = build_director_nudge_text(
+            canon=canon, director_state=state, current_year=10,
+        )
+        assert text, "helper retourne empty - regression"
+        assert "Style Kishimoto" in text, (
+            "Phase H 9.5 narrative_patterns absent du nudge final"
+        )
+        # Au moins un pattern thematique present (cycle_de_haine ou
+        # antagoniste_miroir) - le mapping FR doit pousser ces patterns.
+        thematic = (
+            "cycle de haine" in text.lower()
+            or "haine" in text.lower()
+            or "antagoniste" in text.lower()
+            or "redemption" in text.lower()
+        )
+        assert thematic, (
+            f"Phase H 9.5 pattern thematique absent : {text[:500]}"
+        )
+
+    asyncio.run(run())

@@ -36,7 +36,9 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from shinobi.kg.schema import Canonicity, Fact, ObjectType
+from shinobi.kg.schema import (
+    Canonicity, Fact, ObjectType, map_source_canonicity,
+)
 from shinobi.kg.store import KnowledgeGraphStore
 from shinobi.logging_setup import get_logger
 from shinobi.missions.types import Mission
@@ -45,19 +47,29 @@ logger = get_logger(__name__)
 
 
 def _facts_from_mission(mission: Mission) -> list[Fact]:
-    """Convertit une Mission en liste de Facts pour le KG."""
+    """Convertit une Mission en liste de Facts pour le KG.
+
+    Spec Phase A round 41 : la canonicity de la mission (manga, anime_canon,
+    boruto, filler, ...) est mappee vers Canonicity runtime (canon_strict /
+    canon_modified) via schema.map_source_canonicity. Tous les facts
+    derives de la mission heritent de ce Canonicity, coherent avec
+    l'import canon standard via _import_list.
+    """
     mid = mission.id
     source = f"mission:{mid}"
+    runtime_canon = map_source_canonicity(mission.canonicity)
     facts: list[Fact] = []
 
     # Type entity
     facts.append(Fact(
         subject=mid, relation="type", object="mission",
         object_type=ObjectType.value,
-        source=source, canonicity=Canonicity.canon_strict,
+        source=source, canonicity=runtime_canon,
     ))
 
     # Metadata scalaires
+    # Note round 28 : `sourced_from` est le nom unifie cross-pipeline pour
+    # la canonicity source brute (alias historique de mission : canonicity_source).
     for relation, value in (
         ("name_fr", mission.name_fr),
         ("name_romaji", mission.name_romaji),
@@ -67,14 +79,14 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
         ("canonical_arc", mission.canonical_arc),
         ("starting_village", mission.starting_village),
         ("summary_fr", mission.summary_fr),
-        ("canonicity_source", mission.canonicity),
+        ("sourced_from", mission.canonicity),
     ):
         if value is None:
             continue
         facts.append(Fact(
             subject=mid, relation=relation, object=str(value),
             object_type=ObjectType.value,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
 
     # Date in-game
@@ -83,7 +95,7 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
         object=str(mission.year),
         object_type=ObjectType.value,
         valid_from_year=mission.year,
-        source=source, canonicity=Canonicity.canon_strict,
+        source=source, canonicity=runtime_canon,
     ))
     if mission.month is not None:
         facts.append(Fact(
@@ -91,14 +103,14 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
             object=str(mission.month),
             object_type=ObjectType.value,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
     if mission.duration_days is not None:
         facts.append(Fact(
             subject=mid, relation="duration_days",
             object=str(mission.duration_days),
             object_type=ObjectType.value,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
 
     # Liens entites
@@ -107,7 +119,7 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
             subject=mid, relation="occurs_at", object=mission.location_id,
             object_type=ObjectType.entity,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
     if mission.assigning_authority:
         facts.append(Fact(
@@ -115,7 +127,7 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
             object=mission.assigning_authority,
             object_type=ObjectType.entity,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
     if mission.target_subject:
         facts.append(Fact(
@@ -123,7 +135,7 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
             object=mission.target_subject,
             object_type=ObjectType.entity,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
 
     # Participants : double-direction (mission -> npc et npc -> mission)
@@ -132,14 +144,14 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
             subject=mid, relation="involves", object=p.character_id,
             object_type=ObjectType.entity,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
         facts.append(Fact(
             subject=p.character_id, relation="participated_in_mission",
             object=mid,
             object_type=ObjectType.entity,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
         if p.role and p.role != "operative":
             facts.append(Fact(
@@ -147,7 +159,17 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
                 object=p.role,
                 object_type=ObjectType.value,
                 valid_from_year=mission.year,
-                source=source, canonicity=Canonicity.canon_strict,
+                source=source, canonicity=runtime_canon,
+            ))
+        # Spec Phase A round 51 : preserver les notes canoniques sur le
+        # role du participant (forward-compat, 0/26 missions actuelles).
+        if p.notes:
+            facts.append(Fact(
+                subject=p.character_id, relation=f"mission_notes_{mid}",
+                object=p.notes,
+                object_type=ObjectType.value,
+                valid_from_year=mission.year,
+                source=source, canonicity=runtime_canon,
             ))
 
     # Objectives + consequences (en values libres)
@@ -155,14 +177,14 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
         facts.append(Fact(
             subject=mid, relation=f"objective_{i}", object=obj,
             object_type=ObjectType.value,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
     for i, cons in enumerate(mission.consequences):
         facts.append(Fact(
             subject=mid, relation=f"consequence_{i}", object=cons,
             object_type=ObjectType.value,
             valid_from_year=mission.year,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
 
     # Liens narratifs croises
@@ -170,13 +192,25 @@ def _facts_from_mission(mission: Mission) -> list[Fact]:
         facts.append(Fact(
             subject=mid, relation="related_event", object=ev_id,
             object_type=ObjectType.entity,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
         ))
     for other_mid in mission.related_mission_ids:
         facts.append(Fact(
             subject=mid, relation="related_mission", object=other_mid,
             object_type=ObjectType.entity,
-            source=source, canonicity=Canonicity.canon_strict,
+            source=source, canonicity=runtime_canon,
+        ))
+
+    # Spec Phase A : preserver les refs canon (narutopedia/databook).
+    # Module separation : has_source pointe vers le narutopedia, mais le
+    # `source` du Fact reste 'mission:<id>' (provenance moteur).
+    for src_ref in mission.sources or []:
+        if not isinstance(src_ref, str) or not src_ref:
+            continue
+        facts.append(Fact(
+            subject=mid, relation="has_source", object=src_ref,
+            object_type=ObjectType.value,
+            source=source, canonicity=runtime_canon,
         ))
 
     return facts

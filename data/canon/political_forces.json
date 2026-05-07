@@ -1,0 +1,1089 @@
+{
+  "factions": [
+    {
+      "id": "konohagakure",
+      "name_fr": "Village Cache de la Feuille",
+      "type": "village",
+      "leader_id": "tsunade",
+      "members": [
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "haruno_sakura",
+        "hatake_kakashi",
+        "sarutobi_hiruzen",
+        "namikaze_minato",
+        "senju_hashirama",
+        "senju_tobirama",
+        "uchiha_itachi",
+        "lee_rock",
+        "hyuga_neji",
+        "tenten",
+        "nara_shikamaru",
+        "akimichi_choji",
+        "yamanaka_ino",
+        "inuzuka_kiba",
+        "aburame_shino",
+        "hyuga_hinata",
+        "yuhi_kurenai",
+        "sarutobi_asuma",
+        "mitarashi_anko",
+        "umino_iruka",
+        "shimura_danzo"
+      ],
+      "allies": [
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "mount_myoboku",
+        "shikkotsu_forest",
+        "senju",
+        "uchiha",
+        "sarutobi",
+        "hyuga",
+        "nara",
+        "akimichi",
+        "yamanaka",
+        "aburame",
+        "inuzuka",
+        "hatake",
+        "uzumaki"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otogakure",
+        "root",
+        "uchiha_madara",
+        "otsutsuki"
+      ],
+      "active_year_start": -65,
+      "active_year_end": null,
+      "description_fr": "Premier village cache fonde par Hashirama Senju et Madara Uchiha, Konoha est la puissance politique et militaire centrale du pays du Feu. Siege de nombreux clans illustres, il a forme plusieurs des shinobi les plus influents de l'histoire."
+    },
+    {
+      "id": "sunagakure",
+      "name_fr": "Village Cache du Sable",
+      "type": "village",
+      "leader_id": "gaara",
+      "members": [
+        "gaara",
+        "temari",
+        "kankuro",
+        "chiyo",
+        "ebizo",
+        "baki",
+        "sasori"
+      ],
+      "allies": [
+        "konohagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache du pays du Vent, gouverne par le Kazekage, Sunagakure est un partenaire strategique de Konoha malgre une rivalite historique. Gaara, ancien jinchuriki, y exerce une influence pacificatrice determinante."
+    },
+    {
+      "id": "kumogakure",
+      "name_fr": "Village Cache des Nuages",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "darui",
+        "c",
+        "nii_yugito",
+        "omoi",
+        "karui",
+        "samui"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "hyuga"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache du pays de la Foudre, repute pour sa puissance militaire et ses techniques de foudre. Kumogakure a entretenu des tensions avec Konoha, notamment lors de la tentative d'enlevement de Hinata Hyuga, avant de devenir un allie de la grande alliance."
+    },
+    {
+      "id": "iwagakure",
+      "name_fr": "Village Cache de la Pierre",
+      "type": "village",
+      "leader_id": "onoki",
+      "members": [
+        "onoki",
+        "kurotsuchi",
+        "akatsuchi",
+        "deidara",
+        "han",
+        "roshi",
+        "gari"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "konohagakure",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache du pays de la Terre, dirige par le Tsuchikage, Iwagakure est marque par une longue animosite envers Konoha. Sous Onoki, il integre la Grande Alliance Shinobi pour affronter Madara et Obito."
+    },
+    {
+      "id": "kirigakure",
+      "name_fr": "Village Cache du Brouillard",
+      "type": "village",
+      "leader_id": "terumi_mei",
+      "members": [
+        "terumi_mei",
+        "ao",
+        "chojuro",
+        "momochi_zabuza",
+        "haku",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hoshigaki_kisame",
+        "pakura",
+        "suikazan_fuguki"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "seven_ninja_swordsmen_of_the_mist",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache du pays de l'Eau, anciennement gouverne par un Mizukage sous influence d'Obito Uchiha, connu comme le village sanglant a cause de ses pratiques brutales. Sous Mei Terumi, Kirigakure entame une reformation profonde."
+    },
+    {
+      "id": "amegakure",
+      "name_fr": "Village Cache de la Pluie",
+      "type": "village",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko"
+      ],
+      "allies": [
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "hanzo_salamander"
+      ],
+      "active_year_start": -20,
+      "active_year_end": 3,
+      "description_fr": "Petit village perpetuellement en guerre, Amegakure a ete transforme en etat theocratique par Nagato sous l'identite de Pain. Yahiko y fonda l'Akatsuki originel avant d'etre tue par Hanzo, ce qui bascula Nagato vers le nihilisme."
+    },
+    {
+      "id": "otogakure",
+      "name_fr": "Village Cache du Son",
+      "type": "village",
+      "leader_id": "orochimaru",
+      "members": [
+        "orochimaru",
+        "yakushi_kabuto",
+        "kinuta_dosu",
+        "abumi_zaku",
+        "tsuchi_kin",
+        "kimimaro",
+        "tayuya",
+        "jirobo",
+        "kidomaru"
+      ],
+      "allies": [
+        "fuma_land_of_sound",
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure"
+      ],
+      "active_year_start": -3,
+      "active_year_end": 3,
+      "description_fr": "Village fonde par Orochimaru comme couverture pour ses experimentations interdites sur les shinobi. Simple facade militaire, Otogakure fut utilise pour attaquer Konoha lors des examens Chunin et recruter des sujets d'experimentation."
+    },
+    {
+      "id": "takigakure",
+      "name_fr": "Village Cache de la Cascade",
+      "type": "village",
+      "leader_id": "shibuki",
+      "members": [
+        "shibuki",
+        "kakuzu"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache isole gardien d'un liquide heros capable de conferer temporairement une puissance extraordinaire. Fuu, son jinchuriki, fut capture par l'Akatsuki. Kakuzu en etait originaire avant sa defection."
+    },
+    {
+      "id": "yugakure",
+      "name_fr": "Village Cache de la Vapeur",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "hidan"
+      ],
+      "allies": [],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village pacifiste du pays de la Vapeur, ayant abandonne les voies militaires. Hidan, qui en etait originaire, renia ses valeurs et rejoignit l'Akatsuki, contredisant ainsi l'orientation pacifique du village."
+    },
+    {
+      "id": "hoshigakure",
+      "name_fr": "Village Cache de l'Etoile",
+      "type": "village",
+      "leader_id": "akahoshi",
+      "members": [
+        "akahoshi",
+        "sumaru"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache du pays Celeste pratiquant une forme unique de chakra stellaire tiree d'une meteorite. Son entrainement intensif cause des dommages mortels aux utilisateurs sur le long terme, revelant une tension interne entre tradition et survie."
+    },
+    {
+      "id": "uzushiogakure",
+      "name_fr": "Village Cache des Tourbillons",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [],
+      "active_year_start": -100,
+      "active_year_end": -50,
+      "description_fr": "Patrie du clan Uzumaki, specialiste des sceaux et de la longevite, detruit par une coalition de villages qui craignaient sa puissance en fuinjutsu. Ses survivants se disperserent, plusieurs rejoignant Konoha."
+    },
+    {
+      "id": "yukigakure",
+      "name_fr": "Village Cache de la Neige",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "kazahana_koyuki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village du pays de la Neige gouverne par Doto Kazahana apres son coup d'etat meurtrier contre son frere. Apres sa defaite face aux shinobi de Konoha, le pays entama une transformation politique sous Koyuki."
+    },
+    {
+      "id": "shimogakure",
+      "name_fr": "Village Cache du Givre",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "fuen",
+        "fuka"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village renegat dont les operatifs menerent une serie d'attaques contre Konoha. Ses shinobi utilisaient des techniques elementaires avancees et furent elimines lors d'affrontements dans des zones isolees."
+    },
+    {
+      "id": "takumi_village",
+      "name_fr": "Village des Artisans",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village specialise dans la fabrication d'armes ninja, detruit par les Cinq Grandes Nations qui craignaient son monopole sur l'armement. Ses survivants chercherent a se venger notamment de Konoha."
+    },
+    {
+      "id": "akatsuki",
+      "name_fr": "Akatsuki",
+      "type": "organization",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko",
+        "uchiha_obito",
+        "uchiha_madara",
+        "uchiha_itachi",
+        "hoshigaki_kisame",
+        "deidara",
+        "sasori",
+        "hidan",
+        "kakuzu",
+        "zetsu",
+        "konan",
+        "orochimaru"
+      ],
+      "allies": [
+        "amegakure",
+        "otogakure"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "takigakure",
+        "five_kage"
+      ],
+      "active_year_start": -15,
+      "active_year_end": 3,
+      "description_fr": "Organisation criminelle fondee a l'origine par Yahiko comme mouvement de paix avant d'etre detournee par Obito et Madara. L'Akatsuki captura systematiquement les betes a queue pour realiser le Plan de l'Oeil de la Lune."
+    },
+    {
+      "id": "root",
+      "name_fr": "Racine",
+      "type": "organization",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo",
+        "sai",
+        "aburame_torune",
+        "yamanaka_fu",
+        "yamato"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "akatsuki",
+        "nagato"
+      ],
+      "active_year_start": -30,
+      "active_year_end": 3,
+      "description_fr": "Division clandestine de l'Anbu creee par Danzo Shimura, operant dans l'ombre du gouvernement de Konoha. La Racine conditionnait ses membres par suppression des emotions et menait des operations inavouables au nom de la securite du village."
+    },
+    {
+      "id": "anbu",
+      "name_fr": "Anbu",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "hatake_kakashi",
+        "yamato",
+        "uchiha_itachi",
+        "sai"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -40,
+      "active_year_end": null,
+      "description_fr": "Corps d'elite shinobi operant directement sous les ordres du Hokage pour des missions classifiees. L'Anbu accomplit les taches que les forces regulieres ne peuvent assumer, incluant assassinats et contre-espionnage."
+    },
+    {
+      "id": "seven_ninja_swordsmen_of_the_mist",
+      "name_fr": "Sept Epeeistes du Brouillard",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "momochi_zabuza",
+        "hoshigaki_kisame",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "ringo_ameyuri",
+        "munashi_jinpachi",
+        "kuriarare_kushimaru",
+        "suikazan_fuguki",
+        "chojuro"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -30,
+      "active_year_end": null,
+      "description_fr": "Elite militaire de Kirigakure reunissant sept shinobi porteurs des epees legendaires du village du Brouillard. Leur influence politique et symbolique resta considerable meme lors des periodes de dissolution du groupe."
+    },
+    {
+      "id": "konoha_military_police_force",
+      "name_fr": "Police Militaire de Konoha",
+      "type": "organization",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_fugaku",
+        "uchiha_itachi",
+        "uchiha_obito"
+      ],
+      "allies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -60,
+      "active_year_end": -1,
+      "description_fr": "Corps de police interne de Konoha historiquement controle par le clan Uchiha, leur conferant un pouvoir institutionnel majeur au sein du village. Dissous apres le massacre du clan Uchiha perpetre par Itachi."
+    },
+    {
+      "id": "five_kage",
+      "name_fr": "Conseil des Cinq Kage",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "tsunade",
+        "gaara",
+        "onoki",
+        "terumi_mei",
+        "hatake_kakashi",
+        "kurotsuchi",
+        "darui",
+        "chojuro"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "uchiha_madara"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Instance politique supreme reunissant les chefs des cinq grands villages caches. Le Conseil des Cinq Kage coordonna la Grande Alliance Shinobi lors de la Quatrieme Grande Guerre pour combattre Madara Uchiha et Obito."
+    },
+    {
+      "id": "kara",
+      "name_fr": "Kara",
+      "type": "organization",
+      "leader_id": "otsutsuki_isshiki",
+      "members": [
+        "otsutsuki_isshiki",
+        "jigen",
+        "delta",
+        "kashin_koji",
+        "boro",
+        "ao",
+        "code",
+        "victor",
+        "deepa"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_fr": "Organisation secrete dirigee en facade par Jigen, en realite vaisseau d'Isshiki Otsutsuki, oeuvrant a la culture d'un arbre divin pour en recolter les fruits. Kara mena des operations mondiales visant a exploiter les ressources chakra de la Terre."
+    },
+    {
+      "id": "otsutsuki",
+      "name_fr": "Clan Otsutsuki",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "otsutsuki_kaguya",
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra",
+        "otsutsuki_isshiki",
+        "otsutsuki_momoshiki",
+        "otsutsuki_kinshiki",
+        "otsutsuki_urashiki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "five_kage",
+        "boruto_uzumaki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_fr": "Lignee celeste de cultivateurs de chakra parcourant les mondes pour planter et recolter des arbres divins. Les Otsutsuki sont a l'origine de tout le chakra shinobi terrestre via Kaguya, et representent la menace extraterrestre supreme."
+    },
+    {
+      "id": "uchiha",
+      "name_fr": "Clan Uchiha",
+      "type": "clan",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_madara",
+        "uchiha_izuna",
+        "uchiha_fugaku",
+        "uchiha_mikoto",
+        "uchiha_itachi",
+        "uchiha_sasuke",
+        "uchiha_obito",
+        "uchiha_shisui",
+        "uchiha_sarada"
+      ],
+      "allies": [
+        "konohagakure",
+        "konoha_military_police_force"
+      ],
+      "enemies": [
+        "senju",
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -100,
+      "active_year_end": null,
+      "description_fr": "Clan fondateur de Konoha aux cotes des Senju, porteurs du Sharingan, il fut presque entierement massacre par Itachi sur ordre de Danzo. Sa relation tendue avec le gouvernement de Konoha alimenta des projets de coup d'etat avant le massacre."
+    },
+    {
+      "id": "senju",
+      "name_fr": "Clan Senju",
+      "type": "clan",
+      "leader_id": "senju_hashirama",
+      "members": [
+        "senju_hashirama",
+        "senju_tobirama",
+        "tsunade",
+        "nawaki"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [
+        "uchiha",
+        "uchiha_madara"
+      ],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_fr": "Clan fondateur de Konoha, celebre pour ses techniques vitales et le Mokuton d'Hashirama. Les Senju etablirent l'alliance fondatrice avec les Uchiha, creant ainsi le systeme des villages caches."
+    },
+    {
+      "id": "uzumaki",
+      "name_fr": "Clan Uzumaki",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "uzumaki_naruto",
+        "uzumaki_kushina",
+        "uzumaki_mito",
+        "nagato",
+        "karin",
+        "uzumaki_boruto",
+        "uzumaki_himawari"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzushiogakure",
+        "senju"
+      ],
+      "enemies": [],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_fr": "Clan originaire d'Uzushiogakure, lie aux Senju par le sang, maitre des sceaux et dote d'une vitalite exceptionnelle. Apres la destruction de leur village, ses membres se disperserent a travers les nations, certains devenant jinchuriki."
+    },
+    {
+      "id": "hyuga",
+      "name_fr": "Clan Hyuga",
+      "type": "clan",
+      "leader_id": "hyuga_hiashi",
+      "members": [
+        "hyuga_hiashi",
+        "hyuga_hizashi",
+        "hyuga_neji",
+        "hyuga_hinata",
+        "hyuga_hanabi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "kumogakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan le plus influent de Konoha apres la chute des Uchiha, porteur du Byakugan et du Jyuken. Sa structure interne est divisee en branche principale et branche secondaire, cette derniere asservie par un sceau maudit."
+    },
+    {
+      "id": "nara",
+      "name_fr": "Clan Nara",
+      "type": "clan",
+      "leader_id": "nara_shikaku",
+      "members": [
+        "nara_shikaku",
+        "nara_yoshino",
+        "nara_shikamaru"
+      ],
+      "allies": [
+        "konohagakure",
+        "akimichi",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha reconnu pour ses techniques de manipulation des ombres et ses cerfs sacres. Les Nara forment avec les Akimichi et les Yamanaka une alliance triadique transmise de generation en generation."
+    },
+    {
+      "id": "akimichi",
+      "name_fr": "Clan Akimichi",
+      "type": "clan",
+      "leader_id": "akimichi_choza",
+      "members": [
+        "akimichi_choza",
+        "akimichi_choji",
+        "akimichi_chocho"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha specialise dans les techniques de transformation corporelle et d'expansion physique. Partenaires historiques des Nara et Yamanaka, les Akimichi occupent un role de force de frappe dans les formations tripartites."
+    },
+    {
+      "id": "yamanaka",
+      "name_fr": "Clan Yamanaka",
+      "type": "clan",
+      "leader_id": "yamanaka_inoichi",
+      "members": [
+        "yamanaka_inoichi",
+        "yamanaka_ino",
+        "yamanaka_inojin",
+        "yamanaka_fu"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "akimichi"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha maitrisant les techniques de transfert mental et de telepathie, jouant un role crucial dans le renseignement et la communication tactique. Inoichi Yamanaka servit comme chef des communications lors de la Quatrieme Guerre."
+    },
+    {
+      "id": "sarutobi",
+      "name_fr": "Clan Sarutobi",
+      "type": "clan",
+      "leader_id": "sarutobi_hiruzen",
+      "members": [
+        "sarutobi_hiruzen",
+        "sarutobi_biwako",
+        "sarutobi_asuma",
+        "sarutobi_konohamaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "orochimaru"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha ayant fourni au village son Troisieme Hokage, figure patriarcale respectee. Hiruzen Sarutobi incarna l'ideal du shinobi professeur et politique, tandis qu'Asuma servit comme jonin d'elite."
+    },
+    {
+      "id": "shimura",
+      "name_fr": "Clan Shimura",
+      "type": "clan",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo"
+      ],
+      "allies": [
+        "root"
+      ],
+      "enemies": [
+        "konohagakure",
+        "uchiha",
+        "nagato"
+      ],
+      "active_year_start": -60,
+      "active_year_end": 3,
+      "description_fr": "Clan peu nombreux dont Danzo Shimura fut le representant le plus influent, operant dans l'ombre du gouvernement de Konoha. Danzo accumula secretement des Sharingan et manipula les evenements politiques du village pendant des decennies."
+    },
+    {
+      "id": "aburame",
+      "name_fr": "Clan Aburame",
+      "type": "clan",
+      "leader_id": "aburame_shibi",
+      "members": [
+        "aburame_shibi",
+        "aburame_shino",
+        "aburame_torune"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha dont les membres hotes des insectes Kikaichuu a leur naissance utilisent ces creatures comme armes vivantes consommant le chakra adverse. Discret et analytique, le clan joue un role de renseignement au sein du village."
+    },
+    {
+      "id": "inuzuka",
+      "name_fr": "Clan Inuzuka",
+      "type": "clan",
+      "leader_id": "inuzuka_tsume",
+      "members": [
+        "inuzuka_tsume",
+        "inuzuka_kiba",
+        "inuzuka_hana"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan de Konoha dont chaque membre forme un duo combat avec un chien ninja specialise. Leur style de combat fond sur la vitesse et les sens canins affines en font des eclaireurs et pisteurs hors pair."
+    },
+    {
+      "id": "hatake",
+      "name_fr": "Clan Hatake",
+      "type": "clan",
+      "leader_id": "hatake_kakashi",
+      "members": [
+        "hatake_sakumo",
+        "hatake_kakashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_fr": "Lignee restreinte de Konoha illustree par le Croc Blanc Sakumo et son fils Kakashi, devenu Sixieme Hokage. Malgre l'infamie temporaire liee au suicide de Sakumo, Kakashi restaura l'honneur familial et devint une figure tutulaire majeure."
+    },
+    {
+      "id": "kaguya_clan",
+      "name_fr": "Clan Kaguya",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [
+        "kirigakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": 2,
+      "description_fr": "Clan de guerriers fanatiques porteurs de la technique Shikotsumyaku permettant de manipuler leurs propres os. Quasi extermines lors d'une attaque irreflechie contre Kirigakure, le seul survivant notable fut Kimimaro, recueilli par Orochimaru."
+    },
+    {
+      "id": "hozuki",
+      "name_fr": "Clan Hozuki",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hozuki_gengetsu"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Clan de Kirigakure maitrisant la technique de liquefaction corporelle Suika no Jutsu. Mangetsu fut l'un des Sept Epeeistes tandis que Gengetsu Hozuki servit comme Second Mizukage, conferant au clan une influence politique notable."
+    },
+    {
+      "id": "funato",
+      "name_fr": "Clan Funato",
+      "type": "clan",
+      "leader_id": "funato_araumi",
+      "members": [
+        "funato_araumi",
+        "funato_isari",
+        "funato_tenma",
+        "funato_seiren",
+        "funato_ikada"
+      ],
+      "allies": [],
+      "enemies": [
+        "kirigakure",
+        "konohagakure"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_fr": "Clan de pirates shinobi operant dans les eaux du pays de l'Eau, cherchant a se venger de Kirigakure. Araumi Funato avait accumule une puissance consideree comme une menace directe pour la stabilite maritime de la region."
+    },
+    {
+      "id": "chinoike",
+      "name_fr": "Clan Chinoike",
+      "type": "clan",
+      "leader_id": "oyashiro_en",
+      "members": [
+        "oyashiro_en",
+        "chino"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_fr": "Clan maudit porteur du Ketsuryugan, un oeil rouge capable de controler le sang. Exile dans la Vallee de l'Enfer apres une manipulation politique orchestree par les Uchiha, le clan nourrit une rancune profonde envers Konoha."
+    },
+    {
+      "id": "fuma",
+      "name_fr": "Clan Fuma",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "karashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "fuma_land_of_sound"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Ancien clan de mercenaires redoutes, divise entre une branche alliee a Konoha et une branche dissidente ralliee a Orochimaru dans le pays du Son. Cette fracture interne reflete les tensions entre tradition et opportunisme shinobi."
+    },
+    {
+      "id": "mount_myoboku",
+      "name_fr": "Mont Myoboku",
+      "type": "village",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "gamabunta",
+        "gamakichi",
+        "gamatatsu",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_fr": "Lieu sacre des crapauds invocables et foyer du Sage Art du mode ermite. Entretenant un lien ancestral avec Konoha via les contrats d'invocation des Senju et Uzumaki, le Mont Myoboku forma plusieurs shinobi legendaires dont Jiraiya et Naruto."
+    },
+    {
+      "id": "shikkotsu_forest",
+      "name_fr": "Foret Shikkotsu",
+      "type": "village",
+      "leader_id": "katsuyu",
+      "members": [
+        "katsuyu",
+        "tsunade",
+        "haruno_sakura"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_fr": "Foret mythique habitee par les limaces geantes invocables, notamment Katsuyu. Liee aux medecins shinobi et aux eleves de la Legendaire Tsunade, la Foret Shikkotsu represente un pouvoir de soin et de soutien unique dans le monde shinobi."
+    },
+    {
+      "id": "ryuchi_cave",
+      "name_fr": "Caverne de Ryuchi",
+      "type": "village",
+      "leader_id": "snake_sage_white",
+      "members": [
+        "snake_sage_white",
+        "orochimaru",
+        "yakushi_kabuto",
+        "manda"
+      ],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_fr": "Demeure sacree des serpents invocables et siege du Sage Art des serpents. Orochimaru y conclut un contrat et y forma Kabuto Yakushi au Sage Mode, la Caverne de Ryuchi offrant un contrepoint obscur au Mont Myoboku."
+    },
+    {
+      "id": "nadeshiko_village",
+      "name_fr": "Village Nadeshiko",
+      "type": "village",
+      "leader_id": "shizuka",
+      "members": [
+        "shizuka",
+        "tokiwa"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village exclusivement feminin dont la tradition exige que la future chef defie et batte l'homme qu'elle aime. Cette coutume participe de son isolement politique mais confere a ses guerrieres une reputation de combattantes d'elite."
+    },
+    {
+      "id": "tsuchigumo_village",
+      "name_fr": "Village Tsuchigumo",
+      "type": "village",
+      "leader_id": "hotaru",
+      "members": [
+        "hotaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village gardien d'une technique interdite d'explosion transmise par le clan Tsuchigumo. Protege par une alliance avec Konoha, le village fut convoite pour cette technique par plusieurs factions criminelles."
+    },
+    {
+      "id": "mount_myoboku_sages",
+      "name_fr": "Sages du Mont Myoboku",
+      "type": "organization",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure",
+        "mount_myoboku"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_fr": "Ordre de maitres du mode ermite residant au Mont Myoboku, transmettant l'art du Senjutsu aux rares elus capables de l'apprendre. Leur influence spirituelle et prophétique orienta plusieurs decisions cruciales de l'histoire shinobi."
+    },
+    {
+      "id": "hagoromo_clan",
+      "name_fr": "Clan Hagoromo",
+      "type": "clan",
+      "leader_id": "otsutsuki_hagoromo",
+      "members": [
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra"
+      ],
+      "allies": [
+        "senju",
+        "uzumaki"
+      ],
+      "enemies": [
+        "kaguya_otsutsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_fr": "Lignee fondatrice de tout le chakra shinobi, descendant directement de Kaguya Otsutsuki via le Sage des Six Voies. Le conflit entre Indra et Ashura initia la rivalite ancestrale perpetuee par les clans Uchiha et Senju."
+    },
+    {
+      "id": "jomae_village",
+      "name_fr": "Village Jomae",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "mui"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village specialise dans la creation et la gestion de la Prison de la Grande Pagode, l'installation carcerale la plus securisee du monde shinobi. Son autorite sur cette prison lui confere une position politique delicate entre les grandes nations."
+    },
+    {
+      "id": "kusagakure",
+      "name_fr": "Village Cache de l'Herbe",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "karin"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Village cache mineur ayant participe aux examens Chunin de Konoha. Karin Uzumaki y vecut une partie de son enfance avant de rejoindre Orochimaru, illustrant la permeabilite de ses frontieres politiques."
+    },
+    {
+      "id": "yotsuki",
+      "name_fr": "Clan Yotsuki",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "kumogakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_fr": "Clan influent de Kumogakure dont les membres occupent les plus hautes fonctions militaires et politiques du village des Nuages. Le Quatrieme Raikage Ay et son frere adoptif Killer Bee en sont les representants les plus emblematiques."
+    }
+  ]
+}

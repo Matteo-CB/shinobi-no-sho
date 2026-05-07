@@ -44,6 +44,7 @@ from shinobi.agents.batch_selector import (
 from shinobi.agents.cache import LLMCache, compute_cache_key
 from shinobi.agents.context_builder import (
     auto_fill_selection_context,
+    build_deep_motivations_text,
     build_relations_summary_for_npc,
     build_world_summary_for_npc,
 )
@@ -156,6 +157,7 @@ __all__ = [
     "apply_actions_to_world_state",
     "auto_fill_selection_context",
     "build_batch_user_prompt",
+    "build_deep_motivations_text",
     "build_reflect_prompt",
     "build_relations_summary_for_npc",
     "build_user_prompt",

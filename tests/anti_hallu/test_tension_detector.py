@@ -397,3 +397,445 @@ def test_llm_analyst_build_snapshot_public(store: KnowledgeGraphStore) -> None:
     analyst = LLMTensionAnalyst(store, llm_client=None)
     snap = analyst.build_snapshot(year=12)
     assert "naruto" in snap or "Snapshot" in snap
+
+
+# === Phase H wiring 9.3 : political_alliance_brittle_via_dead_leader =======
+
+
+def test_phase_h_9_3_political_invariant_detects_dead_leader_alliance(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : alliance_breakdown via leader mort + canon political_forces."""
+    from shinobi.tension.invariants import (
+        political_alliance_brittle_via_dead_leader,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "uchiha_clan",
+                "leader_id": "uchiha_fugaku",
+                "allies": ["konohagakure"],
+                "enemies": [],
+                "active_year_start": -50,
+                "active_year_end": None,
+            },
+            {
+                "id": "konohagakure",
+                "leader_id": "sarutobi_hiruzen",
+                "allies": ["uchiha_clan"],
+                "enemies": [],
+                "active_year_start": -65,
+                "active_year_end": None,
+            },
+        ],
+    }
+    char_deaths = {"uchiha_fugaku": 9}  # mort en l'an 9
+
+    tensions = political_alliance_brittle_via_dead_leader(
+        store, year=12,  # 3 ans apres mort fugaku
+        ctx={
+            "political_forces": political_forces,
+            "char_deaths": char_deaths,
+        },
+    )
+    assert len(tensions) >= 1
+    t = tensions[0]
+    assert t.type == TensionType.alliance_breakdown
+    assert "uchiha_clan" in t.involved_entities
+    assert "konohagakure" in t.involved_entities
+    assert "uchiha_fugaku" in t.involved_entities
+
+
+def test_phase_h_9_3_political_invariant_skips_when_ctx_empty(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : sans ctx['political_forces'], la regle fire pas."""
+    from shinobi.tension.invariants import (
+        political_alliance_brittle_via_dead_leader,
+    )
+    assert political_alliance_brittle_via_dead_leader(
+        store, year=12, ctx={},
+    ) == []
+
+
+def test_phase_h_9_3_political_invariant_skips_when_leader_alive(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : si leader vivant, pas de fragility detectee."""
+    from shinobi.tension.invariants import (
+        political_alliance_brittle_via_dead_leader,
+    )
+    political_forces = {
+        "factions": [
+            {
+                "id": "uchiha_clan",
+                "leader_id": "uchiha_fugaku",
+                "allies": ["konohagakure"],
+                "active_year_start": -50,
+                "active_year_end": None,
+            },
+            {
+                "id": "konohagakure",
+                "leader_id": "sarutobi_hiruzen",
+                "allies": ["uchiha_clan"],
+                "active_year_start": -65,
+                "active_year_end": None,
+            },
+        ],
+    }
+    # Fugaku mort dans le futur (year=20 > 12), donc pas mort a year=12
+    char_deaths = {"uchiha_fugaku": 20}
+    tensions = political_alliance_brittle_via_dead_leader(
+        store, year=12,
+        ctx={
+            "political_forces": political_forces,
+            "char_deaths": char_deaths,
+        },
+    )
+    assert tensions == []
+
+
+def test_phase_h_9_3_political_invariant_skips_inactive_factions(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : faction dissoute (active_year_end < year) skip."""
+    from shinobi.tension.invariants import (
+        political_alliance_brittle_via_dead_leader,
+    )
+    political_forces = {
+        "factions": [
+            {
+                "id": "old_clan",
+                "leader_id": "dead_leader",
+                "allies": ["other_clan"],
+                "active_year_start": -200,
+                "active_year_end": -10,  # dissoute avant year=12
+            },
+            {
+                "id": "other_clan",
+                "leader_id": None,
+                "allies": [],
+                "active_year_start": -200,
+                "active_year_end": None,
+            },
+        ],
+    }
+    char_deaths = {"dead_leader": -50}
+    tensions = political_alliance_brittle_via_dead_leader(
+        store, year=12,
+        ctx={
+            "political_forces": political_forces,
+            "char_deaths": char_deaths,
+        },
+    )
+    assert tensions == []
+
+
+def test_phase_h_9_3_detector_uses_canon_ctx(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : TensionDetector(canon=...) populate auto le ctx."""
+
+    class _FakeChar:
+        def __init__(self, dy: int | None) -> None:
+            self.death_year = dy
+
+    class _FakeCanon:
+        def __init__(self) -> None:
+            self.political_forces = {
+                "factions": [
+                    {
+                        "id": "uchiha_clan",
+                        "leader_id": "uchiha_fugaku",
+                        "allies": ["konohagakure"],
+                        "active_year_start": -50,
+                        "active_year_end": None,
+                    },
+                    {
+                        "id": "konohagakure",
+                        "leader_id": "sarutobi_hiruzen",
+                        "allies": ["uchiha_clan"],
+                        "active_year_start": -65,
+                        "active_year_end": None,
+                    },
+                ],
+            }
+            self.characters = {
+                "uchiha_fugaku": _FakeChar(9),
+                "sarutobi_hiruzen": _FakeChar(13),
+            }
+
+    detector = TensionDetector(store, canon=_FakeCanon())
+    result = detector.detect(year=12)
+    political_tensions = [
+        t for t in result.tensions
+        if t.source_rule == "political_alliance_brittle_via_dead_leader"
+    ]
+    assert len(political_tensions) >= 1
+
+
+def test_phase_h_9_3_detector_no_canon_no_political_tensions(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : sans canon=, pas de political_alliance fire (back-compat)."""
+    detector = TensionDetector(store)
+    result = detector.detect(year=12)
+    political_tensions = [
+        t for t in result.tensions
+        if t.source_rule == "political_alliance_brittle_via_dead_leader"
+    ]
+    assert len(political_tensions) == 0
+
+
+def test_phase_h_9_3_build_canon_ctx_handles_none() -> None:
+    """Phase H 9.3 : build_canon_ctx(None) -> dict vide."""
+    from shinobi.tension.detector import build_canon_ctx
+    assert build_canon_ctx(None) == {}
+
+
+def test_phase_h_9_3_invariant_in_default_registry() -> None:
+    """Phase H 9.3 : la 21eme regle est bien dans INVARIANTS."""
+    names = [inv.name for inv in INVARIANTS]
+    assert "political_alliance_brittle_via_dead_leader" in names
+
+
+def test_phase_c_perf_detect_under_threshold(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase C perf : TensionDetector.detect() < 5ms par appel.
+
+    Garde-fou contre O(N^2) regressions dans les 22 invariants. Reference
+    materiel local : ~0.18ms/detect avec canon production charge. Cap a
+    5ms pour large marge sur CI partages.
+    """
+    import time
+
+    from shinobi.canon.loader import load_canon
+
+    canon = load_canon()
+    detector = TensionDetector(store, canon=canon)
+    # Warm-up : 1er detect a un cout d'init Pydantic
+    detector.detect(year=10)
+
+    N = 50
+    t0 = time.perf_counter()
+    for _ in range(N):
+        detector.detect(year=10)
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    per_detect_ms = elapsed_ms / N
+    assert per_detect_ms < 5.0, (
+        f"Phase C perf regression : {per_detect_ms:.2f}ms/detect > 5.0ms "
+        f"(reference : ~0.18ms/detect avec canon production)"
+    )
+
+
+def test_phase_h_9_3_isolated_faction_with_active_enemies(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 (suite) : faction sans leader + >=2 ennemis -> tension high."""
+    from shinobi.tension.invariants import (
+        political_faction_isolated_with_active_enemies,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "uchiha_clan",
+                "leader_id": "uchiha_fugaku",
+                "allies": [],
+                "enemies": ["konohagakure", "senju_clan"],
+                "active_year_start": -50,
+                "active_year_end": None,
+            },
+            {
+                "id": "konohagakure",
+                "leader_id": "sarutobi_hiruzen",
+                "allies": [], "enemies": ["uchiha_clan"],
+                "active_year_start": -65, "active_year_end": None,
+            },
+            {
+                "id": "senju_clan",
+                "leader_id": "senju_hashirama",
+                "allies": [], "enemies": ["uchiha_clan"],
+                "active_year_start": -100, "active_year_end": None,
+            },
+        ],
+    }
+    char_deaths = {"uchiha_fugaku": 9}
+    tensions = political_faction_isolated_with_active_enemies(
+        store, year=12,
+        ctx={
+            "political_forces": political_forces,
+            "char_deaths": char_deaths,
+        },
+    )
+    assert len(tensions) >= 1
+    t = tensions[0]
+    assert t.type == TensionType.factional_revenge
+    assert t.severity == TensionSeverity.high
+    assert "uchiha_clan" in t.involved_entities
+    assert "konohagakure" in t.involved_entities or (
+        "senju_clan" in t.involved_entities
+    )
+
+
+def test_phase_h_9_3_isolated_faction_skips_when_only_one_enemy(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 (suite) : 1 seul ennemi = pas de threshold atteint."""
+    from shinobi.tension.invariants import (
+        political_faction_isolated_with_active_enemies,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "uchiha_clan",
+                "leader_id": "uchiha_fugaku",
+                "allies": [], "enemies": ["konohagakure"],
+                "active_year_start": -50, "active_year_end": None,
+            },
+            {
+                "id": "konohagakure",
+                "leader_id": "sarutobi_hiruzen",
+                "allies": [], "enemies": [],
+                "active_year_start": -65, "active_year_end": None,
+            },
+        ],
+    }
+    char_deaths = {"uchiha_fugaku": 9}
+    tensions = political_faction_isolated_with_active_enemies(
+        store, year=12,
+        ctx={
+            "political_forces": political_forces,
+            "char_deaths": char_deaths,
+        },
+    )
+    assert tensions == []
+
+
+def test_phase_h_9_5_nudge_includes_canon_example() -> None:
+    """Phase H 9.5 : canon_examples ancre le pattern dans un cas canonique.
+
+    Sans exemple, le pattern reste abstrait. Avec 1 exemple canon (Itachi,
+    Sasuke, Obito...) le LLM voit comment l'imiter directement.
+    """
+    from shinobi.director.nudge_builder import build_nudge, build_nudge_text
+
+    nudge = build_nudge(
+        active_acts=[],
+        active_invariants=[],
+        recent_summary=None,
+        current_year=10,
+        narrative_patterns=[
+            {
+                "id": "p1",
+                "title_fr": "Revelation en couches",
+                "description_fr": "Reserver une verite cachee.",
+                "when_to_apply_fr": "Quand un personnage semble juge.",
+                "canon_examples": [
+                    "Itachi : presente comme traitre puis revele protecteur",
+                    "Tobi revele etre Obito Uchiha",
+                ],
+            },
+        ],
+    )
+    text = build_nudge_text(nudge)
+    assert "Ex. canon :" in text
+    assert "Itachi" in text
+
+
+def test_phase_h_9_5_nudge_omits_canon_example_when_absent() -> None:
+    """Phase H 9.5 : pas de ligne 'Ex. canon' si canon_examples vide."""
+    from shinobi.director.nudge_builder import build_nudge, build_nudge_text
+
+    nudge = build_nudge(
+        active_acts=[], active_invariants=[],
+        recent_summary=None, current_year=10,
+        narrative_patterns=[
+            {
+                "id": "p1", "title_fr": "T", "description_fr": "D",
+                # PAS de canon_examples
+            },
+        ],
+    )
+    text = build_nudge_text(nudge)
+    assert "Ex. canon :" not in text
+
+
+def test_phase_h_9_5_nudge_includes_when_to_apply() -> None:
+    """Phase H 9.5 : when_to_apply_fr injecte dans le nudge sous chaque pattern.
+
+    Sans cette ligne, le LLM avait le pattern + description mais pas le
+    contexte d'application -> patterns lus comme decoratifs au lieu d'etre
+    actionables.
+    """
+    from shinobi.director.nudge_builder import build_nudge, build_nudge_text
+
+    nudge = build_nudge(
+        active_acts=[],
+        active_invariants=[],
+        recent_summary=None,
+        current_year=10,
+        narrative_patterns=[
+            {
+                "id": "p1",
+                "title_fr": "Revelation en couches",
+                "description_fr": "Reserver une verite cachee.",
+                "when_to_apply_fr": (
+                    "Quand un personnage semble juge : reveler une verite."
+                ),
+            },
+        ],
+    )
+    text = build_nudge_text(nudge)
+    assert "Revelation en couches" in text
+    assert "Quand :" in text
+    assert "Quand un personnage semble juge" in text
+
+
+def test_phase_h_9_3_scheduler_propagates_canon_to_detector(
+    store: KnowledgeGraphStore,
+) -> None:
+    """Phase H 9.3 : TensionScheduler(canon=) populate son detector interne.
+
+    Garantit que le wiring CLI (qui passe canon au scheduler) active la
+    21eme regle pour toute la duree du fast-forward.
+    """
+    from shinobi.tension.scheduler import TensionScheduler
+
+    class _FakeChar:
+        def __init__(self, dy: int | None) -> None:
+            self.death_year = dy
+
+    class _FakeCanon:
+        political_forces = {
+            "factions": [
+                {
+                    "id": "uchiha_clan",
+                    "leader_id": "uchiha_fugaku",
+                    "allies": ["konohagakure"],
+                    "active_year_start": -50,
+                    "active_year_end": None,
+                },
+                {
+                    "id": "konohagakure",
+                    "leader_id": "sarutobi_hiruzen",
+                    "allies": ["uchiha_clan"],
+                    "active_year_start": -65,
+                    "active_year_end": None,
+                },
+            ],
+        }
+        characters = {
+            "uchiha_fugaku": _FakeChar(9),
+            "sarutobi_hiruzen": _FakeChar(13),
+        }
+
+    scheduler = TensionScheduler(store, canon=_FakeCanon())
+    # Acces direct au detector pour verifier qu'il a bien le ctx canon
+    detector = scheduler._detector  # noqa: SLF001
+    assert "political_forces" in detector._canon_ctx  # noqa: SLF001
+    assert "char_deaths" in detector._canon_ctx  # noqa: SLF001
+    assert detector._canon_ctx["char_deaths"]["uchiha_fugaku"] == 9  # noqa: SLF001

@@ -99,10 +99,14 @@ class TensionScheduler:
         config: LLMAnalystConfig | None = None,
         state: SchedulerState | None = None,
         social_network=None,  # type: SocialNetwork | None
+        canon=None,  # type: CanonBundle | None
     ) -> None:
         self._store = store
         self._config = config or LLMAnalystConfig()
-        self._detector = detector or TensionDetector(store)
+        # Phase H wiring 9.3 : propage canon au detector auto-cree pour
+        # activer la 21eme regle political_alliance_brittle_via_dead_leader.
+        # Si un detector externe est fourni, il porte deja son canon.
+        self._detector = detector or TensionDetector(store, canon=canon)
         # Spec §5.3 : LLMTensionAnalyst recoit social_network pour
         # inclure les relations dans le snapshot
         self._analyst = analyst or LLMTensionAnalyst(

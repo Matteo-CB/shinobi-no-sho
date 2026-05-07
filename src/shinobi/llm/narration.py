@@ -239,6 +239,21 @@ class NarrationRequest:
     related_event_id: str | None = None
     related_mission_id: str | None = None
     scene_mood: str | None = None
+    # Phase G+H wiring : directives narratives Director (acts + invariants +
+    # narrative_patterns 9.5 + recent_summary). Injecte avant les FAITS
+    # CANONIQUES dans le user prompt pour conditionner le ton narratif. Cap a
+    # ~1200 chars en amont par build_nudge_text.
+    director_nudge_text: str | None = None
+    # Phase H 9.2 wiring : profils psycho condenses des NPCs presents dans
+    # la scene, derives de canon.deep_motivations. Permet au narrator de
+    # produire des dialogues en-character (drive principal + red lines)
+    # plutot que generiques. Format ~150 chars / NPC, cap 5 NPCs max,
+    # build par helper externe (cf cli.play._build_present_npcs_motivations).
+    present_npcs_motivations_text: str | None = None
+    # Phase H 9.3 wiring : descriptions politiques des factions pertinentes
+    # a la scene (location ou members presents). Permet au narrator de
+    # contextualiser politiquement la scene canon.
+    relevant_factions_text: str | None = None
 
 
 def _persona_context_from_request(request: NarrationRequest) -> PersonaContext:
@@ -596,6 +611,27 @@ class Narrator:
             user_blocks.append("")
         user_blocks.append("[ETAT DU PERSONNAGE]")
         user_blocks.append(request.character_state_summary)
+        # Phase G+H wiring : directives Director injectees AVANT le RAG
+        # canon. Le LLM lit les patterns Kishimoto + acts + invariants
+        # avant de plonger dans les faits canoniques, qui conditionne le ton.
+        if request.director_nudge_text:
+            user_blocks.append("\n" + request.director_nudge_text)
+        # Phase H 9.2 wiring : profils psycho condenses des NPCs presents
+        # pour que dialogues + actions du narrator restent en-character
+        # canon (Naruto, Sasuke, etc.). Sans ce block, le narrator avait
+        # juste fact_sheets (clan/rank) et inventait les motivations.
+        if request.present_npcs_motivations_text:
+            user_blocks.append(
+                "\n[PROFILS PSYCHO NPCS PRESENTS]\n"
+                + request.present_npcs_motivations_text
+            )
+        # Phase H 9.3 wiring : contexte politique des factions pertinentes
+        # (description_fr du village + clans des NPCs presents).
+        if request.relevant_factions_text:
+            user_blocks.append(
+                "\n[CONTEXTE POLITIQUE]\n"
+                + request.relevant_factions_text
+            )
         if voices:
             user_blocks.append("\n" + voices)
         user_blocks.append("\n" + rag_context)

@@ -313,3 +313,280 @@ def test_phase_c_compatible_with_missions_in_kg() -> None:
             assert any(f.object == "12" for f in facts), (
                 f"Mission {m.id} : occurs_in_year=12 manquant"
             )
+
+
+# --- Phase G+H : Director nudge -> NarrationRequest -> user prompt --------
+
+
+def test_narration_request_accepts_director_nudge_text() -> None:
+    """Phase G+H wiring : NarrationRequest a un champ director_nudge_text."""
+    from shinobi.llm.narration import NarrationRequest
+
+    request = NarrationRequest(
+        turn_summary="t",
+        action_text="t",
+        action_result_summary="t",
+        location_id="konohagakure",
+        present_npcs=[],
+        active_breadcrumb_descriptions=[],
+        character_state_summary="",
+        duration_str="1h",
+        director_nudge_text=(
+            "[DIRECTIVES NARRATIVES / DIRECTOR]\n"
+            "Style Kishimoto a respecter :\n"
+            "  - Liens humains > force brute"
+        ),
+    )
+    assert request.director_nudge_text is not None
+    assert "DIRECTIVES NARRATIVES" in request.director_nudge_text
+
+
+def test_narrator_user_prompt_includes_director_nudge_when_set() -> None:
+    """Phase G+H wiring : _build_user_prompt insere le nudge avant FAITS CANONIQUES.
+
+    Verifie via inspection du prompt que le block est present quand
+    request.director_nudge_text est fourni.
+    """
+    from shinobi.llm.narration import NarrationRequest
+
+    request = NarrationRequest(
+        turn_summary="x",
+        action_text="x",
+        action_result_summary="x",
+        location_id="konohagakure",
+        present_npcs=[],
+        active_breadcrumb_descriptions=[],
+        character_state_summary="Naruto, 12 ans, genin",
+        duration_str="1h",
+        director_nudge_text=(
+            "[DIRECTIVES NARRATIVES / DIRECTOR]\n"
+            "Style Kishimoto a respecter :\n"
+            "  - Le pouvoir s'accompagne d'un cout"
+        ),
+    )
+    narrator = _make_narrator_no_validation()
+    prompt = narrator._build_user_message(
+        request=request,
+        fact_sheets="",
+        voices="",
+        rag_context="[FAITS CANONIQUES] vide",
+    )
+    assert "DIRECTIVES NARRATIVES" in prompt
+    assert "Style Kishimoto" in prompt
+    # Le nudge doit etre AVANT les FAITS CANONIQUES (= rag_context)
+    assert prompt.index("DIRECTIVES NARRATIVES") < prompt.index(
+        "FAITS CANONIQUES"
+    )
+
+
+def test_build_present_npcs_motivations_block_compact_format() -> None:
+    """Phase H 9.2 wiring narrator : helper produit un block compact pour
+    les NPCs avec profil 9.2.
+    """
+    from shinobi.agents.context_builder import (
+        build_present_npcs_motivations_block,
+    )
+
+    dataset = {
+        "uchiha_itachi": {
+            "deep_motivations": {"primary": "proteger_sasuke_au_prix_de_tout"},
+            "moral_red_lines": ["tuer_sasuke", "trahir_konoha_par_egoisme"],
+        },
+        "uzumaki_naruto": {
+            "deep_motivations": {"primary": "devenir_hokage_pour_etre_reconnu"},
+            "moral_red_lines": ["abandonner_un_ami"],
+        },
+    }
+    out = build_present_npcs_motivations_block(
+        deep_motivations_dataset=dataset,
+        present_npc_ids=["uchiha_itachi", "uzumaki_naruto"],
+    )
+    assert "uchiha_itachi" in out
+    assert "uzumaki_naruto" in out
+    assert "proteger_sasuke" in out
+    assert "tuer_sasuke" in out  # red line ajoutee
+    assert "drive=" in out
+    assert "ne_jamais=" in out
+
+
+def test_build_present_npcs_motivations_block_skips_unprofiled() -> None:
+    """Phase H 9.2 : NPCs sans profil 9.2 sont skip silencieusement."""
+    from shinobi.agents.context_builder import (
+        build_present_npcs_motivations_block,
+    )
+
+    dataset = {"uchiha_itachi": {"deep_motivations": {"primary": "x"}}}
+    out = build_present_npcs_motivations_block(
+        deep_motivations_dataset=dataset,
+        present_npc_ids=["uchiha_itachi", "random_npc_no_profile"],
+    )
+    assert "uchiha_itachi" in out
+    assert "random_npc_no_profile" not in out
+
+
+def test_build_present_npcs_motivations_block_returns_empty_no_dataset() -> None:
+    """Phase H 9.2 : sans dataset, retourne ""."""
+    from shinobi.agents.context_builder import (
+        build_present_npcs_motivations_block,
+    )
+
+    assert build_present_npcs_motivations_block(
+        deep_motivations_dataset=None,
+        present_npc_ids=["x"],
+    ) == ""
+
+
+def test_narrator_prompt_includes_present_npcs_motivations_block() -> None:
+    """Phase H 9.2 wiring narrator : block [PROFILS PSYCHO NPCS PRESENTS]
+    apparait dans le user prompt quand request.present_npcs_motivations_text
+    est fourni.
+
+    Sans ce wiring, le narrator avait juste fact_sheets (clan/rank) et
+    inventait les motivations dans les dialogues NPCs presents.
+    """
+    from shinobi.llm.narration import NarrationRequest
+
+    request = NarrationRequest(
+        turn_summary="x",
+        action_text="x",
+        action_result_summary="x",
+        location_id="konohagakure",
+        present_npcs=["uchiha_itachi"],
+        active_breadcrumb_descriptions=[],
+        character_state_summary="Naruto",
+        duration_str="1h",
+        present_npcs_motivations_text=(
+            "  - uchiha_itachi : drive=proteger_sasuke, ne_jamais=tuer_sasuke"
+        ),
+    )
+    narrator = _make_narrator_no_validation()
+    prompt = narrator._build_user_message(
+        request=request, fact_sheets="", voices="", rag_context="",
+    )
+    assert "PROFILS PSYCHO NPCS PRESENTS" in prompt
+    assert "uchiha_itachi" in prompt
+    assert "proteger_sasuke" in prompt
+
+
+def test_build_faction_descriptions_block_matches_location() -> None:
+    """Phase H 9.3 wiring narrator : faction matchee par location_id."""
+    from shinobi.agents.context_builder import (
+        build_faction_descriptions_block,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "konohagakure",
+                "name_fr": "Village Cache de la Feuille",
+                "description_fr": "Premier village cache fonde par Hashirama.",
+                "members": [],
+            },
+            {
+                "id": "sunagakure",
+                "name_fr": "Village du Sable",
+                "description_fr": "Village cache du pays du Vent.",
+                "members": [],
+            },
+        ],
+    }
+    out = build_faction_descriptions_block(
+        political_forces=political_forces,
+        location_id="konohagakure",
+    )
+    assert "Village Cache de la Feuille" in out
+    assert "Hashirama" in out
+    assert "Sunagakure" not in out  # pas pertinent
+
+
+def test_build_faction_descriptions_block_matches_member_present() -> None:
+    """Phase H 9.3 : faction matchee si un member present dans la scene."""
+    from shinobi.agents.context_builder import (
+        build_faction_descriptions_block,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "uchiha",
+                "name_fr": "Clan Uchiha",
+                "description_fr": "Clan canon descendant d'Indra.",
+                "members": ["uchiha_itachi", "uchiha_sasuke"],
+            },
+        ],
+    }
+    out = build_faction_descriptions_block(
+        political_forces=political_forces,
+        location_id="konohagakure",  # pas la faction
+        present_npc_ids=["uchiha_itachi"],  # mais Itachi present
+    )
+    assert "Clan Uchiha" in out
+    assert "Indra" in out
+
+
+def test_build_faction_descriptions_block_returns_empty_when_no_match() -> None:
+    """Phase H 9.3 : aucune faction pertinente -> retourne ""."""
+    from shinobi.agents.context_builder import (
+        build_faction_descriptions_block,
+    )
+
+    political_forces = {
+        "factions": [
+            {
+                "id": "konohagakure", "name_fr": "Konoha",
+                "description_fr": "x", "members": [],
+            },
+        ],
+    }
+    assert build_faction_descriptions_block(
+        political_forces=political_forces,
+        location_id="atlantis_random",
+        present_npc_ids=[],
+    ) == ""
+
+
+def test_narrator_prompt_includes_faction_political_block() -> None:
+    """Phase H 9.3 wiring narrator : block CONTEXTE POLITIQUE present."""
+    from shinobi.llm.narration import NarrationRequest
+
+    request = NarrationRequest(
+        turn_summary="x",
+        action_text="x",
+        action_result_summary="x",
+        location_id="konohagakure",
+        present_npcs=[],
+        active_breadcrumb_descriptions=[],
+        character_state_summary="Naruto",
+        duration_str="1h",
+        relevant_factions_text=(
+            "  - Village Cache de la Feuille : Premier village cache."
+        ),
+    )
+    narrator = _make_narrator_no_validation()
+    prompt = narrator._build_user_message(
+        request=request, fact_sheets="", voices="", rag_context="",
+    )
+    assert "CONTEXTE POLITIQUE" in prompt
+    assert "Premier village cache" in prompt
+
+
+def test_narrator_user_prompt_omits_director_block_when_unset() -> None:
+    """Phase G+H wiring : sans nudge, pas de block parasite."""
+    from shinobi.llm.narration import NarrationRequest
+
+    request = NarrationRequest(
+        turn_summary="x",
+        action_text="x",
+        action_result_summary="x",
+        location_id="konohagakure",
+        present_npcs=[],
+        active_breadcrumb_descriptions=[],
+        character_state_summary="Naruto",
+        duration_str="1h",
+        # director_nudge_text non fourni
+    )
+    narrator = _make_narrator_no_validation()
+    prompt = narrator._build_user_message(
+        request=request, fact_sheets="", voices="", rag_context="rag_x",
+    )
+    assert "DIRECTIVES NARRATIVES" not in prompt

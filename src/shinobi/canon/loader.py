@@ -118,6 +118,10 @@ def load_canon(
         locations=_safe_indexed(base, "locations.json", Location, optional),
         timeline_events=_safe_indexed(base, "timeline_events.json", TimelineEvent, optional),
         voice_profiles=_safe_indexed(base, "voice_profiles.json", VoiceProfile, optional),
+        # Phase H : 5 datasets enriches via LLM extraction (data/canon/).
+        # Optional - si absents, dict vide. Pas de Pydantic validation ici
+        # (les schemas sont dans scripts/phase_h pour eviter cyclic import).
+        **_load_phase_h_datasets(base),
     )
     if profile is not None:
         from shinobi.canon.profiles import filter_canon
@@ -145,6 +149,67 @@ def load_canon(
     except Exception as exc:
         logger.warning("canon_integrity_audit_skipped", error=str(exc))
     return bundle
+
+
+def _load_phase_h_datasets(base: Path) -> dict:
+    """Charge les 5 datasets Phase H depuis data/canon/ (sibling de canonical).
+
+    Spec doc 02 §9 : timeline_events_enriched, deep_motivations,
+    political_forces, divergence_points, narrative_patterns.
+
+    Tous optionnels - si fichier absent, retourne dict vide. Pas de
+    Pydantic validation (schemas dans scripts/phase_h/, eviter cyclic
+    import). Les consumers (Phase F validator, Phase G compactor) re-valident
+    s'ils en ont besoin.
+    """
+    # Phase H output dans data/canon/ (sibling de data/canonical/ qu'est `base`).
+    phase_h_dir = base.parent / "canon"
+    if not phase_h_dir.exists():
+        return {
+            "timeline_events_enriched": {},
+            "deep_motivations": {},
+            "political_forces": {},
+            "divergence_points": {},
+            "narrative_patterns": {},
+        }
+
+    def _load_dict(filename: str) -> dict:
+        p = phase_h_dir / filename
+        if not p.exists():
+            return {}
+        try:
+            data = load_json(p)
+            if isinstance(data, dict):
+                return data
+            logger.warning(
+                "phase_h_dataset_unexpected_type",
+                file=filename, type_=type(data).__name__,
+            )
+            return {}
+        except Exception as exc:
+            logger.warning(
+                "phase_h_dataset_load_failed",
+                file=filename, error=type(exc).__name__,
+                msg=str(exc)[:200],
+            )
+            return {}
+
+    out = {
+        "timeline_events_enriched": _load_dict("timeline_events_enriched.json"),
+        "deep_motivations": _load_dict("deep_motivations.json"),
+        "political_forces": _load_dict("political_forces.json"),
+        "divergence_points": _load_dict("divergence_points.json"),
+        "narrative_patterns": _load_dict("narrative_patterns.json"),
+    }
+    logger.info(
+        "phase_h_datasets_loaded",
+        timeline_enriched=len(out["timeline_events_enriched"]),
+        deep_motivations=len(out["deep_motivations"]),
+        political_forces=len(out["political_forces"].get("factions", [])),
+        divergence_points=len(out["divergence_points"].get("divergence_points", [])),
+        narrative_patterns=len(out["narrative_patterns"].get("patterns", [])),
+    )
+    return out
 
 
 def _apply_birth_years_patch(

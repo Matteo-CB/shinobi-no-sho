@@ -51,6 +51,15 @@ class AgentTickInputs:
     new_observations: tuple[Observation, ...] = ()
     world_summary: str = ""
     relations_summary: str = ""
+    # Phase H wiring 9.2 : profil psycho canonique compose depuis
+    # canon.deep_motivations (cf context_builder.build_deep_motivations_text).
+    # Default vide pour back-compat. TickEngine le populate depuis son
+    # _deep_motivations_dataset si configure.
+    deep_motivations_text: str = ""
+    # Phase G+E wiring : directives Director (acts + invariants + 9.5 patterns
+    # + recent_summary) composees par CLI/build_nudge_text et passees a chaque
+    # tick via TickEngine.set_director_nudge_text. Default vide.
+    director_nudge_text: str = ""
     extras: dict = field(default_factory=dict)
 
 
@@ -172,6 +181,8 @@ class MajorAgent:
             active_plans_text=active_plans_text,
             world_summary=inputs.world_summary,
             relations_summary=inputs.relations_summary,
+            deep_motivations_text=inputs.deep_motivations_text,
+            director_nudge_text=inputs.director_nudge_text,
             extras=inputs.extras,
         )
         cache_hits_before = self._selector.cache_hits

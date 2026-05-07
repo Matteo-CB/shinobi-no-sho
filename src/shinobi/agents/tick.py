@@ -31,6 +31,7 @@ from shinobi.agents.agent import (
 from shinobi.agents.batch_selector import BatchActionSelector
 from shinobi.agents.cache import LLMCache
 from shinobi.agents.context_builder import (
+    build_deep_motivations_text,
     build_relations_summary_for_npc,
     build_world_summary_for_npc,
 )
@@ -90,6 +91,8 @@ class TickEngine:
         batch_selector: BatchActionSelector | None = None,
         kg_store=None,  # type: KnowledgeGraphStore | None
         social_network=None,  # type: SocialNetwork | None
+        deep_motivations_dataset: dict | None = None,
+        canon_characters: dict | None = None,
     ) -> None:
         self._roster = roster
         self._store = memory_store
@@ -114,8 +117,27 @@ class TickEngine:
         # auto-build world_summary + relations_summary sur chaque tick.
         self._kg_store = kg_store
         self._social_network = social_network
+        # Phase H wiring 9.2 : dataset deep_motivations (canon.deep_motivations)
+        # injecte dans SelectionContext.deep_motivations_text au build pour
+        # que le LLM selector connaisse le profil psycho canonique du PNJ.
+        # None = feature off (default safe pour tests legacy).
+        self._deep_motivations_dataset = deep_motivations_dataset
+        # Phase H 9.2 fallback : canon.characters indexe pour deriver un
+        # profil minimal (clan + village) si aucun profil 9.2 enrichi
+        # n'existe pour le NPC. Couvre les 1310 chars sur 1360 sans 9.2.
+        self._canon_characters = canon_characters or {}
+        # Phase G+E wiring : directives Director propagees a chaque tick.
+        # Set via set_director_nudge_text par CLI entre les ticks (apres
+        # director.tick + build_nudge_text). Default vide -> aucune directive.
+        self._director_nudge_text: str = ""
         # Cache d'instances MajorAgent par npc_id (eviter re-load memory)
         self._agents: dict[str, MajorAgent] = {}
+
+    def set_director_nudge_text(self, text: str) -> None:
+        """Phase G+E wiring : update les directives Director pour le prochain
+        tick. Le caller (CLI) appelle apres director.tick() + build_nudge_text.
+        """
+        self._director_nudge_text = text or ""
 
     @property
     def roster(self) -> AgentRoster:
@@ -262,8 +284,12 @@ class TickEngine:
         if self._kg_store is not None:
             try:
                 push_actions_to_kg_batch(actions, kg_store=self._kg_store)
-            except Exception:
-                pass
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "agents_tick_push_actions_kg_failed",
+                    n_actions=len(actions),
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
 
         # 2. Witness observations : groupe par location
         scene_npcs: dict[str, set[str]] = {}
@@ -283,7 +309,12 @@ class TickEngine:
             obs_per_witness = collect_witness_observations(
                 actions, npcs_in_scene_per_location=scene_npcs,
             )
-        except Exception:
+        except Exception as exc:  # noqa: BLE001
+            logger.warning(
+                "agents_tick_collect_witness_failed",
+                n_actions=len(actions),
+                error=type(exc).__name__, msg=str(exc)[:200],
+            )
             return
 
         # Inject les observations dans les memoires des agents temoins
@@ -297,8 +328,12 @@ class TickEngine:
                 try:
                     agent.memory.add_observation(obs)
                     self._store.insert_observation(obs)
-                except Exception:
-                    pass
+                except Exception as exc:  # noqa: BLE001
+                    logger.warning(
+                        "agents_tick_witness_inject_failed",
+                        witness_id=witness_id,
+                        error=type(exc).__name__, msg=str(exc)[:200],
+                    )
 
     def _build_inputs(
         self, npc_id: str, year: int, tick: int,
@@ -323,7 +358,15 @@ class TickEngine:
                 world_summary = build_world_summary_for_npc(
                     kg_store=self._kg_store, npc_id=npc_id, year=year,
                 )
-            except Exception:
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : avant on swallowait sans log, un bug
+                # de signature dans build_world_summary_for_npc serait reste
+                # invisible jusqu'au QA manuel.
+                logger.warning(
+                    "agents_tick_world_summary_build_failed",
+                    npc_id=npc_id, year=year,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
                 world_summary = ""
         if not relations_summary and self._social_network is not None:
             try:
@@ -332,18 +375,59 @@ class TickEngine:
                     npc_id=npc_id,
                     present_npc_ids=inputs.present_npc_ids,
                 )
-            except Exception:
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "agents_tick_relations_summary_build_failed",
+                    npc_id=npc_id, year=year,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
                 relations_summary = ""
+
+        # Phase H wiring 9.2 : auto-fill deep_motivations_text depuis le
+        # dataset canon (si configure sur TickEngine et si non-fourni).
+        # Phase H 9.2 fallback : si pas de profil 9.2 pour ce NPC, le
+        # build_deep_motivations_text utilise canon_character pour deriver
+        # un profil minimal (clan + village). Cap les 1310 chars sans 9.2.
+        deep_motivations_text = inputs.deep_motivations_text
+        if (
+            not deep_motivations_text
+            and (
+                self._deep_motivations_dataset is not None
+                or self._canon_characters
+            )
+        ):
+            try:
+                deep_motivations_text = build_deep_motivations_text(
+                    deep_motivations_dataset=self._deep_motivations_dataset,
+                    npc_id=npc_id,
+                    canon_character=self._canon_characters.get(npc_id),
+                )
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "agents_tick_deep_motivations_build_failed",
+                    npc_id=npc_id,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
+                deep_motivations_text = ""
 
         new_obs = inputs.new_observations
         if observations_per_npc and npc_id in observations_per_npc:
             new_obs = tuple(observations_per_npc[npc_id])
+
+        # Phase G+E wiring : director_nudge_text vient du TickEngine state
+        # (set par CLI entre 2 ticks). Si caller en a deja fourni un dans
+        # inputs, on respecte (override locale).
+        director_nudge_text = (
+            inputs.director_nudge_text or self._director_nudge_text
+        )
 
         # Re-build inputs avec auto-filled fields
         if (
             new_obs is not inputs.new_observations
             or world_summary != inputs.world_summary
             or relations_summary != inputs.relations_summary
+            or deep_motivations_text != inputs.deep_motivations_text
+            or director_nudge_text != inputs.director_nudge_text
         ):
             inputs = AgentTickInputs(
                 year=inputs.year, tick=inputs.tick,
@@ -352,6 +436,8 @@ class TickEngine:
                 new_observations=new_obs,
                 world_summary=world_summary,
                 relations_summary=relations_summary,
+                deep_motivations_text=deep_motivations_text,
+                director_nudge_text=director_nudge_text,
                 extras=inputs.extras,
             )
         return inputs
@@ -399,6 +485,8 @@ class TickEngine:
                 active_plans_text=active_plans_text,
                 world_summary=inputs.world_summary,
                 relations_summary=inputs.relations_summary,
+                deep_motivations_text=inputs.deep_motivations_text,
+                director_nudge_text=inputs.director_nudge_text,
                 extras=inputs.extras,
             )
             items.append((agent.memory, ctx))
@@ -437,6 +525,7 @@ class TickEngine:
         digest_importance_threshold: float | None = None,
         canon_scheduler_fn=None,
         canon_scheduler_state=None,
+        between_ticks_fn=None,
     ) -> FastForwardDigest:
         """Tick N mois sans joueur. Aggrege un digest des events importants.
 
@@ -552,9 +641,35 @@ class TickEngine:
                             importance=0.85,
                             related_event_id=ev.event_id,
                         ))
-                except Exception:
-                    # Defensive : on n'interrompt pas la simulation si scheduler echoue
-                    pass
+                except Exception as exc:  # noqa: BLE001
+                    # Defensive : on n'interrompt pas la simulation si scheduler
+                    # echoue, mais on log pour exposer un bug signature/import.
+                    logger.warning(
+                        "agents_tick_canon_scheduler_callback_failed",
+                        cur_year=cur_year, cur_tick=cur_tick,
+                        error=type(exc).__name__, msg=str(exc)[:200],
+                    )
+
+            # Phase G+E wiring : hook entre ticks pour permettre au caller
+            # (CLI) de re-tick le Director et refresh le nudge_text. Sans ce
+            # hook, le nudge etait fige au lancement du fast_forward et ne
+            # reflechissait jamais l'evolution des tensions / acts en cours.
+            if between_ticks_fn is not None:
+                try:
+                    import inspect
+                    is_async = inspect.iscoroutinefunction(between_ticks_fn)
+                    if is_async:
+                        await between_ticks_fn(self, cur_year, cur_tick)
+                    else:
+                        between_ticks_fn(self, cur_year, cur_tick)
+                except Exception as exc:  # noqa: BLE001
+                    # Defensive : un hook qui crash ne stoppe pas la sim,
+                    # mais on log pour exposer le bug.
+                    logger.warning(
+                        "agents_tick_between_ticks_fn_failed",
+                        cur_year=cur_year, cur_tick=cur_tick,
+                        error=type(exc).__name__, msg=str(exc)[:200],
+                    )
 
         total_calls = cache_hits + cache_misses
         cache_hit_rate = cache_hits / total_calls if total_calls > 0 else 0.0

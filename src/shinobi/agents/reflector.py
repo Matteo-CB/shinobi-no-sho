@@ -19,6 +19,10 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Callable, Iterable
 
+from shinobi.logging_setup import get_logger
+
+logger = get_logger(__name__)
+
 from shinobi.agents.cache import LLMCache, compute_cache_key
 from shinobi.agents.types import Observation, Reflection
 
@@ -209,8 +213,15 @@ class Reflector:
                                 prompt_chars=len(user_prompt),
                             )
                         return parsed
-            except Exception:
-                pass
+            except Exception as exc:  # noqa: BLE001
+                # Audit anti-silent : un bug de signature LLM client ou un
+                # parsing JSON casse retombait silencieusement sur le fallback
+                # deterministe sans alerte. On log pour visibilite.
+                logger.warning(
+                    "reflector_llm_call_failed",
+                    npc_id=npc_id, year=year,
+                    error=type(exc).__name__, msg=str(exc)[:200],
+                )
 
         # Fallback deterministe
         return deterministic_fallback_reflections(npc_id, obs_list, year)

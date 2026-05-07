@@ -553,7 +553,11 @@ class VoiceProfile(_Frozen):
 
 
 class CanonBundle(_Frozen):
-    """Bundle complet d'un dataset canonique apres chargement."""
+    """Bundle complet d'un dataset canonique apres chargement.
+
+    Phase H additions : 5 datasets enrichis via LLM extraction (data/canon/).
+    Tous optionnels (defaut empty dict) pour back-compat avec saves pre-Phase H.
+    """
 
     world_rules: WorldRules
     natures: dict[str, Nature]
@@ -572,3 +576,14 @@ class CanonBundle(_Frozen):
     locations: dict[str, Location]
     timeline_events: dict[str, TimelineEvent]
     voice_profiles: dict[str, VoiceProfile]
+    # Phase H : 5 datasets enrichis (data/canon/), tous optionnels.
+    # Type tres loose (dict[str, Any]) car certains datasets sont organises
+    # par dict de dicts (timeline_enriched, deep_motivations) et d'autres
+    # avec des listes (political_forces.factions, divergence_points.points,
+    # narrative_patterns.patterns). Les schemas Pydantic strict sont dans
+    # scripts/phase_h/schemas.py - les consumers re-valident.
+    timeline_events_enriched: dict[str, Any] = Field(default_factory=dict)
+    deep_motivations: dict[str, Any] = Field(default_factory=dict)
+    political_forces: dict[str, Any] = Field(default_factory=dict)
+    divergence_points: dict[str, Any] = Field(default_factory=dict)
+    narrative_patterns: dict[str, Any] = Field(default_factory=dict)

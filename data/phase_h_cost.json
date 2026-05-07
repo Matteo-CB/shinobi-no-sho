@@ -1,0 +1,61 @@
+{
+  "entries": [
+    {
+      "timestamp": 1778155877.5719786,
+      "dataset": "9.4_divergence_points",
+      "mode": "sync",
+      "input_tokens": 5104,
+      "output_tokens": 8000,
+      "cost_usd": 0.135312
+    },
+    {
+      "timestamp": 1778156036.1331916,
+      "dataset": "9.4_divergence_points",
+      "mode": "sync",
+      "input_tokens": 5167,
+      "output_tokens": 5390,
+      "cost_usd": 0.09635099999999999
+    },
+    {
+      "timestamp": 1778156925.9802263,
+      "dataset": "9.3_political_forces",
+      "mode": "sync",
+      "input_tokens": 2248,
+      "output_tokens": 11471,
+      "cost_usd": 0.178809
+    },
+    {
+      "timestamp": 1778157189.3399463,
+      "dataset": "9.5_narrative_patterns",
+      "mode": "sync",
+      "input_tokens": 599,
+      "output_tokens": 5212,
+      "cost_usd": 0.07997699999999999
+    },
+    {
+      "timestamp": 1778157572.1742961,
+      "dataset": "9.2_deep_motivations",
+      "mode": "batch",
+      "input_tokens": 36604,
+      "output_tokens": 31097,
+      "cost_usd": 0.2881335
+    },
+    {
+      "timestamp": 1778158030.5508661,
+      "dataset": "9.1_timeline_enriched",
+      "mode": "batch",
+      "input_tokens": 55772,
+      "output_tokens": 66866,
+      "cost_usd": 0.5851529999999999
+    },
+    {
+      "timestamp": 1778158814.1401277,
+      "dataset": "9.1_timeline_extension",
+      "mode": "batch",
+      "input_tokens": 68598,
+      "output_tokens": 126001,
+      "cost_usd": 1.0479045
+    }
+  ],
+  "total_usd": 2.41164
+}

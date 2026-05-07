@@ -93,6 +93,11 @@ def tick_scheduler(
     new_rumors: list[Rumor] = list(world.rumors)
     fired: list[CompletedEvent] = []
     cancelled: list[CancelledEvent] = []
+    # Round 29 : GC les substitute_events dont l'event correspondant transitionne
+    # vers un etat terminal (triggered/cancelled). Apres terminal, plus aucun
+    # lookup ne se fait (on continue ligne 98 si status != scheduled), donc
+    # garder le dict en memoire/save n'apporte rien et grossit chaque tick.
+    terminal_substitute_ids: set[str] = set()
 
     for ev in world.scheduled_events:
         if ev.status != EventStatus.scheduled:
@@ -102,11 +107,52 @@ def tick_scheduler(
             new_scheduled.append(ev)
             continue
         canon_ev = canon.timeline_events.get(ev.event_id)
-        if canon_ev is None:
+        # Phase F : si l'event_id est un substitute (prefixe substitute_*)
+        # on le lookup dans world.substitute_events au lieu de canon.
+        sub_ev_dict = world.substitute_events.get(ev.event_id) if canon_ev is None else None
+        if canon_ev is None and sub_ev_dict is None:
             new_scheduled.append(ev)
             continue
+        # Construit un objet pseudo-canon avec les fields necessaires au trigger.
+        # (preconditions + name_fr utilises par make_rumor_from_event)
+        if canon_ev is not None:
+            preconditions = canon_ev.preconditions
+            name_fr = canon_ev.name_fr or ""
+            cancellation_strategy_type = canon_ev.cancellation_strategy.type
+            event_for_rumor = canon_ev
+        else:
+            from shinobi.canon.models import EventPrecondition as _Pre
+            # Round 52 : reconstruction defensive. Pydantic enforce dict[str, dict]
+            # au niveau WorldState mais l'inner dict est non-structure ;
+            # une save corrompue / import externe pourrait produire un type
+            # imprevu (preconditions=str, name_fr=dict, ...). On guard chaque
+            # field contre crash mid-iteration.
+            raw_preconditions = sub_ev_dict.get("preconditions")
+            if not isinstance(raw_preconditions, list):
+                raw_preconditions = []
+            preconditions = [
+                _Pre(
+                    type=p.get("type", "") if isinstance(p, dict) else "",
+                    parameters=(
+                        p.get("parameters") or {}
+                        if isinstance(p, dict) else {}
+                    ),
+                )
+                for p in raw_preconditions
+                if isinstance(p, dict)
+            ]
+            raw_name = sub_ev_dict.get("name_fr")
+            name_fr = raw_name if isinstance(raw_name, str) else ""
+            raw_strategy = sub_ev_dict.get(
+                "cancellation_strategy_type", "substitute",
+            )
+            cancellation_strategy_type = (
+                raw_strategy if isinstance(raw_strategy, str) else "substitute"
+            )
+            event_for_rumor = canon_ev  # None ; rumor skip si pas canon
         all_ok = all(
-            evaluate_precondition(p, world=world, canon=canon) for p in canon_ev.preconditions
+            evaluate_precondition(p, world=world, canon=canon)
+            for p in preconditions
         )
         if all_ok:
             triggered = ev.model_copy(
@@ -120,18 +166,23 @@ def tick_scheduler(
             )
             new_completed.append(completed)
             fired.append(completed)
-            # Genere une rumeur pour l'evenement declenche (radius selon ampleur)
-            radius = "international" if any(
-                kw in (canon_ev.name_fr or "").lower()
-                for kw in ("guerre", "kage", "kyuubi", "akatsuki", "uchiha", "konoha")
-            ) else "regional"
-            rumor = make_rumor_from_event(
-                canon_ev, born_at_year=world.current_year, radius=radius
-            )
-            new_rumors.append(rumor)
+            # Round 29 : marque le substitute pour GC apres trigger
+            if sub_ev_dict is not None:
+                terminal_substitute_ids.add(ev.event_id)
+            # Phase F : rumeur seulement pour events canon (le SubstituteEvent
+            # a deja sa propre rumor via injector). Sinon make_rumor_from_event
+            # crash sur object None.
+            if canon_ev is not None:
+                radius = "international" if any(
+                    kw in name_fr.lower()
+                    for kw in ("guerre", "kage", "kyuubi", "akatsuki", "uchiha", "konoha")
+                ) else "regional"
+                rumor = make_rumor_from_event(
+                    canon_ev, born_at_year=world.current_year, radius=radius,
+                )
+                new_rumors.append(rumor)
         else:
-            strategy = canon_ev.cancellation_strategy.type
-            if strategy == "delay":
+            if cancellation_strategy_type == "delay":
                 new_scheduled.append(ev.model_copy(update={"year": ev.year + 1}))
                 continue
             cancelled_ev = CancelledEvent(
@@ -142,20 +193,31 @@ def tick_scheduler(
             )
             new_cancelled.append(cancelled_ev)
             cancelled.append(cancelled_ev)
+            # Round 29 : marque le substitute pour GC apres cancel terminal
+            if sub_ev_dict is not None:
+                terminal_substitute_ids.add(ev.event_id)
             new_scheduled.append(
                 ev.model_copy(
                     update={"status": EventStatus.cancelled, "notes": "precondition violated"}
                 )
             )
 
-    new_world = world.model_copy(
-        update={
-            "scheduled_events": new_scheduled,
-            "completed_events": new_completed,
-            "cancelled_events": new_cancelled,
-            "rumors": new_rumors,
+    # Round 29 : GC les entrees substitute_events dont l'event est passe en
+    # terminal (triggered/cancelled). Pas touche si rien a GC pour eviter une
+    # copie de dict inutile chaque tick.
+    update_payload: dict = {
+        "scheduled_events": new_scheduled,
+        "completed_events": new_completed,
+        "cancelled_events": new_cancelled,
+        "rumors": new_rumors,
+    }
+    if terminal_substitute_ids:
+        update_payload["substitute_events"] = {
+            sid: data
+            for sid, data in world.substitute_events.items()
+            if sid not in terminal_substitute_ids
         }
-    )
+    new_world = world.model_copy(update=update_payload)
     return new_world, fired, cancelled
 
 

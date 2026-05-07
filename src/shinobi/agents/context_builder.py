@@ -17,6 +17,7 @@ au moment du tick. Si rien n'est connu, retourne string vide.
 from __future__ import annotations
 
 from collections.abc import Iterable
+from typing import Any
 
 from shinobi.kg.schema import Canonicity
 from shinobi.kg.social import SocialNetwork
@@ -130,15 +131,154 @@ def build_relations_summary_for_npc(
     return "Relations :\n" + "\n".join(lines)
 
 
+def build_fallback_motivations_from_canon(
+    *,
+    canon_character: Any,
+    npc_id: str,
+) -> str:
+    """Phase H 9.2 fallback : derive un profil minimal depuis canon.Character
+    pour les NPCs sans profil 9.2 enrichi.
+
+    Couverture canon partielle : 50 chars sur 1360 ont un profil 9.2 enrichi.
+    Pour les 1310 autres (notamment 38/52 secondaires roster), on derive un
+    profil heuristique a partir du clan + village_of_origin afin que :
+    1. Le LLM selector ait quand-meme un block [MOTIVATIONS PROFONDES]
+       qui le ramene au contexte canon (clan/village allegiances).
+    2. Pas de prompt-vide qui force le LLM a inventer des motivations
+       hors-canon.
+    3. Distinguable du profil 9.2 enrichi via le marqueur "[fallback canon]"
+       afin que la qualite soit visible.
+
+    Defensive : si canon_character None ou sans clan/village utiles,
+    retourne "".
+    """
+    if canon_character is None:
+        return ""
+    clan = getattr(canon_character, "clan", None)
+    village = getattr(canon_character, "village_of_origin", None)
+    if not clan and not village:
+        return ""
+    lines: list[str] = ["[fallback canon - profil non enrichi]"]
+    if clan:
+        lines.append(
+            f"Drive principal : preserver l'honneur et les interets du "
+            f"clan {clan}"
+        )
+    if village:
+        lines.append(
+            f"Drive secondaire : loyaute envers {village} (sauf si clan "
+            f"en conflit avec)"
+        )
+    if clan:
+        lines.append("Ne jamais :")
+        lines.append(f"  - trahir ouvertement le clan {clan}")
+        if village:
+            lines.append(
+                f"  - causer la chute de {village} pour gain personnel"
+            )
+    return "\n".join(lines)
+
+
+def build_deep_motivations_text(
+    *,
+    deep_motivations_dataset: dict[str, Any] | None,
+    npc_id: str,
+    max_red_lines: int = 3,
+    max_secrets: int = 2,
+    canon_character: Any = None,
+) -> str:
+    """Phase H wiring 9.2 : compose un block FR depuis canon.deep_motivations.
+
+    Retourne string vide si :
+    - dataset None ou empty (Phase H 9.2 pas chargee).
+    - npc_id absent du dataset (couvert pour 50 chars top, pas tous).
+
+    Format intentionnellement compact (~400-600 chars) pour ne pas exploser
+    le user prompt. Seuls les champs vraiment actionnables pour le selector
+    sont inclus :
+    - primary motivation (drive principal)
+    - 1-2 red_lines (ce que le perso ne fera JAMAIS)
+    - secret_ambition #1 (ce qu'il vise en cachette)
+    - deepest_fear (ce qu'il evite a tout prix)
+    - self_image (comment il se voit -> influence le ton)
+
+    Les `what_others_dont_know` sont OMIS volontairement : c'est meta-info
+    auteur, pas info dont le PNJ "se sert" pour decider.
+    """
+    if not deep_motivations_dataset or not isinstance(
+        deep_motivations_dataset, dict,
+    ):
+        # Phase H 9.2 fallback : pas de dataset 9.2 charge -> tente le
+        # fallback canon si fourni. Sans canon_character, retourne "".
+        return build_fallback_motivations_from_canon(
+            canon_character=canon_character, npc_id=npc_id,
+        )
+    profile = deep_motivations_dataset.get(npc_id)
+    if not isinstance(profile, dict):
+        # Phase H 9.2 fallback : npc_id absent du dataset (cas frequent :
+        # 1310/1360 chars n'ont pas de profil 9.2). Fallback canon-derive
+        # plutot que prompt vide.
+        return build_fallback_motivations_from_canon(
+            canon_character=canon_character, npc_id=npc_id,
+        )
+
+    lines: list[str] = []
+    motivations = profile.get("deep_motivations")
+    if isinstance(motivations, dict):
+        primary = motivations.get("primary")
+        if isinstance(primary, str) and primary:
+            lines.append(f"Drive principal : {primary}")
+        secondary = motivations.get("secondary")
+        if isinstance(secondary, str) and secondary:
+            lines.append(f"Drive secondaire : {secondary}")
+
+    red_lines = profile.get("moral_red_lines")
+    if isinstance(red_lines, list) and red_lines:
+        lines.append("Ne jamais :")
+        for rl in red_lines[:max_red_lines]:
+            if isinstance(rl, str) and rl:
+                lines.append(f"  - {rl}")
+
+    secrets = profile.get("secret_ambitions")
+    if isinstance(secrets, list) and secrets:
+        for s in secrets[:max_secrets]:
+            if isinstance(s, str) and s:
+                lines.append(f"Ambition cachee : {s}")
+                break  # un seul secret pour rester compact
+
+    fear = profile.get("deepest_fear")
+    if isinstance(fear, str) and fear:
+        # Cap a 200 chars pour eviter prompts bloated.
+        f_short = fear[:200] + ("..." if len(fear) > 200 else "")
+        lines.append(f"Peur profonde : {f_short}")
+
+    self_image = profile.get("self_image")
+    if isinstance(self_image, str) and self_image:
+        si_short = self_image[:200] + ("..." if len(self_image) > 200 else "")
+        lines.append(f"Image de soi : {si_short}")
+
+    if not lines:
+        return ""
+    return "\n".join(lines)
+
+
 def auto_fill_selection_context(
     ctx,
     *,
     kg_store: KnowledgeGraphStore | None = None,
     social_network: SocialNetwork | None = None,
+    deep_motivations_dataset: dict[str, Any] | None = None,
+    canon_character: Any = None,
 ):
-    """Helper : enrichit un SelectionContext en remplissant world_summary et
-    relations_summary depuis le KG + SocialNetwork. Retourne un nouveau
-    SelectionContext frozen.
+    """Helper : enrichit un SelectionContext en remplissant world_summary,
+    relations_summary, et deep_motivations_text depuis les sources fournies.
+
+    Phase H wiring 9.2 : passer `deep_motivations_dataset=canon.deep_motivations`
+    pour activer le block [MOTIVATIONS PROFONDES] dans le user prompt. Si
+    None ou empty, le ctx revient identique sur ce champ (vide).
+
+    Phase H 9.2 fallback : `canon_character` permet de deriver un profil
+    minimal pour les NPCs sans entry 9.2 (~96% des chars canon).
     """
     from shinobi.agents.selector import SelectionContext
 
@@ -148,6 +288,11 @@ def auto_fill_selection_context(
     relations = ctx.relations_summary or build_relations_summary_for_npc(
         social_network=social_network, npc_id=ctx.npc_id,
         present_npc_ids=ctx.present_npc_ids,
+    )
+    motivations = ctx.deep_motivations_text or build_deep_motivations_text(
+        deep_motivations_dataset=deep_motivations_dataset,
+        npc_id=ctx.npc_id,
+        canon_character=canon_character,
     )
     return SelectionContext(
         npc_id=ctx.npc_id,
@@ -159,12 +304,127 @@ def auto_fill_selection_context(
         active_plans_text=ctx.active_plans_text,
         world_summary=world,
         relations_summary=relations,
+        deep_motivations_text=motivations,
+        # Phase G+E wiring : director_nudge_text n'est pas auto-fill par ce
+        # helper (le caller doit l'avoir set en amont depuis Director.tick).
+        director_nudge_text=ctx.director_nudge_text,
         extras=ctx.extras,
     )
 
 
+def build_faction_descriptions_block(
+    *,
+    political_forces: dict[str, Any] | None,
+    location_id: str | None,
+    present_npc_ids: list[str] | tuple[str, ...] = (),
+    max_chars: int = 200,
+    max_factions: int = 3,
+) -> str:
+    """Phase H 9.3 wiring narrator : compose un block de descriptions des
+    factions politiques pertinentes a la scene.
+
+    Une faction est pertinente si :
+    1. Son id == location_id (joueur dans le village).
+    2. Au moins 1 NPC present est dans ses members.
+
+    Returns "" si aucune faction pertinente, dataset vide, ou tous skip.
+    Format : `<faction_name> : <description_fr[:max_chars]>` cap N factions.
+    """
+    if not political_forces or not isinstance(political_forces, dict):
+        return ""
+    factions = political_forces.get("factions")
+    if not isinstance(factions, list):
+        return ""
+    present_set = set(present_npc_ids or ())
+
+    relevant: list[dict] = []
+    for fac in factions:
+        if not isinstance(fac, dict):
+            continue
+        fid = fac.get("id")
+        if not isinstance(fid, str) or not fid:
+            continue
+        members = set(fac.get("members") or [])
+        # Pertinent si location matche OU 1 member present
+        if fid == location_id or (members & present_set):
+            relevant.append(fac)
+            if len(relevant) >= max_factions:
+                break
+
+    if not relevant:
+        return ""
+    lines: list[str] = []
+    for fac in relevant:
+        name = fac.get("name_fr") or fac.get("id")
+        desc = fac.get("description_fr")
+        if not isinstance(desc, str) or not desc:
+            continue
+        short = desc[:max_chars] + ("..." if len(desc) > max_chars else "")
+        lines.append(f"  - {name} : {short}")
+    return "\n".join(lines)
+
+
+def build_present_npcs_motivations_block(
+    *,
+    deep_motivations_dataset: dict[str, Any] | None,
+    present_npc_ids: list[str] | tuple[str, ...],
+    max_npcs: int = 5,
+    max_chars_per_npc: int = 150,
+) -> str:
+    """Phase H 9.2 wiring narrator : compose un block compact des drives
+    psycho des NPCs presents dans la scene.
+
+    Pour chaque NPC dans present_npc_ids qui a un profil 9.2 enrichi :
+      <npc_id> : drive=<primary>, ne_jamais=<red_lines[:1]>
+
+    Cap N NPCs max (LLM prompt budget). Skip silencieusement les NPCs
+    sans profil 9.2 (~96% du canon, mais top 14/15 et important secondaires
+    sont profiles).
+
+    Returns "" si dataset absent ou aucun NPC profile dans la scene.
+    """
+    if not deep_motivations_dataset or not isinstance(
+        deep_motivations_dataset, dict,
+    ):
+        return ""
+    if not present_npc_ids:
+        return ""
+    lines: list[str] = []
+    for npc_id in list(present_npc_ids)[:max_npcs]:
+        profile = deep_motivations_dataset.get(npc_id)
+        if not isinstance(profile, dict):
+            continue
+        drive = ""
+        motiv = profile.get("deep_motivations")
+        if isinstance(motiv, dict):
+            primary = motiv.get("primary")
+            if isinstance(primary, str) and primary:
+                drive = primary
+        red_line = ""
+        red_lines = profile.get("moral_red_lines")
+        if isinstance(red_lines, list) and red_lines:
+            for rl in red_lines:
+                if isinstance(rl, str) and rl:
+                    red_line = rl
+                    break
+        if not drive and not red_line:
+            continue
+        line = f"  - {npc_id} :"
+        if drive:
+            line += f" drive={drive[:60]}"
+        if red_line:
+            line += f", ne_jamais={red_line[:60]}"
+        if len(line) > max_chars_per_npc:
+            line = line[:max_chars_per_npc - 3] + "..."
+        lines.append(line)
+    return "\n".join(lines)
+
+
 __all__ = [
     "auto_fill_selection_context",
+    "build_deep_motivations_text",
+    "build_faction_descriptions_block",
+    "build_present_npcs_motivations_block",
     "build_relations_summary_for_npc",
     "build_world_summary_for_npc",
 ]

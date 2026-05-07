@@ -1,0 +1,277 @@
+{
+  "divergence_points": [
+    {
+      "event_id": "kaguya_eats_chakra_fruit",
+      "year": -1000,
+      "name_fr": "Kaguya consomme le fruit du Shinju",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "Sans ce geste, le chakra n'existe pas pour l'humanite. Toute la civilisation ninja est annulee.",
+      "if_altered_consequences": [
+        "L'humanite ne developpe jamais le chakra ni le ninjutsu.",
+        "Hagoromo et Hamura ne naissent pas, les Six Voies n'existent pas.",
+        "Indra et Asura n'existent pas, le cycle de reincarnation Madara/Hashirama et Naruto/Sasuke est impossible.",
+        "L'Akatsuki, les villages caches, et la Quatrieme Guerre n'ont aucune raison d'etre."
+      ]
+    },
+    {
+      "event_id": "hagoromo_indra_asura_birth",
+      "year": -990,
+      "name_fr": "Naissance d'Indra et Asura, fils du Sage des Six Voies",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "Le conflit entre Indra et Asura genere le cycle de reinarnation qui structure toute la saga. Sans eux, pas de Madara ni de Naruto.",
+      "if_altered_consequences": [
+        "Le conflit ideologique force/amour ne se transmet pas aux generations suivantes.",
+        "Madara Uchiha et Hashirama Senju ne sont pas des reincarnations, leur destine est radicalement differente.",
+        "Sasuke et Naruto ne portent pas l'heritage des Six Voies, la Quatrieme Guerre se termine autrement.",
+        "La resurrection de Kaguya via Black Zetsu devient improbable sans le plan d'Hagoromo retourne."
+      ]
+    },
+    {
+      "event_id": "hashirama_madara_meet",
+      "year": -65,
+      "name_fr": "Rencontre de Hashirama et Madara enfants",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "Cette amitie est le fondement de Konoha et de toute la politique ninja. Sans elle, les villages caches n'emergent peut-etre jamais.",
+      "if_altered_consequences": [
+        "Konoha n'est jamais fonde, le systeme des villages caches n'emerge pas.",
+        "Madara reste un chef de guerre Uchiha sans rival Senju, la periode Sengoku se prolonge indefiniment.",
+        "Le Kyuubi n'est jamais bride par le Mokuton, Mito Uzumaki ne devient pas le premier Jinchuuriki.",
+        "Toute la lignee Hokage (Tobirama, Hiruzen, Minato, Tsunade, Kakashi, Naruto) n'existe pas."
+      ]
+    },
+    {
+      "event_id": "valley_of_the_end_battle",
+      "year": -50,
+      "name_fr": "Bataille de la Vallee de la Fin",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "La presomption de mort de Madara permet a Zetsu de le recuperer et de lancer le plan Tsuki no Me. Sans ce resultat, pas de Tobi.",
+      "if_altered_consequences": [
+        "Si Madara meurt reellement, Zetsu ne peut pas le recuperer et le plan Tsuki no Me n'est jamais transmis.",
+        "Si Madara gagne, Konoha est detruit et la lignee des Hokage interrompue.",
+        "Mito Uzumaki ne devient pas le Jinchuuriki du Kyuubi, Kushina non plus.",
+        "Obito ne dispose d'aucun mentor et ne devient pas Tobi, supprimant la cause de l'attaque du Kyuubi."
+      ]
+    },
+    {
+      "event_id": "yahiko_death",
+      "year": -15,
+      "name_fr": "Mort de Yahiko",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La mort de Yahiko transforme Nagato en Pain et fait basculer l'Akatsuki de mouvement pacifiste en organisation criminelle.",
+      "if_altered_consequences": [
+        "L'Akatsuki reste un mouvement de paix, ne chasse jamais les Jinchuuriki.",
+        "Nagato n'active jamais le Rinnegan en mode destructeur, Konoha n'est pas attaque.",
+        "Jiraiya ne meurt pas en infiltrant Amegakure.",
+        "Le plan de collecte des bijuu et l'edo Tensei de Kabuto n'ont pas de vehicule principal."
+      ]
+    },
+    {
+      "event_id": "obito_apparent_death",
+      "year": -10,
+      "name_fr": "Mort apparente d'Obito au pont de Kannabi",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "La recuperation secrete d'Obito par Madara est le pivot absolu du plan Tsuki no Me. Obito devient le moteur de presque tous les evenements majeurs.",
+      "if_altered_consequences": [
+        "Si Obito survit normalement, il ne tombe pas sous l'influence de Madara et reste un ninja de Konoha.",
+        "L'attaque du Kyuubi sur Konoha n'a pas lieu, Minato et Kushina survivent.",
+        "La Quatrieme Guerre Ninja n'est jamais declenchee, faute de meneur masque.",
+        "Kakashi et Naruto grandissent avec leurs parents, bouleversant entierement leurs personnalites."
+      ]
+    },
+    {
+      "event_id": "rin_death",
+      "year": -9,
+      "name_fr": "Mort de Rin",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La mort de Rin par la main de Kakashi brise definitivement Obito et le convainc que le monde ne merite pas d'exister.",
+      "if_altered_consequences": [
+        "Obito ne sombre pas dans la folie, le plan Tsuki no Me perd son executeur principal.",
+        "L'attaque du Kyuubi sur Konoha n'a pas de declencheur, Minato et Kushina survivent.",
+        "Kakashi n'est pas ronge par la culpabilite, son developpement personnel est radicalement different.",
+        "Nagato ne recoit jamais l'impulsion finale pour la destruction de Konoha."
+      ]
+    },
+    {
+      "event_id": "kyuubi_attack_konoha",
+      "year": 1,
+      "name_fr": "Attaque du Kyuubi sur Konoha",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "La mort de Minato et Kushina et le scellement du Kyuubi en Naruto determinent toute son existence et l'arc narratif central de la serie.",
+      "if_altered_consequences": [
+        "Minato et Kushina survivent, Naruto grandit avec ses parents et n'est pas l'enfant paria solitaire.",
+        "Le Kyuubi n'est pas scelle en Naruto, celui-ci n'a pas acces au chakra de Kurama.",
+        "Le mode Jinchuuriki et le Mode Kyuubi de Naruto n'existent pas, la Quatrieme Guerre a une issue differente.",
+        "Les Uchiha ne sont pas accuses, le massacre du clan n'a pas lieu ou est retarde."
+      ]
+    },
+    {
+      "event_id": "uchiha_clan_massacre",
+      "year": 5,
+      "name_fr": "Massacre du clan Uchiha",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "Le massacre est le trauma fondateur de Sasuke et le moteur de toute sa trajectoire. Sans lui, pas de vengeance, pas de defection.",
+      "if_altered_consequences": [
+        "Sasuke ne developpe pas l'obsession de la vengeance, son Sharingan et son Mangekyou evoluent differemment.",
+        "Itachi ne rejoint pas l'Akatsuki comme espion, l'organisation perd une source de renseignements cruciale.",
+        "La defection de Sasuke chez Orochimaru n'a pas lieu, l'equipe 7 reste intacte.",
+        "Sasuke ne tue jamais Danzo, qui conserve son influence et potentiellement prend le titre de Hokage."
+      ]
+    },
+    {
+      "event_id": "shisui_death",
+      "year": 4,
+      "name_fr": "Mort de Shisui Uchiha",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "Le vol du Kotoamatsukami par Danzo prive les Uchiha de leur seul recours pacifique et accelere la decision d'Itachi pour le massacre.",
+      "if_altered_consequences": [
+        "Le Kotoamatsukami aurait pu etre utilise sur les anciens pour empecher le coup d'etat sans massacre.",
+        "Danzo ne dispose pas du Sharingan de Shisui, son bras est moins puissant.",
+        "Itachi, prive de la confiance de Shisui, aurait pu chercher une autre issue.",
+        "L'arc de Danzo pendant le Sommet des Cinq Kage est profondement modifie."
+      ]
+    },
+    {
+      "event_id": "orochimaru_marks_sasuke",
+      "year": 12,
+      "name_fr": "Orochimaru marque Sasuke du Sceau Maudit",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "Le Sceau Maudit est l'outil principal qui fait basculer Sasuke vers la puissance interdit et precipite sa defection vers Orochimaru.",
+      "if_altered_consequences": [
+        "Sans le sceau, Sasuke ne ressent pas l'appel de la puissance d'Orochimaru et la defection est beaucoup moins probable.",
+        "L'equipe 7 reste groupee, le trio Naruto-Sasuke-Sakura affronte l'invasion d'Orochimaru ensemble.",
+        "Orochimaru perd son plan a long terme pour obtenir le corps de Sasuke.",
+        "La dynamique de la serie post-examen Chunin est entierement restructuree."
+      ]
+    },
+    {
+      "event_id": "konoha_invasion_oto_suna",
+      "year": 12,
+      "name_fr": "Invasion de Konoha par Oto et Suna",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La mort d'Hiruzen et la desorganisation de Konoha ouvrent la voie a la montee de Tsunade et modifient la politique du village durablement.",
+      "if_altered_consequences": [
+        "Si Hiruzen survit, il reste Hokage et Tsunade n'est pas recrutee, changeant la gestion de la crise Akatsuki.",
+        "Si l'invasion echoue totalement, Orochimaru perd son organisation et Sasuke n'a plus de refuge pour sa defection.",
+        "La mort d'Hiruzen prive Konoha de son plus sage conseiller au moment de la montee de l'Akatsuki.",
+        "Danzo gagne en influence politique sans Hiruzen comme contrepoids."
+      ]
+    },
+    {
+      "event_id": "sasuke_defection",
+      "year": 13,
+      "name_fr": "Defection de Sasuke de Konoha",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La defection redefinit les arcs de Naruto, Sakura et Sasuke pour toute la partie Shippuden et motive l'entrainement intensif de Naruto.",
+      "if_altered_consequences": [
+        "Naruto ne part pas en entrainement de 2.5 ans avec Jiraiya, sa progression est differente.",
+        "Sasuke n'absorbe pas Orochimaru et ne forme pas l'equipe Taka.",
+        "Itachi survit potentiellement, faute d'un Sasuke entralne et assez fort pour le vaincre.",
+        "Le Sommet des Cinq Kage ne se deroule pas de la meme facon, Danzo n'est pas tue."
+      ]
+    },
+    {
+      "event_id": "jiraiya_death",
+      "year": 15,
+      "name_fr": "Mort de Jiraiya face a Pain",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La mort de Jiraiya prive Naruto de son mentor et declenche la quete de la paix qui aboutit a la reconciliation avec Nagato.",
+      "if_altered_consequences": [
+        "Jiraiya survivant pourrait dechiffrer le code seul et affronter Pain avec Naruto, changeant l'issue du combat.",
+        "Naruto n'est pas pousse par le deuil a entrer en mode bijuu berserk lors de l'attaque de Konoha.",
+        "La conversation de Naruto avec Nagato aurait une dynamique differente avec Jiraiya present.",
+        "Naruto perd un guide essentiel pour naviguer la Quatrieme Guerre Ninja."
+      ]
+    },
+    {
+      "event_id": "pain_attack_konoha",
+      "year": 15,
+      "name_fr": "Invasion de Pain sur Konoha",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "L'attaque de Pain et la reconciliation qui s'ensuit transforment Nagato d'ennemi en allie posthume et donnent a Naruto sa vision de la paix.",
+      "if_altered_consequences": [
+        "Si Nagato n'est pas convaincu, il ne ressuscite pas les victimes et l'Akatsuki reste une menace directe.",
+        "Si Naruto echoue, le Kyuubi est extrait et il meurt, la guerre est perdue d'avance.",
+        "La destruction massive de Konoha retarde la mobilisation pour la Quatrieme Guerre.",
+        "Le message pacifiste de Jiraiya transmis via Naruto ne parvient jamais a Nagato."
+      ]
+    },
+    {
+      "event_id": "itachi_death",
+      "year": 15,
+      "name_fr": "Mort d'Itachi face a Sasuke",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La mort d'Itachi et la revelation de la verite par Tobi sont le pivot qui oriente Sasuke contre Konoha plutot que vers lui.",
+      "if_altered_consequences": [
+        "Si Itachi revele lui-meme la verite avant de mourir, Sasuke n'est pas manipule par Tobi.",
+        "Sasuke ne rejoint pas l'Akatsuki et ne tente pas d'attaquer le Sommet des Cinq Kage.",
+        "Danzo survit potentiellement, conservant son pouvoir et ses Sharingan.",
+        "Sasuke pourrait rejoindre l'alliance plutot que de la combattre pendant la Quatrieme Guerre."
+      ]
+    },
+    {
+      "event_id": "fourth_great_ninja_war_start",
+      "year": 16,
+      "name_fr": "Debut de la Quatrieme Grande Guerre Ninja",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La guerre force tous les fils narratifs a converger. C'est le creuset ou toutes les revelations et reconciliations s'accomplissent.",
+      "if_altered_consequences": [
+        "Sans la guerre, Madara ne ressuscite jamais et le plan Tsuki no Me echoue dans l'ombre.",
+        "Naruto et Sasuke ne recevrent jamais le chakra des Six Voies d'Hagoromo.",
+        "La redemption d'Obito et la resurrection de Kaguya n'ont pas de cadre pour se produire.",
+        "L'alliance entre les cinq villages ne se consolide pas, les tensions d'apres-guerre perdurent."
+      ]
+    },
+    {
+      "event_id": "obito_redemption_death",
+      "year": 16,
+      "name_fr": "Redemption et mort d'Obito",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "La redemption d'Obito et le transfert du Rinne Sharingan permettent a Kakashi d'obtenir les deux Mangekyou et de contribuer a la defaite de Kaguya.",
+      "if_altered_consequences": [
+        "Sans la redemption, Obito reste hostile et la resurrection de Madara n'est pas contrecarree de l'interieur.",
+        "Kakashi ne recoit pas temporairement les deux Mangekyou, il ne peut pas utiliser le Susanoo parfait contre Kaguya.",
+        "La chaine causale menant a la victoire finale sur Kaguya est brisee.",
+        "L'heritage moral de Minato et Rin reste entache, affectant la conclusion thematique de la serie."
+      ]
+    },
+    {
+      "event_id": "kaguya_resurrection_and_defeat",
+      "year": 17,
+      "name_fr": "Resurrection et defaite de Kaguya",
+      "cascade_severity": "fundamental",
+      "why_pivotal_fr": "La defaite de Kaguya est la resolution de la menace millenaire et conditionne la survie de toute la civilisation ninja.",
+      "if_altered_consequences": [
+        "Si Kaguya n'est pas scelle, le Mugen Tsukuyomi absorbe toute l'humanite dans une illusion eternelle.",
+        "Naruto et Sasuke ne recoivent pas la marque des Six Voies, leur combat final est impossible.",
+        "La periode de paix qui fonde l'ere Boruto ne peut pas commencer.",
+        "Toute l'existence post-guerre, incluant la naissance de Boruto et Sarada, est annulee."
+      ]
+    },
+    {
+      "event_id": "naruto_sasuke_final_battle",
+      "year": 17,
+      "name_fr": "Bataille finale Naruto contre Sasuke",
+      "cascade_severity": "very_high",
+      "why_pivotal_fr": "Ce combat decide si Sasuke instaure une dictature ou si le monde entre dans une ere de paix. La reconciliation fonde toute l'ere Boruto.",
+      "if_altered_consequences": [
+        "Si Sasuke gagne, il detruit l'ancien systeme par la force et instaure un regime autoritaire.",
+        "Si Naruto meurt, la lignee des Jinchuuriki Konoha s'eteint et le Septieme Hokage n'existe pas.",
+        "Sans reconciliation, Boruto nait dans un monde sans paix durable ni figure paternelle Sasuke.",
+        "Le projet de Kara et la menace Otsutsuki ulterieure sont affrontes sans l'alliance Naruto-Sasuke."
+      ]
+    },
+    {
+      "event_id": "kurama_death",
+      "year": 36,
+      "name_fr": "Mort de Kurama",
+      "cascade_severity": "high",
+      "why_pivotal_fr": "La mort de Kurama prive Naruto de sa source de puissance principale et le fragilise face aux menaces Otsutsuki suivantes.",
+      "if_altered_consequences": [
+        "Naruto conserve ses pouvoirs de base Kyuubi et reste une force dissuasive majeure dans l'ere Boruto.",
+        "L'equilibre de puissance contre Isshiki est different, le Mode Baryon n'est pas necessaire.",
+        "La vulnerabilite de Naruto dans les arcs tardifs de Boruto est reduite, changeant la dynamique narrative.",
+        "La mort de Kurama retire un personnage central qui avait lui-meme un arc de redemption complet."
+      ]
+    }
+  ]
+}

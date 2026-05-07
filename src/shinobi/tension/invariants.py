@@ -698,6 +698,166 @@ def border_dispute(
     return out
 
 
+def political_alliance_brittle_via_dead_leader(
+    store: KnowledgeGraphStore, year: int, ctx: dict,
+) -> list[Tension]:
+    """21. Phase H wiring 9.3 : alliance_breakdown depuis political_forces.
+
+    Lit `ctx['political_forces']` (canon.political_forces, dataset 9.3) et
+    detecte les paires de factions (A allies B) ou A.leader_id est mort
+    avant `year` (dans canon.characters). Sans leader vivant, l'alliance
+    est tres fragile -> tension `alliance_breakdown`.
+
+    Defensive :
+    - Skip si political_forces non fourni dans ctx (back-compat).
+    - Skip si char_deaths non fourni (canon.characters indisponible).
+    - Skip une faction si son `active_year_end` < year (dissoute).
+    - Skip une faction si son `active_year_start` > year (pas encore active).
+    - Cap output a 5 paires par tick pour ne pas inonder le top-N.
+
+    Cette regle complete `wartime_alliance_unstable` (qui lit le KG via
+    facts allied_with) en ajoutant un signal canon-level qui ne necessite
+    pas que le KG ait des facts allied_with explicites.
+    """
+    political_forces = ctx.get("political_forces")
+    if not isinstance(political_forces, dict):
+        return []
+    factions = political_forces.get("factions")
+    if not isinstance(factions, list):
+        return []
+    char_deaths = ctx.get("char_deaths")
+    if not isinstance(char_deaths, dict):
+        return []
+
+    by_id: dict[str, dict] = {}
+    for fac in factions:
+        if isinstance(fac, dict) and isinstance(fac.get("id"), str):
+            by_id[fac["id"]] = fac
+
+    def _is_active(fac: dict) -> bool:
+        start = fac.get("active_year_start")
+        end = fac.get("active_year_end")
+        if isinstance(start, int) and start > year:
+            return False
+        if isinstance(end, int) and end < year:
+            return False
+        return True
+
+    out: list[Tension] = []
+    for fac in factions:
+        if not isinstance(fac, dict) or not _is_active(fac):
+            continue
+        leader_id = fac.get("leader_id")
+        if not isinstance(leader_id, str) or not leader_id:
+            continue
+        leader_death = char_deaths.get(leader_id)
+        if not isinstance(leader_death, int) or leader_death >= year:
+            continue
+        # Leader mort avant year -> faction sans tete
+        allies = fac.get("allies")
+        if not isinstance(allies, list) or not allies:
+            continue
+        for ally_id in allies:
+            if not isinstance(ally_id, str):
+                continue
+            ally_fac = by_id.get(ally_id)
+            if ally_fac is None or not _is_active(ally_fac):
+                continue
+            out.append(Tension.from_severity(
+                type=TensionType.alliance_breakdown,
+                description=(
+                    f"L'alliance entre {fac['id']} et {ally_id} est fragile : "
+                    f"{fac['id']} a perdu son leader {leader_id} en {leader_death}, "
+                    f"sans successeur designe."
+                ),
+                severity=TensionSeverity.medium,
+                involved_entities=[fac["id"], ally_id, leader_id],
+                source_rule="political_alliance_brittle_via_dead_leader",
+                detected_at_year=year,
+            ))
+            if len(out) >= 5:
+                return out
+    return out
+
+
+def political_faction_isolated_with_active_enemies(
+    store: KnowledgeGraphStore, year: int, ctx: dict,
+) -> list[Tension]:
+    """22. Phase H wiring 9.3 (suite) : faction avec leader mort ET au moins
+    2 ennemis actifs simultanement -> tension `factional_revenge`.
+
+    `political_alliance_brittle_via_dead_leader` regarde le cote allies. Cette
+    regle complementaire regarde le cote enemies : si une faction a perdu sa
+    tete et qu'elle compte plusieurs ennemis encore actifs, elle est exposee
+    a une attaque coordonnee.
+
+    Skip systematique si political_forces ou char_deaths absents (back-compat).
+    Cap output a 5 factions par tick.
+    """
+    political_forces = ctx.get("political_forces")
+    if not isinstance(political_forces, dict):
+        return []
+    factions = political_forces.get("factions")
+    if not isinstance(factions, list):
+        return []
+    char_deaths = ctx.get("char_deaths")
+    if not isinstance(char_deaths, dict):
+        return []
+
+    by_id: dict[str, dict] = {}
+    for fac in factions:
+        if isinstance(fac, dict) and isinstance(fac.get("id"), str):
+            by_id[fac["id"]] = fac
+
+    def _is_active(fac: dict) -> bool:
+        start = fac.get("active_year_start")
+        end = fac.get("active_year_end")
+        if isinstance(start, int) and start > year:
+            return False
+        if isinstance(end, int) and end < year:
+            return False
+        return True
+
+    out: list[Tension] = []
+    for fac in factions:
+        if not isinstance(fac, dict) or not _is_active(fac):
+            continue
+        leader_id = fac.get("leader_id")
+        if not isinstance(leader_id, str) or not leader_id:
+            continue
+        leader_death = char_deaths.get(leader_id)
+        if not isinstance(leader_death, int) or leader_death >= year:
+            continue
+        enemies = fac.get("enemies")
+        if not isinstance(enemies, list):
+            continue
+        active_enemies: list[str] = []
+        for eid in enemies:
+            if not isinstance(eid, str):
+                continue
+            ef = by_id.get(eid)
+            if ef is not None and _is_active(ef):
+                active_enemies.append(eid)
+        if len(active_enemies) < 2:
+            continue
+        out.append(Tension.from_severity(
+            type=TensionType.factional_revenge,
+            description=(
+                f"La faction {fac['id']} a perdu son leader {leader_id} en "
+                f"{leader_death} et fait face a {len(active_enemies)} ennemis "
+                f"encore actifs ({', '.join(active_enemies[:3])}). "
+                f"Vulnerabilite a une attaque coordonnee."
+            ),
+            severity=TensionSeverity.high,
+            involved_entities=[fac["id"], leader_id, *active_enemies[:3]],
+            source_rule="political_faction_isolated_with_active_enemies",
+            detected_at_year=year,
+        ))
+        if len(out) >= 5:
+            return out
+    return out
+
+
 def chekhovs_gun_unfired(
     store: KnowledgeGraphStore, year: int, ctx: dict,
 ) -> list[Tension]:
@@ -756,6 +916,20 @@ INVARIANTS: tuple[TensionInvariant, ...] = (
     TensionInvariant("lone_survivor_obsessed", "Un survivant solitaire focalise sa vengeance.", lone_survivor_obsessed),
     TensionInvariant("border_dispute", "Un conflit frontalier non resolu mene a la guerre.", border_dispute),
     TensionInvariant("chekhovs_gun_unfired", "Un element introduit doit etre paye narrativement.", chekhovs_gun_unfired),
+    # Phase H wiring 9.3 : 21eme invariant, opt-in (ne fire que si
+    # ctx['political_forces'] et ctx['char_deaths'] sont injectes).
+    TensionInvariant(
+        "political_alliance_brittle_via_dead_leader",
+        "Une alliance dont l'un des leaders est mort sans successeur tient mal.",
+        political_alliance_brittle_via_dead_leader,
+    ),
+    # Phase H wiring 9.3 (suite) : 22eme invariant, lit canon.political_forces
+    # cote enemies (vs alliance_brittle qui regarde allies).
+    TensionInvariant(
+        "political_faction_isolated_with_active_enemies",
+        "Une faction sans leader avec >=2 ennemis actifs est exposee.",
+        political_faction_isolated_with_active_enemies,
+    ),
 )
 
 
@@ -775,6 +949,8 @@ __all__ = [
     "kekkei_genkai_carrier_isolated",
     "lone_survivor_obsessed",
     "obsessive_npc_idle",
+    "political_alliance_brittle_via_dead_leader",
+    "political_faction_isolated_with_active_enemies",
     "power_vacuum_global",
     "prophecy_unfulfilled",
     "student_surpasses_master",
