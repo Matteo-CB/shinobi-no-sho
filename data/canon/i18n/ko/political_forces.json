@@ -1,0 +1,1089 @@
+{
+  "factions": [
+    {
+      "id": "konohagakure",
+      "name_ko": "나뭇잎 숨겨진 마을",
+      "type": "village",
+      "leader_id": "tsunade",
+      "members": [
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "haruno_sakura",
+        "hatake_kakashi",
+        "sarutobi_hiruzen",
+        "namikaze_minato",
+        "senju_hashirama",
+        "senju_tobirama",
+        "uchiha_itachi",
+        "lee_rock",
+        "hyuga_neji",
+        "tenten",
+        "nara_shikamaru",
+        "akimichi_choji",
+        "yamanaka_ino",
+        "inuzuka_kiba",
+        "aburame_shino",
+        "hyuga_hinata",
+        "yuhi_kurenai",
+        "sarutobi_asuma",
+        "mitarashi_anko",
+        "umino_iruka",
+        "shimura_danzo"
+      ],
+      "allies": [
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "mount_myoboku",
+        "shikkotsu_forest",
+        "senju",
+        "uchiha",
+        "sarutobi",
+        "hyuga",
+        "nara",
+        "akimichi",
+        "yamanaka",
+        "aburame",
+        "inuzuka",
+        "hatake",
+        "uzumaki"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otogakure",
+        "root",
+        "uchiha_madara",
+        "otsutsuki"
+      ],
+      "active_year_start": -65,
+      "active_year_end": null,
+      "description_ko": "하시라마 센주와 마다라 우치하가 설립한 최초의 숨겨진 마을인 코노하는 불의 나라의 중심 정치 및 군사 강국이다. 수많은 명문 일족의 본거지이며, 역사상 가장 영향력 있는 여러 닌자들을 배출했다."
+    },
+    {
+      "id": "sunagakure",
+      "name_ko": "모래 숨겨진 마을",
+      "type": "village",
+      "leader_id": "gaara",
+      "members": [
+        "gaara",
+        "temari",
+        "kankuro",
+        "chiyo",
+        "ebizo",
+        "baki",
+        "sasori"
+      ],
+      "allies": [
+        "konohagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "바람의 나라의 숨겨진 마을로, kazekage에 의해 통치된다. 선가쿠레는 역사적 라이벌 관계에도 불구하고 코노하의 전략적 파트너이다. 전직 jinchuuriki인 가아라는 이곳에서 평화로운 영향력을 행사한다."
+    },
+    {
+      "id": "kumogakure",
+      "name_ko": "구름 숨겨진 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "darui",
+        "c",
+        "nii_yugito",
+        "omoi",
+        "karui",
+        "samui"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "hyuga"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "번개의 나라의 숨겨진 마을로, 군사력과 번개 기술로 유명하다. 쿠모가쿠레는 히나타 휴우가 납치 시도를 포함하여 코노하와 긴장 관계를 유지했으나, 나중에 대동맹의 동맹국이 되었다."
+    },
+    {
+      "id": "iwagakure",
+      "name_ko": "돌 숨겨진 마을",
+      "type": "village",
+      "leader_id": "onoki",
+      "members": [
+        "onoki",
+        "kurotsuchi",
+        "akatsuchi",
+        "deidara",
+        "han",
+        "roshi",
+        "gari"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "konohagakure",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "흙의 나라의 숨겨진 마을로, tsuchikage에 의해 지도된다. 이와가쿠레는 코노하에 대한 오랜 적대감으로 표시되었다. 오노키 지도 아래 마다라와 오비토에 맞서기 위해 대닌자 동맹에 참여했다."
+    },
+    {
+      "id": "kirigakure",
+      "name_ko": "안개 숨겨진 마을",
+      "type": "village",
+      "leader_id": "terumi_mei",
+      "members": [
+        "terumi_mei",
+        "ao",
+        "chojuro",
+        "momochi_zabuza",
+        "haku",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hoshigaki_kisame",
+        "pakura",
+        "suikazan_fuguki"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "seven_ninja_swordsmen_of_the_mist",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "물의 나라의 숨겨진 마을로, 이전에는 오비토 우치하의 영향 아래 있던 mizukage에 의해 통치되었으며, 잔인한 관행으로 인해 피의 마을로 알려져 있었다. 메이 테루미 지도 아래 키리가쿠레는 깊은 개혁을 시작했다."
+    },
+    {
+      "id": "amegakure",
+      "name_ko": "빗 숨겨진 마을",
+      "type": "village",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko"
+      ],
+      "allies": [
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "hanzo_salamander"
+      ],
+      "active_year_start": -20,
+      "active_year_end": 3,
+      "description_ko": "끊임없이 전쟁 중인 작은 마을인 아메가쿠레는 나가토가 페인의 정체로 신정국가로 변모했다. 야히코는 원래의 아카츠키를 이곳에 설립했으나 한조에 의해 살해되었고, 이는 나가토를 허무주의로 빠뜨렸다."
+    },
+    {
+      "id": "otogakure",
+      "name_ko": "음성 숨겨진 마을",
+      "type": "village",
+      "leader_id": "orochimaru",
+      "members": [
+        "orochimaru",
+        "yakushi_kabuto",
+        "kinuta_dosu",
+        "abumi_zaku",
+        "tsuchi_kin",
+        "kimimaro",
+        "tayuya",
+        "jirobo",
+        "kidomaru"
+      ],
+      "allies": [
+        "fuma_land_of_sound",
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure"
+      ],
+      "active_year_start": -3,
+      "active_year_end": 3,
+      "description_ko": "오로치마루가 닌자에 대한 금지된 실험을 위한 은폐막으로 설립한 마을이다. 단순한 군사 전선인 오토가쿠레는 중닌 시험 중 코노하를 공격하고 실험 대상을 모집하는 데 사용되었다."
+    },
+    {
+      "id": "takigakure",
+      "name_ko": "폭포 숨겨진 마을",
+      "type": "village",
+      "leader_id": "shibuki",
+      "members": [
+        "shibuki",
+        "kakuzu"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "영웅 액체를 보관하는 고립된 숨겨진 마을로, 일시적으로 비범한 힘을 부여할 수 있다. 그 jinchuuriki인 푸는 아카츠키에 의해 포획되었다. 카쿠주는 결함 전에 이곳 출신이었다."
+    },
+    {
+      "id": "yugakure",
+      "name_ko": "수증기 숨겨진 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "hidan"
+      ],
+      "allies": [],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "수증기의 나라의 평화주의 마을로, 군사적 길을 포기했다. 이곳 출신인 히단은 자신의 가치를 부인하고 아카츠키에 합류하여 마을의 평화로운 방향성에 모순되었다."
+    },
+    {
+      "id": "hoshigakure",
+      "name_ko": "별 숨겨진 마을",
+      "type": "village",
+      "leader_id": "akahoshi",
+      "members": [
+        "akahoshi",
+        "sumaru"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "천국의 나라의 숨겨진 마을로, 운석에서 추출한 독특한 별 차크라 형태를 연습한다. 그 강렬한 훈련은 장기적으로 사용자에게 치명적인 손상을 야기하며, 전통과 생존 사이의 내부 긴장을 드러낸다."
+    },
+    {
+      "id": "uzushiogakure",
+      "name_ko": "소용돌이 숨겨진 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [],
+      "active_year_start": -100,
+      "active_year_end": -50,
+      "description_ko": "봉인과 장수를 전문으로 하는 우즈마키 일족의 고향으로, fuinjutsu 능력을 두려워한 마을 연합에 의해 파괴되었다. 그 생존자들은 흩어졌으며, 여럿이 코노하에 합류했다."
+    },
+    {
+      "id": "yukigakure",
+      "name_ko": "눈 숨겨진 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "kazahana_koyuki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "눈의 나라의 마을로, 도토 카자하나가 형에 대한 살인 쿠데타 이후 통치했다. 코노하 닌자들에게 패배한 후, 국가는 고유키 지도 아래 정치적 변화를 시작했다."
+    },
+    {
+      "id": "shimogakure",
+      "name_ko": "서리 숨겨진 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "fuen",
+        "fuka"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "코노하에 대한 일련의 공격을 주도한 배반자 마을이다. 그 닌자들은 고급 원소 기술을 사용했으며 고립된 지역의 전투에서 제거되었다."
+    },
+    {
+      "id": "takumi_village",
+      "name_ko": "장인 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "닌자 무기 제조를 전문으로 하는 마을로, 무기 독점을 두려워한 다섯 대국에 의해 파괴되었다. 그 생존자들은 특히 코노하에 복수를 시도했다."
+    },
+    {
+      "id": "akatsuki",
+      "name_ko": "아카츠키",
+      "type": "organization",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko",
+        "uchiha_obito",
+        "uchiha_madara",
+        "uchiha_itachi",
+        "hoshigaki_kisame",
+        "deidara",
+        "sasori",
+        "hidan",
+        "kakuzu",
+        "zetsu",
+        "konan",
+        "orochimaru"
+      ],
+      "allies": [
+        "amegakure",
+        "otogakure"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "takigakure",
+        "five_kage"
+      ],
+      "active_year_start": -15,
+      "active_year_end": 3,
+      "description_ko": "원래 야히코가 평화 운동으로 설립한 범죄 조직으로, 나중에 오비토와 마다라에 의해 전용되었다. 아카츠키는 달의 눈 계획을 실현하기 위해 체계적으로 꼬리 짐승들을 포획했다."
+    },
+    {
+      "id": "root",
+      "name_ko": "근원",
+      "type": "organization",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo",
+        "sai",
+        "aburame_torune",
+        "yamanaka_fu",
+        "yamato"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "akatsuki",
+        "nagato"
+      ],
+      "active_year_start": -30,
+      "active_year_end": 3,
+      "description_ko": "다조 시무라가 창설한 코노하 정부의 그림자에서 활동하는 Anbu의 비밀 부서이다. 근원은 감정 억제를 통해 그 구성원들을 조건화했으며 마을의 보안 명목으로 부인할 수 없는 작전을 수행했다."
+    },
+    {
+      "id": "anbu",
+      "name_ko": "Anbu",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "hatake_kakashi",
+        "yamato",
+        "uchiha_itachi",
+        "sai"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -40,
+      "active_year_end": null,
+      "description_ko": "hokage의 직접 명령 아래 기밀 임무를 수행하는 정예 닌자 군단이다. Anbu는 정규군이 감당할 수 없는 암살 및 반첩보 활동을 포함한 작업을 수행한다."
+    },
+    {
+      "id": "seven_ninja_swordsmen_of_the_mist",
+      "name_ko": "안개의 일곱 검사",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "momochi_zabuza",
+        "hoshigaki_kisame",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "ringo_ameyuri",
+        "munashi_jinpachi",
+        "kuriarare_kushimaru",
+        "suikazan_fuguki",
+        "chojuro"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -30,
+      "active_year_end": null,
+      "description_ko": "안개 마을의 전설적인 검을 소유한 일곱 닌자를 모은 키리가쿠레의 군사 정예이다. 그들의 정치적, 상징적 영향력은 그룹이 해산된 시기에도 상당했다."
+    },
+    {
+      "id": "konoha_military_police_force",
+      "name_ko": "코노하 군사 경찰",
+      "type": "organization",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_fugaku",
+        "uchiha_itachi",
+        "uchiha_obito"
+      ],
+      "allies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -60,
+      "active_year_end": -1,
+      "description_ko": "역사적으로 우치하 일족이 통제하는 코노하의 내부 경찰 부대로, 마을 내에서 주요 제도적 권력을 부여했다. 이타치가 저지른 우치하 일족 학살 이후 해산되었다."
+    },
+    {
+      "id": "five_kage",
+      "name_ko": "다섯 카게 평의회",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "tsunade",
+        "gaara",
+        "onoki",
+        "terumi_mei",
+        "hatake_kakashi",
+        "kurotsuchi",
+        "darui",
+        "chojuro"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "uchiha_madara"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "다섯 대 숨겨진 마을의 지도자들을 모은 최고 정치 기구이다. 다섯 카게 평의회는 마다라 우치하와 오비토에 맞서기 위해 제4차 대닌자 전쟁 중 대닌자 동맹을 조율했다."
+    },
+    {
+      "id": "kara",
+      "name_ko": "카라",
+      "type": "organization",
+      "leader_id": "otsutsuki_isshiki",
+      "members": [
+        "otsutsuki_isshiki",
+        "jigen",
+        "delta",
+        "kashin_koji",
+        "boro",
+        "ao",
+        "code",
+        "victor",
+        "deepa"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_ko": "겉으로는 지겐이 지도하지만 실제로는 이쇼키 오츠츠키의 그릇인 비밀 조직으로, 신성한 나무를 재배하여 그 열매를 수확하기 위해 활동한다. 카라는 지구의 차크라 자원을 착취하기 위한 전 세계 작전을 주도했다."
+    },
+    {
+      "id": "otsutsuki",
+      "name_ko": "오츠츠키 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "otsutsuki_kaguya",
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra",
+        "otsutsuki_isshiki",
+        "otsutsuki_momoshiki",
+        "otsutsuki_kinshiki",
+        "otsutsuki_urashiki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "five_kage",
+        "boruto_uzumaki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ko": "신성한 나무를 심고 수확하기 위해 세계를 순회하는 차크라 재배자들의 천상 혈통이다. 오츠츠키는 카구야를 통해 모든 지구 닌자 차크라의 기원이며 최고의 외계 위협을 나타낸다."
+    },
+    {
+      "id": "uchiha",
+      "name_ko": "우치하 일족",
+      "type": "clan",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_madara",
+        "uchiha_izuna",
+        "uchiha_fugaku",
+        "uchiha_mikoto",
+        "uchiha_itachi",
+        "uchiha_sasuke",
+        "uchiha_obito",
+        "uchiha_shisui",
+        "uchiha_sarada"
+      ],
+      "allies": [
+        "konohagakure",
+        "konoha_military_police_force"
+      ],
+      "enemies": [
+        "senju",
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -100,
+      "active_year_end": null,
+      "description_ko": "Sharingan의 소유자로 센주와 함께 코노하를 설립한 창립 일족으로, 다조의 명령에 따라 이타치에 의해 거의 완전히 학살되었다. 코노하 정부와의 긴장된 관계는 학살 전 쿠데타 계획을 조장했다."
+    },
+    {
+      "id": "senju",
+      "name_ko": "센주 일족",
+      "type": "clan",
+      "leader_id": "senju_hashirama",
+      "members": [
+        "senju_hashirama",
+        "senju_tobirama",
+        "tsunade",
+        "nawaki"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [
+        "uchiha",
+        "uchiha_madara"
+      ],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_ko": "코노하의 창립 일족으로, 생명력 기술과 하시라마의 mokuton으로 유명하다. 센주는 우치하와의 창립 동맹을 확립하여 숨겨진 마을 체계를 창조했다."
+    },
+    {
+      "id": "uzumaki",
+      "name_ko": "우즈마키 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "uzumaki_naruto",
+        "uzumaki_kushina",
+        "uzumaki_mito",
+        "nagato",
+        "karin",
+        "uzumaki_boruto",
+        "uzumaki_himawari"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzushiogakure",
+        "senju"
+      ],
+      "enemies": [],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_ko": "우즈시오가쿠레 출신의 일족으로, 센주와 혈연으로 연결되어 있으며 봉인과 비범한 생명력의 대가이다. 그들의 마을 파괴 후, 그 구성원들은 여러 국가에 흩어졌으며, 일부는 jinchuuriki가 되었다."
+    },
+    {
+      "id": "hyuga",
+      "name_ko": "휴우가 일족",
+      "type": "clan",
+      "leader_id": "hyuga_hiashi",
+      "members": [
+        "hyuga_hiashi",
+        "hyuga_hizashi",
+        "hyuga_neji",
+        "hyuga_hinata",
+        "hyuga_hanabi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "kumogakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "우치하 일족의 몰락 이후 코노하에서 가장 영향력 있는 일족으로, Byakugan과 주켄의 보유자이다. 내부 구조는 본가와 분가로 나뉘어 있으며, 분가는 저주의 인장으로 억압받고 있다."
+    },
+    {
+      "id": "nara",
+      "name_ko": "나라 일족",
+      "type": "clan",
+      "leader_id": "nara_shikaku",
+      "members": [
+        "nara_shikaku",
+        "nara_yoshino",
+        "nara_shikamaru"
+      ],
+      "allies": [
+        "konohagakure",
+        "akimichi",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "그림자 조종 기술과 신성한 사슴으로 유명한 코노하 일족이다. 나라 일족은 아키미치 일족, 야마나카 일족과 함께 세대를 거쳐 전승되는 삼각 동맹을 형성한다."
+    },
+    {
+      "id": "akimichi",
+      "name_ko": "아키미치 일족",
+      "type": "clan",
+      "leader_id": "akimichi_choza",
+      "members": [
+        "akimichi_choza",
+        "akimichi_choji",
+        "akimichi_chocho"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "신체 변형 및 물리적 확장 기술을 전문으로 하는 코노하 일족이다. 나라 일족과 야마나카 일족의 역사적 파트너로서, 아키미치 일족은 삼각 편성에서 타격력의 역할을 담당한다."
+    },
+    {
+      "id": "yamanaka",
+      "name_ko": "야마나카 일족",
+      "type": "clan",
+      "leader_id": "yamanaka_inoichi",
+      "members": [
+        "yamanaka_inoichi",
+        "yamanaka_ino",
+        "yamanaka_inojin",
+        "yamanaka_fu"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "akimichi"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "정신 전이 및 텔레파시 기술을 숙달한 코노하 일족으로, 정보 수집과 전술 통신에서 중요한 역할을 한다. 이노이치 야마나카는 제4차 닌자 대전 중 통신 부대장으로 활동했다."
+    },
+    {
+      "id": "sarutobi",
+      "name_ko": "사루토비 일족",
+      "type": "clan",
+      "leader_id": "sarutobi_hiruzen",
+      "members": [
+        "sarutobi_hiruzen",
+        "sarutobi_biwako",
+        "sarutobi_asuma",
+        "sarutobi_konohamaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "orochimaru"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "마을에 제3대 호카게를 배출한 코노하 일족으로, 존경받는 가부장적 인물이다. 히루젠 사루토비는 교사이자 정치가로서의 이상을 구현했으며, 아스마는 정예 jonin으로 활동했다."
+    },
+    {
+      "id": "shimura",
+      "name_ko": "시무라 일족",
+      "type": "clan",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo"
+      ],
+      "allies": [
+        "root"
+      ],
+      "enemies": [
+        "konohagakure",
+        "uchiha",
+        "nagato"
+      ],
+      "active_year_start": -60,
+      "active_year_end": 3,
+      "description_ko": "단조 시무라가 가장 영향력 있는 대표자였던 소수 일족으로, 코노하 정부의 그림자에서 활동했다. 단조는 비밀리에 Sharingan을 축적하고 수십 년간 마을의 정치 사건을 조종했다."
+    },
+    {
+      "id": "aburame",
+      "name_ko": "아부라메 일족",
+      "type": "clan",
+      "leader_id": "aburame_shibi",
+      "members": [
+        "aburame_shibi",
+        "aburame_shino",
+        "aburame_torune"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "출생 시 기카이추 곤충을 숙주로 하는 코노하 일족으로, 이 생물들을 상대의 chakra를 소비하는 살아있는 무기로 사용한다. 신중하고 분석적인 일족으로, 마을 내 정보 수집 역할을 담당한다."
+    },
+    {
+      "id": "inuzuka",
+      "name_ko": "이누즈카 일족",
+      "type": "clan",
+      "leader_id": "inuzuka_tsume",
+      "members": [
+        "inuzuka_tsume",
+        "inuzuka_kiba",
+        "inuzuka_hana"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "각 구성원이 전문화된 닌자 개와 전투 듀오를 이루는 코노하 일족이다. 속도와 예민한 개의 감각에 기반한 전투 스타일로 인해 정찰과 추적에 탁월하다."
+    },
+    {
+      "id": "hatake",
+      "name_ko": "하타케 일족",
+      "type": "clan",
+      "leader_id": "hatake_kakashi",
+      "members": [
+        "hatake_sakumo",
+        "hatake_kakashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_ko": "백아 사쿠모와 그의 아들 카카시로 유명한 코노하의 제한된 혈통으로, 카카시는 제6대 호카게가 되었다. 사쿠모의 자살로 인한 일시적 불명예에도 불구하고, 카카시는 가문의 명예를 회복하고 주요 멘토 인물이 되었다."
+    },
+    {
+      "id": "kaguya_clan",
+      "name_ko": "카구야 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [
+        "kirigakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": 2,
+      "description_ko": "자신의 뼈를 조종할 수 있는 Shikotsumyaku 기술을 보유한 광신적 전사 일족이다. 키리가쿠레에 대한 무분별한 공격으로 거의 전멸했으며, 유일한 주목할 만한 생존자는 키미마로로 오로치마루에게 구출되었다."
+    },
+    {
+      "id": "hozuki",
+      "name_ko": "호즈키 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hozuki_gengetsu"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "신체 액화 기술인 Suika no Jutsu를 숙달한 키리가쿠레 일족이다. 만게츠는 Seven Ninja Swordsmen 중 한 명이었으며, 겐게츠 호즈키는 제2대 mizukage로 활동하여 일족에 상당한 정치적 영향력을 부여했다."
+    },
+    {
+      "id": "funato",
+      "name_ko": "후나토 일족",
+      "type": "clan",
+      "leader_id": "funato_araumi",
+      "members": [
+        "funato_araumi",
+        "funato_isari",
+        "funato_tenma",
+        "funato_seiren",
+        "funato_ikada"
+      ],
+      "allies": [],
+      "enemies": [
+        "kirigakure",
+        "konohagakure"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_ko": "물의 나라 해역에서 활동하며 키리가쿠레에 복수를 추구하는 닌자 해적 일족이다. 아라우미 후나토는 지역 해양 안정성에 대한 직접적인 위협으로 간주되는 상당한 힘을 축적했다."
+    },
+    {
+      "id": "chinoike",
+      "name_ko": "치노이케 일족",
+      "type": "clan",
+      "leader_id": "oyashiro_en",
+      "members": [
+        "oyashiro_en",
+        "chino"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ko": "혈액을 조종할 수 있는 빨간 눈인 Ketsuryugan을 보유한 저주받은 일족이다. 우치하가 조종한 정치적 조작 이후 지옥의 계곡으로 추방되어 코노하에 대한 깊은 원한을 품고 있다."
+    },
+    {
+      "id": "fuma",
+      "name_ko": "후마 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "karashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "fuma_land_of_sound"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "두려워하던 용병 일족으로, 코노하와 동맹한 분파와 음의 나라에서 오로치마루를 따르는 반란 분파로 나뉘어 있다. 이러한 내부 분열은 전통과 닌자 기회주의 사이의 긴장을 반영한다."
+    },
+    {
+      "id": "mount_myoboku",
+      "name_ko": "묘목산",
+      "type": "village",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "gamabunta",
+        "gamakichi",
+        "gamatatsu",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ko": "소환 가능한 개구리들의 신성한 장소이자 선인 모드의 senjutsu 기술의 요람이다. 센주와 우즈마키의 소환 계약을 통해 코노하와 오랜 혈연 관계를 유지하며, 지라이야와 나루토를 포함한 여러 전설적 shinobi를 배출했다."
+    },
+    {
+      "id": "shikkotsu_forest",
+      "name_ko": "식골림",
+      "type": "village",
+      "leader_id": "katsuyu",
+      "members": [
+        "katsuyu",
+        "tsunade",
+        "haruno_sakura"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ko": "거대한 소환 가능 민달팽이들, 특히 카츠유가 거주하는 신화적 숲이다. 전설적 츠나데의 제자들과 닌자 의료진과 연결되어 있으며, 식골림은 닌자 세계에서 독특한 치유 및 지원 능력을 나타낸다."
+    },
+    {
+      "id": "ryuchi_cave",
+      "name_ko": "류치 동굴",
+      "type": "village",
+      "leader_id": "snake_sage_white",
+      "members": [
+        "snake_sage_white",
+        "orochimaru",
+        "yakushi_kabuto",
+        "manda"
+      ],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ko": "소환 가능한 뱀들의 신성한 거처이자 뱀의 senjutsu 기술의 자리이다. 오로치마루는 여기서 계약을 체결했고 야쿠시 카부토를 선인 모드로 훈련했으며, 류치 동굴은 묘목산에 대한 어두운 대척점을 제공한다."
+    },
+    {
+      "id": "nadeshiko_village",
+      "name_ko": "나데시코 마을",
+      "type": "village",
+      "leader_id": "shizuka",
+      "members": [
+        "shizuka",
+        "tokiwa"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "여성 전용 마을로, 전통에 따라 미래의 지도자는 자신이 사랑하는 남자를 도전하여 이겨야 한다. 이 관습은 정치적 고립에 기여하지만 그 전사들에게 정예 전투원의 명성을 부여한다."
+    },
+    {
+      "id": "tsuchigumo_village",
+      "name_ko": "토치구모 마을",
+      "type": "village",
+      "leader_id": "hotaru",
+      "members": [
+        "hotaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "토치구모 일족이 전승한 금지된 폭발 기술의 수호자 마을이다. 코노하와의 동맹으로 보호받고 있으며, 이 기술로 인해 여러 범죄 조직의 탐욕의 대상이 되었다."
+    },
+    {
+      "id": "mount_myoboku_sages",
+      "name_ko": "묘목산의 선인들",
+      "type": "organization",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure",
+        "mount_myoboku"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_ko": "묘목산에 거주하는 선인 모드의 대사들의 질서로, 이를 배울 수 있는 드문 선택자들에게 senjutsu 기술을 전승한다. 그들의 영적이고 예언적 영향력은 닌자 역사의 여러 중요한 결정을 방향지었다."
+    },
+    {
+      "id": "hagoromo_clan",
+      "name_ko": "하고로모 일족",
+      "type": "clan",
+      "leader_id": "otsutsuki_hagoromo",
+      "members": [
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra"
+      ],
+      "allies": [
+        "senju",
+        "uzumaki"
+      ],
+      "enemies": [
+        "kaguya_otsutsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ko": "육도선인을 통해 카구야 오츠츠키에서 직접 내려온 모든 닌자 chakra의 창시 혈통이다. 인드라와 아슈라 사이의 갈등은 우치하와 센주 일족에 의해 영속되는 조상의 라이벌 관계를 시작했다."
+    },
+    {
+      "id": "jomae_village",
+      "name_ko": "조마에 마을",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "mui"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "대탑 감옥 창설 및 관리를 전문으로 하는 마을로, 닌자 세계에서 가장 안전한 수감 시설이다. 이 감옥에 대한 권한은 주요 국가들 사이의 미묘한 정치적 위치를 부여한다."
+    },
+    {
+      "id": "kusagakure",
+      "name_ko": "쿠사가쿠레",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "karin"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "코노하의 chunin 시험에 참가한 소규모 숨겨진 마을이다. 카린 우즈마키는 여기서 어린 시절의 일부를 보냈다가 오로치마루에 합류했으며, 이는 그 정치적 경계의 투과성을 보여준다."
+    },
+    {
+      "id": "yotsuki",
+      "name_ko": "요츠키 일족",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "kumogakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ko": "구름 마을의 최고 군사 및 정치 직책을 차지하는 영향력 있는 쿠모가쿠레 일족이다. 제4대 raikage 에이와 그의 양형 킬러 비가 가장 상징적인 대표자이다."
+    }
+  ]
+}

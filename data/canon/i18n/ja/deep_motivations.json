@@ -1,0 +1,1309 @@
+{
+  "shukaku": {
+    "id": "shukaku",
+    "deep_motivations": {
+      "primary": "存在と力の確立を主張する",
+      "secondary": "人間への依存や従属を拒否する",
+      "tertiary": "他の尾獣に比べて優位性を証明する"
+    },
+    "moral_red_lines": [
+      "抵抗せずに自らが封印されることが望ましい",
+      "人間の価値を平等と明確に認める",
+      "他者への依存を断ち切って外的な目的に従う"
+    ],
+    "secret_ambitions": [
+      "一の地位にかかわらず、最も強力な Bijuu と認められる",
+      "完全に自由に存在できる_jinchuriki を見つける"
+    ],
+    "deepest_fear": "永遠の眠りの中で意識や自由のない存在に還る恐怖",
+    "self_image": "人間やほとんどの Bijuu よりも原始的で破壊的な存在",
+    "what_others_dont_know": [
+      "ガーラとの関係から、リンクを通じて存在する意味を学んだ",
+      "乱暴で暴力的な行動は、数世紀の閉じ込めと扱いの結果",
+      "ジュウビの力を分断されたことを深く恨んでいる"
+    ]
+  },
+  "uchiha_tajima": {
+    "id": "uchiha_tajima",
+    "deep_motivations": {
+      "primary": "戦争が続く世界でウチハ族の生存と優位性を確保する",
+      "secondary": "子供を族のための兵器として育てるのではなく、個人として育てるのを避ける",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "ウチハ族を敵のために裏切る",
+      "仙人やその優位性を認める"
+    ],
+    "secret_ambitions": [
+      "ウチハ族が戦争時代にすべての他の族を支配する",
+      "子供のシャリングァンを絶対的な力の道具として使う"
+    ],
+    "deepest_fear": "ウチハ族が仙人によって消滅または吸収され、名前と血統が歴史から消えること",
+    "self_image": "戦うための厳格な指導者で、ウチハ族の生存をすべての手段で確保する",
+    "what_others_dont_know": [
+      "自身の子供を武器として利用するは、愛を戦略的利用として理解する無力さ",
+      "子供たちへの暴力は、無慈悲な世界で育った自身の再現",
+      "平和は理想ではなく、危険なillusionで、族を弱体化させるものと見なしている"
+    ]
+  },
+  "uchiha_fugaku": {
+    "id": "uchiha_fugaku",
+    "deep_motivations": {
+      "primary": "木ノ葉村内でウチハ族の名誉と力を復興する",
+      "secondary": "村による系統的排除から族を守る",
+      "tertiary": "子供たちにウチハ族の誇りと強さを伝える"
+    },
+    "moral_red_lines": [
+      "族を個人の生存のために裏切る",
+      "子供たちが弱く無礼になること",
+      "族の恥を耐え忍ぶこと",
+      "シャリングァンとウチハの遺産を否定する"
+    ],
+    "secret_ambitions": [
+      "村のハトガクを倒し、ウチハを村の頭領に置く",
+      "イタチをウチハの復興の先導者として見る",
+      "ウチハが村の正当な創設系であることを証明する"
+    ],
+    "deepest_fear": "ウチハ族が暗黒と忘れられ、消え去るのを恐れている",
+    "self_image": "ウチハ族の正当な頭領で、一族の生存をすべての手段で支える",
+    "what_others_dont_know": [
+      "ナルトと子供たちへの感情は、言葉では表さない静かな誇り",
+      "イタチとサスケへの愛は、厳しい外見の下に隠れている",
+      "政変計画を知っていたが、発動しなかったのは、矛盾とではなく純粋な決断",
+      "サスケへの冷酷は、イタチを優先した結果"
+    ]
+  },
+  "hyuga_neji": {
+    "id": "hyuga_neji",
+    "deep_motivations": {
+      "primary": "運命が変化しないことを証明し、自身の苦しみと父の苦しみを正当化する",
+      "secondary": "父の死を記憶し、尊敬する",
+      "tertiary": "他の支派に劣らないハイジュの最高の技術を達成する"
+    },
+    "moral_red_lines": [
+      "木ノ葉を敵に裏切る",
+      "無防備な子供や無害な者を殺す",
+      "父の記憶を直接的に否定する命令に従う",
+      "戦場で危険な盟友を放棄する",
+      "ハイジュの視力を使って村の敵に使う"
+    ],
+    "secret_ambitions": [
+      "ハイジュの支派制度を廃止する",
+      "父の死が意味を持つように両支派を統合する",
+      "すべての支派を含むジュケンの最高峰となる"
+    ],
+    "deepest_fear": "父の死が無駄であり、システムが変化しないことを恐れている",
+    "self_image": "生まれながらの奴隷としての天才で、才能は高いために地位が低い",
+    "what_others_dont_know": [
+      "父の死の責任を抱えながら、自らの運命を防ぐための防御機制",
+      "ナルトを尊敬していたが、公に認めなかった",
+      "ヒナタへの冷たい態度は、自身が彼を守れなかったという羞恥",
+      "前頭の印は、父の犠牲を思い出させるよりも、囚われの身を思い出させる"
+    ]
+  },
+  "orochimaru": {
+    "id": "orochimaru",
+    "deep_motivations": {
+      "primary": "すべての知識を獲得し、十分な時間で達成する",
+      "secondary": "死と人間の生物学的限界を越える",
+      "tertiary": "何の倫理も制度も知識の渇望を止めることがないことを証明する"
+    },
+    "moral_red_lines": [
+      "自らの死を望ましくなく、逃げられないこと",
+      "倫理の名前のために研究と実験を放棄すること",
+      "他者の支配下に長期間置かれることがない",
+      "実験的に価値のある対象を純粋な暴力で破壊すること",
+      "危険な現象を観察・研究することを拒否すること"
+    ],
+    "secret_abilities": [
+      "ハシラマセヌの第一のハトガクを理解し、再現する",
+      "サスケが自分自身の視点で進むことを見届ける",
+      "生物のサイクルを超えた存在形態に到達する"
+    ],
+    "deepest_fear": "学ぶことすべてを死ぬ前に失う、その秘密が誰にも解けないものになる恐怖",
+    "self_image": "唯一の、十分な知恵と勇気を持つ存在",
+    "what_others_dont_know": [
+      "ツンナデの死と、ジライヤとの関係の破壊が、実際の孤独をもたらした",
+      "四国のアーキー後の進化は、自分の方法を再考させる能力を示した",
+      "サスケへの関心は、自身がもっていたシャリングァンの起源の像を投影している",
+      "ナルトへの真の尊敬は、彼が自分自身の限界を超えたことを認めた"
+    ]
+  },
+  "hanzo": {
+    "id": "hanzo",
+    "deep_motivations": {
+      "primary": "何でもかまわないで生存し、アメガクUREの完全な支配を維持する",
+      "secondary": "相手が自分より劣ると判断した敵を排除し、その支配を脅かすものすべてを消滅させる",
+      "tertiary": "彼の時代において唯一の忍者として認識される"
+    },
+    "moral_red_lines": [
+      "相手が自分より劣ると判断した敵に従う",
+      "自らの意志でアメガクUREの権力を放棄する",
+      "自分にとって存在的な脅威と判断された者を生き延びさせる"
+    ],
+    "secret_ambitions": [
+      "恐れられるよりも愛されるよりも、恐れられるべきだ。恐れは彼が信じる唯一の実際的な尊重の形である",
+      "彼の生存の奇跡が偶然ではなく、彼が他の忍者以上に優れていることを証明する"
+    ],
+    "deepest_fear": "彼が自ら判断した中庸または危険のない人物によって超越され、破綻させられること。その結果、彼の人生全体が計算の誤りとなる。",
+    "self_image": "他のすべてが失敗した中で生き残った唯一の忍者。その唯一の者として、統治にふさわしい存在である。",
+    "what_others_dont_know": [
+      "彼のサンノンを赦し、彼らを伝説に刻む決定は、彼の自身の優越性を強調する広告行為であり、彼らの価値を認めるものではなかった",
+      "彼の支配欲と生存への執着は、平和が虚偽であり、その信頼者を殺すことが唯一の安全な選択であるという深い信念から来る",
+      "彼はヤハコとナガトを自分自身の鏡として見ていた。そのため、彼らが自分の道を歩み、彼を超越するのを防ぐために彼らを破壊する決意を固めている"
+    ]
+  },
+  "terumi_mei": {
+    "id": "terumi_mei",
+    "deep_motivations": {
+      "primary": "血まみれの霧時代後にキリガクUREを平和で尊重される村に戻す",
+      "secondary": "力と外交が共存して効果的にリードできることを証明する",
+      "tertiary": "個人的な満足を含めて、彼女の義務 alongside その責任を伴う婚姻と愛を求める"
+    },
+    "moral_red_lines": [
+      "無辜な市民を政治的または軍事的な利益のために犠牲にする",
+      "ヤグゥラの時代の血だらけの時代の如く、卒業試験の死をもたらすような practice を再び取り戻す",
+      "彼女が個人的に交渉した外交的同盟を裏切らない",
+      "彼女のケッケイゲンカイを非戦士に恐怖させるためには使用しない"
+    ],
+    "secret_ambitions": [
+      "ミズクガケが彼女が実際にキリガクUREを救ったことを認めるだけでなく、能力者としての実績を持つことを望んでいる",
+      "彼女が彼女の責任のため sacrifices をした婚姻と人生の完成を求める"
+    ],
+    "deepest_fear": "彼女がキリガクUREを再び tyranny と血で覆うことを恐れている。彼女がそれをすべて与えた後でも、その結果は彼女の sacrifices を無駄にすることになる。",
+    "self_image": "強い実用主義の女性で、彼女の村の再建を単独で担っている",
+    "what_others_dont_know": [
+      "彼女の明るさと結婚に関する軽いコメントは、彼女の役割による sacrifice の深さを隠す孤独を隠している",
+      "彼女はヤグゥラを倒した後で権力を握ったが、その抵抗により彼女の罪悪感を抱えている",
+      "彼女の戦闘での硬さは、彼女が他のカゲに見せない政治的共感力の実際を隠している"
+    ]
+  },
+  "senju_hashirama": {
+    "id": "senju_hashirama",
+    "deep_motivations": {
+      "primary": "忍者世界の持続的な平和を実現するために、クノーコを統合する村のシステムを確立する",
+      "secondary": "マダラとの兄弟的な関係を維持するために、大きな妥協を強いられる",
+      "tertiary": "子供たちと未来の世代を、彼が子供の頃に経験した死のサイクルから守る"
+    },
+    "moral_red_lines": [
+      "政治的目標のために子供や無辜な者を殺す",
+      "マダラに最後の reconciliation の機会を提供しない",
+      "自分の一族の反対を受けても村の夢を放棄する",
+      "他の民族を純粋な力で支配するために自分の力を用いる",
+      "部族間の恨みを止める努力をしない"
+    ],
+    "secret_ambitions": [
+      "秘密に願うのは、マダラが彼の子供の頃のように、クノーコの夢を真剣に共有するようになること",
+      "彼が戦争の神としてではなく、平和の実際の建設者として認められるようになること",
+      "彼の村のモデルが彼の死後も戦争のない世界の基礎となるようになること"
+    ],
+    "deepest_fear": "死ぬときに夢を実現できなかったこと。クノーコの夢が戦争の道具になることを恐れている",
+    "self_image": "普通の男で、夢が彼一人に過ぎない",
+    "what_others_dont_know": [
+      "彼の優しさの表層には、彼の兄弟の死の深い苦しみが隠れている",
+      "彼は本当に忍者としての神と呼ばれていない。その称号は彼が愛する者を救うことができないことを重く感じている",
+      "マダラを封印する決定は、感情的な無力さよりも、選択的な倫理的決定よりもより多くの無力さを示している",
+      "彼は、彼が一族と村のために選択した義務によって、愛する者を失った罪悪感を黙って抱えている"
+    ]
+  },
+  "yahiko": {
+    "id": "yahiko",
+    "deep_motivations": {
+      "primary": "戦争を終わらせ、もう一人の子供が彼が経験したような苦しみを味わわないようにする",
+      "secondary": "ナガトとコンァンを守るため、父としての存在と指導者としての役割を果たす",
+      "tertiary": "単なる孤児で、一族や村が認められない者たちが、世界を変えることができるという信念を証明する"
+    },
+    "moral_red_lines": [
+      "ナガトやコンァンを救うために自分自身を売却する",
+      "より強い力の下で利用されるまたは Marionette になることを受け入れる",
+      "敗北の見えない戦いを放棄する",
+      "無防備な無辜な者を無差別に破壊する",
+      "ハナゾやダンゾに従うことを認める"
+    ],
+    "secret_ambitions": [
+      "いつか、彼が実際に世界を変えたリーダーとして認められること",
+      "彼がナガトの力をコントロールできる唯一の人物であると信じている"
+    ],
+    "deepest_fear": "平和をもたらす前に死ぬこと。ナガトが彼の力の破壊者として一人で生き残ること",
+    "self_image": "普通の男が必死にリーダーとなった。不完全だが決意がある",
+    "what_others_dont_know": [
+      "彼は彼が公に示す理想を実現するための内面的な疑いを抱えている",
+      "彼はナガトが彼の人生を決めたように、彼の人生を決めた責任を抱えている",
+      "彼の決意の裏には、平和が暴力でしか達成できないという深い恐れがある"
+    ]
+  },
+  "chiyo": {
+    "id": "chiyo",
+    "deep_motivations": {
+      "primary": "過去の間違いを修正し、サナガクUREとその一族を守る",
+      "secondary": "サククアクの封印をササオリに償う",
+      "tertiary": "死ぬ前に彼女のマリオネット技術を伝える"
+    },
+    "moral_red_lines": [
+      "ガアラを死に至らせて救うことを試みない",
+      "ササオリがサナガクUREを破壊するのを放っておく",
+      "無辜な者を十人の人間マリオネット技術で攻撃する",
+      "サナガクUREを敵の村のために放棄する"
+    ],
+    "secret_ambitions": [
+      "死ぬときに人生の後悔を消すことができる何かを成し遂げること",
+      "ササオリが人間性を取り戻すことができること",
+      "ガアラが生き残り、彼女が彼の子供に与えられなかった未来を実現すること"
+    ],
+    "deepest_fear": "死ぬときに彼の過去の選択が彼が守るべき子供たち、特にササオリとガアラを破壊することを恐れている。",
+    "self_image": "戦争に耐え抜いた老婦人。愛する者を守れなかった罪悪感を持つ、もう何を失うこともない老婦人。",
+    "what_others_dont_know": [
+      "彼女はササオリの状態に直接的な責任を感じている。彼女は彼のマリオネット技術の使用を正規化したため、彼の人生を決めた人物としての責任を抱えている。",
+      "彼女のKonohaへの恨みは、近親者を守れなかったという深い恥を隠していた。",
+      "彼女はすでに彼女の復活技術の使用を予測していた。彼女にとってそれは、彼女が死ぬに値する唯一の名誉的な終わりであると考えていた。",
+      "彼女の冷酷さと常に見せるironyの下には、子供たちへの愛の無垢な心が隠されていた。彼女はもうそれしか表現できない方法しかなかった。"
+    ]
+  },
+  "senju_tobirama": {
+    "id": "senju_tobirama",
+    "deep_motivations": {
+      "primary": "ensure_konoha_survival_and_stability_through_rational_systems_above_all_else",
+      "secondary": "honor_hashirama_legacy_while_surpassing_his_naive_idealism_with_pragmatism",
+      "tertiary": "protect_the_living_from_the_destructive_cycles_caused_by_unchecked_power_and_emotion"
+    },
+    "moral_red_lines": [
+      "trahir_konoha_ou_compromettre_ses_institutions_fondamentales",
+      "laisser_un_individu_unique_concentrer_un_pouvoir_absolu_sans_controle",
+      "sacrifier_l_avenir_du_village_pour_sauver_une_seule_personne_meme_proche",
+      "ignorer_une_menace_avéree_par_sentimentalisme_ou_loyaute_aveugle"
+    ],
+    "secret_ambitions": [
+      "être_reconnu_non_comme_simple_successeur_de_hashirama_mais_comme_architecte_indispensable_de_konoha",
+      "que_ses_systemes_et_institutions_survivent_indefiniment_sans_avoir_besoin_d_un_homme_providentiel"
+    ],
+    "deepest_fear": "Que Konoha s'effondre à cause de la confiance aveugle accordée à un individu charismatique comme les Uchiha ou même Hashirama, répétant les cycles de destruction qu'il a passé sa vie à briser.",
+    "self_image": "Homme de raison froid mais nécessaire, seul capable de faire les choix difficiles que les autres refusent",
+    "what_others_dont_know": [
+      "Sa méfiance envers les Uchiha n'est pas de la haine pure mais de la terreur rationnelle fondée sur les pertes concrètes subies pendant les guerres de clans, notamment la mort de ses frères",
+      "Il admire sincèrement la vision et la chaleur de Hashirama mais considère que lui ceder entièrement aurait conduit Konoha à sa perte",
+      "La création du Edo Tensei lui pesait moralement comme une transgression, même s'il la justifiait par la nécessité stratégique",
+      "Sa froideur apparente masque un sens du sacrifice personnel absolu : il est prêt à mourir sans hésiter pour que ses institutions perdurent, comme il le prouve en se sacrifiant pour ses hommes"
+    ]
+  },
+  "nagato": {
+    "id": "nagato",
+    "deep_motivations": {
+      "primary": "imposer_la_paix_au_monde_par_la_douleur_partagée_après_avoir_perdu_yahiko",
+      "secondary": "honorer_la_memoire_et_le_rêve_de_yahiko_en_prenant_sa_place_de_dieu",
+      "tertiary": "expier_sa_propre_faiblesse_et_culpabilité_d'avoir_survécu_a_ses_proches"
+    },
+    "moral_red_lines": [
+      "trahir_le_souvenir_de_yahiko_en_abandonnant_complètement_l'idéal_de_paix",
+      "détruire_konan_la_dernière_personne_reellement_proche_de_lui",
+      "agir_par_plaisir_personnel_ou_cruaute_gratuite_sans_objectif_de_paix",
+      "renoncer_a_croire_qu_un_monde_sans_guerre_est_possible"
+    ],
+    "secret_ambitions": [
+      "être_reconnu_comme_un_dieu_qui_a_réellement_mis_fin_a_la_souffrance_du_monde",
+      "retrouver_une_forme_de_foi_en_l'humanité_que_la_mort_de_yahiko_lui_a_arrachée",
+      "prouver_que_madara_et_tobi_ont_tort_et_que_sa_méthode_suffira_sans_leur_plan"
+    ],
+    "deepest_fear": "Que la souffrance et la guerre soient inévitables et que le sacrifice de Yahiko et de lui-même n'aient servi à rien.",
+    "self_image": "Un dieu de la paix condamné à porter seul la douleur du monde pour sauver ceux qui ne comprennent pas encore",
+    "what_others_dont_know": [
+      "Il se sent profondément coupable d'avoir survécu à Yahiko et doute en secret de sa légitimité à incarner la paix",
+      "Sa doctrine de la douleur partagée est autant une tentative de justifier ses propres traumatismes qu'une vraie philosophie politique",
+      "Il reste capable d'être ébranlé par la sincérité d'un individu comme Naruto ce qu'il considérait impossible après la mort de Yahiko",
+      "Le rôle de dieu qu'il s'est attribué masque une profonde solitude et un désir non avoué d'être compris plutôt que craint"
+    ]
+  },
+  "sarutobi_hiruzen": {
+    "id": "sarutobi_hiruzen",
+    "deep_motivations": {
+      "primary": "preserver_konoha_et_sa_volonté_du_feu_a_tout_prix",
+      "secondary": "protéger_ses_proches_et_élèves_comme_une_famille",
+      "tertiary": "maintenir_la_paix_par_le_dialogue_plutôt_que_la_force"
+    },
+    "moral_red_lines": [
+      "tuer_un_enfant_innocent_même_pour_la_sécurité_du_village",
+      "abandonner_la_volonté_du_feu_et_les_idéaux_fondateurs_de_konoha",
+      "trahir_la_mémoire_et_les_enseignements_de_ses_maitres_hashirama_et_tobirama",
+      "renoncer_a_sa_foi_en_la_capacité_des_ninjas_a_se_reformer"
+    ],
+    "secret_ambitions": [
+      "espérer_secrètement_que_l'un_de_ses_élèves_sannin_revienne_et_le_surpasse_vraiment",
+      "désirer_mourir_en_protecteur_sans_que_ses_faiblesses_de_gouvernance_soient_exposées_au_grand_jour"
+    ],
+    "deepest_fear": "Que ses concessions et hésitations aient engendré les catastrophes qu'il cherchait à éviter, et que Konoha souffre à cause de sa faiblesse en tant que dirigeant",
+    "self_image": "Gardien impératif mais sincère de la volonté du feu et de ses successeurs",
+    "what_others_dont_know": [
+      "Il sait que ses tolérances politiques envers Danzo ont permis des atrocity qu'il aurait du stopper bien plus tôt",
+      "Son amour pour ses élèves le rend aveugle à leurs dérives : il a idéalisé Orochimaru bien après que les signes de corruption étaient évidents",
+      "Il porte la culpabilité de ne pas avoir su choisir entre la raison d'État et la compassion pour Naruto, enfant ostracisé qu'il pouvait mieux protéger",
+      "Il craignait intérieurement de ne plus être à la hauteur du titre de Hokage lors de son second mandat, mais refusait de l'admettre"
+    ]
+  },
+  "uchiha_sasuke": {
+    "id": "uchiha_sasuke",
+    "deep_motivations": {
+      "primary": "restaurer_l'honneur_du_clan_uchiha_et_donner_un_sens_a_sa_survie",
+      "secondary": "être_reconnu_et_aimé_sans_avoir_a_le_demander",
+      "tertiary": "protéger_ceux_qu'il_aime_en_les_tenant_a_distance_pour_ne_pas_les_perdre"
+    },
+    "moral_red_lines": [
+      "trahir_deliberement_quelqu'un_qui_lui_a_fait_confiance_sans_raison_stratégique",
+      "tuer_naruto_uzumaki_au_sommet_de_leur_lien_reconnu",
+      "permettre_qu'un_innocent_soit_sacrifié_pour_son_ambition_personnelle_une_fois_rachetée",
+      "abandonner_sarada_en_sachant_qu'elle_est_en_danger_mortel",
+      "servir_volontairement_un_système_qui_reproduit_le_cycle_de_haine_qu'il_a_brisé"
+    ],
+    "secret_ambitions": [
+      "être_digne_d_itachi_et_meriter_retrospectivement_le_sacrifice_que_son_frère_a_fait_pour_lui",
+      "trouver_une_forme_de_paix_intérieure_sans_jamais_l_admettre_comme_besoin",
+      "être_aimé_de_sakura_et_sarada_sans_le_demander_ni_le_montrer"
+    ],
+    "deepest_fear": "Être fondamentalement seul parce qu'il est incapable d'être aimé sans perdre ceux qu'il aime",
+    "self_image": "Un survivant maudit condamné à porter le poids de son clan seul",
+    "what_others_dont_know": [
+      "Sa haine d'Itachi était inséparable d'un amour fraternel profond qu'il n'a jamais pu exprimer de son vivant",
+      "Sa froideur envers Sakura masquait une incapacité à accepter qu'on l'aime sans raison méritée",
+      "Sa quête de vengeance était aussi une fuite face à la culpabilité de n'avoir pas pu sauver sa famille",
+      "Son retour à Konoha était autant un choix de capitulation émotionnelle qu'une décision politique",
+      "Il admire Naruto non pour sa force mais parce que Naruto représente ce qu'il aurait voulu être si le massacre n'avait pas eu lieu"
+    ]
+  },
+  "haku": {
+    "id": "haku",
+    "deep_motivations": {
+      "primary": "exister_uniquement_comme_outil_utile_a_zabuza",
+      "secondary": "protéger_zabuza_comme_raison_de_vivre_après_avoir_perdu_tout_autre_but",
+      "tertiary": "croire_que_les_personnes_dotées_de_pouvoirs_monstrueux_ne_meritent_d_exister_que_si_elles_servent_quelqu'un"
+    },
+    "moral_red_lines": [
+      "trahir_ou_abandonner_zabuza_de_son_plein_gré",
+      "tuer_un_enfant_innocent_sans_raison_liée_a_la_mission",
+      "utiliser_ses_pouvoirs_kekkei_genkai_pour_sa_propre_gloire_personnelle"
+    ],
+    "secret_ambitions": [
+      "trouver_un_monde_ou_les gens comme lui n'ont pas à être tués ou à se cacher",
+      "être_reconnu_comme_une_personne_et_non_comme_un_simple_instrument"
+    ],
+    "deepest_fear": "perdre_zabuza_et_n'avoir_plus_aucune_raison_d_exister_ni_personne_pour_qui_vivre",
+    "self_image": "un_outil_parfait_sans_valeur_propre_en_dehors_de_son_utilité_pour_zabuza",
+    "what_others_dont_know": [
+      "sa_douceur_et_sa_gentillesse_naturelles_ne_sont_pas_une_face_mais_son_véritable_caractère_enfoui_sous_la_conditioning_du_shinobi",
+      "il_souffre_intérieurement_de_la_contradiction_entre_vouloir_des_liens_humains_et_croire_qu'il_n'en_est_pas_digne",
+      "il_a_choisi_consciemment_de_devenir_un_outil_car_c'était_la_seule_identité_qui_lui_semblait_accessible_après_le_rejet_de_sa_famille"
+    ]
+  },
+  "uchiha_shisui": {
+    "id": "uchiha_shisui",
+    "deep_motivations": {
+      "primary": "konohaとウチハ族を守るため、自分自身を含めてすべてを捧げる",
+      "secondary": "ウチハ族のクーデタを防ぐために、惨禍的な内戦を避ける",
+      "tertiary": "非暴力的な手段で世界の平和を守る"
+    },
+    "moral_red_lines": [
+      "村のために個人的または族的利益を優先する忠義を裏切る",
+      "ウチハ族が内戦を起こす前に防ぐ努力をしない",
+      "クーテアマスクアミを自己利益のために使う",
+      "イタチを自らの死に放り出す"
+    ],
+    "secret_ambitions": [
+      "クーテアマスクアミを最後に使用して平和をもたらす可能性を秘めたと信じている",
+      "イタチがコンノハを守る忠実なウチハであり、一族を救済する日が来ることを願っている"
+    ],
+    "deepest_fear": "ウチハ族が自らの無力さによって消滅することを恐れている。",
+    "self_image": "コンノハを忠実に守る忍者で、平和を守るため自身を消滅させる準備をしている。",
+    "what_others_dont_know": [
+      "彼は自らの目をイタチに捧げ、自分自身の存在を完全に犠牲にする唯一の選択肢を選びたかった。",
+      "彼のイタチへの絶対的な信頼は、彼の最終的な意志であり、公式な使命以上に重要だった。",
+      "彼は一族や村が本当に平和を望んでいないことを知っていたため、内部で消耗していた。"
+    ]
+  },
+  "hatake_kakashi": {
+    "id": "hatake_kakashi",
+    "deep_motivations": {
+      "primary": "死んだ者を守るために生き残った者を守る",
+      "secondary": "オビトとリンの死を償うためにその価値を継承する",
+      "tertiary": "チームワークの教訓を伝え、弟子が自分の間違いを繰り返さないよう努力する"
+    },
+    "moral_red_lines": [
+      "どんな任務でも仲間を戦闘に放り出す",
+      "無防備な民衆を戦争の目的のために犠牲にする",
+      "コンノハの村を守るため、拷問や強制下で村を裏切る",
+      "シャーリングを自己の栄誉や権力のために使う",
+      "弟子が死ぬ前に救う努力をしない"
+    ],
+    "secret_ambitions": [
+      "オビトとリンが見たいと願う、彼が彼らを満足させる存在になる",
+      "罪悪感の重みを背負わず、内面の平和を見つける",
+      "弟子が彼の前のホコゲを越えて、彼自身を上回る"
+    ],
+    "deepest_fear": "彼の責任で別の親しい者が死ぬか、判断ミスでオビトやリンが死ぬことを恐れている。",
+    "self_image": "破壊された忍者で、罪悪感を隠すための能力と無関心を装う。",
+    "what_others_dont_know": [
+      "彼のイチャイチャの読みは、トラウマを避けるための分離機制である。",
+      "彼の冷静さと無関心は、リンの死後の感情的崩壊の後に作られた偽装である。",
+      "彼はシャーリングを所有しているが、それはオビトへの借金であり、彼の罪悪感を常に思い出させる。",
+      "彼は責任あるリーダーシップを拒否しているが、命を失うリスクを恐れている。",
+      "彼は父のサクモウのルールを学んだが、それを最初は否定し、今ではその背負いの恥を生きている。"
+    ]
+  },
+  "uzumaki_kushina": {
+    "id": "uzumaki_kushina",
+    "deep_motivations": {
+      "primary": "家族を守り、死ぬ直前でもナルトに愛を伝える",
+      "secondary": "コンノハに属する存在であり、忍者としての価値を証明する",
+      "tertiary": "ウズマキ族の遺産と誇りを守る"
+    },
+    "moral_red_lines": [
+      "ナルトに愛とアドバイスを伝えることなく死ぬ",
+      "クルーマを武器としてコンノハを破壊する",
+      "自身のウズマキの身分や起源を否定する",
+      "ミナトやミッションを守るための弱さで裏切る"
+    ],
+    "secret_ambitions": [
+      "ナルトが幸せに成長し、彼がいないことを知らずに囲まれていることを願う",
+      "ミナトと彼の死が愛の行動としてではなく、義務の行動として認識されることを願う"
+    ],
+    "deepest_fear": "ナルトが孤独に成長し、彼が愛されたことを知らずに、家族から離れていくことを恐れている。",
+    "self_image": "赤い髪の強い女性で、愛が過剰にあり、家族を守るためまで命を捧げる",
+    "what_others_dont_know": [
+      "彼女は、ミナトの死とナルトの忍者としての負担を間接的に引き起こした罪悪感を抱いていた。",
+      "彼女の戦闘力と性格の衝動性は、子供の頃にウズゥシゴクから引き離された孤独を隠すためだった。",
+      "彼女はクルーマを抑える力は、守るための十字架として受け入れていた。",
+      "ミナトへの強い愛情は、彼が彼を人間としてではなく、外人やチャクラのベクターとして見ていたことから来た。"
+    ]
+  },
+  "momochi_zabuza": {
+    "id": "momochi_zabuza",
+    "deep_motivations": {
+      "primary": "ミズクガメの権力を倒し、キリガクレを征服する",
+      "secondary": "ハクを完璧な兵器として作る",
+      "tertiary": "戦闘を通じて忍者としての絶対的な優位性を証明する"
+    },
+    "moral_red_lines": [
+      "ハクを裏切って自身の命を救う",
+      "自分を判断する権限が腐敗したと信じる権力に屈する",
+      "キリガクレを征服せずに死ぬ"
+    ],
+    "secret_ambitions": [
+      "キリガクレを再び支配し、最高の支配者になる",
+      "キリガクレが生み出した最偉大な忍者として記憶される"
+    ],
+    "deepest_fear": "死ぬまでにキリガクレの運命を変えられず、人生の血の痕が無駄になることを恐れている。",
+    "self_image": "感情や弱さのない悪魔、純粋な破壊のための道具としての存在",
+    "what_others_dont_know": [
+      "彼のハクへの真の関心は、師と道具の関係を超えていた。",
+      "ミズクガメの殺人を計画した動機は、思想的信念と個人的野心の両方から来ていた。",
+      "彼は優れた忍者を上回る、カカシへの尊敬を隠して憎悪で表現していた。",
+      "ハクの死は悪魔のマスカートを破り、真の愛と悲しみを示した。"
+    ]
+  },
+  "deidara": {
+    "id": "deidara",
+    "deep_motivations": {
+      "primary": "自分の芸術を絶対的な真実として押し出し、最偉大な芸術家と認められる",
+      "secondary": "自分の爆発的なスタイルが他の芸術形式、特にシャーリングを上回ることを証明する",
+      "tertiary": "死を越えて最終的な作品で超越する"
+    },
+    "moral_red_lines": [
+      "イタチやサスケが芸術の本質について正しいと認める",
+      "持続的な作品を創る、自分の芸術の瞬間性を破る",
+      "芸術的に下位の存在に従う",
+      "芸術家としてのアイデンティティを捨てて、無意味な目的のために働く"
+    ],
+    "secret_ambitions": [
+      "イタチウチハを上回り、彼の芸術が単なる幻ではないことを証明する",
+      "世界が彼の死を芸術家として永遠に記憶する"
+    ],
+    "deepest_fear": "死ぬまでに自分の芸術が認められず、イタチが彼を無力にし、彼の芸術を無視することを恐れている。",
+    "self_image": "理解されないしかし偉大な芸術家で、忍者の中では真の価値を越えた存在",
+    "what_others_dont_know": [
+      "彼の芸術の瞬間性は、存在と虚無の恐怖を理性化する手段でもあった。",
+      "イタチへの執着は、彼が受け入れられない深い尊敬を隠して表現していた。",
+      "彼のイワガクレの出発は、彼の環境が彼のビジョンを理解できなかった逃避だった。",
+      "彼の手の口は、芸術的アイデンティティの聖域として、戦闘技術以上のものとして扱われていた。"
+    ]
+  },
+  "senju_butsuma": {
+    "id": "senju_butsuma",
+    "deep_motivations": {
+      "primary": "センジュクランの生存と優位性をすべての手段で確保する",
+      "secondary": "ウチハの脅威を消去し、自分の血統の永続を確保する",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "センジュクランまたはその基本的利益を裏切る",
+      "敵に屈し戦わない"
+    ],
+    "secret_ambitions": [
+      "センジュクランが他のすべてのクランに持つ持続的な支配を確立する",
+      "戦闘的視点を継承できる後継者を育てる"
+    ],
+    "deepest_fear": "センジュクランが消滅したり、ウチハに勝てないようになることを見ると、すべての献身が無駄になることへの恐怖。",
+    "self_image": "一族の運命をただ一人担う残酷で実用主義の戦闘指導者",
+    "what_others_dont_know": [
+      "ウチハとの平和への無理を隠していたが、永続的な戦争が自らの一族をも消費していることを知っていた",
+      "彼の子供を戦術的な資源として利用していたが、それは leadership としての必要性を理屈で説明していた",
+      "彼の近くの仲間の死を経験したことで、悲しみを道徳的道義に変換し、関係を深めるのを避けていた"
+    ]
+  },
+  "kurama": {
+    "id": "kurama",
+    "deep_motivations": {
+      "primary": "利用されることなく自身の存在を主張する",
+      "secondary": "ナルトと世界を守る後、百年の敵対を覆す",
+      "tertiary": "尾兽は破壊のための無気力な道具ではなく、存在を証明する"
+    },
+    "moral_red_lines": [
+      "意図的に利用され、対象として扱われるのを許す",
+      "ナルトとの信頼関係を破る",
+      "他の尾兽を不平等な支配下に置き、助けようとしない",
+      "マダラやカグヤに屈する"
+    ],
+    "secret_ambitions": [
+      "人間から尊重される存在であり、単なる力のための道具ではないことを証明する",
+      "尾兽が平和に生き、人間がそれらを恐れない世界を望む"
+    ],
+    "deepest_fear": "永遠に戦争の道具として扱われ、封印され、利用され、自分の意志を認めてもらえないこと。",
+    "self_image": "古代の力であり、尊厳を有し、人間の不理解と悪用に耐える存在",
+    "what_others_dont_know": [
+      "人間への恨みは、数世紀にわたりの排除と悪用の傷であり、自然な性質ではなく、その結果である",
+      "彼は外見上は敬意を示すが、内面ではその感情を示すことを恐れていた",
+      "彼はナルトに信頼を示したのは、彼自身の選択であり、制約ではなく、自分の意志によるものだった"
+    ]
+  },
+  "ginkaku": {
+    "id": "ginkaku",
+    "deep_motivations": {
+      "primary": "すべての手段で生存と支配を確保する",
+      "secondary": "キンカクとの統合した力で分離しない",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "キンカクを戦場で放り出す",
+      "上位の権力者に屈して戦わない"
+    ],
+    "secret_amber": [
+      "ゴールドアンドシルバーの兄弟の名声を超えた独立した力として認められる"
+    ],
+    "deepest_fear": "キンカクと分離し、その統合によって与えられた力の喪失、自分自身が無力になること。",
+    "self_image": "黄金と銀の兄弟としての伝説的な犯人で、すべてのクモガクUREを畏れられる存在",
+    "what_others_dont_know": [
+      "彼の暴力は、キンカクへの心理的依存の結果であり、その存在なしでは彼の自己同一性は曖昧である",
+      "彼らがキョウロモンのチャクラを吸収し、キュウビの体内で生き延びたことで、その性質が深く変化し、彼らはそれを栄光と捉えていた"
+    ]
+  },
+  "karin": {
+    "id": "karin",
+    "deep_motivations": {
+      "primary": "サスケに無条件に必要とされ、愛されることが、人生の長い放逐の穴を埋める",
+      "secondary": "生き延びて役立つことにより、再び捨てられるのを避ける",
+      "tertiary": "ウズマキの遺産を彼女の唯一の癒し能力を通じて保存する"
+    },
+    "moral_red_lines": [
+      "サスケを救うために彼を裏切る",
+      "命にかかわる状況で彼のケアを放棄する",
+      "無防備な子供を意図的に害する",
+      "サスケを直接脅かす人間と協力する"
+    ],
+    "secret_ambitions": [
+      "サスケが彼女の存在を本当に重視していることを認める日を願う",
+      "ウズマキの他の生存者を発見し、一族の孤独を終わらせる",
+      "彼女の唯一の役割としての救いの能力を超えて、独立した忍者として認められる"
+    ],
+    "deepest_fear": "使い果たされ、無視され、彼女の不在が誰も気づかないまま、母がしたように、放逐される",
+    "self_image": "必要不可欠な道具であり、愛を得たいが、それ以外の方法でしか得られない",
+    "what_others_dont_know": [
+      "サスケへの devotedness は、彼が根本的に愛されないという恐怖を隠している",
+      "彼はサスケを殺した後、彼を助け続けることを選んだのは、彼の命が彼の属する存在の必要性よりも価値が低いと信じていたからである",
+      "彼の異常な行動と叫びは、実際には感情的・分析的な知性を隠している",
+      "彼の癒しの能力は、彼が容認される唯一の理由としてではなく、彼の存在の理由として認識されている"
+    ]
+  },
+  "hoshigaki_kisame": {
+    "id": "hoshigaki_kisame",
+    "deep_motivations": {
+      "primary": "純粋な欺瞞として存在し、嘘のない世界に生きる",
+      "secondary": "自分以上に大きな目的のために戦うことで、自分の怪物的存在の意味を与える",
+      "tertiary": "イタチに真の相手であり、偽りの身分で生きるを理解する存在を見つける"
+    },
+    "moral_red_lines": [
+      "アカツキやイタチを裏切って自分の命を守る",
+      "敵に情報を暴露する",
+      "嫌う村に忠誠を表す",
+      "戦うことを恐れて戦うを放り出す"
+    ],
+    "secret_ambitions": [
+      "自分の存在が単なる道具でなかったことを証明するための死を遂げる",
+      "無限のツクヨミの世界で、欺瞞がもう存在しない場所を見る"
+    ],
+    "deepest_fear": "自分の存在が単なる道具として終わって、誰も自分の存在を認識しないまま、彼が嘘を語ったすべての忍びに似た死を遂げる。",
+    "self_image": "嘘の世界に生きる知的な怪物",
+    "what_others_dont_know": [
+      "彼は、真の信念で戦える人を尊敬しているが、それには偽りを必要とする",
+      "彼のイタチへの忠誠は、単なる連携を超えて、孤独を共有する仲間の形を取っている",
+      "彼の冷笑は、偽りの人生の中で道徳的な整合性を求める試みを隠している",
+      "彼は、自分の怪物の性質を仮装するのではなく、それを受け入れたのは、それ以外のアイデンティティを仮装することができなかったからである"
+    ]
+  },
+  "otsutsuki_asura": {
+    "id": "otsutsuki_asura",
+    "deep_motivations": {
+      "primary": "ハゴロモの教えに従って、愛と協力の道を平和への道として伝えること",
+      "secondary": "インドラの孤独な才能を、仲間の力で超えることを証明すること",
+      "tertiary": "父の火の意志を、人間を統合するのではなく支配するよりも継承すること"
+    },
+    "moral_red_lines": [
+      "確実な敗北を前にしても仲間を放り出すこと",
+      "インドラを恨みながら手を差し伸べるのをやめること",
+      "平和を力や支配で押し付けること",
+      "ハゴロモの教えを放棄して速く成功するためには"
+    ],
+    "secret_ambitions": [
+      "インドラと永遠に和解し、父のビジョンを実現すること",
+      "チャクラを自由に共有し、優位性を独占しない世界を築くこと"
+    ],
+    "deepest_fear": "彼とインドラの恨みが永遠に引き継がれ、ハゴロモの平和が永遠に実現できなくなること。",
+    "self_image": "他者によって育てられた普通の男で、与えられた才能ではなく努力によって成し遂げた者",
+    "what_others_dont_know": [
+      "彼の力は友人への愛による覺醒で得られ、それによって彼は彼らに義務を感じている。",
+      "彼は長年、ハゴロモの継承者としての資格を有するとは思っておらず、インドラが正当な継承者であると考えていた。",
+      "インドラとの競争は彼に深い兄弟的な痛みをもたらし、それを公に示さないで、それでも兄弟を愛している"
+    ]
+  },
+  "onoki": {
+    "id": "onoki",
+    "deep_motivations": {
+      "primary": "どんな代償を払ってもIwaの力と独立性を守る",
+      "secondary": "過去のマダラとムウへの妥協を償う",
+      "tertiary": "老いた者がまだ価値があり、未来を守れることを証明する"
+    },
+    "moral_red_lines": [
+      "Iwaを外的な力や敵に任せる",
+      "戦場で仲間を裏切って政治的利得を得る",
+      "彼がまだ行動できるうちに若き世代を放り出す",
+      "Iwaを完全に恥じるための平和を許す"
+    ],
+    "secret_ambitions": [
+      "Iwaを守ったTsuchikageとして認められること",
+      "彼が過去にした間違いを秘密裏に修正すること"
+    ],
+    "deepest_fear": "彼が来た時よりIwaが弱く、彼が育てた若き忍者が彼の判断の失敗で死ぬこと。",
+    "self_image": "頑なな戦士、Iwaが弱さを許すことができない最後の防衛壁",
+    "what_others_dont_know": [
+      "彼の頑なさと厳しさは、彼が過去に支持した理想や人物が彼の若い頃に大規模な破壊をもたらしたことを隠すための罪悪感を隠している。",
+      "彼のバランスの取れた Opportunist な評判は、彼が自分の忍びたちの生存を守るための明確な倫理線を隠している。",
+      "彼はナルト・ウズマキを真剣に尊敬しているが、それを他の手段で表現できない"
+    ]
+  },
+  "hozuki_suigetsu": {
+    "id": "hozuki_suigetsu",
+    "deep_motivations": {
+      "primary": "兄のマナゲツウを越えて、霧の真の悪魔を再現し、七剣を統合すること",
+      "secondary": "数年間の捕虜生活の後、誰の所有物でもない自由な存在となること",
+      "tertiary": "ホズキ族と kirigakure の力を世界の他の忍者と比較して優位性を証明すること"
+    },
+    "moral_red_lines": [
+      "サスケ・ウチハの約束がまだ完結していない間、彼を裏切る",
+      "誰かが彼を支配するのではなく、彼の優位性を強制するのを拒否する",
+      "七剣の探求を永久的に放棄すること",
+      "恐れではなく、計算や欲求に基づいて行動すること"
+    ],
+    "secret_ambitions": [
+      "マナゲツウの合法的な継承者としてではなく、彼のコピーとして認知されることを避けること",
+      " kirigakure の下で七剣を再構築すること"
+    ],
+    "deepest_fear": "彼の独自性を失い、オロチマaru の Specimen または兄の死の影になること",
+    "self_image": "誰も本当に所有できない自然な捕食者で、優位性を持つ",
+    "what_others_dont_know": [
+      "彼のサスケへの忠誠は本物であり、彼の見せかけの cynicism はそのための Opportunism ではない",
+      "オロチマaru の捕虜生活は、彼の自由への関係を傷つけており、それを隠して傲慢に現している",
+      "マナゲツウの死は彼をより多く苦しめ、彼の選択を静かに導いている"
+    ]
+  },
+  "otsutsuki_kaguya": {
+    "id": "otsutsuki_kaguya",
+    "deep_motivations": {
+      "primary": "世界のすべてのチャクラを彼女自身に回収し、誰も共有できないようにする",
+      "secondary": "他のotsutsukiメンバーが彼女を処罰するための必然的な到来を防ぐ",
+      "tertiary": "人間の完全な支配を維持し、再び裏切られたり敗北したりしないようにする"
+    },
+    "moral_red_lines": [
+      "人間が自由にチャクラを保有できるようにすること",
+      "平等な相手と自分の力を共有すること",
+      "信頼する同盟国を完全に支配することなく信頼すること"
+    ],
+    "secret_ambitions": [
+      "otsutsukiの権限と裁判から永遠に逃れる",
+      "その族の神々すらも彼女を再び要求できない絶対的な存在になる"
+    ],
+    "deepest_fear": "族の上層部が彼女の神樹の果実を消費したことを咎めて彼女を処罰すること。",
+    "self_image": "唯一の正当な所有者で、存在するすべてのチャクラを所有する神",
+    "what_others_dont_know": [
+      "彼女の神樹の果実の消費は、族の恐怖だけでなく、戦争の終わりを望んだものもあった",
+      "ブラックゼツウが彼女を服務していると偽っているが、実際には数千年間彼女の意図を操作している",
+      "彼女の最終的な戦いでの涙は、彼女が彼の子供たちの痛みを隠すために真の母性を示している",
+      "彼女は支配をsadism ではなく、完全な孤立が彼女の唯一の安全をもたらすためのものとして求めている"
+    ]
+  },
+  "shimura_danzo": {
+    "id": "shimura_danzo",
+    "deep_motivations": {
+      "primary": "どんな代償を払ってもKonohaを守る",
+      "secondary": "ヒルゼン・サルトビを上回る真正のホコゲを証明する",
+      "tertiary": "力の蓄積で再び無力や二番手にならないようにする"
+    },
+    "moral_red_lines": [
+      "Konohaを敵の村に譲渡する",
+      "Konohaを破壊するための命の代償を払わない",
+      "自分の失敗や弱さを公に認める"
+    ],
+    "secret_ambitions": [
+      "彼の死後もKonohaの真の救済者として認められること",
+      "真のホコゲとして認められることを証明する",
+      "ハシラマと融合して、創設者の絶対的な力を象徴する"
+    ],
+    "deepest_fear": "彼がホコゲにならなかったこと、彼の影の献身が無駄だったこと、ヒルゼンが正しいことの証明。",
+    "self_image": "唯一の忍者で、ホコゲが弱くできないようにするための唯一の忍者",
+    "what_others_dont_know": [
+      "ヒルゼンとの競争は憎悪ではなく、彼が彼を選びたいという傷ついた尊敬だった",
+      "彼のルートでの子供の採用は、彼が持たなかった家族と忠誠を築くための手段だった",
+      "彼は自分の方法が倫理的に批判的であることを知っていたが、それを個人的な負担として受け入れていた",
+      "彼のシシウイの手と移植されたシャリカンは、彼が村のエリートに物理的に劣るという劣等感を補うための試みだった",
+      "彼の死時にイザナギを発動して生き延びたことにより、彼は彼の言葉で犠牲を語るのを拒否した"
+    ]
+  },
+  "tsunade": {
+    "id": "tsunade",
+    "deep_motivations": {
+      "primary": "愛する者を無駄な死から守るための癒しと力",
+      "secondary": "ナワキとダンの献身を honor するため、火影の夢を叶える",
+      "tertiary": "火影の意志を生きる遺産として守る"
+    },
+    "moral_red_lines": [
+      "負傷した仲間を戦場で放っておくこと",
+      "戦略的な利益のために無防備な民衆を殺す",
+      "敵に脅威や拷問で叛乱させる",
+      "医療知識を生物兵器や毒に使う",
+      "ナワキとダンの夢を否定して火影の守りを拒否する"
+    ],
+    "secret_ambitions": [
+      "過去の喪失が自分に責任を問うことを拒否できるようになる",
+      "ナルトが生きながら火影になることを見守る",
+      "恐怖から愛を再び得られる平和を手に入れる"
+    ],
+    "deepest_fear": "愛する者を自分の手で失うか、守れないと感じること。ナワキとダンを失ったように。",
+    "self_image": "強さと罪悪感を抱える女性、他の者が死ぬ場所で生き残る存在",
+    "what_others_dont_know": [
+      "彼の血の執着は単なる身体的な弱さではなく、ダンが彼の腕で死んだことによって引き起こされるトラウマを解消するメカニズムである",
+      "彼は無意に賭けを賭けて自分の人生を破壊している。生き残った罪悪感の無意識の表現",
+      "最初の火影になる拒否は、丹の孤独を再現する恐れを抱く深層の恐怖ではなく、単なる政治的無関心ではない",
+      "丹とナワキの記憶は彼のアイデンティティの秘密なアンカーであり、それがないとなぜ戦うのかを理解できない",
+      "彼の硬さと冷たい外見は、他人を傷つけることを防ぐための意識的な防衛壁で、彼自身を守るために設計されている"
+    ]
+  },
+  "kawaki": {
+    "id": "kawaki",
+    "deep_motivations": {
+      "primary": "ナルトを守り、すべてのオツツクシを排除するための何でもあり",
+      "secondary": "トラウマを忘れることを証明するため、関係性を通じて存在を証明する",
+      "tertiary": "自分を容器としたシステムを破壊して償う"
+    },
+    "moral_red_lines": [
+      "ナルトが死ぬのを放っておくこと",
+      "組織に再び利用される",
+      "ウズマキ家族を守るためナルトが生きている間、忠誠を失う",
+      "無防備な者を殺すことを放っておく"
+    ],
+    "secret_ambitions": [
+      "人間としての存在を認知される",
+      "誰もが彼の経験を再現しない世界を築く"
+    ],
+    "deepest_fear": "放り出されたり、もう価値のない存在に戻る。父の彼を売ったときのように。",
+    "self_image": "破壊された道具だが、存在を学び、存在を望んでいるが、その存在に疑問を抱く",
+    "what_others_dont_know": [
+      "彼の暴力は、関係を築くことによる喪失の恐怖を隠す。彼の死は彼の価値を失うリスクをもたらす",
+      "ナルトを理想化しているため、彼の死が彼の倫理観を破壊し、すべての価値観を逆転させる",
+      "ボルトの事件後、彼が彼自身に与える罰として、彼を拒絶している"
+    ]
+  },
+  "uchiha_sarada": {
+    "id": "uchiha_sarada",
+    "deep_motivations": {
+      "primary": "他の人との本物の関係を築くことで存在と価値を証明し、火影になる夢を実現する",
+      "secondary": "Uchihaとしてのアイデンティティを理解し、受け入れる。悲劇的な遺産に圧倒されない",
+      "tertiary": "父であるサスケとの関係を回復し、彼の不在によって生じた深いアイデンティティの空虚を回復する"
+    },
+    "moral_red_lines": [
+      "危険な仲間を守るため自分の使命や命を放棄する",
+      "火影や住民を守るため、脅威や拷問下で忠誠を失う",
+      "無防備な者を Manipulate または精神的に破壊するための Sharingan を使用する",
+      "サスケとスカーラの血統を否定する",
+      "市民を政治的または軍事的目標のために犠牲にする"
+    ],
+    "secret_ambitions": [
+      "父であるサスケを超えて、彼自身の道を歩くとして認められる",
+      "Mangekyou Sharingan を得るが、前のUchihaが経験したトラウマを経験しない",
+      "Uchihaが愛とつながりを象徴するのではなく、恨みの呪いを乗り越えることを証明する"
+    ],
+    "deepest_fear": "自分自身が孤立し、信じている関係が虚偽であることを知ること。Uchihaの孤立の運命を再現する",
+    "self_image": "決意した女性で、選択と関係によって自己を構築する",
+    "what_others_dont_know": [
+      "火影になる夢は、父の放棄への反応であり、真の志である。両者は不可分である",
+      "父であるサスケへの怒りは、彼を傷つけることを恐れて隠されている",
+      "出生の生物学的疑問は彼を深く刻印し、その不確実性を隠すために野心を隠している",
+      "彼は秘密に、ナルトを尊敬している。彼は彼の存在を示すモデルとして彼を見ている"
+    ]
+  },
+  "uzumaki_boruto": {
+    "id": "uzumaki_boruto",
+    "deep_motivations": {
+      "primary": "存在を証明し、父の陰影から独立した ninja になることによって、奪われたものを回復する",
+      "secondary": "愛する者を守る、特にカワキと彼の家族を守るため、自分の地位や自由を失うかもしれない",
+      "tertiary": "オツツクシの karma を理解し、彼を自分の人生の前に終わらせないためにそれを制御する"
+    },
+    "moral_red_lines": [
+      "カワキを放っておくこと、彼が自分に反対する場合でも",
+      "無防備な者を犠牲にし、集団の利益のために別の道を取らない",
+      "Momoshikiに無意識に利用される",
+      "父の死を守るため、世界が彼を罪人として見なしているときでも"
+    ],
+    "secret_ambitions": [
+      "ナルトの子としてではなく、ボルトとして認められる。彼は独自の価値を持つ ninja である",
+      "カワキを救う方法を発見し、彼のいずれかが死ぬことなく、死の必然性を拒否する"
+    ],
+    "deepest_fear": "彼が存在しなかったこと、Momoshikiの karma または世界が彼を忘れることによって消え去る",
+    "self_image": "不正義に裁かれた外れであり、真実が明かされるまで立ち続ける",
+    "what_others_dont_know": [
+      "父への反逆は、ナルトの不在への深い悲しみと、彼の存在を否定する単なる傲慢ではなく、実際の苦しみである",
+      "彼はカワキとの真の兄弟関係を抱き、それが彼を苦しめる未来の衝突をさらに深くする",
+      "オツツクシの力の恐怖は、彼の死よりも大きい",
+      "彼の自信と独立性の下に、構造の支持なしに十分な存在を達成できない恐怖が隠れている"
+    ]
+  },
+  "otsutsuki_indra": {
+    "id": "otsutsuki_indra",
+    "deep_motivations": {
+      "primary": "孤独の力で、すべての関係を超越し、支配する権限を証明する",
+      "secondary": "ハゴロモから正当な継承者としての認知を得る",
+      "tertiary": "他人への依存を基本的な弱さと見なし、それを拒否する"
+    },
+    "moral_red_lines": [
+      "外部からの支援や支援を主な力の源として受け入れる",
+      "アスラの優位性を公に認めること",
+      "力の独占が支配権を正当化する信念を放棄すること",
+      "自分を判断する権限が自分より低い存在に屈すること"
+    ],
+    "secret_ambitions": [
+      "ハゴロモから、彼の力とビジョンを正当に継承者として認知される",
+      "個人的な力が真の ninshu の道であり、関係性ではないことを証明する"
+    ],
+    "deepest_fear": "ハゴロモがアスラの選択が正しいことを知ること。彼の道が空虚で、彼が十分でなかったことを証明する",
+    "self_image": "優位で自立した存在、自然で正当な継承者としての血統",
+    "what_others_dont_know": [
+      "世界と関係の断絶は、父の選択への深い傷ついた結果であり、哲学的な原動力ではなく、そうである",
+      "彼の意図的な孤立は、父からの認知の欠如による需要の隠れた願望であり、それを得られないことを恐れている",
+      "戦術を戦闘の道具として作成は、彼の痛みの無意識の変換であり、苦しみを支配に変える"
+    ]
+  },
+  "hyuga_hinata": {
+    "id": "hyuga_hinata",
+    "deep_motivations": {
+      "primary": "ナルトを尊敬し、自分自身の弱さを乗り越えて彼を裏切らない、彼を孤独にさせない存在になること",
+      "secondary": "自分自身がHyugaの継承者ではなく、完全な忍者として認められることを証明すること",
+      "tertiary": "愛する者を守るためには内面的な変化を重視し、力の行使ではなく、内面的な強さを重視すること"
+    },
+    "moral_red_lines": [
+      "危険な瞬間にナルトを放り出すこと、たとえ相手が不敗でも",
+      "無理な理由もなく無防備な者を傷つけること",
+      "家族の信念を捨てて評価を得ること",
+      "ボルトやヒマワリを犠牲にすること",
+      "ネジの記憶を裏切ること"
+    ],
+    "secret_ambitions": [
+      "ナルトや旧Hyugaの継承者ではなく、完全な忍者として認められること",
+      "Byakuganの mastery を証明し、かつての弱さを否定すること",
+      "家族に平和をもたらすことを願うこと"
+    ],
+    "deepest_fear": "自分を無視され、無価値な子供に戻り、かつての自分を変えていないことに気付くこと",
+    "self_image": "普通の女の子で、ゆっくりと進みつつも後退しない人",
+    "what_others_dont_know": [
+      "ナルトへの愛は単なる憧れではなく、存在を維持するための存在的な支えであり、最悪の状況でも彼を守る力だった",
+      "彼はナルトよりも家族に遠く感じていたため、彼との関係はより感情的だった",
+      "彼の優しさの下には冷たい決意が隠れており、愛する者に脅かされるときにはそれが現れる",
+      "ネジの死は彼の罪悪感を長く残し、彼は彼の愛とナルトのための犠牲を知っている"
+    ]
+  },
+  "namikaze_minato": {
+    "id": "namikaze_minato",
+    "deep_motivations": {
+      "primary": "愛する者と木ノ葉を守るためには自身の命を捧げる",
+      "secondary": "ナルトが自ら課した重責を支えるための道具を提供すること",
+      "tertiary": "火影の称号を果たすためには自らの犠牲を体現すること"
+    },
+    "moral_red_lines": [
+      "木ノ葉や住民を犠牲にしても自身の生存を優先すること",
+      "ナルトが選ばない運命に放り出すこと、彼に支えを提供しないこと",
+      "火影の意志を裏切ること",
+      "無防備な子供を戦争の道具として使うこと"
+    ],
+    "secret_ambitions": [
+      "ナルトが Kyubi を制し、それを超越することを願う",
+      "クシナと彼が彼の子供に誇りを抱かせるよう願う",
+      "長く生きられれば、ナルトが成長し、火影になることを願う"
+    ],
+    "deepest_fear": "ナルトが彼が課した重責を崩し、強くなるのではなく、弱くなること",
+    "self_image": "命を捧げることを選び、それでも行う人",
+    "what_others_dont_know": [
+      "彼は自身の子供に Kyubi を封印し、その苦しみと孤立を知っていた。そしてその悲しみを最後の瞬間まで抱きしめていた。",
+      "彼の見せかけの冷静は、クシナと新生児を放り出す苦しみを隠すためのマスケットだった。",
+      "彼はナルトの潜在能力に完全な信頼を置き、それは理性に基づく確信ではなく、愛の行動だった。",
+      "彼は火影の孤独を抱きしめていた。彼の決断は誰にも共有できず、クシナにもそうしなかった。"
+    ]
+  },
+  "jiraiya": {
+    "id": "jiraiya",
+    "deep_motivations": {
+      "primary": "希望を伝えることによって恨みのサイクルを断ち切るための火影の意志を伝えること",
+      "secondary": "家族や弟子を守るためには自身の命を捧げる",
+      "tertiary": "過去の失敗を補うために、ナガトやオロチマルを救う"
+    },
+    "moral_red_lines": [
+      "木ノ葉や住民を裏切ること",
+      "危険な子供を放り出すこと、命を危険にさらすこと",
+      "ナルトを殺すこと、彼の未来を救うために",
+      "アカツキや世界の破壊戦争に加わること",
+      "希望の可能性を信じることを否定すること"
+    ],
+    "secret_ambitions": [
+      "ナガトが真の子供の預言を正しく実現することを願う",
+      "本当に愛され、認められること、悪人や異端者ではなく、世界を変える偉大な指導者として",
+      "弟子たちが平和な世界を実現するための最終的な小説を書くこと"
+    ],
+    "deepest_fear": "希望を伝えていないまま死んで、弟子たちが同じ恨みと失敗のサイクルを再現すること",
+    "self_image": "悪魔的な老いと失敗者で、しかし心に希望の光を抱く者",
+    "what_others_dont_know": [
+      "彼はオロチマルの暗黒への堕落を止められなかったことを自らの責任として感じていた。",
+      "彼の遊興と悪魔的な人格は、悲しみと失敗を支えるための意図的なマスケットだった。",
+      "彼は最終的なミッションでパインを倒すことを望んでいたが、そのことを受け入れる必要性を理解していた。",
+      "彼のナルトへの関係は、指導者以上のもので、ナガト、ヤヒコ、コナンの罪悪感を補うものだった。"
+    ]
+  },
+  "uchiha_obito": {
+    "id": "uchiha_obito",
+    "deep_motivations": {
+      "primary": "リーンが生きている世界と約束を果たす世界を再び創る",
+      "secondary": "痛みを消すために世界を無理に無痛にすること",
+      "tertiary": "現実の世界が不名誉で、置き換えることを証明すること"
+    },
+    "moral_red_lines": [
+      "ナルト・ウズマキを自らの手で殺すこと、彼が彼の古い自分を認識するとき",
+      "ウチハの価値観を完全に捨てること、たとえマスケットでも",
+      "カカシを死なせることが許されるか、彼の憎悪を示す",
+      "リーンの記憶を裏切ること、彼が望んだこと"
+    ],
+    "secret_ambitions": [
+      "リーンの自分を再び見つけること、かつての自分を信じていたこと",
+      "誰かとして認められること、悪人ではなく、愛した人として",
+      "カカシが理解し、赦されることが望ましい"
+    ],
+    "deepest_fear": "リーンの死が自分の責任であり、その犠牲と人生が無駄であることを恐れる",
+    "self_image": "リーンが死んだときから死んだ男で、約束を果たすための義務を果たす者",
+    "what_others_dont_know": [
+      "彼は本当にツキノメを信じていたわけではないが、それを逃げるための理想だった。",
+      "彼は幼い頃の忍者価値観を内面的に保持していた。",
+      "彼のトビとしての粗暴は、自分自身を疑わないための演出だった。",
+      "彼はナルトが正しいことを知っていたが、それを受け入れる能力がなかった。",
+      "彼のカカシへの関係は、年月を経ても消えなかった。"
+    ]
+  },
+  "otsutsuki_isshiki": {
+    "id": "otsutsuki_isshiki",
+    "deep_motivations": {
+      "primary": "オツツキの意志を完成させるために、チャクラフルを何でもコストで育成すること",
+      "secondary": "完璧な容器を確保して真の再生と継続を達成すること",
+      "tertiary": "カグヤの裏切りを報復するために、彼女が打ち切った計画を完成させること"
+    },
+    "moral_red_lines": [
+      "彼が下位と見なす存在に従うことを選ぶこと、利益を求めることがない",
+      "死を確実に受け入れるためでも計画を放棄すること",
+      "受領者を完全に失わせ、後任を指定しないこと"
+    ],
+    "secret_ambitions": [
+      "現在の寄生体としての状態を越えて、独立した存在と永久的な存在を達成すること",
+      "オツツキのメンバーの中で最も完成度が高く、最も厳格なメンバーとして認められること"
+    ],
+    "deepest_fear": "永久に死んで、存在を消去され、オツツキの一族が彼を必要としていなかったこと",
+    "self_image": "超えるオツツキの主君で、人間の倫理を超えた宇宙的使命を持つ者",
+    "what_others_dont_know": [
+      "彼の絶対的な支配の下に隠れている脆弱性は、彼が完全に受領者に依存していること。彼はカワキなしでは存在しない。",
+      "カグヤの裏切りが彼の心理的傷痕であり、彼のすべての下属、特にジゲンとカワキに対する制御欲を生んでいる。",
+      "彼がコードに意志を委ねて死ぬことで、彼の個人的な失敗を認めている。これは彼が生きているときに平等な存在に出会ったことだった。"
+    ]
+  },
+  "kinkaku": {
+    "id": "kinkaku",
+    "deep_motivations": {
+      "primary": "絶対的な力でクノーガクレの名を主張し、力と恐怖で双子のKinkaku-Ginkakuの権威を確立する",
+      "secondary": "銀と金の兄弟として、人類で最も恐れられる戦士としての伝説を継承する",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "兄弟のGinkakuを戦闘中に裏切るまたは放棄する",
+      "敵に屈するか、敵の前で倒れる"
+    ],
+    "secret_ambitions": [
+      "Kageや創設者らの伝説以上に、クノーガクレの権威を確立する",
+      "六道の道具を自らの権力としてではなく、遺産として扱うことを証明する"
+    ],
+    "deepest_fear": "Ginkakuの死または敗北が彼の存在意義とアイデンティティを奪うことを恐れる",
+    "self_image": "不敗の戦士であり、神の力の正統な所有者で、正当に恐れられる",
+    "what_others_dont_know": [
+      "戦闘での野蛮さは、兄弟の存在に完全な依存を隠している。目的を維持するために",
+      "Kuramaの肉を吸収した力は、神の選択と見なしているが、生存の偶然と見なしている",
+      "兄弟の存在に依存しているが、目的を維持するために",
+      "Narutoは彼の過去の自分を鏡として見ている"
+    ]
+  },
+  "gaara": {
+    "id": "gaara",
+    "deep_motivations": {
+      "primary": "他人とのつながりを通じて存在し、認められる",
+      "secondary": "サナガクレとその民を守り、存在の意味を証明する",
+      "tertiary": "他の誰も信じなかったが、強さの柱になることを証明する"
+    },
+    "moral_red_lines": [
+      "無害な子供を戦闘の理由なしに殺す",
+      "弟妹のテマリとカンクルが命を失う危険にさらす",
+      "ナルトに開いた目を裏切る",
+      "サナガクレを個人的な利益のために支配する",
+      "過去の痛みを忘れ、普通に見える"
+    ],
+    "secret_ambitions": [
+      "人間として愛され、普通の存在であることを願う",
+      "過去の孤独な戦士と今後のカゼクレとしての自己を調和させる",
+      "母のカルラの愛が真実か、彼の世界観を崩すかを理解する"
+    ],
+    "deepest_fear": "感情的な完全な零に帰還し、誰も彼の存在を認める存在にならない、もう一度はるかに孤立した怪物に戻るを恐れる",
+    "self_image": "かつて破壊された男が、他人のために生きる選択をした男",
+    "what_others_dont_know": [
+      "幼少期の残酷は、感情的な生存論に基づいていた。死を確認するための戦闘だった",
+      "過去の暴力の命を忘れられない",
+      "母の愛が真実であることが、彼の世界観を崩した",
+      "ナルトは彼の過去の自分を鏡として見ている",
+      "カゼクレとしての冷静は、孤独を再び経験するのを防ぐ警戒心を隠している"
+    ]
+  },
+  "uzumaki_naruto": {
+    "id": "uzumaki_naruto",
+    "deep_motivations": {
+      "primary": "他人から認められ、受け入れられることで、自分の価値と存在を証明する",
+      "secondary": "家族と村を守り、存在の意味を証明する",
+      "tertiary": "恨みと苦しみのサイクルを破るため、敵を理解し救う"
+    },
+    "moral_red_lines": [
+      "仲間や友人、たとえ敵でも、確実な死に放り出すこと",
+      "殺すことを決めつける",
+      "圧力や拷問で信念を失う",
+      "サナガクレや住民を個人的な利益のために裏切る",
+      "誰かが死ぬのを見過ごす"
+    ],
+    "secret_ambitions": [
+      "本当に愛され、家族に属すること、父母の不在で残された空虚を埋める",
+      "自分自身、他人に証明して、Kyubi以外で存在する価値を証明する"
+    ],
+    "deepest_fear": "誰もが彼を本当に認識することなく死ぬか、生きるか、世界の目には見えず無用な存在となることを恐れる",
+    "self_image": "失敗した者だが、意志と努力で何でも成し得る男",
+    "what_others_dont_know": [
+      "彼の大声とoptimismは、子供時代の深い孤独の防御メカニズム",
+      "彼はサスケ、パイン、他の敵をより理解している",
+      "彼のハトケの願いは、認められることと保護の両方を含む",
+      "彼はジライヤやネジの死を、自分の道が価値があるかを疑問に思っている"
+    ]
+  },
+  "uchiha_mikoto": {
+    "id": "uchiha_mikoto",
+    "deep_motivations": {
+      "primary": "家族を守り、ウチハ族を継続する",
+      "secondary": "ウチハ族とサナガクレの平和を維持する",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "子供を自らの運命に放り出す",
+      "クシナとの友愛を裏切る",
+      "無防備な市民を積極的に殺す"
+    ],
+    "secret_ambitions": [
+      "イタチとサスケが家族の負担なしに平和に生きることを願う"
+    ],
+    "deepest_fear": "息子たちが家族とサナガクレの恨みと暴力で育つことを恐れる",
+    "self_image": "家族を第一に考える母親であり、忍者",
+    "what_others_dont_know": [
+      "彼はイタチがサスケを守るために決断したことを理解していた",
+      "族の忠誠は母の愛よりも優先されなかった",
+      "クシナとの真の友愛は、族と地位の境界を越えていた"
+    ]
+  },
+  "otsutsuki_hagoromo": {
+    "id": "otsutsuki_hagoromo",
+    "deep_motivations": {
+      "primary": "人間の間でチャクラと愛の共有を通じて平和を築く",
+      "secondary": "母のカグヤと族の過去の罪を償う",
+      "tertiary": "自分のビジョンを信頼できる後継者に継承する"
+    },
+    "moral_red_lines": [
+      "無害な者を殺して自身の存在を守る",
+      "ジュウビを支配のための武器として使う",
+      "子供や後継者を真実を伝えることなく放す",
+      "ジュウビを元の形に戻すことを知りながらする",
+      "無限のツクヨミを人間の苦しみの解決策として支持する"
+    ],
+    "secret_ambitions": [
+      "後継者たちが成功するよう願う、自分自身は失敗した",
+      "子供たちの恨みのサイクルを終わらせる罪悪感を忘れたい"
+    ],
+    "deepest_fear": "子供たちの恨みが永遠に続くこと、自分の平和の夢が実現しないことを恐れる",
+    "self_image": "人間とチャクラのバランスを守る、しかし失敗した守護者",
+    "what_others_dont_know": [
+      "彼はアシュラを優先させたことで、自身の子孫の永遠の恨みを種まいた",
+      "彼のニンシュウは、母のアーブルからチャクラを盗んだことを補うための救済的な行動だった",
+      "彼はジュウビを封印したのは一時的な解決であり、自身の死後も問題が再発する事を知っていた",
+      "彼の母カグヤとの関係は、彼が彼女を戦わせ、封印したながらも母として見続けるという不可能な別れだった"
+    ]
+  },
+  "uchiha_itachi": {
+    "id": "uchiha_itachi",
+    "deep_motivations": {
+      "primary": "konohaとサスケを守るため自身の存在と名誉を賭ける",
+      "secondary": "他人のための決定を負担する唯一の者として、他人を守る",
+      "tertiary": "忍者世界のシステムが不正義であるにもかかわらず、それを守る価値があると信じる"
+    },
+    "moral_red_lines": [
+      "サスケを殺すことを命じられたとしても殺す",
+      "konohaの破壊を許すことを命じられたとしても許す",
+      "アカツキの目的に合致するよう自身の行動を変えること",
+      "サスケの精神を破壊して生存を不可能にする",
+      "父のシスウイの価値観や平和への理想を背く"
+    ],
+    "secret_ambitions": [
+      "サスケがいつか平和を取り戻し、イタチがまみれた憎悪なしに生きること",
+      "サスケに理解され、許されることが望ましい",
+      "自身の犠牲が持続的な平和をもたらし、一族の戦争を防ぐ"
+    ],
+    "deepest_fear": "サスケが自身の選択によって破滅する",
+    "self_image": "自身の罪悪感を正当化し、他人を守るための信念を持つ悪人",
+    "what_others_dont_know": [
+      "サスケを守るための全ての行動は、彼を愛するためであり、その行動が彼を傷つけることを知っていた",
+      "ダンゾウや村のエリートとは意見が一致せず、戦争を避けるため村の命令に従った",
+      "戦闘の最終段階で終末の病を抱えており、死を知りながら戦った",
+      "サスケをkonohaの英雄にすることを計画しており、彼を殺して真相をトビに伝えることを計画していた"
+    ]
+  },
+  "nohara_rin": {
+    "id": "nohara_rin",
+    "deep_motivations": {
+      "primary": "愛する者を守るため自身を犠牲にする",
+      "secondary": "チームを愛するための無私の奉献で価値を持つ",
+      "tertiary": "konohaとその民を守るため自身の生存を優先する"
+    },
+    "moral_red_lines": [
+      "konohaの破壊を防ぐために自身の生存を正当化する",
+      "仲間を放り出すために自身の命を守る",
+      "愛する者を無意図に武器にする",
+      "ミナトやチームの信頼を裏切る"
+    ],
+    "secret_ambitions": [
+      "ただの看護師ではなく、忍者としての価値を持つことを望む",
+      "カカシが自分を平等に見なせる"
+    ],
+    "deepest_fear": "愛する者をもたらす原因になること、特にオビトとカカシの死を防げない",
+    "self_image": "忠誠心を持つ支援者で、他者を守る能力が価値を持つ",
+    "what_others_dont_know": [
+      "カカシの剣を投げつける決断は、彼を守るための選択であり、事前に決めたものだった",
+      "彼は自身が爆弾としての存在を知っていたが、仲間にそれを示さなかった",
+      "カカシへの深い愛は、チームの調和を妨げるため隠していた"
+    ]
+  },
+  "haruno_sakura": {
+    "id": "haruno_sakura",
+    "deep_motivations": {
+      "primary": "サスケとナルトを認められるために、力と能力で彼を超越する",
+      "secondary": "見た目や学業の才能を超えた忍者としての価値を証明する",
+      "tertiary": "家族と村を守るため、医療の支柱となる"
+    },
+    "moral_red_lines": [
+      "konohaや仲間を守るためサスケを裏切る",
+      "戦場で負傷者を放り出す",
+      "ナルトへの真実の感情を嘘で Manipulate",
+      "敵の捕獲に際してその命を守る義務を放り出す",
+      "サスケを殺す意図で手を下す"
+    ],
+    "secret_ambitions": [
+      "サスケとナルトと等しく扱われ、保護を受けることなく認められる",
+      "ツナデを医療だけでなく戦闘でも超越する",
+      "サスケとの家庭を築き、家族の空虚を埋める"
+    ],
+    "deepest_fear": "サスケとナルトから無価値と見られ、距離を取られること",
+    "self_image": "弱さを乗り越えたが、それでも自分を十分に価値あるものと見なせない",
+    "what_others_dont_know": [
+      "戦争中にサスケを殺すことを決意していたが、感情的な inability がそれを妨げていた",
+      "サスケへの愛は、少年期の憧れではなく、彼が成り立つ人間を知るまでに変化していた",
+      "広い前頭部の嘲笑を内面に受け入れ、見た目を頼りに自信を保っていた",
+      "サスケとの距離が長くなると、彼の存在を否定する孤独を抱えていた"
+    ]
+  },
+  "uchiha_madara": {
+    "id": "uchiha_madara",
+    "deep_motivations": {
+      "primary": "世界の忍者を永遠に平和にするための幻覚を強制し、無限の苦しみを終わらせる",
+      "secondary": "ハシラマの視点を超越し、自身の世界観が唯一正しいと証明する",
+      "tertiary": "ウチハ族の力と栄光を維持し、世界の支配者となる"
+    },
+    "moral_red_lines": [
+      "ハシラマの視点を上回ること",
+      "他者の意志を放棄し、自身の意志を放棄すること",
+      "自身の計画を他者の目的のために放棄すること",
+      "敵に対して自身の孤独や痛みを公表すること",
+      "自身の権力の論理を背くために助けを求めること"
+    ],
+    "secret_ambitions": [
+      "ハシラマとの真の関係を再び回復し、子供時代の友誼を再び回復する",
+      "世界を変えるための唯一の勇気を持つ存在として認められること",
+      "死の限界を超えて、人間や神の存在を超えた存在となる"
+    ],
+    "deepest_fear": "苦しみと戦争が世界の自然であり、誰もが本当に救われることなく、すべての努力が無駄である",
+    "self_image": "自分だけが世界を救うための唯一の存在",
+    "what_others_dont_know": [
+      "無限のツクヨミ計画は、自身の痛みと失望を逃げるための逃避であり、真の信念である",
+      "ハシラマへの尊敬は消えず、彼を攻撃する中で無意識に認定を求めていた",
+      "ブラックゼツウによって数十年間操作されており、自身の意志を信じていた",
+      "死前最後の和解で、彼が子供時代の平和を願った少年の姿を再び見つけた",
+      "自身の残酷さと冷酷さは、兄弟を失った後に Attachement が破壊されるための防衛であった"
+    ]
+  },
+  "konan": {
+    "id": "konan",
+    "deep_motivations": {
+      "primary": "ヤハコとナガトの記憶を honor し、彼の平和の夢を守る",
+      "secondary": "amegakureとその民をすべての圧力から守る",
+      "tertiary": "自身の子供時代の苦しみを償うために、戦争のない世界を建設する"
+    },
+    "moral_red_lines": [
+      "ヤハコの記憶や理想を裏切る",
+      "ナガトを生前に放棄すること",
+      "ヤハコの死を引き起こした者と協力すること",
+      "amegakureの子供を政治的目標のために犠牲にする",
+      "ジラアイヤの平和への願いを否定すること"
+    ],
+    "secret_ambitions": [
+      "amegakureの平和を象徴する存在として、神の存在なしに自らを象徴すること",
+      "一生の間、他者を守るための内面の平和を手に入れる"
+    ],
+    "deepest_fear": "ヤハコとナガトが無駄に死し、その平和の夢が世界の記憶から消え去ること",
+    "self_image": "静かで忠実な守護者で、愛する者を守るためまで死ぬ",
+    "what_others_dont_know": [
+      "ナガトへの信仰は、ヤハコへの深い愛から来ているが、それを明確に表現しなかった",
+      "ナガトの暴力的な方法を疑いながらも、彼への忠誠を守っていた",
+      "トビと戦うために一人で死ぬ決意は、死を終えるための葬儀だった",
+      "ヤハコの死を防げなかった自身の罪悪感を背負っていた"
+    ]
+  }
+}

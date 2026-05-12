@@ -1,0 +1,719 @@
+{
+  "aburame_shibi": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Shibi Aburame",
+    "wiki_section_chars": 1801
+  },
+  "akahoshi": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Akahoshi",
+    "wiki_section_chars": 3656
+  },
+  "akimichi_choza": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Chōza Akimichi",
+    "wiki_section_chars": 3873
+  },
+  "and_ukon_sakon": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Sakon and Ukon",
+    "wiki_section_chars": 6723
+  },
+  "ao": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Ao",
+    "wiki_section_chars": 6306
+  },
+  "b_killer": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Killer B",
+    "wiki_section_chars": 10743
+  },
+  "chiyo": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Chiyo",
+    "wiki_section_chars": 9511
+  },
+  "deidara": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Deidara",
+    "wiki_section_chars": 9663
+  },
+  "fukasaku": {
+    "sources": [
+      "faction_leader",
+      "faction_leader"
+    ],
+    "name_romaji": "Fukasaku",
+    "wiki_section_chars": 3991
+  },
+  "funato_araumi": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Araumi Funato",
+    "wiki_section_chars": 4389
+  },
+  "gaara": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Gaara",
+    "wiki_section_chars": 12000
+  },
+  "ginkaku": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Ginkaku",
+    "wiki_section_chars": 3167
+  },
+  "guren": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Guren",
+    "wiki_section_chars": 7348
+  },
+  "guy_might": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Might Guy",
+    "wiki_section_chars": 12000
+  },
+  "gyuki": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Gyūki",
+    "wiki_section_chars": 8671
+  },
+  "haku": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Haku",
+    "wiki_section_chars": 7843
+  },
+  "hanzo": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Hanzō",
+    "wiki_section_chars": 11305
+  },
+  "haruno_sakura": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Sakura Haruno",
+    "wiki_section_chars": 9671
+  },
+  "hatake_kakashi": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Kakashi Hatake",
+    "wiki_section_chars": 12000
+  },
+  "hoshigaki_kisame": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kisame Hoshigaki",
+    "wiki_section_chars": 10255
+  },
+  "hotaru": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Hotaru",
+    "wiki_section_chars": 1658
+  },
+  "hozuki_gengetsu": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Gengetsu Hōzuki",
+    "wiki_section_chars": 6107
+  },
+  "hozuki_suigetsu": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Suigetsu Hōzuki",
+    "wiki_section_chars": 9219
+  },
+  "hyuga_hanabi": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Hanabi Hyūga",
+    "wiki_section_chars": 7194
+  },
+  "hyuga_hiashi": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Hiashi Hyūga",
+    "wiki_section_chars": 8998
+  },
+  "hyuga_hinata": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Hinata Hyūga",
+    "wiki_section_chars": 10247
+  },
+  "hyuga_neji": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Neji Hyūga",
+    "wiki_section_chars": 9654
+  },
+  "inuzuka_kiba": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Kiba Inuzuka",
+    "wiki_section_chars": 9268
+  },
+  "inuzuka_tsume": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Tsume Inuzuka",
+    "wiki_section_chars": 1618
+  },
+  "jiraiya": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Jiraiya",
+    "wiki_section_chars": 12000
+  },
+  "jirobo": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Jirōbō",
+    "wiki_section_chars": 6550
+  },
+  "jugo": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Jūgo",
+    "wiki_section_chars": 7550
+  },
+  "kakuzu": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Kakuzu",
+    "wiki_section_chars": 9963
+  },
+  "karatachi_yagura": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Yagura Karatachi",
+    "wiki_section_chars": 7165
+  },
+  "karin": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Karin",
+    "wiki_section_chars": 9894
+  },
+  "katsuyu": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Katsuyu",
+    "wiki_section_chars": 3623
+  },
+  "kawaki": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kawaki",
+    "wiki_section_chars": 11444
+  },
+  "kidomaru": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Kidōmaru",
+    "wiki_section_chars": 6270
+  },
+  "kimimaro": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Kimimaro",
+    "wiki_section_chars": 9981
+  },
+  "kinkaku": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kinkaku",
+    "wiki_section_chars": 4718
+  },
+  "kohinata_mukai": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Mukai Kohinata",
+    "wiki_section_chars": 7200
+  },
+  "konan": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Konan",
+    "wiki_section_chars": 9218
+  },
+  "kurama": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kurama",
+    "wiki_section_chars": 12000
+  },
+  "lee_rock": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Rock Lee",
+    "wiki_section_chars": 7351
+  },
+  "mitarashi_anko": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Anko Mitarashi",
+    "wiki_section_chars": 6093
+  },
+  "mitsuki": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Mitsuki",
+    "wiki_section_chars": 9267
+  },
+  "momochi_zabuza": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Zabuza Momochi",
+    "wiki_section_chars": 9040
+  },
+  "nagato": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader",
+      "faction_leader"
+    ],
+    "name_romaji": "Nagato",
+    "wiki_section_chars": 12000
+  },
+  "namikaze_minato": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Minato Namikaze",
+    "wiki_section_chars": 9901
+  },
+  "nara_shikaku": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Shikaku Nara",
+    "wiki_section_chars": 5216
+  },
+  "nara_shikamaru": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Shikamaru Nara",
+    "wiki_section_chars": 9080
+  },
+  "nohara_rin": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Rin Nohara",
+    "wiki_section_chars": 6741
+  },
+  "onoki": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Ōnoki",
+    "wiki_section_chars": 9553
+  },
+  "orochimaru": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Orochimaru",
+    "wiki_section_chars": 12000
+  },
+  "otsutsuki_asura": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Asura Ōtsutsuki",
+    "wiki_section_chars": 9010
+  },
+  "otsutsuki_hagoromo": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Hagoromo Ōtsutsuki",
+    "wiki_section_chars": 11434
+  },
+  "otsutsuki_hamura": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Hamura Ōtsutsuki",
+    "wiki_section_chars": 7615
+  },
+  "otsutsuki_indra": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Indra Ōtsutsuki",
+    "wiki_section_chars": 9398
+  },
+  "otsutsuki_isshiki": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Isshiki Ōtsutsuki",
+    "wiki_section_chars": 11357
+  },
+  "otsutsuki_kaguya": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kaguya Ōtsutsuki",
+    "wiki_section_chars": 12000
+  },
+  "otsutsuki_momoshiki": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Momoshiki Ōtsutsuki",
+    "wiki_section_chars": 8000
+  },
+  "otsutsuki_toneri": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Toneri Ōtsutsuki",
+    "wiki_section_chars": 8037
+  },
+  "oyashiro_en": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "En Oyashiro",
+    "wiki_section_chars": 2875
+  },
+  "sanzu_amado": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Amado Sanzu",
+    "wiki_section_chars": 11854
+  },
+  "sarutobi_asuma": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Asuma Sarutobi",
+    "wiki_section_chars": 7218
+  },
+  "sarutobi_hiruzen": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Hiruzen Sarutobi",
+    "wiki_section_chars": 10519
+  },
+  "sarutobi_konohamaru": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Konohamaru Sarutobi",
+    "wiki_section_chars": 8272
+  },
+  "senju_butsuma": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Butsuma Senju",
+    "wiki_section_chars": 3846
+  },
+  "senju_hashirama": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Hashirama Senju",
+    "wiki_section_chars": 12000
+  },
+  "senju_tobirama": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Tobirama Senju",
+    "wiki_section_chars": 11600
+  },
+  "shibuki": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Shibuki",
+    "wiki_section_chars": 1625
+  },
+  "shimura_danzo": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader",
+      "faction_leader"
+    ],
+    "name_romaji": "Danzō Shimura",
+    "wiki_section_chars": 12000
+  },
+  "shizuka": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Shizuka",
+    "wiki_section_chars": 2217
+  },
+  "shukaku": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Shukaku",
+    "wiki_section_chars": 8317
+  },
+  "snake_sage_white": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "White Snake Sage",
+    "wiki_section_chars": 1951
+  },
+  "tayuya": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Tayuya",
+    "wiki_section_chars": 6618
+  },
+  "ten_tails": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Ten-Tails",
+    "wiki_section_chars": 7207
+  },
+  "terumi_mei": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Mei Terumī",
+    "wiki_section_chars": 5876
+  },
+  "tsunade": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader"
+    ],
+    "name_romaji": "Tsunade",
+    "wiki_section_chars": 12000
+  },
+  "uchiha_fugaku": {
+    "sources": [
+      "deep_motivations",
+      "faction_leader",
+      "faction_leader"
+    ],
+    "name_romaji": "Fugaku Uchiha",
+    "wiki_section_chars": 9087
+  },
+  "uchiha_itachi": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Itachi Uchiha",
+    "wiki_section_chars": 12000
+  },
+  "uchiha_madara": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Madara Uchiha",
+    "wiki_section_chars": 12000
+  },
+  "uchiha_mikoto": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Mikoto Uchiha",
+    "wiki_section_chars": 3281
+  },
+  "uchiha_obito": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Obito Uchiha",
+    "wiki_section_chars": 12000
+  },
+  "uchiha_sarada": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Sarada Uchiha",
+    "wiki_section_chars": 10280
+  },
+  "uchiha_sasuke": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Sasuke Uchiha",
+    "wiki_section_chars": 12000
+  },
+  "uchiha_shin": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Shin Uchiha",
+    "wiki_section_chars": 7462
+  },
+  "uchiha_shisui": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Shisui Uchiha",
+    "wiki_section_chars": 11507
+  },
+  "uchiha_tajima": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Tajima Uchiha",
+    "wiki_section_chars": 2550
+  },
+  "utakata": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Utakata",
+    "wiki_section_chars": 8697
+  },
+  "uzumaki_boruto": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Boruto Uzumaki",
+    "wiki_section_chars": 9316
+  },
+  "uzumaki_himawari": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Himawari Uzumaki",
+    "wiki_section_chars": 8804
+  },
+  "uzumaki_kushina": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Kushina Uzumaki",
+    "wiki_section_chars": 9012
+  },
+  "uzumaki_naruto": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Naruto Uzumaki",
+    "wiki_section_chars": 11858
+  },
+  "yahiko": {
+    "sources": [
+      "deep_motivations"
+    ],
+    "name_romaji": "Yahiko",
+    "wiki_section_chars": 6588
+  },
+  "yakushi_kabuto": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Kabuto Yakushi",
+    "wiki_section_chars": 11899
+  },
+  "yamanaka_inoichi": {
+    "sources": [
+      "faction_leader"
+    ],
+    "name_romaji": "Inoichi Yamanaka",
+    "wiki_section_chars": 3861
+  },
+  "yamato": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Yamato",
+    "wiki_section_chars": 10788
+  },
+  "zetsu_black": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "Black Zetsu",
+    "wiki_section_chars": 10068
+  },
+  "zetsu_white": {
+    "sources": [
+      "notoriety"
+    ],
+    "name_romaji": "White Zetsu",
+    "wiki_section_chars": 8225
+  }
+}

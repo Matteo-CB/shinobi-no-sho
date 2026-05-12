@@ -9,6 +9,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from shinobi.i18n import t
+
 DICE_RE = re.compile(r"^(\d+)d(\d+)$")
 
 
@@ -43,11 +45,11 @@ def roll(seed: int, dice: str = "1d20", modifier: int = 0) -> RollResult:
     """Lance des des a partir d'un seed et retourne le resultat + le prochain seed."""
     m = DICE_RE.match(dice)
     if not m:
-        raise ValueError(f"Format de des invalide: {dice}")
+        raise ValueError(t("engine.rng.error.invalid_dice_format", dice=dice))
     count = int(m.group(1))
     sides = int(m.group(2))
     if count < 1 or sides < 2:
-        raise ValueError(f"Des invalides: {dice}")
+        raise ValueError(t("engine.rng.error.invalid_dice", dice=dice))
     s = seed
     total = 0
     for _ in range(count):
@@ -65,7 +67,7 @@ def roll(seed: int, dice: str = "1d20", modifier: int = 0) -> RollResult:
 def random_choice(seed: int, options: list) -> tuple[object, int]:
     """Choix aleatoire d'un element dans une liste."""
     if not options:
-        raise ValueError("liste vide pour random_choice")
+        raise ValueError(t("engine.rng.error.empty_options"))
     s = next_seed(seed)
     idx = s % len(options)
     return options[idx], s

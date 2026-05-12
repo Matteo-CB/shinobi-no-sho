@@ -41,6 +41,7 @@ from shinobi.agents.selector import (
     build_user_prompt,
     deterministic_fallback_action,
 )
+from shinobi.i18n import t
 from shinobi.logging_setup import get_logger
 
 logger = get_logger(__name__)
@@ -60,10 +61,16 @@ BATCH_ACTIONS_JSON_SCHEMA: dict[str, Any] = {
 }
 
 
-BATCH_SYSTEM_PROMPT = """Tu es un coordinateur Naruto qui produit les actions de PLUSIEURS PNJ
-en UNE seule reponse. On te donne N contextes de PNJ. Tu produis EXACTEMENT N actions
-(une par PNJ) dans le meme ordre que les contextes. Chaque action suit le schema standard.
-Reponse : JSON {"actions": [<action1>, <action2>, ...]}. Pas de markdown."""
+def default_batch_system_prompt() -> str:
+    """Resolve le system prompt batch localise via i18n."""
+    return t("agents.batch_selector.system_prompt")
+
+
+def __getattr__(name: str) -> str:
+    """Compat pour `from shinobi.agents.batch_selector import BATCH_SYSTEM_PROMPT`."""
+    if name == "BATCH_SYSTEM_PROMPT":
+        return default_batch_system_prompt()
+    raise AttributeError(name)
 
 
 # (system, user, schema, model_id, temperature) -> dict | None
@@ -75,18 +82,14 @@ def build_batch_user_prompt(
 ) -> str:
     """Compose un prompt batch : numerote les agents et concatene les contextes."""
     blocks: list[str] = [
-        f"[BATCH SIZE] {len(contexts)} agents a faire agir simultanement.",
+        t("agents.batch_selector.batch_size_line", count=len(contexts)),
         "",
     ]
     for i, ctx in enumerate(contexts):
-        blocks.append(f"=== Agent #{i + 1} : {ctx.npc_id} ===")
+        blocks.append(t("agents.batch_selector.agent_header", index=i + 1, npc_id=ctx.npc_id))
         blocks.append(build_user_prompt(ctx))
         blocks.append("")
-    blocks.append(
-        "[INSTRUCTION] Produis EXACTEMENT "
-        f"{len(contexts)} actions, dans l'ordre des agents (1 a {len(contexts)}). "
-        "Format : JSON {\"actions\": [...]}. Strictement conforme au schema."
-    )
+    blocks.append(t("agents.batch_selector.instruction", count=len(contexts)))
     return "\n".join(blocks)
 
 
@@ -105,13 +108,14 @@ class BatchActionSelector:
         batch_size: int = 5,
         model_id: str = "qwen3-4b",
         temperature: float = 0.7,
-        system_prompt: str = BATCH_SYSTEM_PROMPT,
+        system_prompt: str | None = None,
     ) -> None:
         self._llm_call = llm_call
         self._cache = cache
         self._batch_size = max(1, batch_size)
         self._model_id = model_id
         self._temperature = temperature
+        # None = resoudre le default localise au moment de l'usage.
         self._system_prompt = system_prompt
         self._cache_hits = 0
         self._cache_misses = 0
@@ -164,8 +168,9 @@ class BatchActionSelector:
         """Une inference batch + parse + fallback per-agent si echec."""
         contexts = [ctx for _m, ctx in batch]
         user_prompt = build_batch_user_prompt(contexts)
+        system_prompt = self._system_prompt or default_batch_system_prompt()
         cache_key = compute_cache_key(
-            f"{self._system_prompt}\n###\n{user_prompt}",
+            f"{system_prompt}\n###\n{user_prompt}",
             self._model_id,
             self._temperature,
         )
@@ -185,7 +190,7 @@ class BatchActionSelector:
         if self._llm_call is not None:
             try:
                 raw = await self._llm_call(
-                    self._system_prompt,
+                    system_prompt,
                     user_prompt,
                     BATCH_ACTIONS_JSON_SCHEMA,
                     self._model_id,

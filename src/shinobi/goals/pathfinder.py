@@ -17,8 +17,8 @@ from shinobi.goals.breadcrumbs import (
     make_breadcrumb,
 )
 from shinobi.goals.declaration import Goal
+from shinobi.i18n.prompts_loader import load_prompt
 from shinobi.llm.client import LLMClient, Message
-from shinobi.llm.prompts import GOAL_PATHFINDER_SYSTEM_PROMPT
 from shinobi.llm.schema import GOAL_PATHFINDER_SCHEMA
 from shinobi.rag.contextualize import TurnContextRequest, build_turn_context
 from shinobi.rag.retriever import Retriever
@@ -76,7 +76,7 @@ class GoalPathfinder:
         )
         response = await self.client.generate(
             messages=[
-                Message(role="system", content=GOAL_PATHFINDER_SYSTEM_PROMPT),
+                Message(role="system", content=load_prompt("goal_pathfinder")),
                 Message(role="user", content=user_message),
             ],
             schema=GOAL_PATHFINDER_SCHEMA,

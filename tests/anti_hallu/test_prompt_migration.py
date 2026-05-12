@@ -50,21 +50,26 @@ class TestNarratorPromptMigration:
         )
 
     def test_consolidated_template_keeps_canon_fidelity_block(self) -> None:
+        # Phase i18n.10 : la template est lang-resolue ; defaut serveur = EN.
+        # On verifie que les blocs structurels EN sont presents (les variantes
+        # FR sont couvertes par tests/unit/test_llm_prompts_i18n.py).
         prompt = build_system_prompt()
-        assert "FIDELITE CANON STRICTE" in prompt
-        assert "FIDELITE TEMPORELLE STRICTE" in prompt
-        assert "REGLES SUR LE JOUEUR (OC)" in prompt
-        assert "STRUCTURE DE SORTIE JSON" in prompt
+        assert "STRICT CANON FIDELITY" in prompt
+        assert "STRICT TEMPORAL FIDELITY" in prompt
+        assert "RULES REGARDING THE PLAYER (OC)" in prompt
+        assert "JSON OUTPUT STRUCTURE" in prompt
 
     def test_consolidated_template_keeps_player_oc_rules(self) -> None:
         prompt = build_system_prompt()
         assert "OC (original character)" in prompt
-        assert "ami proche" in prompt or "ami(e)" in prompt
-        assert "REJETÉE" in prompt or "REJETEE" in prompt
+        assert "close friend" in prompt or "friends with" in prompt
+        assert "REJECTED" in prompt
 
     def test_consolidated_template_keeps_temporal_constraints(self) -> None:
         prompt = build_system_prompt()
-        assert "[FAITS CANONIQUES NPC]" in prompt
+        # Le bloc s'appelle differemment en EN mais contient les memes
+        # exemples (Konohamaru/Itachi) en faits temporels canoniques.
+        assert "NPC CANONICAL FACTS" in prompt or "[CANONICAL NPC FACTS]" in prompt
         assert "Konohamaru" in prompt
         assert "Itachi" in prompt
 

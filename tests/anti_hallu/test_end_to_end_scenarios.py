@@ -592,8 +592,12 @@ def test_phase_h_9_2_reaches_agent_input_in_runtime(tmp_path) -> None:
         f"Phase H 9.2 deep_motivations vide pour uchiha_itachi : "
         f"'{inputs.deep_motivations_text[:100]}'"
     )
-    # Doit contenir 'Drive principal' (cf build_deep_motivations_text)
-    assert "Drive principal" in inputs.deep_motivations_text
+    # Doit contenir 'Drive principal' (FR) ou 'Primary drive' (EN) selon la
+    # langue active (cf build_deep_motivations_text).
+    assert (
+        "Drive principal" in inputs.deep_motivations_text
+        or "Primary drive" in inputs.deep_motivations_text
+    )
 
 
 def test_phase_h_9_3_produces_real_tensions_in_runtime() -> None:

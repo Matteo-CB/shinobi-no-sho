@@ -25,6 +25,7 @@ logger = get_logger(__name__)
 
 from shinobi.agents.cache import LLMCache, compute_cache_key
 from shinobi.agents.types import Observation, Reflection
+from shinobi.i18n import t
 
 REFLECT_JSON_SCHEMA = {
     "type": "object",
@@ -55,9 +56,16 @@ REFLECT_JSON_SCHEMA = {
 }
 
 
-REFLECTOR_SYSTEM_PROMPT = """Tu es un agent narratif Naruto. On te montre N observations recentes
-d'un PNJ. Distille-les en 1 a 3 reflections de plus haut niveau (insights, patterns, conclusions).
-Chaque reflection cite les obs sources par id. Reponse JSON conforme au schema. Pas de markdown."""
+def default_reflector_system_prompt() -> str:
+    """Resolve le system prompt reflector localise via i18n."""
+    return t("agents.reflector.system_prompt")
+
+
+def __getattr__(name: str) -> str:
+    """Compat pour `from shinobi.agents.reflector import REFLECTOR_SYSTEM_PROMPT`."""
+    if name == "REFLECTOR_SYSTEM_PROMPT":
+        return default_reflector_system_prompt()
+    raise AttributeError(name)
 
 
 # (system, user, schema, model_id, temperature) -> dict | None
@@ -69,15 +77,13 @@ def build_reflect_prompt(
 ) -> str:
     """Compose le user prompt pour la reflection."""
     lines = [
-        f"[NPC] {npc_id}", f"[ANNEE] {year}",
-        "[OBSERVATIONS RECENTES]",
+        t("agents.reflector.npc_line", npc_id=npc_id),
+        t("agents.reflector.year_line", year=year),
+        t("agents.reflector.observations_header"),
     ]
     for o in observations:
         lines.append(f"  ({o.id}) [imp={o.importance:.2f}] {o.text}")
-    lines.append(
-        "\n[INSTRUCTION] Distille en 1-3 reflections (text, gist, importance, "
-        "source_observation_ids). JSON only.",
-    )
+    lines.append("\n" + t("agents.reflector.instruction"))
     return "\n".join(lines)
 
 
@@ -99,16 +105,18 @@ def deterministic_fallback_reflections(
     tokens: Counter[str] = Counter()
     for o in observations:
         tokens.update(_tokenize(o.text))
-    common = [t for t, _c in tokens.most_common(5) if len(t) >= 4]
+    common = [tk for tk, _c in tokens.most_common(5) if len(tk) >= 4]
     gist = (
-        f"{len(observations)} obs recentes : themes {', '.join(common)}"
+        t("agents.reflector.gist_with_themes", count=len(observations), themes=", ".join(common))
         if common
-        else f"{len(observations)} obs recentes"
+        else t("agents.reflector.gist_no_themes", count=len(observations))
     )
-    text = (
-        f"Synthese auto : {len(observations)} observations entre an "
-        f"{min(o.year for o in observations)} et {max(o.year for o in observations)}. "
-        f"Themes : {', '.join(common) or 'divers'}."
+    text = t(
+        "agents.reflector.synthesis_text",
+        count=len(observations),
+        year_min=min(o.year for o in observations),
+        year_max=max(o.year for o in observations),
+        themes=", ".join(common) or t("agents.reflector.themes_default"),
     )
     avg_imp = sum(o.importance for o in observations) / len(observations)
     return [Reflection(
@@ -140,7 +148,7 @@ class Reflector:
         temperature: float = 0.5,
         importance_threshold: float = 0.4,
         max_obs: int = 20,
-        system_prompt: str = REFLECTOR_SYSTEM_PROMPT,
+        system_prompt: str | None = None,
     ) -> None:
         self._llm_call = llm_call
         self._cache = cache
@@ -148,6 +156,7 @@ class Reflector:
         self._temperature = temperature
         self._importance_threshold = importance_threshold
         self._max_obs = max_obs
+        # None = resoudre le default localise au moment de l'usage.
         self._system_prompt = system_prompt
 
     @property
@@ -178,8 +187,9 @@ class Reflector:
             return []
 
         user_prompt = build_reflect_prompt(npc_id, obs_list, year)
+        system_prompt = self._system_prompt or default_reflector_system_prompt()
         cache_key = compute_cache_key(
-            f"{self._system_prompt}\n###\n{user_prompt}",
+            f"{system_prompt}\n###\n{user_prompt}",
             self._model_id,
             self._temperature,
         )
@@ -196,7 +206,7 @@ class Reflector:
         if self._llm_call is not None:
             try:
                 raw = await self._llm_call(
-                    self._system_prompt,
+                    system_prompt,
                     user_prompt,
                     REFLECT_JSON_SCHEMA,
                     self._model_id,

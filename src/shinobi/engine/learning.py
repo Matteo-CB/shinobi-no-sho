@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from shinobi.canon.models import Technique, WorldRules
 from shinobi.engine.character import Character, KnownTechnique, LearningTechnique
+from shinobi.i18n import t
 
 
 @dataclass(frozen=True)
@@ -19,27 +20,47 @@ def can_attempt_learning(character: Character, technique: Technique) -> Learning
     reasons: list[str] = []
     pre = technique.prerequisites
     if character.chakra.max < pre.min_chakra_pool:
-        reasons.append(f"chakra_pool {character.chakra.max} < {pre.min_chakra_pool}")
+        reasons.append(
+            t(
+                "engine.learning.reason.chakra_pool",
+                current=character.chakra.max,
+                required=pre.min_chakra_pool,
+            )
+        )
     if character.extended_stats.chakra_control < pre.min_chakra_control:
         reasons.append(
-            f"chakra_control {character.extended_stats.chakra_control} < {pre.min_chakra_control}"
+            t(
+                "engine.learning.reason.chakra_control",
+                current=character.extended_stats.chakra_control,
+                required=pre.min_chakra_control,
+            )
         )
     for nature in pre.required_natures:
         if nature not in character.chakra.natures_unlocked:
-            reasons.append(f"nature manquante: {nature}")
-    known_tech_ids = {t.technique_id for t in character.techniques_known}
+            reasons.append(t("engine.learning.reason.nature_missing", nature=nature))
+    known_tech_ids = {tk.technique_id for tk in character.techniques_known}
     for tech_id in pre.required_techniques:
         if tech_id not in known_tech_ids:
-            reasons.append(f"technique requise manquante: {tech_id}")
+            reasons.append(
+                t("engine.learning.reason.technique_missing", technique_id=tech_id)
+            )
     if (
         pre.kekkei_genkai_restriction
         and pre.kekkei_genkai_restriction not in character.kekkei_genkai
     ):
-        reasons.append(f"kekkei genkai requis: {pre.kekkei_genkai_restriction}")
+        reasons.append(
+            t("engine.learning.reason.kekkei_genkai_required", kekkei=pre.kekkei_genkai_restriction)
+        )
     if pre.clan_restriction and character.clan != pre.clan_restriction:
-        reasons.append(f"clan requis: {pre.clan_restriction}")
+        reasons.append(t("engine.learning.reason.clan_required", clan=pre.clan_restriction))
     if pre.min_age and character.age_years < pre.min_age:
-        reasons.append(f"age trop jeune: {character.age_years} < {pre.min_age}")
+        reasons.append(
+            t(
+                "engine.learning.reason.age_too_young",
+                current_age=character.age_years,
+                min_age=pre.min_age,
+            )
+        )
     return LearningEligibility(eligible=not reasons, reasons=reasons)
 
 
@@ -114,7 +135,7 @@ def start_learning(
     quality_modifier: float = 1.0,
 ) -> Character:
     """Insere une technique en cours d'apprentissage."""
-    if any(t.technique_id == technique_id for t in character.techniques_in_progress):
+    if any(tk.technique_id == technique_id for tk in character.techniques_in_progress):
         return character
     entry = LearningTechnique(
         technique_id=technique_id,

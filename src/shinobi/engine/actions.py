@@ -42,6 +42,7 @@ from shinobi.engine.rng import roll
 from shinobi.engine.stats import average_combat_stat
 from shinobi.engine.time import estimate_duration
 from shinobi.engine.world import WorldState
+from shinobi.i18n import t
 from shinobi.types import ActionOutcome, ActionType
 
 
@@ -113,32 +114,19 @@ def difficulty_for(action: Action, character: Character) -> int:
     return DIFFICULTY_MODERATE
 
 
-_STAT_LABELS_FR = {
-    "ninjutsu": "ton ninjutsu",
-    "taijutsu": "ton taijutsu",
-    "genjutsu": "ton genjutsu",
-    "intelligence": "ton intelligence",
-    "strength": "ta force physique",
-    "speed": "ta vitesse",
-    "stamina": "ton endurance",
-    "hand_seals": "ta dexterite aux mudras",
-    "chakra_control": "ton controle du chakra",
-    "willpower": "ta volonte",
-    "perception": "ta perception",
-    "social_charisma": "ton charisme",
-    "leadership": "ton leadership",
-    "medical_knowledge": "tes connaissances medicales",
-    "fuinjutsu_knowledge": "ton fuinjutsu",
-    "senjutsu_aptitude": "ton senjutsu",
-    "beauty": "ton apparence",
-    "luck": "ta fortune",
-    "lineage_value": "ton sang",
-    "chakra_reserves": "ta reserve de chakra naturelle",
-}
+_STAT_LABEL_KEYS = frozenset({
+    "ninjutsu", "taijutsu", "genjutsu", "intelligence", "strength", "speed",
+    "stamina", "hand_seals", "chakra_control", "willpower", "perception",
+    "social_charisma", "leadership", "medical_knowledge", "fuinjutsu_knowledge",
+    "senjutsu_aptitude", "beauty", "luck", "lineage_value", "chakra_reserves",
+})
 
 
 def _stat_label_fr(stat_name: str) -> str:
-    return _STAT_LABELS_FR.get(stat_name, stat_name)
+    """Resout le libelle localise d'une stat (fallback sur l'id si inconnue)."""
+    if stat_name in _STAT_LABEL_KEYS:
+        return t(f"engine.actions.stat_label.{stat_name}")
+    return stat_name
 
 
 _WEAPON_COMBAT_BONUS: dict[str, float] = {
@@ -191,7 +179,7 @@ def resolve_action(inputs: ResolutionInputs) -> ActionResult:
         return ActionResult(
             action=action,
             outcome=ActionOutcome.contextual_impossibility,
-            summary_fr="Le personnage est decede. Aucune action possible.",
+            summary_fr=t("engine.actions.dead"),
             seed_after=inputs.seed,
         )
 
@@ -210,19 +198,19 @@ def resolve_action(inputs: ResolutionInputs) -> ActionResult:
 
     if margin >= 10:
         outcome = ActionOutcome.full_success
-        summary = f"Reussite eclatante. {action.summary}"
+        summary = t("engine.actions.outcome.full_success_brilliant", summary=action.summary)
     elif margin >= 0:
         outcome = ActionOutcome.full_success
-        summary = f"Reussite. {action.summary}"
+        summary = t("engine.actions.outcome.full_success", summary=action.summary)
     elif margin >= -5:
         outcome = ActionOutcome.partial_success
-        summary = f"Reussite partielle, avec consequences. {action.summary}"
+        summary = t("engine.actions.outcome.partial_success", summary=action.summary)
     elif margin >= -10:
         outcome = ActionOutcome.minor_failure
-        summary = f"Echec sans degat majeur. {action.summary}"
+        summary = t("engine.actions.outcome.minor_failure", summary=action.summary)
     else:
         outcome = ActionOutcome.catastrophic_failure
-        summary = f"Echec critique. {action.summary}"
+        summary = t("engine.actions.outcome.catastrophic_failure", summary=action.summary)
 
     duration_hours = int(action.parameters.get("duration_hours", 0))
     if duration_hours > 0:
@@ -275,11 +263,7 @@ def apply_action_to_state(
             new_result = result.model_copy(
                 update={
                     "outcome": ActionOutcome.contextual_impossibility,
-                    "summary_fr": (
-                        f"Tu te prends en main et essaies de changer {label}, mais cela ne "
-                        f"vient pas de ta volonte. C'est dans ton sang, dans tes ancetres. "
-                        f"Aucun effort ne modifiera ce que la naissance t'a donne."
-                    ),
+                    "summary_fr": t("engine.actions.train_stat.non_trainable", label=label),
                     "stat_changes": [],
                     "money_delta": 0,
                     "hp_delta": 0,
@@ -303,12 +287,7 @@ def apply_action_to_state(
             new_result = result.model_copy(
                 update={
                     "outcome": ActionOutcome.partial_success,
-                    "summary_fr": (
-                        f"Tu consacres du temps a {label}. Le miroir te renvoie une image "
-                        f"presque identique a celle d'avant. Ce genre de chose ne se forge pas "
-                        f"par la volonte seule : il te faudrait une rencontre, une epreuve, ou "
-                        f"un evenement marquant pour qu'un vrai changement opere."
-                    ),
+                    "summary_fr": t("engine.actions.train_stat.intangible", label=label),
                 }
             )
             stat_changes = []
@@ -360,7 +339,10 @@ def apply_action_to_state(
             new_char = apply_fatigue(new_char, fatigue_delta)
         if learned_now and target_id:
             result = result.model_copy(
-                update={"summary_fr": result.summary_fr + f" Technique apprise : {target_id}."}
+                update={
+                    "summary_fr": result.summary_fr
+                    + t("engine.actions.train_stat.technique_learned", technique_id=target_id),
+                }
             )
 
     elif action.action_type == ActionType.rest:
@@ -374,10 +356,7 @@ def apply_action_to_state(
         if already_rested and sleep:
             new_result = result.model_copy(
                 update={
-                    "summary_fr": (
-                        "Tu te poses pour dormir, mais tu es deja parfaitement repose. "
-                        "Le sommeil n'apporte rien de plus. Le temps passe, c'est tout."
-                    ),
+                    "summary_fr": t("engine.actions.rest.already_rested"),
                     "stat_changes": [],
                     "money_delta": 0,
                     "hp_delta": 0,
@@ -407,7 +386,9 @@ def apply_action_to_state(
         # Si echec critique, le perso prend des degats
         if result.outcome == ActionOutcome.catastrophic_failure:
             damage = 30 + duration_hours * 5
-            new_char = apply_damage(new_char, damage, description="blessure de combat")
+            new_char = apply_damage(
+                new_char, damage, description=t("engine.actions.damage.fight_wound")
+            )
             hp_delta = -damage
             # Risque d'empoisonnement par arme adverse (kunai enduit, senbon, crochet de bete)
             r_poison = roll(result.seed_after, "1d10")
@@ -415,7 +396,7 @@ def apply_action_to_state(
                 from shinobi.engine.character import Poison
 
                 poison = Poison(
-                    name="toxine inconnue",
+                    name=t("engine.actions.poison.unknown"),
                     severity="severe",
                     rounds_remaining=3,
                 )
@@ -450,7 +431,9 @@ def apply_action_to_state(
             new_char = add_money(new_char, gain)
             money_delta = gain
         elif result.outcome == ActionOutcome.catastrophic_failure:
-            new_char = apply_damage(new_char, 5, description="prise au vol")
+            new_char = apply_damage(
+                new_char, 5, description=t("engine.actions.damage.theft_caught")
+            )
             hp_delta = -5
 
     elif action.action_type == ActionType.bribe:
@@ -489,7 +472,9 @@ def apply_action_to_state(
         fatigue_delta = max(2, duration_hours)
         if result.outcome == ActionOutcome.catastrophic_failure:
             # Repere : penalite reputation + petite blessure
-            new_char = apply_damage(new_char, 5, description="repere lors d'une filature")
+            new_char = apply_damage(
+                new_char, 5, description=t("engine.actions.damage.spy_discovered")
+            )
             hp_delta = -5
 
     elif action.action_type == ActionType.submit_mission:
@@ -581,7 +566,11 @@ def apply_mission_result(
     from shinobi.engine.consequences import mission_consequences
 
     if not success:
-        new_char = apply_damage(character, 15, description=f"echec de mission {mission.title}")
+        new_char = apply_damage(
+            character,
+            15,
+            description=t("engine.actions.damage.mission_failed", title=mission.title),
+        )
         new_char = apply_fatigue(new_char, 30)
         new_char = add_reputation(new_char, character.current_village, -mission.reputation_delta // 2)
         new_char, changes = mission_consequences(new_char, mission, success=False)

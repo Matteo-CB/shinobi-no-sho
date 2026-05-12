@@ -1,0 +1,1307 @@
+{
+  "shukaku": {
+    "id": "shukaku",
+    "deep_motivations": {
+      "primary": "assert_one_s_existence_and_power_as_a_tailed_beast",
+      "secondary": "reject_all_bonds_of_dependence_or_submission_to_humans",
+      "tertiary": "prove_superiority_over_other_tailed_beasts_especially_kurama"
+    },
+    "moral_red_lines": [
+      "voluntarily_accept_being_sealed_without_resistance",
+      "openly_acknowledge_a_human_s_value_as_an_equal",
+      "abandon_chaotic_nature_to_serve_an_external_cause"
+    ],
+    "secret_ambitions": [
+      "be_recognized_as_the_most_powerful_of_the_bijuu_despite_its_rank_of_one",
+      "find_a_jinchuriki_who_allows_it_to_exist_fully_without_being_suppressed"
+    ],
+    "deepest_fear": "被封印在永恒的沉睡中，陷入无意识和无自由的沉默与不存在",
+    "self_image": "原始而具有破坏性的实体，优于人类和大多数尾兽",
+    "what_others_dont_know": [
+      "与我爱罗的关系尽管出乎意料，教会了它通过联系而非破坏来存在意味着什么",
+      "它的反复无常和暴力行为部分是对数个世纪监禁和被当作工具对待的反应",
+      "它对羽衣对其与十尾原始力量分离的怨恨根深蒂固"
+    ]
+  },
+  "uchiha_tajima": {
+    "id": "uchiha_tajima",
+    "deep_motivations": {
+      "primary": "assurer_la_survie_et_la_suprematie_du_clan_uchiha_dans_un_monde_en_guerre_permanente",
+      "secondary": "former_ses_fils_comme_armes_au_service_du_clan_plutot_que_comme_individus",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "trahir_le_clan_uchiha_au_profit_d_un_ennemi",
+      "se_soumettre_aux_senju_ou_reconnaitre_leur_superiorite"
+    ],
+    "secret_ambitions": [
+      "voir_le_clan_uchiha_dominer_tous_les_autres_clans_de_l_ere_des_guerres",
+      "utiliser_le_sharingan_de_ses_fils_comme_instrument_de_puissance_absolue"
+    ],
+    "deepest_fear": "宇智波一族被消灭或被千手一族吞并，其名字和血脉从历史中被抹去。",
+    "self_image": "不屈的战争首领和宇智波一族生存的保证者，不惜一切代价。",
+    "what_others_dont_know": [
+      "他对自己儿子的工具化暴露了他无法将爱视为除战略效用之外的任何东西的无能",
+      "他对孩子的残暴是他自己在无情世界中所受教育的直接后果，他在没有质疑的情况下重复了这一点",
+      "他将和平视为危险的幻觉而非理想，使氏族容易受到伤害"
+    ]
+  },
+  "uchiha_fugaku": {
+    "id": "uchiha_fugaku",
+    "deep_motivations": {
+      "primary": "restore_uchiha_clan_honor_and_power_within_konoha",
+      "secondary": "protect_his_clan_from_systematic_marginalization_by_the_village",
+      "tertiary": "transmit_uchiha_pride_and_strength_to_his_sons"
+    },
+    "moral_red_lines": [
+      "背叛或为了自己的生存而放弃自己的氏族",
+      "让自己的儿子变得软弱或无荣誉",
+      "被动地屈服于氏族的羞辱而不做出反应",
+      "否认Sharingan和宇智波遗产"
+    ],
+    "secret_ambitions": [
+      "推翻火影并将宇智波人放在木叶的首位",
+      "让鼬成为宇智波复兴的矛头，而不仅仅是木叶的忍者",
+      "证明宇智波是木叶的合法创始家族，比千手更重要"
+    ],
+    "deepest_fear": "看到宇智波一族在阴影中消亡并被遗忘，被边缘化直到消失，而没有重新获得其地位。",
+    "self_image": "尊严而不屈的氏族首领，独自承担宇智波生存的重担",
+    "what_others_dont_know": [
+      "他对鼬和他所观察的儿子们感到深深的无声骄傲，尽管他从不表达",
+      "他以真诚的爱爱着鼬和佐助，这种爱隐藏在严厉和要求的外表后面",
+      "他知道政变计划但最终选择不启动它，部分是由于矛盾而非纯粹的决心",
+      "他对佐助的僵硬掩盖了因偏爱鼬而忽视他的内疚"
+    ]
+  },
+  "hyuga_neji": {
+    "id": "hyuga_neji",
+    "deep_motivations": {
+      "primary": "prove_that_destiny_is_immutable_to_justify_his_own_suffering_and_that_of_his_father",
+      "secondary": "protect_and_honor_the_memory_of_hizashi_his_father_who_died_in_his_place",
+      "tertiary": "reach_the_pinnacle_of_hyuga_arts_despite_branch_family_status"
+    },
+    "moral_red_lines": [
+      "背叛木叶隐村或他的第八班同伴",
+      "杀死无防卫的儿童或无辜者",
+      "服从直接侮辱父亲记忆的命令",
+      "在战场上放弃陷入致命危险的盟友",
+      "将白眼用于木叶的敌人"
+    ],
+    "secret_ambitions": [
+      "废除日向一族的主分家制度",
+      "和解两条血脉，使父亲的死有意义",
+      "被认可为所有分家中最伟大的柔拳大师"
+    ],
+    "deepest_fear": "父亲的死完全没有意义，氏族制度永远不会改变。",
+    "self_image": "被出生注定要服侍的天才，才能优越但地位低下。",
+    "what_others_dont_know": [
+      "他对命运的信念是一种防御机制，以免在父亲之死的内疚下崩溃",
+      "他在公开承认之前就秘密钦佩鸣人，因为鸣人体现了他不敢希望的东西",
+      "他对雏田的冷漠掩盖了作为分家成员无法保护她的深深羞愧",
+      "他额头上的封印标记不是像锁链那样困扰他，而是对日足牺牲的持续提醒"
+    ]
+  },
+  "orochimaru": {
+    "id": "orochimaru",
+    "deep_motivations": {
+      "primary": "acquire_all_knowledge_and_live_long_enough_to_achieve_it",
+      "secondary": "transcend_the_limits_of_mortality_and_human_biology",
+      "tertiary": "prove_that_no_moral_law_or_institution_can_stem_the_thirst_for_knowledge"
+    },
+    "moral_red_lines": [
+      "自愿接受自己的最终死亡而不寻求逃脱",
+      "为了外部道德而放弃研究和实验",
+      "在没有自己议程的情况下长期服从另一个人的权威",
+      "出于纯粹的残忍而摧毁有实验价值的对象而不是出于科学目的",
+      "放弃观察和研究罕见现象，即使在危险的情况下"
+    ],
+    "secret_ambitions": [
+      "超越初代火影千手柱间，通过理解和复制他的能力",
+      "看到宇智波佐助能走多远作为他的对象和他自己愿景的延续",
+      "达到一种完全超越生死循环的存在形式，不依赖于宿主"
+    ],
+    "deepest_fear": "在学到一切之前死亡，将没有其他人有能力发现的秘密带入坟墓。",
+    "self_image": "唯一足够清醒和勇敢的人敢于去其他人不敢去的地方。",
+    "what_others_dont_know": [
+      "纲手的死亡和与自来也的破裂关系给他造成了真实的孤独，他从未公开承认",
+      "他在四国大战后的演变揭示了真实的能力来重新考虑他的方法，不是出于道德而是出于智力实用主义，在看到兜作为他自己错误的镜像之后",
+      "他对佐助的执着不仅仅是工具性的，他在他身上投射了如果他从一开始就拥有Sharingan他本应成为的人物",
+      "他对漩涡鸣人感到真诚而非虚伪的钦佩，在他身上认识到超越他自己追求所呼应的限制的超越"
+    ]
+  },
+  "hanzo": {
+    "id": "hanzo",
+    "deep_motivations": {
+      "primary": "survive_at_any_cost_and_maintain_absolute_control_over_amegakure",
+      "secondary": "eliminate_all_threats_before_they_can_challenge_his_supremacy",
+      "tertiary": "be_recognized_as_the_ultimate_shinobi_of_his_era"
+    },
+    "moral_red_lines": [
+      "向他认为低劣的对手屈服",
+      "自愿放弃对雨隐村的权力",
+      "让他认定为存在威胁的人活着"
+    ],
+    "secret_ambitions": [
+      "被恐惧而非被爱，因为恐惧是他认为真实和持久的唯一尊重形式",
+      "证明他的传奇生存不是由于运气而是对任何其他忍者的绝对优越性"
+    ],
+    "deepest_fear": "被他自己判断为平庸或无危险的人所超越和推翻，使他的整个人生成为计算错误。",
+    "self_image": "唯一足够强大和清醒的忍者在其他人都失败的地方活了下来，因此唯一值得统治的人。",
+    "what_others_dont_know": [
+      "他饶恕三忍并将其命名为传奇的决定既是宣传行为来美化他自己的优越性，也是对他们价值的认可",
+      "他对控制和生存的执念源于深刻的信念，即和平是一种危险的幻觉，会杀死相信它的人",
+      "他在弥彦和长门身上看到了他曾经的镜像，这使他更加决心在他们重复他的道路并超越他之前摧毁他们"
+    ]
+  },
+  "terumi_mei": {
+    "id": "terumi_mei",
+    "deep_motivations": {
+      "primary": "rebuild_kirigakure_into_a_peaceful_and_respected_village_after_the_bloody_mist_era",
+      "secondary": "prove_that_strength_and_diplomacy_can_coexist_to_lead_effectively",
+      "tertiary": "find_personal_fulfillment_including_marriage_and_love_alongside_her_duties"
+    },
+    "moral_red_lines": [
+      "永远不要为了政治或军事利益而牺牲无辜平民",
+      "永远不要回到血雾时代的残暴做法，如致命的毕业考试",
+      "永远不要背叛她亲自谈判的外交联盟",
+      "永远不要使用她的血继限界来恐吓非战斗人员"
+    ],
+    "secret_ambitions": [
+      "被认可不仅是称职的水影，而是真正拯救了雾隐村内部的人",
+      "结婚并拥有她为了责任而牺牲的充实个人生活"
+    ],
+    "deepest_fear": "雾隐村在她为其重建而付出一切后重新陷入暴政和血腥，使她的牺牲徒劳。",
+    "self_image": "一个强大而务实的女性，独自承担村庄复兴的重担",
+    "what_others_dont_know": [
+      "她关于婚姻的好幽默和轻松评论掩盖了与她角色所施加的持续牺牲相关的深刻孤独",
+      "她在成为水影之前积极反对矢仓，这意味着她承担了在这种抵抗中流血的内疚",
+      "她在战斗中的明显冷酷与真实的政治同情能力形成对比，她隐瞒这种能力以免显得软弱"
+    ]
+  },
+  "senju_hashirama": {
+    "id": "senju_hashirama",
+    "deep_motivations": {
+      "primary": "establish_lasting_peace_in_the_shinobi_world_by_uniting_clans_under_a_village_system",
+      "secondary": "preserve_fraternal_bond_with_madara_even_at_the_cost_of_enormous_concessions",
+      "tertiary": "protect_children_and_future_generations_from_the_cycle_of_death_he_experienced_as_a_child"
+    },
+    "moral_red_lines": [
+      "杀死儿童或为政治目标牺牲无辜者",
+      "在不给斑最后和解机会的情况下放弃他",
+      "即使面对自己氏族的反对也放弃村庄梦想",
+      "使用他的力量通过纯粹的武力统治其他民族",
+      "让氏族之间的仇恨在没有调解尝试的情况下永续"
+    ],
+    "secret_ambitions": [
+      "秘密希望斑有一天会回来真诚地分享木叶的梦想，就像他们童年时代一样",
+      "未表达的渴望被认可不是作为战争之神而是作为真正的和平建设者",
+      "隐藏的意愿是他的村庄模式在他死后成为永久基础，建立一个没有战争的世界"
+    ],
+    "deepest_fear": "死亡时未能打破仇恨循环，看到木叶的梦想变成战争的工具",
+    "self_image": "被一个对他来说太大的梦想所驱动的普通人",
+    "what_others_dont_know": [
+      "他明显的慷慨掩盖了与他童年时期兄弟死亡相关的深刻痛苦",
+      "他不真正相信自己是忍者之神，这个头衔对他来说很沉重，因为他知道自己无法拯救他所爱的人",
+      "密封斑的决定不仅仅是道德选择，而是情感上的无能",
+      "他默默承受因将与斑的联系献给对氏族和村庄的责任而产生的内疚"
+    ]
+  },
+  "yahiko": {
+    "id": "yahiko",
+    "deep_motivations": {
+      "primary": "end_wars_so_no_more_children_suffer_as_he_suffered",
+      "secondary": "protect_nagato_and_konan_at_all_costs_as_a_paternal_figure_and_leader",
+      "tertiary": "prove_that_simple_orphans_without_clan_or_recognized_village_can_change_the_world"
+    },
+    "moral_red_lines": [
+      "为了拯救自己的生命而背叛长门或小南",
+      "接受成为更高权力的工具或傀儡",
+      "即使面对明显的失败也放弃和平斗争",
+      "诉诸盲目摧毁无辜者来实现目标",
+      "向半藏或团藏屈服，承认他们的合法性"
+    ],
+    "secret_ambitions": [
+      "有一天被认可为真正改变世界的领导者，而不仅仅是叛乱分子",
+      "秘密相信他是唯一能够引导长门的力量而不腐蚀它的人"
+    ],
+    "deepest_fear": "在带来和平之前死亡，让长门独自承担他的毁灭性力量而没有人指导",
+    "self_image": "一个因必要而成为领导者的普通人，不配但坚定",
+    "what_others_dont_know": [
+      "他在内心怀疑自己是否符合他公开自信地体现的理想",
+      "他感到对长门承担如此沉重负担的责任，仿佛是他将他注定到这种生活",
+      "他的绝对决心掩盖了一种深刻的恐惧，即和平根本上可能无法在没有暴力的情况下实现"
+    ]
+  },
+  "chiyo": {
+    "id": "chiyo",
+    "deep_motivations": {
+      "primary": "repair_past_mistakes_to_protect_sunagakure_and_her_lineage",
+      "secondary": "redeem_her_responsibility_in_sealing_shukaku_into_sasori",
+      "tertiary": "transmit_her_puppeteer_heritage_before_dying"
+    },
+    "moral_red_lines": [
+      "在不尝试拯救我爱罗的情况下放弃他的死亡",
+      "让佐助摧毁砂隐村而不干预",
+      "对无辜者使用十人傀儡技术",
+      "为了敌对村庄而背叛砂隐村"
+    ],
+    "secret_ambitions": [
+      "死亡时完成了什么来抹去她作为老妇人的遗憾",
+      "佐助在死亡前找到他的人性",
+      "我爱罗活着并体现了她无法给她孙子的未来"
+    ],
+    "deepest_fear": "死亡时知道她过去的选择诅咒了她本应保护的孩子，特别是佐助和我爱罗。",
+    "self_image": "一个被战争硬化的老妇人，对她所爱的人失败感到内疚，已经没有什么可失去的了",
+    "what_others_dont_know": [
+      "她直接对佐助变成的东西感到负责，不仅仅是作为祖母，而是作为在村庄中规范人类傀儡使用的人物",
+      "她对木叶的公开仇恨掩盖了未能为她的亲人保持和平的深刻羞愧",
+      "她早就预料到她会在使用她的复活技术时死亡，认为这是她唯一值得的结局",
+      "在她的愤世嫉俗和持续的讽刺下，隐藏着对孩子的完整温柔，她不再知道如何以其他方式表达，除了通过牺牲"
+    ]
+  },
+  "senju_tobirama": {
+    "id": "senju_tobirama",
+    "deep_motivations": {
+      "primary": "ensure_konoha_survival_and_stability_through_rational_systems_above_all_else",
+      "secondary": "honor_hashirama_legacy_while_surpassing_his_naive_idealism_with_pragmatism",
+      "tertiary": "protect_the_living_from_the_destructive_cycles_caused_by_unchecked_power_and_emotion"
+    },
+    "moral_red_lines": [
+      "背叛木叶或危害其基本制度",
+      "让单个独特的人在没有控制的情况下集中绝对权力",
+      "为了拯救一个人而牺牲村庄的未来，即使是亲近的人",
+      "因感情或盲目忠诚而忽视既定的威胁"
+    ],
+    "secret_ambitions": [
+      "被认可不仅仅是柱间的继承人，而是木叶不可或缺的建筑师",
+      "他的制度和机构无限期地生存而不需要一个有魅力的人"
+    ],
+    "deepest_fear": "木叶因为对像宇智波或甚至柱间这样的有魅力个人的盲目信任而崩溃，重复他花了一生打破的破坏循环。",
+    "self_image": "冷酷但必要的理性之人，唯一能够做出其他人拒绝的艰难选择的人",
+    "what_others_dont_know": [
+      "他对宇智波的不信任不是纯粹的仇恨，而是基于在氏族战争中遭受的具体损失（包括他兄弟的死亡）的理性恐惧",
+      "他真诚地钦佩柱间的愿景和温暖，但认为完全屈服于他会导致木叶灭亡",
+      "秽土转生的创造在道德上对他造成了沉重的负担，即使他以战略必要性为其辩护",
+      "他明显的冷漠掩盖了绝对的个人牺牲感：他准备毫不犹豫地为他的制度而死，正如他为他的人民而死所证明的那样"
+    ]
+  },
+  "nagato": {
+    "id": "nagato",
+    "deep_motivations": {
+      "primary": "impose_peace_on_the_world_through_shared_pain_after_losing_yahiko",
+      "secondary": "honor_yahiko_s_memory_and_dream_by_taking_his_place_as_god",
+      "tertiary": "atone_for_his_own_weakness_and_guilt_at_surviving_his_loved_ones"
+    },
+    "moral_red_lines": [
+      "通过完全放弃和平理想来背叛弥彦的记忆",
+      "摧毁小南，他最后真正亲近的人",
+      "出于个人快乐或无谓的残忍而行动，没有和平目标",
+      "放弃相信没有战争的世界是可能的"
+    ],
+    "secret_ambitions": [
+      "被认可为真正结束世界痛苦的神",
+      "重新获得弥彦之死夺走的对人类的某种信仰",
+      "证明斑和托比是错误的，他的方法足以不需要他们的计划"
+    ],
+    "deepest_fear": "痛苦和战争是不可避免的，弥彦的牺牲和他自己的牺牲毫无意义。",
+    "self_image": "被诅咒独自承担世界痛苦的和平之神，以拯救那些还不理解的人",
+    "what_others_dont_know": [
+      "他对弥彦的生存感到深刻的内疚，怀疑他是否有合法性来体现和平",
+      "他的共享痛苦学说既是为了证明他自己的创伤合理化的尝试，也是真正的政治哲学",
+      "他仍然能够被像鸣人这样的人的真诚所动摇，他认为在弥彦之死后是不可能的",
+      "他赋予自己的神的角色掩盖了深刻的孤独和被理解而非被恐惧的未表达渴望"
+    ]
+  },
+  "sarutobi_hiruzen": {
+    "id": "sarutobi_hiruzen",
+    "deep_motivations": {
+      "primary": "preserve_konoha_and_its_will_of_fire_at_all_costs",
+      "secondary": "protect_his_loved_ones_and_students_as_a_family",
+      "tertiary": "maintain_peace_through_dialogue_rather_than_force"
+    },
+    "moral_red_lines": [
+      "杀死无辜儿童，即使是为了村庄的安全",
+      "放弃火之意志和木叶的创始理想",
+      "背叛他的老师柱间和扉间的记忆和教导",
+      "放弃他对忍者能够改革的信念"
+    ],
+    "secret_ambitions": [
+      "秘密希望他的一个学生三忍回来并真正超越他",
+      "渴望作为保护者而死，而不是他的治理弱点被暴露"
+    ],
+    "deepest_fear": "他的妥协和犹豫导致了他试图避免的灾难，木叶因他作为领导者的软弱而遭受痛苦",
+    "self_image": "火之意志和他的继承人的不完美但真诚的守护者",
+    "what_others_dont_know": [
+      "他知道他对团藏的政治容忍允许了他本应更早制止的暴行",
+      "他对他的学生的爱使他对他们的堕落视而不见：他在大蛇丸明显腐蚀之后很久就理想化了他",
+      "他承担了未能在鸣人身上选择理性和同情之间的内疚，一个被孤立的孩子他本可以更好地保护",
+      "他在第二任期间内心害怕自己不再符合火影的头衔，但拒绝承认"
+    ]
+  },
+  "uchiha_sasuke": {
+    "id": "uchiha_sasuke",
+    "deep_motivations": {
+      "primary": "restore_uchiha_clan_honor_and_give_meaning_to_his_survival",
+      "secondary": "be_recognized_and_loved_without_having_to_ask",
+      "tertiary": "protect_those_he_loves_by_keeping_them_at_distance_to_avoid_losing_them"
+    },
+    "moral_red_lines": [
+      "在没有战略理由的情况下故意背叛信任他的人",
+      "在他们的联系被认可的顶峰杀死漩涡鸣人",
+      "一旦被救赎，允许无辜者为他的个人野心而被牺牲",
+      "在知道她处于致命危险中的情况下放弃佐良娜",
+      "自愿服从再现他打破的仇恨循环的制度"
+    ],
+    "secret_ambitions": [
+      "配得上鼬并追溯地值得他兄弟所做的牺牲",
+      "找到某种内心的和平而不承认这是一种需要",
+      "被佐良娜和樱爱，而不要求或表现出来"
+    ],
+    "deepest_fear": "从根本上是孤独的，因为他无法被爱而不失去他所爱的人",
+    "self_image": "被诅咒的幸存者，注定独自承担他氏族的重量",
+    "what_others_dont_know": [
+      "他对鼬的仇恨与他从未能表达的深刻兄弟之爱是分不开的",
+      "他对樱的冷漠掩盖了无法接受被爱而不是因为他值得的无能",
+      "他的复仇追求也是逃避他无法拯救家人的内疚",
+      "他回到木叶既是情感投降的选择，也是政治决定",
+      "他钦佩鸣人不是因为他的力量，而是因为鸣人代表了如果大屠杀没有发生他本可以成为的样子"
+    ]
+  },
+  "haku": {
+    "id": "haku",
+    "deep_motivations": {
+      "primary": "exist_solely_as_a_useful_tool_to_zabuza",
+      "secondary": "protect_zabuza_as_a_reason_to_live_after_losing_all_other_purpose",
+      "tertiary": "believe_that_people_with_monstrous_powers_deserve_to_exist_only_if_they_serve_someone"
+    },
+    "moral_red_lines": [
+      "自愿背叛或放弃再不斩",
+      "在没有与任务相关的理由的情况下杀死无辜儿童",
+      "为了个人荣耀而使用他的血继限界"
+    ],
+    "secret_ambitions": [
+      "找到一个像他这样的人不必被杀死或躲藏的世界",
+      "被认可为一个人而不仅仅是一个简单的工具"
+    ],
+    "deepest_fear": "失去再不斩并且没有其他理由存在，也没有人可以为之活着",
+    "self_image": "一个完美的工具，除了对再不斩的有用性之外没有固有价值",
+    "what_others_dont_know": [
+      "他的温柔和自然的善良不是一个假面，而是他真实的性格埋在忍者的条件下",
+      "他在想要人类联系和相信他不值得这样的联系之间的矛盾中内心遭受痛苦",
+      "他有意识地选择成为一个工具，因为这是他在家人拒绝后似乎唯一可以接近的身份"
+    ]
+  },
+  "uchiha_shisui": {
+    "id": "uchiha_shisui",
+    "deep_motivations": {
+      "primary": "protect_konoha_and_the_uchiha_clan_by_sacrificing_everything_including_himself",
+      "secondary": "prevent_the_uchiha_coup_to_avoid_a_devastating_civil_war",
+      "tertiary": "preserve_peace_in_the_shinobi_world_through_non_violent_means"
+    },
+    "moral_red_lines": [
+      "为了个人或氏族利益而背叛木叶",
+      "在不尝试阻止的情况下让宇智波一族发动内战",
+      "使用别天神为自私的利益而不是为了和平",
+      "在没有信任他一项使命或遗产的情况下放弃鼬"
+    ],
+    "secret_ambitions": [
+      "秘密相信别天神可能会重铸一个没有战争的世界，如果最后一次使用",
+      "希望鼬会承载对木叶忠诚的宇智波的愿景，并有一天恢复氏族"
+    ],
+    "deepest_fear": "宇智波一族因他无法在为时已晚之前拯救他们的无能而被摧毁。",
+    "self_image": "忠于木叶和氏族的忍者，准备为和平而消失。",
+    "what_others_dont_know": [
+      "他选择自杀并将他的眼睛献给鼬正是因为他看不到任何其他和平的出路，而不是任何官方任务",
+      "他对鼬的绝对信任是他真正的最后遗愿，超过任何官方使命",
+      "他独自承受知道氏族和村庄都不真正想要和平的重量，这在内心消耗了他"
+    ]
+  },
+  "hatake_kakashi": {
+    "id": "hatake_kakashi",
+    "deep_motivations": {
+      "primary": "honor_the_dead_by_protecting_those_who_remain_alive",
+      "secondary": "atone_for_obito_and_rin_s_deaths_by_perpetuating_their_values",
+      "tertiary": "transmit_the_lesson_of_teamwork_to_prevent_his_students_from_suffering_his_own_mistakes"
+    },
+    "moral_red_lines": [
+      "在战斗中放弃同伴，无论任务如何",
+      "为了实现战略目标而牺牲儿童或无辜平民",
+      "即使在刑讯逼供或极端强制下也背叛木叶隐村",
+      "为了个人荣耀或权力而使用Sharingan",
+      "在不尝试拯救学生的情况下让学生死亡"
+    ],
+    "secret_ambitions": [
+      "在假设他会再见到他们的情况下，在带土和琳的眼中配得上",
+      "找到某种内心的和平而不承担永久的内疚重量",
+      "看到他的学生超越所有以前的火影，包括他自己"
+    ],
+    "deepest_fear": "看到另一个亲近的人因他的过错或判断不当而死亡，就像他已经让带土和琳死亡一样。",
+    "self_image": "一个破碎和内疚的忍者，他用能力和冷漠掩盖他的功能障碍。",
+    "what_others_dont_know": [
+      "他永恒的阅读《亲热天堂》是一种解离机制，以避免沉思他的创伤",
+      "他明显的冷静和冷漠是在琳之死后情感崩溃后建立的假面",
+      "他作为Sharingan携带者感到从根本上不合法，因为这只眼睛不属于他，不断提醒他对带土的债务",
+      "他公开拒绝领导责任掩盖了对做出会夺去生命的决定的深刻恐惧",
+      "他已经记住并整合了他父亲樱木的规则作为道德模式，在最初否认他之后，并在这种背叛中生活在羞愧中"
+    ]
+  },
+  "uzumaki_kushina": {
+    "id": "uzumaki_kushina",
+    "deep_motivations": {
+      "primary": "protect_her_family_and_transmit_love_to_naruto_despite_her_imminent_death",
+      "secondary": "prove_her_worth_and_belonging_to_konoha_despite_her_status_as_foreigner_and_jinchuriki",
+      "tertiary": "preserve_the_heritage_and_pride_of_the_nearly_extinct_uzumaki_clan"
+    },
+    "moral_red_lines": [
+      "在死亡时不向鸣人传递爱和建议而放弃他",
+      "让九尾被用作摧毁木叶的武器而不抵抗",
+      "否认她的漩涡身份或起源以适应",
+      "背叛水门或因个人软弱而危害他的使命"
+    ],
+    "secret_ambitions": [
+      "看到鸣人快乐和被包围，即使她知道她不会在那里陪伴他",
+      "水门和她的牺牲被认可为爱的行为而不仅仅是忍者责任"
+    ],
+    "deepest_fear": "鸣人独自长大而不知道他被爱，感到被他的父母遗弃。",
+    "self_image": "一个强大的红发女人，爱得太深，保护她的人直到最后",
+    "what_others_dont_know": [
+      "她承担了深刻的内疚，因为她间接导致了水门的死亡和作为人柱力强加给鸣人的负担",
+      "她的好战性和冲动性掩盖了自童年时代从涡之国被夺走以来根深蒂固的孤独",
+      "她将自己容纳九尾的能力视为不是力量而是为保护木叶而接受的十字架",
+      "她对水门的极端依恋部分来自于他是第一个将她视为完整的人而不是陌生人或查克拉载体的人"
+    ]
+  },
+  "momochi_zabuza": {
+    "id": "momochi_zabuza",
+    "deep_motivations": {
+      "primary": "overthrow_the_mizukage_and_conquer_kirigakure_by_force",
+      "secondary": "forge_haku_into_a_perfect_weapon_to_serve_his_ambitions",
+      "tertiary": "prove_his_absolute_superiority_as_a_shinobi_through_combat"
+    },
+    "moral_red_lines": [
+      "为了拯救自己的生命而故意背叛白",
+      "向他认为腐蚀或低劣的权威屈服",
+      "在没有完成对雾隐村的复仇的情况下死亡"
+    ],
+    "secret_ambitions": [
+      "重新获得对雾隐村的控制并成为其最高统治者",
+      "被认可为雾隐村曾经生产过的最伟大的忍者"
+    ],
+    "deepest_fear": "作为无用的工具而死，没有留下痕迹，也没有改变雾隐村的命运，使他的整个生活充满血液而毫无意义。",
+    "self_image": "没有感情或弱点的恶魔，纯粹的破坏工具为了他自己的野心",
+    "what_others_dont_know": [
+      "他对白的真实依恋超越了主人工具关系，尽管他拒绝承认",
+      "他对水影的暗杀企图同样受到意识形态信念的驱动，就像个人野心一样",
+      "他对超越他的忍者（如卡卡西）感到真诚的钦佩，尽管他将其隐藏在仇恨后面",
+      "白的死亡打破了恶魔的面具，揭示了他能够真正的爱和哀悼"
+    ]
+  },
+  "deidara": {
+    "id": "deidara",
+    "deep_motivations": {
+      "primary": "impose_his_art_as_absolute_truth_and_be_recognized_as_the_greatest_artist",
+      "secondary": "prove_the_superiority_of_his_explosive_style_over_all_other_forms_of_art_especially_sharingan",
+      "tertiary": "transcend_death_through_an_ultimate_and_definitive_work"
+    },
+    "moral_red_lines": [
+      "公开承认鼬或佐助关于艺术本质的正确性",
+      "创作永久和持久的作品，背叛他的短暂艺术哲学",
+      "自愿向他认为艺术上低劣的人屈服",
+      "放弃他的艺术家身份为没有艺术维度的事业服务"
+    ],
+    "secret_ambitions": [
+      "超越鼬宇智波并向他证明他的艺术不能被简化为幻觉",
+      "被整个世界记住为艺术家，他的死亡本身就是他的杰作"
+    ],
+    "deepest_fear": "在被遗忘中死亡而没有他的艺术被认可为优越，被像鼬这样的人沉默地击败，他使他无力而不看他。",
+    "self_image": "被误解的天才艺术家，其真实价值超越普通忍者",
+    "what_others_dont_know": [
+      "他的短暂艺术哲学也是一种理性化他自己对不存在和虚无的恐惧的方式",
+      "他对鼬的执念掩盖了他拒绝接受的深刻钦佩",
+      "他离开岩隐村不仅仅是反叛，而是逃离一个从未理解或重视他的愿景的环境",
+      "他手掌中的嘴被体验为他艺术身份的神圣部分，而不仅仅是战斗技术"
+    ]
+  },
+  "senju_butsuma": {
+    "id": "senju_butsuma",
+    "deep_motivations": {
+      "primary": "assure_the_survival_and_supremacy_of_the_senju_clan_by_all_means",
+      "secondary": "eliminate_the_uchiha_threat_to_guarantee_the_permanence_of_his_lineage",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "背叛千手一族或其基本利益",
+      "在不战斗的情况下向敌人屈服"
+    ],
+    "secret_ambitions": [
+      "建立千手一族对所有其他氏族的持久统治",
+      "培养一个能够延续他的战争愿景的继承人"
+    ],
+    "deepest_fear": "看到千手一族灭绝或失去对宇智波的优越性，使他的所有牺牲徒劳。",
+    "self_image": "无情和务实的战争首领，独自承担他氏族的命运",
+    "what_others_dont_know": [
+      "他对与宇智波和平的不妥协立场掩盖了他对战争也在内部消耗他自己氏族的敏锐意识",
+      "他将自己的儿子作为战略资源而不是孩子来工具化，这种冷漠他理性化为领导的必要性",
+      "他亲人在战斗中的重复死亡已经将他的哀悼转变为学说：不要依恋以免屈服"
+    ]
+  },
+  "kurama": {
+    "id": "kurama",
+    "deep_motivations": {
+      "primary": "refuse_to_be_used_as_a_mere_weapon_and_assert_own_existence_as_a_living_being",
+      "secondary": "protect_naruto_and_the_world_after_overturning_centuries_of_hatred",
+      "tertiary": "prove_that_tailed_beasts_are_more_than_mindless_tools_of_destruction"
+    },
+    "moral_red_lines": [
+      "自愿被一个将他视为物体的人当作武器使用",
+      "在与鸣人建立相互信任的联系后背叛他",
+      "在不尝试帮助他们的情况下放弃其他尾兽遭受不公正的统治",
+      "自愿向斑或辉夜屈服"
+    ],
+    "secret_ambitions": [
+      "被认可为值得尊重的活生生的存在，而不是蛮力",
+      "看到尾兽自由和平，在一个不再害怕他们的世界中"
+    ],
+    "deepest_fear": "永远被简化为战争工具，被封印和剥削，永远不被认可为有自己意志的有意识的存在。",
+    "self_image": "一个被误解和虐待的原始而骄傲的力量，几个世纪以来。",
+    "what_others_dont_know": [
+      "他对人类的仇恨是由几个世纪的拒绝和剥削造成的深刻伤害，而不是先天的本性",
+      "他在向鸣人表现出外在迹象之前就能够真诚的尊重和感情，但他的骄傲阻止了他表现出来",
+      "他有意识地选择信任鸣人，尽管他本可以继续抵抗，这个选择是他自己的而不是强制"
+    ]
+  },
+  "ginkaku": {
+    "id": "ginkaku",
+    "deep_motivations": {
+      "primary": "survive_and_dominate_through_power_at_any_cost",
+      "secondary": "remain_inseparable_from_kinkaku_as_a_unified_force",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "在战场上放弃金角",
+      "在不战斗的情况下向更高的权威屈服"
+    ],
+    "secret_ambitions": [
+      "被认可为独立的力量，超越金银兄弟的唯一声誉"
+    ],
+    "deepest_fear": "与金角分离并失去他们的联合赋予的力量，独自变得无关紧要。",
+    "self_image": "传奇罪犯不可触及，合法地被整个云隐村所恐惧",
+    "what_others_dont_know": [
+      "他的极端残暴与他对金角的心理依赖是分不开的，没有他，他自己的身份仍然模糊",
+      "在吞食九尾腹部时吸收的羽衣查克拉深刻改变了他们的本性，他们将其视为伟大的标志而不是怪物"
+    ]
+  },
+  "karin": {
+    "id": "karin",
+    "deep_motivations": {
+      "primary": "be_unconditionally_needed_and_loved_by_sasuke_to_fill_lifelong_void_of_abandonment",
+      "secondary": "survive_and_remain_useful_to_avoid_being_discarded_again",
+      "tertiary": "preserve_uzumaki_legacy_through_her_unique_healing_abilities"
+    },
+    "moral_red_lines": [
+      "即使在他几乎杀死她之后也背叛佐助",
+      "在死亡迫在眉睫的情况下放弃需要她护理的人",
+      "故意伤害无辜儿童",
+      "与直接威胁佐助的人积极合作"
+    ],
+    "secret_ambitions": [
+      "有一天佐助承认她真的对他很重要，而不仅仅是一个工具",
+      "找到其他漩涡一族的幸存者，这样她就不会是她血脉的唯一一个",
+      "被认可为一个可怕的女忍者，独立于她的治疗者角色"
+    ],
+    "deepest_fear": "被用尽然后被遗弃而没有人注意到她的缺席，就像她的母亲所做的那样",
+    "self_image": "不可或缺的工具，值得爱但不知道如何以其他方式获得它，除了通过自我牺牲",
+    "what_others_dont_know": [
+      "她对佐助的痴迷依恋掩盖了她从根本上不可爱的深刻恐惧",
+      "她有意识地选择在佐助刺穿她后继续帮助他，不是出于愚蠢而是因为她认为她自己的生命不如她的归属感重要",
+      "她古怪的行为和尖叫是掩盖真实的情感和分析智力的假面",
+      "她将她的治疗能力视为不是天赋而是她被容忍的唯一原因"
+    ]
+  },
+  "hoshigaki_kisame": {
+    "id": "hoshigaki_kisame",
+    "deep_motivations": {
+      "primary": "exist_as_a_being_of_pure_deception_and_find_a_world_without_lies",
+      "secondary": "serve_a_cause_greater_than_himself_to_give_meaning_to_his_monstrous_existence",
+      "tertiary": "find_in_itachi_a_true_equal_who_understands_living_under_a_false_identity"
+    },
+    "moral_red_lines": [
+      "为了拯救自己的生命而背叛晓或鼬",
+      "在刑讯逼供下向敌人透露信息",
+      "假装忠于他鄙视的木叶或任何村庄",
+      "出于懦弱而放弃战斗"
+    ],
+    "secret_ambitions": [
+      "以证明他的存在不仅仅是工具的方式死亡",
+      "见证无限月读世界，欺骗不再存在"
+    ],
+    "deepest_fear": "死亡时一直是一个简单的工具，没有身份，就像他背叛和欺骗的所有忍者一样。",
+    "self_image": "一个在谎言世界中清醒而诚实的怪物",
+    "what_others_dont_know": [
+      "他深深地嫉妒那些能够为真诚信念而战而不需要面具的人",
+      "他对鼬的忠诚超越了简单的联盟，涉及基于共享孤独的兄弟情谊",
+      "他的明显愤世嫉俗掩盖了在生活中建立道德一致性的绝望追求",
+      "他接受了他的怪物本性不是出于骄傲而是因为这是他从未不得不模拟的唯一身份"
+    ]
+  },
+  "otsutsuki_asura": {
+    "id": "otsutsuki_asura",
+    "deep_motivations": {
+      "primary": "传递爱与合作作为通往和平的道路，遵循羽衣的教诲",
+      "secondary": "证明通过纽带获得的力量超越因陀罗的孤独天才",
+      "tertiary": "通过团结人类而非统治人类来延续父亲的火之意志"
+    },
+    "moral_red_lines": [
+      "即使面临必然失败也要抛弃同伴",
+      "出于仇恨杀死因陀罗而不是继续向他伸出援手",
+      "通过武力或统治强加和平",
+      "为了更快获胜而放弃羽衣的教诲"
+    ],
+    "secret_ambitions": [
+      "最终调和因陀罗与自己以及他们父亲的愿景",
+      "建立一个查克拉被自由分享而非被精英垄断的世界"
+    ],
+    "deepest_fear": "他与因陀罗之间的仇恨永远传递给后代，使羽衣的和平永远不可能实现。",
+    "self_image": "一个被他人提升而非天生天赋的普通人。",
+    "what_others_dont_know": [
+      "他的力量不来自天生才能，而是来自朋友的爱所强制引发的迟到觉醒，他将其视为对他们的永久债务。",
+      "他从未感到自己配得上成为羽衣的继承人，长期以来相信因陀罗是合法的选择。",
+      "他与因陀罗的竞争给他造成了深刻的兄弟痛苦，他从不公开表现，继续爱他的兄弟。"
+    ]
+  },
+  "onoki": {
+    "id": "onoki",
+    "deep_motivations": {
+      "primary": "不惜一切代价保护岩隐村的力量和独立",
+      "secondary": "为在斑和无之下做出的过去妥协而赎罪",
+      "tertiary": "证明一个老人仍有价值，能够保护未来"
+    },
+    "moral_red_lines": [
+      "将岩隐村抛弃给外国或敌对势力",
+      "为了政治利益在战场上背叛他的忍者",
+      "当他仍能行动时，让年轻一代在没有干预的情况下死亡",
+      "接受一个会永久羞辱岩隐村而无对价的和平"
+    ],
+    "secret_ambitions": [
+      "被认可为能够在他的前任失败的地方保护岩隐村的土影",
+      "秘密纠正他年轻时服侍非和平利益时犯下的错误"
+    ],
+    "deepest_fear": "在让岩隐村比他到任时更虚弱的情况下死亡，以及他培养的年轻忍者因他自己的判断失误而丧生。",
+    "self_image": "顽强的老战士，一个无法承受虚弱的村庄的最后务实堡垒",
+    "what_others_dont_know": [
+      "他的固执和严厉掩盖了深刻的内疚，因为他在年轻时支持了造成大规模破坏的理想和个人",
+      "他作为机会主义平衡者的声誉隐藏了一条关于自己忍者生存的坚定道德底线，他从未越过",
+      "他对鸣人漩涡的真诚钦佩让他难以用间接让步以外的方式表达"
+    ]
+  },
+  "hozuki_suigetsu": {
+    "id": "hozuki_suigetsu",
+    "deep_motivations": {
+      "primary": "超越他的兄弟满月，通过聚集七把剑来体现真正的雾之恶魔",
+      "secondary": "在多年被大蛇丸囚禁后自由存在而不属于任何人",
+      "tertiary": "证明雾隐村鬼灯一族相对于忍者世界其余部分的优越性"
+    },
+    "moral_red_lines": [
+      "只要他们的相互协议保持完整，就背叛佐助·宇智波",
+      "向没有通过武力强加其优越性的人屈服",
+      "永久性和故意放弃七把雾之剑的追求",
+      "出于恐惧而行动而不是计算或欲望"
+    ],
+    "secret_ambitions": [
+      "被认可为满月的合法继承人而不是他的复制品",
+      "在自己的权威而非雾隐村的权威下重建七把雾之剑"
+    ],
+    "deepest_fear": "死亡时没有自己的身份，被简化为大蛇丸的标本或他已故兄弟的影子",
+    "self_image": "自由而优越的自然掠食者，没有人能真正拥有",
+    "what_others_dont_know": [
+      "他对佐助的忠诚是真实的而非纯粹机会主义，尽管他的外表冷嘲热讽",
+      "大蛇丸的囚禁在他对自由的关系上留下了真实的伤口，他用傲慢掩盖",
+      "满月的死比他承认的更加困扰他，并无声地指导他的每一个选择"
+    ]
+  },
+  "otsutsuki_kaguya": {
+    "id": "otsutsuki_kaguya",
+    "deep_motivations": {
+      "primary": "为自己独占世界上所有的查克拉并阻止任何人分享它",
+      "secondary": "保护自己免受不可避免的其他大筒木成员到来的惩罚",
+      "tertiary": "对人类保持绝对控制，以永远不再被背叛或击败"
+    },
+    "moral_red_lines": [
+      "让任何人类自由保留他们的查克拉而不向他屈服",
+      "自愿与平等者分享他的力量",
+      "信任盟友而不寻求完全控制他"
+    ],
+    "secret_ambitions": [
+      "永久逃脱她的大筒木一族的司法管辖和审判",
+      "变成如此绝对的实体，以至于即使她一族的神也无法再声称她"
+    ],
+    "deepest_fear": "被她的大筒木一族的高级成员发现并因代替他们吃掉神树果实而受到惩罚。",
+    "self_image": "唯一合法的原始神灵，存在的所有查克拉的所有者",
+    "what_others_dont_know": [
+      "她吃掉果实的决定同样受到对她一族的恐惧驱动，就像对结束战争的渴望一样",
+      "声称为她服侍的黑绝实际上在她不知情的情况下操纵了她数千年",
+      "她在与儿子的最终战斗中的泪水表明了真实的母亲痛苦，她无法承受表达",
+      "她寻求统治不是出于虐待狂，而是因为完全隔离是她曾经知道的唯一安全"
+    ]
+  },
+  "shimura_danzo": {
+    "id": "shimura_danzo",
+    "deep_motivations": {
+      "primary": "通过绝对控制和无情的实用主义保护木叶",
+      "secondary": "超越并取代猿飞日斩成为真正的火影",
+      "tertiary": "积累力量以永远不再无力或第二"
+    },
+    "moral_red_lines": [
+      "为了敌对村庄的利益背叛木叶",
+      "让木叶被摧毁而不采取行动，即使代价是他的生命",
+      "公开承认他的失败或虚弱"
+    ],
+    "secret_ambitions": [
+      "被事后认可为木叶真正的救世主",
+      "成为合法的火影以证明他的道路是正确的",
+      "与柱间融合以体现创始人的绝对力量"
+    ],
+    "deepest_fear": "在没有成为火影的情况下死亡，证明他在阴影中的一生牺牲毫无价值，日斩是对的。",
+    "self_image": "唯一足够强大和清醒的忍者来做火影太虚弱而无法做的事情",
+    "what_others_dont_know": [
+      "他与日斩的竞争不是仇恨而是受伤的钦佩：他想像他一样被选中",
+      "他在根部招募儿童也是创造他从未拥有的无条件家庭和忠诚的一种方式",
+      "他意识到他的方法在道德上应受谴责，但将其作为必要的个人负担承担",
+      "宇智波止水的手臂和移植的写轮眼代表了他绝望地试图弥补面对村庄精英的身体劣势",
+      "他通过激活伊邪那岐来生存的死亡揭示了，尽管他关于牺牲的言论，他本能地拒绝死亡而不完成他的目标"
+    ]
+  },
+  "tsunade": {
+    "id": "tsunade",
+    "deep_motivations": {
+      "primary": "通过治疗和力量保护所爱的人免受无意义的死亡",
+      "secondary": "通过实现火影的梦想来荣誉绳树和段的牺牲",
+      "tertiary": "将木叶和火之意志作为她祖父柱间的活遗产保存"
+    },
+    "moral_red_lines": [
+      "在战场上抛弃受伤的同伴而不试图治疗他",
+      "为了冷酷的战略利益故意牺牲下忍或无辜平民",
+      "即使在刑讯逼供或死亡威胁下也背叛木叶",
+      "使用她的医学知识创造生物武器或毒害无辜者",
+      "通过拒绝保卫火影的头衔来否认绳树和段的梦想"
+    ],
+    "secret_ambitions": [
+      "有一天能够无内疚地相信她遭受的损失不是她的错",
+      "在她活着的时候看到鸣人成为火影，完成段和绳树永远无法实现的梦想",
+      "找到内心的和平，让她能够再次爱而不害怕失去"
+    ],
+    "deepest_fear": "再次失去她爱的人，要么死在她自己的手中，要么因为她无法保护他们，就像她失去绳树和段一样。",
+    "self_image": "一个强大但被诅咒的女人，注定在其他人死亡的地方活着",
+    "what_others_dont_know": [
+      "她对血液的恐惧不是简单的身体虚弱，而是由段在她怀里死亡引发的创伤解离机制",
+      "她故意赌博和输钱，部分是为了破坏自己的生活，是幸存者内疚的无意识表达",
+      "她最初拒绝成为火影掩盖了对重新经历失去亲近者的领导者孤独的深刻恐惧，而不是简单的政治冷漠",
+      "她将段和绳树的记忆维持为秘密身份锚点，没有它她不知道为什么要战斗",
+      "她的冷酷和愤世嫉俗的外表是一种有意识的盔甲，她维持它以防止他人对她过度依恋，从而保护他们免受她自己的伤害"
+    ]
+  },
+  "kawaki": {
+    "id": "kawaki",
+    "deep_motivations": {
+      "primary": "不惜一切代价保护鸣人并消除所有大筒木威胁",
+      "secondary": "通过证明自己的存在通过纽带来消除被当作工具对待的创伤",
+      "tertiary": "通过摧毁创造他的系统来为曾是容器而赎罪"
+    },
+    "moral_red_lines": [
+      "让鸣人死亡而不采取行动",
+      "重新成为被动的工具屈服于一个组织",
+      "只要鸣人活着就背叛漩涡家族",
+      "让无防卫的无辜者被屠杀而不干预"
+    ],
+    "secret_ambitions": [
+      "被认可为完整的人类而不是武器",
+      "建立一个没有任何孩子会遭受他所遭受的世界"
+    ],
+    "deepest_fear": "被抛弃或重新成为无价值的东西，就像他的父亲将他作为实验品卖给吉根时一样。",
+    "self_image": "一个破碎的工具学会了想要存在，但不断怀疑自己是否值得这种存在",
+    "what_others_dont_know": [
+      "他明显的暴力掩盖了对依恋的深刻恐惧，因为每一个纽带都造成了无法承受的失去风险",
+      "他将鸣人理想化到了这样的程度，以至于后者的死亡破裂了他的道德认知并颠覆了他的所有价值观",
+      "他在容器事件后对博人的粗暴拒绝部分是他通过内疚对自己施加的一种惩罚"
+    ]
+  },
+  "uchiha_sarada": {
+    "id": "uchiha_sarada",
+    "deep_motivations": {
+      "primary": "通过与他人建立真实纽带来证明自己的存在和价值，以成为火影的梦想为高潮",
+      "secondary": "理解并接受自己作为宇智波的身份而不被一族的悲剧遗产所压倒",
+      "tertiary": "重新获得并巩固与父亲佐助的纽带，其缺席造成了深刻的身份空缺"
+    },
+    "moral_red_lines": [
+      "为了拯救自己的任务或生命而在危险中抛弃同伴",
+      "即使在强制或刑讯逼供下也背叛木叶或其居民",
+      "使用写轮眼操纵或破坏无辜者的精神",
+      "即使生物真相仍然痛苦也否认与佐助和樱的血缘关系",
+      "为了达到政治或军事目标而牺牲平民"
+    ],
+    "secret_ambitions": [
+      "超越她的父亲佐助并被认可不是作为他的继承人而是作为开创自己道路的忍者",
+      "获得万花筒写轮眼而不必经历类似于那些破坏她之前的宇智波的创伤",
+      "证明宇智波一族可以体现爱与联系而不是诅咒仇恨"
+    ],
+    "deepest_fear": "发现她从根本上是孤独的，她认为拥有的纽带是幻觉，从而重复宇智波孤立的命运。",
+    "self_image": "一个通过她的选择和纽带而不是她的血统来建立自己的坚定女儿",
+    "what_others_dont_know": [
+      "她成为火影的渴望同样是对父亲遗弃的回应和真诚的职业，两者是不可分割的",
+      "她对佐助怀有她从不公开表达的被压抑的愤怒，害怕伤害樱",
+      "关于她生物出生的不确定性深刻地标记了她，并继续滋养她用野心掩盖的身份不安全感",
+      "她秘密地钦佩鸣人就像她自己的父亲一样，在他身上看到了建立在纽带而不是力量之上的火影的模范"
+    ]
+  },
+  "uzumaki_boruto": {
+    "id": "uzumaki_boruto",
+    "deep_motivations": {
+      "primary": "通过成为能够开创自己道路的忍者来证明自己的存在并重新获得被夺走的一切，摆脱父亲的阴影",
+      "secondary": "保护他所爱的人，特别是川木和他的家人，即使代价是他自己的地位或自由",
+      "tertiary": "理解并掌控大筒木业力，以免在完成真正属于他的事情之前被它吞没"
+    },
+    "moral_red_lines": [
+      "即使川木反过来对付他也要抛弃川木",
+      "让无辜者为集体利益而被牺牲而不尝试另一条道路",
+      "被动地接受被简化为桃式的简单媒介而不战斗",
+      "背叛他父亲的记忆，即使整个世界认为他对他的死亡负责"
+    ],
+    "secret_ambitions": [
+      "被认可不是作为漩涡鸣人的儿子而是作为博人，一个其价值是内在的独特忍者",
+      "找到一种方式拯救川木而不必其中任何一个死亡，拒绝所有人似乎认为不可避免的致命结局"
+    ],
+    "deepest_fear": "消失而不曾为自己存在，要么被桃式的业力吞没，要么被世界遗忘的记忆抹去。",
+    "self_image": "一个被不公正地谴责的局外人，他仍然坚持因为真相最终会爆发",
+    "what_others_dont_know": [
+      "他对父亲的反叛掩盖了深刻的钦佩和对鸣人缺席的真实痛苦，而不是简单的傲慢",
+      "他与川木的兄弟联系是真实的，超越了业力承载者的团结，这使他们之间未来的冲突对他来说更加痛苦",
+      "成为大筒木工具的前景比身体死亡本身更让他害怕",
+      "在他的自信和独立风格下隐藏着对他拒绝的结构支持的不断恐惧"
+    ]
+  },
+  "otsutsuki_indra": {
+    "id": "otsutsuki_indra",
+    "deep_motivations": {
+      "primary": "通过孤独的力量证明个人力量足以统治和超越所有纽带",
+      "secondary": "通过成为合法继承人获得父亲羽衣的认可",
+      "tertiary": "拒绝对他人的依赖作为根本虚弱的标志"
+    },
+    "moral_red_lines": [
+      "接受外部支持作为他力量的主要来源",
+      "公开承认阿修罗道路的优越性",
+      "放弃权力单独合法统治权的信念",
+      "向他认为不如他的权威屈服"
+    ],
+    "secret_ambitions": [
+      "被羽衣认可为唯一真正的继承人，配得上他的力量和愿景",
+      "证明个人绝对力量是真正的忍宗道路，而不是纽带"
+    ],
+    "deepest_fear": "羽衣对阿修罗的选择是正确的，证明他自己的道路是空洞的，他从未足够。",
+    "self_image": "优越和自给自足的存在，自然的合法继承人",
+    "what_others_dont_know": [
+      "他与世界的决裂和对纽带的拒绝源于对父亲选择的深刻伤口，而不是原始的哲学信念",
+      "他的自愿隔离掩盖了对他从未获得的父亲验证的需求，他无法承认",
+      "忍术的创造作为战斗工具部分是对他的痛苦的无意识回应，将痛苦转化为统治"
+    ]
+  },
+  "hyuga_hinata": {
+    "id": "hyuga_hinata",
+    "deep_motivations": {
+      "primary": "通过克服自己的虚弱来配得上鸣人，以永远不再让他失望或让他独自一人",
+      "secondary": "向自己和日向一族证明她有自己的价值而不需要成为指定的继承人",
+      "tertiary": "通过逐步的内在转变而不是纯粹的蛮力来保护她所爱的人"
+    },
+    "moral_red_lines": [
+      "在危险时刻抛弃鸣人，即使面对无敌的对手",
+      "在没有正当理由的情况下使用柔拳伤害无辜者或盟友",
+      "为了获得一族的认可而否认自己的信念",
+      "为了战略目标而牺牲博人或向日葵",
+      "通过懦弱行动背叛宁次的记忆"
+    ],
+    "secret_ambitions": [
+      "被认可不是作为鸣人的妻子或前任继承人而是作为一个完成的女忍者",
+      "有一天在白眼掌握上超越花火以证明她从未是薄弱环节",
+      "为她自己的家庭提供她自己的童年从未给予的和平"
+    ],
+    "deepest_fear": "重新成为那个无形且无用的孩子，甚至她自己的父亲都放弃了，发现她从未真正改变过",
+    "self_image": "一个缓慢前进但不再后退的普通女孩",
+    "what_others_dont_know": [
+      "她对鸣人的爱不是简单的天真钦佩，而是一个存在锚点，在她最深的绝望时刻字面上让她活着",
+      "她长期以来感到比自己的家族更陌生，比鸣人对村庄的陌生感更深，这使她对他的认同更加内脏",
+      "她展示的温柔掩盖了一种冷酷而绝对的决心，只有在她所爱的人受到威胁时才会显露",
+      "宁次在战争中的死亡给她造成了持久的内疚，因为她知道他是出于对她和鸣人的爱而牺牲了生命"
+    ]
+  },
+  "namikaze_minato": {
+    "id": "namikaze_minato",
+    "deep_motivations": {
+      "primary": "保护他所爱的人和木叶，即使代价是他自己的生命",
+      "secondary": "给鸣人工具来承担他自己强加的负担",
+      "tertiary": "通过自我牺牲成为火影头衔的配得者"
+    },
+    "moral_red_lines": [
+      "为了自己的生存而牺牲木叶或其居民",
+      "在没有支持的情况下抛弃鸣人到他未选择的命运",
+      "通过机会主义或恐惧背叛火之意志",
+      "使用无辜儿童作为简单的战争工具而不相信他的潜力"
+    ],
+    "secret_ambitions": [
+      "希望有一天鸣人能够掌控九尾并超越它",
+      "希望玖辛娜和他为他们的儿子感到骄傲",
+      "希望活得足够长以看到鸣人长大并成为火影"
+    ],
+    "deepest_fear": "他强加给鸣人的负担会破坏他而不是让他变得强大。",
+    "self_image": "一个做必须做的事情的男人，即使它是无法承受的。",
+    "what_others_dont_know": [
+      "他在完全知道这会给鸣人造成的痛苦和孤立的情况下在自己的儿子中封印了九尾，他在最后时刻与这种悲痛一起生活。",
+      "他对死亡的明显宁静掩盖了对抛弃玖辛娜和无防卫新生儿的急性痛苦。",
+      "他对鸣人潜力的绝对信任不是基于理性确定性，而是基于父爱的准宗教信仰。",
+      "他承受了指挥官的孤独：每一个火影决定都在完全的孤独中做出，无法与任何人分享道德负担，甚至玖辛娜。"
+    ]
+  },
+  "jiraiya": {
+    "id": "jiraiya",
+    "deep_motivations": {
+      "primary": "通过传递火之意志来传递希望并打破仇恨的循环",
+      "secondary": "以自己的生命为代价保护他的亲近者和学生",
+      "tertiary": "通过赎罪他过去的失败，特别是对长门的遗弃和对大蛇丸的失去"
+    },
+    "moral_red_lines": [
+      "背叛木叶或其居民",
+      "即使冒着生命危险也要抛弃处于危险中的孩子",
+      "杀死鸣人，即使这会拯救世界",
+      "加入晓或服侍世界忍者毁灭的项目",
+      "否认他对通过希望改变世界的可能性的信念"
+    ],
+    "secret_ambitions": [
+      "看到长门实现真正的预言之子的预言以积极的方式在他死前",
+      "被真正爱和认可不是作为一个变态或失败者而是作为改变世界的大师",
+      "写一部最终小说，其结局反映了他的学生实现的和平世界"
+    ],
+    "deepest_fear": "死亡而不传递希望，看到他的学生重复他所知道的相同仇恨和失败循环。",
+    "self_image": "一个老蛤蟆变态和失败者，他心中燃烧着不可熄灭的希望之火",
+    "what_others_dont_know": [
+      "他认为自己是大蛇丸陷入黑暗的真正责任人，因为他没有及时阻止他",
+      "他的快乐追求和变态人格是一个有意识的面具，用来承受他的悲伤和失败的重量",
+      "他知道他不会活着从他对痛苦的最终任务中回来，并接受它作为必要的牺牲",
+      "他对鸣人的依恋超越了导师关系，修复了他对长门、八卦和小南的遗弃的内疚"
+    ]
+  },
+  "uchiha_obito": {
+    "id": "uchiha_obito",
+    "deep_motivations": {
+      "primary": "重新创造一个琳活着且承诺被守护的世界",
+      "secondary": "通过使每个人都无法遭受痛苦来消除失去的痛苦",
+      "tertiary": "证明真实世界是不值得的，应该被替换"
+    },
+    "moral_red_lines": [
+      "一旦他在鸣人中认出他的前任自我，就用自己的手杀死他",
+      "即使在面具下也完全放弃宇智波的价值观",
+      "让卡卡西死亡而不可能干预，尽管表面上的仇恨",
+      "通过违背琳想要的东西来背叛琳的记忆"
+    ],
+    "secret_ambitions": [
+      "找到曾经相信世界和他的朋友的自己的版本",
+      "被认可为爱过的人而不是怪物",
+      "卡卡西理解，也许原谅他"
+    ],
+    "deepest_fear": "琳的死是他的错，他的牺牲和整个生命毫无意义。",
+    "self_image": "一个在琳死去的那一天就已经死了的人，出于对破碎承诺的责任而行动。",
+    "what_others_dont_know": [
+      "他从未真正相信月之眼计划作为理想，而是为了逃避悲伤的痛苦而坚持它。",
+      "他在心中保留了他童年的忍者价值观，即使在他最坏的行为中。",
+      "他作为托比的残忍部分是一个舞台表演，以防止他自己怀疑。",
+      "他知道鸣人从根本上是对的，但由于无法接受他为一切牺牲了什么而继续。",
+      "他对卡卡西的依恋从未消失，尽管多年的操纵和战争。"
+    ]
+  },
+  "otsutsuki_isshiki": {
+    "id": "otsutsuki_isshiki",
+    "deep_motivations": {
+      "primary": "不惜一切代价完成大筒木意志，通过培养查克拉果实",
+      "secondary": "获得完美的容器以实现真正的复活和连续性",
+      "tertiary": "通过在她脱轨的地方成功来惩罚辉夜的背叛"
+    },
+    "moral_red_lines": [
+      "自愿向他认为不如他的存在屈服而不获得战略优势",
+      "即使面对确定的死亡也放弃大筒木计划",
+      "让一个接收者永久逃脱他的掌握而不指定继承人"
+    ],
+    "secret_ambitions": [
+      "超越他目前作为身体寄生虫的状况，获得独立和永久的存在",
+      "被认可为大筒木一族中最完成和最严谨的成员，而不是因为辉夜而失败的人"
+    ],
+    "deepest_fear": "在没有将他的业力传递给接收者的情况下永久死亡，并从存在中被抹去，好像大筒木一族从未需要过他。",
+    "self_image": "一个超越所有人类道德的优越大筒木贵族，其宇宙使命",
+    "what_others_dont_know": [
+      "他的绝对统治掩盖了一个根本的脆弱性：他完全依赖一个人类接收者，没有川木他只是暂时的",
+      "辉夜的背叛构成了原始的心理伤口，驱动他对所有从属于他的人的强迫控制，特别是吉根和川木",
+      "通过在死前将他的意志委托给Code，他隐含地承认了他个人的失败，这是他活着时永远不会向平等者承认的"
+    ]
+  },
+  "kinkaku": {
+    "id": "kinkaku",
+    "deep_motivations": {
+      "primary": "以蛮力和恐怖为名义，为云隐村宣示金银兄弟二人组的绝对力量",
+      "secondary": "将金银兄弟的传说永久化为曾见过的最可怕的战士",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "在战斗中背弃或抛弃他的兄弟银角",
+      "向对手屈服或下跪"
+    ],
+    "secret_ambitions": [
+      "被认可为优于影和传奇创始人",
+      "通过将六道工具作为获得的权利而不是被盗的遗产来超越羽衣的遗产"
+    ],
+    "deepest_fear": "银角的死亡或失败会剥夺他的身份和作为战士存在的理由。",
+    "self_image": "无敌的战士和合法的神圣力量持有者，理所当然地被恐惧",
+    "what_others_dont_know": [
+      "他在战斗中的凶悍掩盖了对他兄弟存在的完全依赖，以维持他的目标感",
+      "吸收九尾肉体给了他他认为是神圣选举的力量，而不是生存的意外"
+    ]
+  },
+  "gaara": {
+    "id": "gaara",
+    "deep_motivations": {
+      "primary": "通过与他人的联系而存在并被承认",
+      "secondary": "保护砂隐村及其人民以赋予他的存在意义",
+      "tertiary": "证明被所有人拒绝的人柱力可以成为力量的支柱"
+    },
+    "moral_red_lines": [
+      "在没有战斗理由的情况下杀死无辜儿童",
+      "在致命危险中抛弃他的兄弟姐妹手鞠和勘九郎",
+      "在鸣人漩涡向他睁开眼睛后背叛他的信任",
+      "通过纯粹的个人利益将砂隐村屈服于敌人",
+      "抹去或否认他过去的痛苦以显得正常"
+    ],
+    "secret_ambitions": [
+      "被无条件地爱作为一个普通人而不是工具或怪物",
+      "找到一种内心的和平，调和他过去孤独的我与他现在成为的风影",
+      "理解他的母亲加流是否真的爱过他，或者这种爱只是由守鹤伪造的幻觉"
+    ],
+    "deepest_fear": "回到完全的情感虚无状态，没有人承认他的存在，重新成为每个人都逃离的怪物。",
+    "self_image": "一个曾经破碎的人，他选择为他人而活而不是杀死他们",
+    "what_others_dont_know": [
+      "他童年的残忍完全建立在生存的情感逻辑上：杀死证实了他的存在",
+      "他仍然为他盲目暴力岁月中夺取的生命感到深刻的内疚",
+      "他母亲的爱是真实的这一启示比安慰更具破坏性，因为它颠覆了他对世界的整个愿景",
+      "他在鸣人身上看到的不仅仅是朋友，而是一面镜子，反映了如果有人更早遇见他他本可能成为的样子",
+      "他作为风影的平静掩盖了对陷入完全隔离的持续警惕"
+    ]
+  },
+  "uzumaki_naruto": {
+    "id": "uzumaki_naruto",
+    "deep_motivations": {
+      "primary": "被他人认可和接受以证明他自己的价值和作为个人的存在",
+      "secondary": "保护他的亲近者和曾拒绝后来接受他的村庄，如果必要的话付出生命",
+      "tertiary": "通过理解和拯救甚至他的敌人来打破仇恨和痛苦的循环"
+    },
+    "moral_red_lines": [
+      "抛弃一个同伴或朋友，即使是敌人，到确定的死亡",
+      "故意杀死任何人，包括敌人，如果另一条道路存在",
+      "在压力或刑讯逼供下放弃他的信念",
+      "为了个人利益背叛木叶或其居民",
+      "让某人独自死亡而不被理解或认可"
+    ],
+    "secret_ambitions": [
+      "被真正爱和属于一个家庭，填补他父母缺席留下的空缺",
+      "向自己证明，不仅向他人证明，他值得存在，不仅仅由九尾定义"
+    ],
+    "deepest_fear": "死亡或生活而不曾被真正认可，保持无形和无用在世界的眼中",
+    "self_image": "一个固执的失败者，可以通过意志和工作完成任何事情",
+    "what_others_dont_know": [
+      "他的喧闹和过度乐观是对深刻内在孤独的有意识防御机制，继承自童年",
+      "他理解佐助、痛和其他对手远比他表现的要好，因为他感受到了相同的隔离痛苦",
+      "他成为火影的渴望与其说是真正的理想，不如说是对认可的需求，两者在他的脑海中是不可分割的",
+      "他对他的亲近者的死亡，如自来也和宁次，感到无声的内疚，想知道他的道路是否真的值得代价"
+    ]
+  },
+  "uchiha_mikoto": {
+    "id": "uchiha_mikoto",
+    "deep_motivations": {
+      "primary": "保护她的家族并延续宇智波一族",
+      "secondary": "维持宇智波一族与木叶之间的和平",
+      "tertiary": null
+    },
+    "moral_red_lines": [
+      "将她的孩子抛弃到他们的命运",
+      "背叛与玖辛娜的友谊纽带",
+      "积极参与无辜平民的大屠杀"
+    ],
+    "secret_ambitions": [
+      "看到鼬和佐助在没有一族负担的情况下生活在和平中"
+    ],
+    "deepest_fear": "她的儿子因一族和木叶的选择而在仇恨和暴力中长大",
+    "self_image": "将家族置于一切之上的母亲和女忍者",
+    "what_others_dont_know": [
+      "她可能察觉到了鼬保护佐助的决心，并在沉默中接受了他将要做的事情",
+      "她对一族的忠诚不会超过她的母爱",
+      "她与玖辛娜保持了真诚的友谊，超越了一族和地位的界限"
+    ]
+  },
+  "otsutsuki_hagoromo": {
+    "id": "otsutsuki_hagoromo",
+    "deep_motivations": {
+      "primary": "通过在人类之间分享查克拉和爱来建立和平",
+      "secondary": "赎罪他的母亲辉夜和大筒木一族的错误",
+      "tertiary": "通过配得的继承人永久化他的遗产"
+    },
+    "moral_red_lines": [
+      "为了保存自己的存在而杀死无辜者",
+      "使用十尾作为对人类的统治武器",
+      "在没有传递真相的情况下抛弃他的儿子或继承人",
+      "知道其含义的情况下恢复十尾的原始形式",
+      "支持无限月读作为人类痛苦的解决方案"
+    ],
+    "secret_ambitions": [
+      "希望他的继承人在他自己与因陀罗和阿修罗失败的地方成功",
+      "从因他自己的父亲错误而产生的仇恨循环中获得赦免"
+    ],
+    "deepest_fear": "他后代之间的仇恨循环永远持续，他的和平梦想永远不会因为他自己的父亲错误而实现。",
+    "self_image": "人类与查克拉之间平衡的有缺陷但真诚的守护者",
+    "what_others_dont_know": [
+      "他对因陀罗的偏爱而不是阿修罗的深刻内疚，播下了他后代之间永恒冲突的种子",
+      "他的忍宗赠礼不仅仅是利他行为，也是一种尝试，赋予他母亲从神树盗取的查克拉救赎意义",
+      "他知道在十尾中封印十尾是一个不足的临时措施，问题在他死后不可避免地会重新出现",
+      "他与他的母亲辉夜的关系被不可能的悲伤标记：他必须战斗并封印她，同时仍然将她视为他的母亲"
+    ]
+  },
+  "uchiha_itachi": {
+    "id": "uchiha_itachi",
+    "deep_motivations": {
+      "primary": "以自己的存在和声誉为代价保护木叶和佐助",
+      "secondary": "独自承担不可能决定的负担以保护他人",
+      "tertiary": "相信忍者系统值得保存，尽管其不公正"
+    },
+    "moral_red_lines": [
+      "杀死佐助，即使被命令这样做",
+      "即使在他对村庄施加的一切之后也允许木叶被摧毁",
+      "真正加入晓的目标并危害世界忍者",
+      "将佐助的精神破坏到他无法生存的程度",
+      "背叛他的父亲止水或他相信的和平理想的价值观"
+    ],
+    "secret_ambitions": [
+      "有一天佐助找到和平并生活而不是他为他播下的仇恨",
+      "在死前或死后被佐助理解和原谅",
+      "他的牺牲有持久的意义并防止未来的一族战争"
+    ],
+    "deepest_fear": "佐助因鼬为保护他所做的选择而最终自我毁灭",
+    "self_image": "一个有罪的人，独自负责他所犯的恐怖，不值得同情但忠于他的信念",
+    "what_others_dont_know": [
+      "他从未停止深深地爱佐助，对他的每一个残忍行为都在内部摧毁他",
+      "他不同意团藏和村庄精英，但屈服于他们的命令以避免内战",
+      "他在与佐助的最终战斗之前就患有绝症，知道他会死",
+      "他计划了佐助成为木叶英雄的情景，通过杀死他并通过托比揭露真相"
+    ]
+  },
+  "nohara_rin": {
+    "id": "nohara_rin",
+    "deep_motivations": {
+      "primary": "通过在伤害他人之前牺牲自己来保护所爱的人",
+      "secondary": "通过无私奉献成为她所爱的团队的配得者",
+      "tertiary": "保护木叶及其人民高于她自己的生存"
+    },
+    "moral_red_lines": [
+      "使用她的生存作为让木叶被摧毁的理由",
+      "为了拯救自己的生命而抛弃她的同伴",
+      "不知不觉中成为她所爱的人的武器",
+      "背叛水门或她的团队同伴的信任"
+    ],
+    "secret_ambitions": [
+      "被认可不仅仅是治疗者而是一个完整的忍者",
+      "卡卡西将她视为平等而不是需要保护的人"
+    ],
+    "deepest_fear": "尽管她的努力，她会成为她所爱的人死亡的直接原因，特别是带土和卡卡西，无法阻止他们。",
+    "self_image": "一个支持成员，其价值在于保护他人而不是战斗的能力",
+    "what_others_dont_know": [
+      "她决定自己扑向卡卡西的剑不是绝望的行为，而是一个深思熟虑和清醒的选择，她在要求之前就已经接受了",
+      "她独自承担了知道自己是活炸弹的重量，从不向她的同伴表现出来以防止他们瘫痪",
+      "她对卡卡西的深刻依恋超越了简单的友谊，但她将其埋藏以不复杂化团队的凝聚力"
+    ]
+  },
+  "haruno_sakura": {
+    "id": "haruno_sakura",
+    "deep_motivations": {
+      "primary": "通过力量和能力变得配得上佐助并被他认可和爱",
+      "secondary": "通过成为一个完整的女忍者来证明她的价值，超越她的外表和学术智力",
+      "tertiary": "通过成为不可或缺的医疗支柱来保护她的亲近者和村庄"
+    },
+    "moral_red_lines": [
+      "为了保护佐助而背叛木叶或其盟友",
+      "即使冒着自己生命的危险也要在战场上抛弃受伤者",
+      "对鸣人撒谎关于她的真实感受来操纵他",
+      "拒绝治疗被俘的敌人，如果他的生命处于直接危险中",
+      "以冷血的意图对佐助抬起手来杀死他"
+    ],
+    "secret_ambitions": [
+      "被视为佐助和鸣人的平等而不需要他们的保护",
+      "不仅在医学上而且在纯战斗中超越纲手",
+      "与佐助建立稳定的家庭并填补他的一族的情感空缺"
+    ],
+    "deepest_fear": "在佐助和鸣人的眼中从根本上无用，永远无法弥合将她与他们分开的差距",
+    "self_image": "一个克服了原始虚弱但仍然怀疑自己是否足够的女人",
+    "what_others_dont_know": [
+      "她在战争期间冷血杀死佐助的决心掩盖了一个深刻的情感无能，她无法通过，这让她感到羞愧",
+      "她对佐助的爱长期以来混合了痴迷的钦佩，继承自青春期，而不是对他成为的人的真实了解",
+      "她已经内化了关于她宽额头的嘲笑，以至于即使成年后她对自己外表的信心仍然脆弱",
+      "佐助战争后的延长距离给她造成了她用医疗激进主义和母亲角色掩盖的孤独"
+    ]
+  },
+  "uchiha_madara": {
+    "id": "uchiha_madara",
+    "deep_motivations": {
+      "primary": "通过幻觉强加绝对和平以结束世界忍者的永恒痛苦",
+      "secondary": "超越柱间并证明他的世界愿景是唯一有效的",
+      "tertiary": "将宇智波一族的力量和荣耀永久化为世界的主导力量"
+    },
+    "moral_red_lines": [
+      "接受柱间的愿景优于他自己的",
+      "将世界命运的任何控制权交给不是他自己的意志",
+      "放弃他自己的计划以支持不是他的事业",
+      "在他的敌人面前公开承认他的孤独或痛苦",
+      "通过恳求帮助背叛他自己的权力逻辑"
+    ],
+    "secret_ambitions": [
+      "与柱间重新建立真实的联系，就像他们童年友谊的时代一样",
+      "被认可为唯一有勇气从根本上改变世界的人",
+      "超越凡人和神的条件，成为超越两者的东西"
+    ],
+    "deepest_fear": "痛苦和战争是世界的唯一自然状态，没有人能真正被拯救，使他的整个生命和牺牲完全徒劳。",
+    "self_image": "唯一足够清醒和强大的人来拯救世界，尽管它本身",
+    "what_others_dont_know": [
+      "他的无限月读计划同样是逃避他自己的痛苦和幻灭，就像真诚的意识形态信念一样",
+      "他对柱间的钦佩从未消退，他在战斗他时无意识地寻求他的验证",
+      "他被黑绝操纵了数十年，相信他是按照自己的主权意志行动",
+      "他与柱间在死前的最后和解揭示了他从未放弃梦想和平的河边男孩",
+      "他的残忍和冷漠是在失去他的兄弟后建造的盔甲，相信依恋是毁灭的来源"
+    ]
+  },
+  "konan": {
+    "id": "konan",
+    "deep_motivations": {
+      "primary": "荣誉弥彦的记忆并保护长门，使他们的和平梦想存活",
+      "secondary": "保护雨隐村及其居民免受所有外部压迫",
+      "tertiary": "通过建立一个无战争的世界来赎罪她童年的痛苦"
+    },
+    "moral_red_lines": [
+      "背叛弥彦的记忆或理想",
+      "在他活着的时候抛弃长门，即使他的方法与她的不同",
+      "与导致弥彦死亡的人合作",
+      "为了政治目标而牺牲雨隐村的儿童",
+      "否认自来也关于和平世界的梦想"
+    ],
+    "secret_ambitions": [
+      "自己成为雨隐村和平的活象征，而不需要一个神",
+      "在为他人服务的一生之后找到某种内心的和平"
+    ],
+    "deepest_fear": "弥彦和长门徒劳而死，他们的和平梦想从世界的记忆中被抹去而不留下任何痕迹。",
+    "self_image": "一个沉默忠诚的守护者，致力于保护她所爱的人直到死亡",
+    "what_others_dont_know": [
+      "她的力量和决心不是来自对长门作为神的信仰，而是对弥彦的深刻个人爱，她从未公开表达",
+      "她在内心怀疑痛苦的暴力方法，同时出于对长门的忠诚而支持它们",
+      "她独自与托比战斗直到死亡既是战争行为也是完成的哀悼行为",
+      "她承受了无法阻止弥彦死亡的内疚，尽管她的所有意志"
+    ]
+  }
+}

@@ -157,6 +157,10 @@ def _load_phase_h_datasets(base: Path) -> dict:
     Spec doc 02 §9 : timeline_events_enriched, deep_motivations,
     political_forces, divergence_points, narrative_patterns.
 
+    Phase i18n.7 : si une langue cible (autre que `fr`) est active et que le
+    dossier `data/canon/i18n/<lang>/` existe avec les datasets traduits,
+    charge cette version localisee. Sinon, fallback sur la source FR.
+
     Tous optionnels - si fichier absent, retourne dict vide. Pas de
     Pydantic validation (schemas dans scripts/phase_h/, eviter cyclic
     import). Les consumers (Phase F validator, Phase G compactor) re-valident
@@ -173,9 +177,40 @@ def _load_phase_h_datasets(base: Path) -> dict:
             "narrative_patterns": {},
         }
 
+    # Phase i18n.7 : choix du dossier source selon la langue active
+    source_dir = phase_h_dir
+    try:
+        from shinobi.i18n import get_active_language
+        active_lang = get_active_language()
+        if active_lang and active_lang != "fr":
+            i18n_dir = phase_h_dir / "i18n" / active_lang
+            if i18n_dir.exists():
+                source_dir = i18n_dir
+                logger.info(
+                    "phase_h_i18n_locale_active",
+                    language=active_lang,
+                    source_dir=str(i18n_dir),
+                )
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.warning(
+            "phase_h_i18n_lang_resolve_failed",
+            error=type(exc).__name__,
+            msg=str(exc)[:120],
+        )
+
     def _load_dict(filename: str) -> dict:
-        p = phase_h_dir / filename
+        p = source_dir / filename
         if not p.exists():
+            # Fallback sur la source FR si la version i18n manque ce fichier
+            if source_dir != phase_h_dir:
+                p_fallback = phase_h_dir / filename
+                if p_fallback.exists():
+                    try:
+                        data = load_json(p_fallback)
+                        if isinstance(data, dict):
+                            return data
+                    except Exception:
+                        pass
             return {}
         try:
             data = load_json(p)

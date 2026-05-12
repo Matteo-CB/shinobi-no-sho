@@ -1,0 +1,1089 @@
+{
+  "factions": [
+    {
+      "id": "konohagakure",
+      "name_zh": "木叶隐村",
+      "type": "village",
+      "leader_id": "tsunade",
+      "members": [
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "haruno_sakura",
+        "hatake_kakashi",
+        "sarutobi_hiruzen",
+        "namikaze_minato",
+        "senju_hashirama",
+        "senju_tobirama",
+        "uchiha_itachi",
+        "lee_rock",
+        "hyuga_neji",
+        "tenten",
+        "nara_shikamaru",
+        "akimichi_choji",
+        "yamanaka_ino",
+        "inuzuka_kiba",
+        "aburame_shino",
+        "hyuga_hinata",
+        "yuhi_kurenai",
+        "sarutobi_asuma",
+        "mitarashi_anko",
+        "umino_iruka",
+        "shimura_danzo"
+      ],
+      "allies": [
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "mount_myoboku",
+        "shikkotsu_forest",
+        "senju",
+        "uchiha",
+        "sarutobi",
+        "hyuga",
+        "nara",
+        "akimichi",
+        "yamanaka",
+        "aburame",
+        "inuzuka",
+        "hatake",
+        "uzumaki"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otogakure",
+        "root",
+        "uchiha_madara",
+        "otsutsuki"
+      ],
+      "active_year_start": -65,
+      "active_year_end": null,
+      "description_zh": "由千手柱间和宇智波斑共同创立的第一个忍者村，木叶是火之国的中央政治和军事力量。作为众多名门大族的所在地，它培养了历史上最具影响力的忍者。"
+    },
+    {
+      "id": "sunagakure",
+      "name_zh": "砂隐村",
+      "type": "village",
+      "leader_id": "gaara",
+      "members": [
+        "gaara",
+        "temari",
+        "kankuro",
+        "chiyo",
+        "ebizo",
+        "baki",
+        "sasori"
+      ],
+      "allies": [
+        "konohagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "风之国的隐村，由风影统治，砂隐村是木叶的战略伙伴，尽管历史上存在竞争。前人柱力我爱罗在此发挥了决定性的和平影响力。"
+    },
+    {
+      "id": "kumogakure",
+      "name_zh": "云隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "darui",
+        "c",
+        "nii_yugito",
+        "omoi",
+        "karui",
+        "samui"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "hyuga"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "雷之国的隐村，以军事实力和雷遁技术而闻名。云隐村与木叶之间存在紧张关系，特别是在试图绑架日向雏田期间，后来成为大忍者联盟的盟友。"
+    },
+    {
+      "id": "iwagakure",
+      "name_zh": "岩隐村",
+      "type": "village",
+      "leader_id": "onoki",
+      "members": [
+        "onoki",
+        "kurotsuchi",
+        "akatsuchi",
+        "deidara",
+        "han",
+        "roshi",
+        "gari"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "konohagakure",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "土之国的隐村，由土影统治，岩隐村长期对木叶怀有敌意。在大野木的领导下，它加入了大忍者联盟以对抗斑和带土。"
+    },
+    {
+      "id": "kirigakure",
+      "name_zh": "雾隐村",
+      "type": "village",
+      "leader_id": "terumi_mei",
+      "members": [
+        "terumi_mei",
+        "ao",
+        "chojuro",
+        "momochi_zabuza",
+        "haku",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hoshigaki_kisame",
+        "pakura",
+        "suikazan_fuguki"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "seven_ninja_swordsmen_of_the_mist",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "水之国的隐村，曾由受带土影响的水影统治，因其残暴行为而被称为血雾村。在照美冥的领导下，雾隐村开始了深刻的改革。"
+    },
+    {
+      "id": "amegakure",
+      "name_zh": "雨隐村",
+      "type": "village",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko"
+      ],
+      "allies": [
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "hanzo_salamander"
+      ],
+      "active_year_start": -20,
+      "active_year_end": 3,
+      "description_zh": "一个永远处于战争中的小村庄，雨隐村被长门以佩恩的身份改造成神权国家。弥彦在此创立了原始晓组织，后被半藏杀害，这使长门陷入虚无主义。"
+    },
+    {
+      "id": "otogakure",
+      "name_zh": "音隐村",
+      "type": "village",
+      "leader_id": "orochimaru",
+      "members": [
+        "orochimaru",
+        "yakushi_kabuto",
+        "kinuta_dosu",
+        "abumi_zaku",
+        "tsuchi_kin",
+        "kimimaro",
+        "tayuya",
+        "jirobo",
+        "kidomaru"
+      ],
+      "allies": [
+        "fuma_land_of_sound",
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure"
+      ],
+      "active_year_start": -3,
+      "active_year_end": 3,
+      "description_zh": "由大蛇丸创立的村庄，作为其进行禁忌人体实验的掩护。音隐村是纯粹的军事幌子，被用于在中忍考试期间攻击木叶并招募实验对象。"
+    },
+    {
+      "id": "takigakure",
+      "name_zh": "瀑布隐村",
+      "type": "village",
+      "leader_id": "shibuki",
+      "members": [
+        "shibuki",
+        "kakuzu"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "一个孤立的隐村，守护着能够暂时赋予非凡力量的英雄之水。其人柱力芙被晓组织捕获。角都曾来自此村，后来背弃了它。"
+    },
+    {
+      "id": "yugakure",
+      "name_zh": "汤隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "hidan"
+      ],
+      "allies": [],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "汤之国的和平主义隐村，已放弃军事道路。飞段曾来自此村，但背弃了其价值观，加入了晓组织，与村庄的和平方向相悖。"
+    },
+    {
+      "id": "hoshigakure",
+      "name_zh": "星隐村",
+      "type": "village",
+      "leader_id": "akahoshi",
+      "members": [
+        "akahoshi",
+        "sumaru"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "天之国的隐村，修行一种源自陨石的独特星辰查克拉形式。其高强度训练对使用者造成长期致命伤害，揭示了传统与生存之间的内部紧张关系。"
+    },
+    {
+      "id": "uzushiogakure",
+      "name_zh": "涡隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [],
+      "active_year_start": -100,
+      "active_year_end": -50,
+      "description_zh": "漩涡一族的故乡，专精于封印术和长寿。因其强大的封印术力量而被多个村庄联合摧毁。其幸存者四散各地，许多人加入了木叶。"
+    },
+    {
+      "id": "yukigakure",
+      "name_zh": "雪隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "kazahana_koyuki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "雪之国的隐村，由风花怒涛在杀害其兄长后发动政变统治。在被木叶忍者击败后，该国在光遥的领导下开始了政治转变。"
+    },
+    {
+      "id": "shimogakure",
+      "name_zh": "霜隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "fuen",
+        "fuka"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "一个叛逆隐村，其特务对木叶进行了一系列攻击。其忍者使用先进的元素技术，在孤立地区的对抗中被消灭。"
+    },
+    {
+      "id": "takumi_village",
+      "name_zh": "匠之村",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "一个专门制造忍者武器的村庄，因其对武器装备的垄断而被五大国摧毁。其幸存者试图复仇，特别是针对木叶。"
+    },
+    {
+      "id": "akatsuki",
+      "name_zh": "晓组织",
+      "type": "organization",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko",
+        "uchiha_obito",
+        "uchiha_madara",
+        "uchiha_itachi",
+        "hoshigaki_kisame",
+        "deidara",
+        "sasori",
+        "hidan",
+        "kakuzu",
+        "zetsu",
+        "konan",
+        "orochimaru"
+      ],
+      "allies": [
+        "amegakure",
+        "otogakure"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "takigakure",
+        "five_kage"
+      ],
+      "active_year_start": -15,
+      "active_year_end": 3,
+      "description_zh": "一个犯罪组织，最初由弥彦作为和平运动创立，后被带土和斑劫持。晓组织系统地捕获尾兽以实现月之眼计划。"
+    },
+    {
+      "id": "root",
+      "name_zh": "根部",
+      "type": "organization",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo",
+        "sai",
+        "aburame_torune",
+        "yamanaka_fu",
+        "yamato"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "akatsuki",
+        "nagato"
+      ],
+      "active_year_start": -30,
+      "active_year_end": 3,
+      "description_zh": "由志村团藏创立的木叶暗部秘密分部，在村庄政府的阴影中运作。根部通过压制成员的情感来对其进行条件反射，并以村庄安全的名义进行不可告人的行动。"
+    },
+    {
+      "id": "anbu",
+      "name_zh": "暗部",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "hatake_kakashi",
+        "yamato",
+        "uchiha_itachi",
+        "sai"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -40,
+      "active_year_end": null,
+      "description_zh": "直接接受火影命令执行机密任务的精英忍者部队。暗部完成常规部队无法承担的任务，包括暗杀和反间谍活动。"
+    },
+    {
+      "id": "seven_ninja_swordsmen_of_the_mist",
+      "name_zh": "雾隐七人众",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "momochi_zabuza",
+        "hoshigaki_kisame",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "ringo_ameyuri",
+        "munashi_jinpachi",
+        "kuriarare_kushimaru",
+        "suikazan_fuguki",
+        "chojuro"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -30,
+      "active_year_end": null,
+      "description_zh": "雾隐村的军事精英，由七名持有传说中雾隐村刀剑的忍者组成。即使在该组织解散期间，他们的政治和象征影响力仍然很大。"
+    },
+    {
+      "id": "konoha_military_police_force",
+      "name_zh": "木叶警务部队",
+      "type": "organization",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_fugaku",
+        "uchiha_itachi",
+        "uchiha_obito"
+      ],
+      "allies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -60,
+      "active_year_end": -1,
+      "description_zh": "木叶的内部警察部队，历来由宇智波一族控制，赋予他们在村庄内的主要制度权力。在由鼬实施的宇智波一族大屠杀后被解散。"
+    },
+    {
+      "id": "five_kage",
+      "name_zh": "五影会议",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "tsunade",
+        "gaara",
+        "onoki",
+        "terumi_mei",
+        "hatake_kakashi",
+        "kurotsuchi",
+        "darui",
+        "chojuro"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "uchiha_madara"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "由五大隐村首领组成的最高政治机构。五影会议在第四次忍界大战期间协调了大忍者联盟，以对抗宇智波斑和带土。"
+    },
+    {
+      "id": "kara",
+      "name_zh": "卡拉组织",
+      "type": "organization",
+      "leader_id": "otsutsuki_isshiki",
+      "members": [
+        "otsutsuki_isshiki",
+        "jigen",
+        "delta",
+        "kashin_koji",
+        "boro",
+        "ao",
+        "code",
+        "victor",
+        "deepa"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_zh": "一个秘密组织，表面上由时间神统治，实际上是大筒木一式的容器，致力于培育神树以收获其果实。卡拉进行全球行动以开采地球的查克拉资源。"
+    },
+    {
+      "id": "otsutsuki",
+      "name_zh": "大筒木一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "otsutsuki_kaguya",
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra",
+        "otsutsuki_isshiki",
+        "otsutsuki_momoshiki",
+        "otsutsuki_kinshiki",
+        "otsutsuki_urashiki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "five_kage",
+        "boruto_uzumaki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_zh": "一个天界血统的查克拉种植者，在各个世界中旅行以种植和收获神树。大筒木一族是地球所有忍者查克拉的起源，通过辉夜，代表着最高的外星威胁。"
+    },
+    {
+      "id": "uchiha",
+      "name_zh": "宇智波一族",
+      "type": "clan",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_madara",
+        "uchiha_izuna",
+        "uchiha_fugaku",
+        "uchiha_mikoto",
+        "uchiha_itachi",
+        "uchiha_sasuke",
+        "uchiha_obito",
+        "uchiha_shisui",
+        "uchiha_sarada"
+      ],
+      "allies": [
+        "konohagakure",
+        "konoha_military_police_force"
+      ],
+      "enemies": [
+        "senju",
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -100,
+      "active_year_end": null,
+      "description_zh": "木叶的创始一族，与千手一族并肩，拥有写轮眼的携带者。该一族几乎被鼬在团藏的命令下全灭。其与木叶政府的紧张关系助长了政变计划，最终导致了大屠杀。"
+    },
+    {
+      "id": "senju",
+      "name_zh": "千手一族",
+      "type": "clan",
+      "leader_id": "senju_hashirama",
+      "members": [
+        "senju_hashirama",
+        "senju_tobirama",
+        "tsunade",
+        "nawaki"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [
+        "uchiha",
+        "uchiha_madara"
+      ],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_zh": "木叶的创始一族，以其生命力技术和柱间的木遁而闻名。千手一族与宇智波一族建立了创始联盟，从而创立了隐村制度。"
+    },
+    {
+      "id": "uzumaki",
+      "name_zh": "漩涡一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "uzumaki_naruto",
+        "uzumaki_kushina",
+        "uzumaki_mito",
+        "nagato",
+        "karin",
+        "uzumaki_boruto",
+        "uzumaki_himawari"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzushiogakure",
+        "senju"
+      ],
+      "enemies": [],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_zh": "来自涡隐村的一族，与千手一族有血缘关系，精通封印术并拥有非凡的生命力。在其村庄被摧毁后，成员四散各地，一些人成为了人柱力。"
+    },
+    {
+      "id": "hyuga",
+      "name_zh": "日向一族",
+      "type": "clan",
+      "leader_id": "hyuga_hiashi",
+      "members": [
+        "hyuga_hiashi",
+        "hyuga_hizashi",
+        "hyuga_neji",
+        "hyuga_hinata",
+        "hyuga_hanabi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "kumogakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村在宇智波衰落后最具影响力的一族，拥有Byakugan和柔拳术。其内部结构分为主家和分家，分家被诅咒印记所奴役。"
+    },
+    {
+      "id": "nara",
+      "name_zh": "奈良一族",
+      "type": "clan",
+      "leader_id": "nara_shikaku",
+      "members": [
+        "nara_shikaku",
+        "nara_yoshino",
+        "nara_shikamaru"
+      ],
+      "allies": [
+        "konohagakure",
+        "akimichi",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村因影子操纵术和神圣鹿而闻名的一族。奈良一族与秋道一族和山中一族组成三角同盟，代代相传。"
+    },
+    {
+      "id": "akimichi",
+      "name_zh": "秋道一族",
+      "type": "clan",
+      "leader_id": "akimichi_choza",
+      "members": [
+        "akimichi_choza",
+        "akimichi_choji",
+        "akimichi_chocho"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村专门研究身体变身和物理膨胀术的一族。作为奈良一族和山中一族的历史伙伴，秋道一族在三方阵型中充当打击力量。"
+    },
+    {
+      "id": "yamanaka",
+      "name_zh": "山中一族",
+      "type": "clan",
+      "leader_id": "yamanaka_inoichi",
+      "members": [
+        "yamanaka_inoichi",
+        "yamanaka_ino",
+        "yamanaka_inojin",
+        "yamanaka_fu"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "akimichi"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村掌握心灵转移术和心灵感应术的一族，在情报和战术沟通中发挥关键作用。山中井野一在第四次忍界大战期间担任通讯部长。"
+    },
+    {
+      "id": "sarutobi",
+      "name_zh": "猿飞一族",
+      "type": "clan",
+      "leader_id": "sarutobi_hiruzen",
+      "members": [
+        "sarutobi_hiruzen",
+        "sarutobi_biwako",
+        "sarutobi_asuma",
+        "sarutobi_konohamaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "orochimaru"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "为木叶村提供第三代火影的一族，是受人尊敬的家族象征。猿飞日斩体现了教师型和政治型忍者的理想，而阿斯玛则担任精英jonin。"
+    },
+    {
+      "id": "shimura",
+      "name_zh": "志村一族",
+      "type": "clan",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo"
+      ],
+      "allies": [
+        "root"
+      ],
+      "enemies": [
+        "konohagakure",
+        "uchiha",
+        "nagato"
+      ],
+      "active_year_start": -60,
+      "active_year_end": 3,
+      "description_zh": "人数稀少的一族，志村团藏是其最具影响力的代表，在木叶村政府的阴影中活动。团藏秘密积累了Sharingan，并在数十年间操纵了村庄的政治事件。"
+    },
+    {
+      "id": "aburame",
+      "name_zh": "油女一族",
+      "type": "clan",
+      "leader_id": "aburame_shibi",
+      "members": [
+        "aburame_shibi",
+        "aburame_shino",
+        "aburame_torune"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村的一族，其成员从出生时就寄宿Kikaichuu昆虫，将这些生物用作吞噬敌方查克拉的活体武器。沉默而分析性强，该一族在村庄内发挥情报作用。"
+    },
+    {
+      "id": "inuzuka",
+      "name_zh": "犬冢一族",
+      "type": "clan",
+      "leader_id": "inuzuka_tsume",
+      "members": [
+        "inuzuka_tsume",
+        "inuzuka_kiba",
+        "inuzuka_hana"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "木叶村的一族，每个成员都与一只专门的忍犬组成战斗二人组。他们基于速度和敏锐犬类感官的战斗风格使他们成为无与伦比的侦察兵和追踪者。"
+    },
+    {
+      "id": "hatake",
+      "name_zh": "旗木一族",
+      "type": "clan",
+      "leader_id": "hatake_kakashi",
+      "members": [
+        "hatake_sakumo",
+        "hatake_kakashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_zh": "木叶村的小型血脉，由白牙樱木和其子卡卡西闻名，卡卡西后来成为第六代火影。尽管樱木自杀带来的短暂耻辱，卡卡西恢复了家族荣誉并成为主要导师人物。"
+    },
+    {
+      "id": "kaguya_clan",
+      "name_zh": "辉夜一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [
+        "kirigakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": 2,
+      "description_zh": "狂热战士一族，拥有Shikotsumyaku技术，可以操纵自己的骨骼。在对雾隐村的鲁莽攻击中几乎被灭绝，唯一值得注意的幸存者是君麻吕，被大蛇丸收留。"
+    },
+    {
+      "id": "hozuki",
+      "name_zh": "鬼灯一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hozuki_gengetsu"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "雾隐村掌握液化身体Suika no Jutsu技术的一族。满月是七人众剑士之一，而幻月鬼灯担任第二代水影，赋予该一族显著的政治影响力。"
+    },
+    {
+      "id": "funato",
+      "name_zh": "船户一族",
+      "type": "clan",
+      "leader_id": "funato_araumi",
+      "members": [
+        "funato_araumi",
+        "funato_isari",
+        "funato_tenma",
+        "funato_seiren",
+        "funato_ikada"
+      ],
+      "allies": [],
+      "enemies": [
+        "kirigakure",
+        "konohagakure"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_zh": "在水之国水域活动的忍者海盗一族，寻求对雾隐村的复仇。荒海船户积累了被认为对该地区海上稳定构成直接威胁的力量。"
+    },
+    {
+      "id": "chinoike",
+      "name_zh": "血池一族",
+      "type": "clan",
+      "leader_id": "oyashiro_en",
+      "members": [
+        "oyashiro_en",
+        "chino"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_zh": "被诅咒的一族，拥有Ketsuryugan，一种能够控制血液的红眼。在宇智波策划的政治操纵后被流放到地狱谷，该一族对木叶村怀有深刻的怨恨。"
+    },
+    {
+      "id": "fuma",
+      "name_zh": "风魔一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "karashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "fuma_land_of_sound"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "曾经令人畏惧的雇佣兵一族，分裂为与木叶村结盟的分支和投靠大蛇丸的音之国分裂分支。这种内部分裂反映了传统与忍者机会主义之间的紧张关系。"
+    },
+    {
+      "id": "mount_myoboku",
+      "name_zh": "妙木山",
+      "type": "village",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "gamabunta",
+        "gamakichi",
+        "gamatatsu",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_zh": "可召唤蛤蟆的神圣之地和仙人模式艺术的摇篮。通过千手和漩涡的召唤契约与木叶村保持祖传联系，妙木山培养了包括自来也和鸣人在内的多位传奇忍者。"
+    },
+    {
+      "id": "shikkotsu_forest",
+      "name_zh": "湿骨林",
+      "type": "village",
+      "leader_id": "katsuyu",
+      "members": [
+        "katsuyu",
+        "tsunade",
+        "haruno_sakura"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_zh": "由巨大可召唤蛞蝓居住的神话森林，特别是加多。与医疗忍者和传奇纲手的学生相关，湿骨林代表了忍者世界中独特的治疗和支持力量。"
+    },
+    {
+      "id": "ryuchi_cave",
+      "name_zh": "龙地洞",
+      "type": "village",
+      "leader_id": "snake_sage_white",
+      "members": [
+        "snake_sage_white",
+        "orochimaru",
+        "yakushi_kabuto",
+        "manda"
+      ],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_zh": "可召唤蛇的神圣住所和蛇仙人模式艺术的所在地。大蛇丸在此签订契约并培训药师兜的仙人模式，龙地洞为妙木山提供了黑暗对应。"
+    },
+    {
+      "id": "nadeshiko_village",
+      "name_zh": "樱花村",
+      "type": "village",
+      "leader_id": "shizuka",
+      "members": [
+        "shizuka",
+        "tokiwa"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "完全由女性组成的村庄，其传统要求未来的首领挑战并击败她所爱的男人。这一习俗虽然导致政治孤立，但赋予其战士精英战斗者的声誉。"
+    },
+    {
+      "id": "tsuchigumo_village",
+      "name_zh": "土蜘蛛村",
+      "type": "village",
+      "leader_id": "hotaru",
+      "members": [
+        "hotaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "守护土蜘蛛一族传承的禁忌爆炸术的村庄。受木叶村同盟保护，该村因这一技术而被多个犯罪组织觊觎。"
+    },
+    {
+      "id": "mount_myoboku_sages",
+      "name_zh": "妙木山仙人",
+      "type": "organization",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure",
+        "mount_myoboku"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_zh": "驻扎在妙木山的仙人模式大师组织，向少数能够学习的精英传授senjutsu艺术。他们的精神和预言影响力指导了忍者历史中的多个关键决定。"
+    },
+    {
+      "id": "hagoromo_clan",
+      "name_zh": "羽衣一族",
+      "type": "clan",
+      "leader_id": "otsutsuki_hagoromo",
+      "members": [
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra"
+      ],
+      "allies": [
+        "senju",
+        "uzumaki"
+      ],
+      "enemies": [
+        "kaguya_otsutsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_zh": "所有忍者查克拉的创始血脉，直接从辉夜大筒木通过六道仙人传承。因陀罗与阿修罗之间的冲突开启了宇智波和千手一族永久延续的祖先对立。"
+    },
+    {
+      "id": "jomae_village",
+      "name_zh": "上麻村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "mui"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "专门创建和管理大塔监狱的村庄，这是忍者世界最安全的监禁设施。其对这座监狱的权力赋予了它在大国之间微妙的政治地位。"
+    },
+    {
+      "id": "kusagakure",
+      "name_zh": "草隐村",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "karin"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "参加木叶村中忍考试的小型隐村。漩涡香磷在其童年的一部分时间在此生活，后来加入大蛇丸，说明其政治边界的渗透性。"
+    },
+    {
+      "id": "yotsuki",
+      "name_zh": "四月一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "kumogakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_zh": "云隐村的有影响力的一族，其成员占据村庄最高的军事和政治职位。第四代雷影艾和其养兄弟比基是其最具代表性的人物。"
+    }
+  ]
+}

@@ -203,8 +203,12 @@ class TestRewriteQueryFullPipeline:
 
 class TestSystemPrompt:
     def test_default_system_prompt_loads(self) -> None:
+        # Phase i18n.10 : build_system_prompt charge selon `get_active_language()`.
+        # Le defaut serveur est EN, donc on assert contre les headers EN.
+        # Les variantes FR sont testees via le test parametrise par langue
+        # de tests/unit/test_llm_prompts_i18n.py.
         prompt = build_system_prompt()
-        assert "INTERDITS HORS UNIVERS" in prompt
+        assert "OUT-OF-UNIVERSE PROHIBITIONS" in prompt
         assert "ANTI-META" in prompt
         assert "ChatGPT" in prompt  # explicitement nomme dans les interdictions
 

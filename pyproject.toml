@@ -24,6 +24,7 @@ dependencies = [
   "typer>=0.12",
   "beautifulsoup4>=4.12",
   "trafilatura>=1.12",
+  "platformdirs>=4.0",
 ]
 
 [project.optional-dependencies]
@@ -34,6 +35,14 @@ dev = [
   "ruff>=0.6",
   "mypy>=1.11",
   "hypothesis>=6.100",
+]
+# Outils Phase i18n.5 : utilises uniquement par les scripts
+# scripts/i18n_batch_translate.py et scripts/i18n_translate_prompts.py
+# pour generer les catalogs/prompts multi-langues via Anthropic Sonnet.
+# NON requis a l'execution du jeu (runtime reste 100% local cf CLAUDE.md).
+i18n_tools = [
+  "anthropic>=0.40",
+  "python-dotenv>=1.0",
 ]
 
 [project.scripts]

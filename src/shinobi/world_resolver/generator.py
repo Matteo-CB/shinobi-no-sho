@@ -12,10 +12,10 @@ from typing import Any
 from pydantic import ValidationError
 
 from shinobi.canon.models import CanonBundle
+from shinobi.i18n.prompts_loader import load_prompt
 from shinobi.llm.client import LLMClient, Message
 from shinobi.logging_setup import get_logger
 from shinobi.world_resolver.prompts import (
-    SUBSTITUTE_EVENT_SYSTEM_PROMPT,
     build_substitute_user_message,
 )
 from shinobi.world_resolver.schema import SUBSTITUTE_EVENT_SCHEMA
@@ -144,7 +144,7 @@ class SubstituteEventGenerator:
         try:
             response = await self.client.generate(
                 messages=[
-                    Message(role="system", content=SUBSTITUTE_EVENT_SYSTEM_PROMPT),
+                    Message(role="system", content=load_prompt("world_resolver")),
                     Message(role="user", content=user_msg),
                 ],
                 schema=SUBSTITUTE_EVENT_SCHEMA,

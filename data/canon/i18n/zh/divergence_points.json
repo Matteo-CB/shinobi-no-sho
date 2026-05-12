@@ -1,0 +1,277 @@
+{
+  "divergence_points": [
+    {
+      "event_id": "kaguya_eats_chakra_fruit",
+      "year": -1000,
+      "name_zh": "辉夜食用神树果实",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "没有这个举动，人类就不会拥有查克拉。整个忍者文明都会被抹除。",
+      "if_altered_consequences": [
+        "人类永远不会开发查克拉和忍术。",
+        "羽衣和羽村不会出生，六道不存在。",
+        "因陀罗和阿修罗不存在，斑/柱间和鸣人/佐助的轮回转生循环是不可能的。",
+        "晓组织、隐村和第四次忍界大战都没有存在的理由。"
+      ]
+    },
+    {
+      "event_id": "hagoromo_indra_asura_birth",
+      "year": -990,
+      "name_zh": "因陀罗和阿修罗的诞生，六道仙人之子",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "因陀罗和阿修罗之间的冲突产生了贯穿整个传奇的轮回转生循环。没有他们，就没有斑也没有鸣人。",
+      "if_altered_consequences": [
+        "力量与爱的意识形态冲突不会传递给后代。",
+        "宇智波斑和千手柱间不是轮回转生者，他们的命运会完全不同。",
+        "佐助和鸣人不会继承六道的遗产，第四次忍界大战会以不同的方式结束。",
+        "通过黑绝复活辉夜的计划在没有羽衣反转计划的情况下变得不太可能。"
+      ]
+    },
+    {
+      "event_id": "hashirama_madara_meet",
+      "year": -65,
+      "name_zh": "柱间和斑儿时相遇",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "这段友谊是木叶和整个忍者政治的基础。没有它，隐村系统可能永远不会出现。",
+      "if_altered_consequences": [
+        "木叶从未被建立，隐村系统不会出现。",
+        "斑仍然是没有千手对手的宇智波战争领袖，战国时代无限延续。",
+        "九尾从未被木遁驯服，漩涡美都不会成为第一个人柱力。",
+        "整个火影继承人的血脉（扉间、猿飞、波风、纲手、卡卡西、鸣人）都不存在。"
+      ]
+    },
+    {
+      "event_id": "valley_of_the_end_battle",
+      "year": -50,
+      "name_zh": "终末之谷的战斗",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "斑的假死使绝能够回收他并启动月之眼计划。没有这个结果，就没有带土。",
+      "if_altered_consequences": [
+        "如果斑真的死了，绝无法回收他，月之眼计划永远不会被传递。",
+        "如果斑赢了，木叶会被摧毁，火影血脉会中断。",
+        "漩涡美都不会成为九尾的人柱力，玖辛奈也不会。",
+        "带土没有任何导师，不会成为带土，消除了九尾袭击木叶的原因。"
+      ]
+    },
+    {
+      "event_id": "yahiko_death",
+      "year": -15,
+      "name_zh": "弥彦之死",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "弥彦的死亡将长门变成了佩恩，使晓组织从和平运动转变为犯罪组织。",
+      "if_altered_consequences": [
+        "晓组织仍然是和平运动，永远不会追捕人柱力。",
+        "长门永远不会以破坏模式激活轮回眼，木叶不会被攻击。",
+        "自来也不会死于潜入雨隐村。",
+        "收集尾兽和卡布托的秽土转生计划没有主要载体。"
+      ]
+    },
+    {
+      "event_id": "obito_apparent_death",
+      "year": -10,
+      "name_zh": "带土在神无毗桥的假死",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "带土被斑秘密回收是月之眼计划的绝对支点。带土成为几乎所有重大事件的推动者。",
+      "if_altered_consequences": [
+        "如果带土正常存活，他不会受到斑的影响，仍然是木叶的忍者。",
+        "九尾对木叶的袭击不会发生，波风和玖辛奈存活。",
+        "第四次忍界大战永远不会被宣布，因为没有面具领袖。",
+        "卡卡西和鸣人与他们的父母一起长大，完全改变了他们的个性。"
+      ]
+    },
+    {
+      "event_id": "rin_death",
+      "year": -9,
+      "name_zh": "琳之死",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "琳被卡卡西之手杀死彻底摧毁了带土，使他相信世界不值得存在。",
+      "if_altered_consequences": [
+        "带土不会陷入疯狂，月之眼计划失去其主要执行者。",
+        "九尾对木叶的袭击没有触发器，波风和玖辛奈存活。",
+        "卡卡西不会被内疚所困扰，他的个人发展会完全不同。",
+        "长门永远不会收到摧毁木叶的最终推动力。"
+      ]
+    },
+    {
+      "event_id": "kyuubi_attack_konoha",
+      "year": 1,
+      "name_zh": "九尾袭击木叶",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "波风和玖辛奈的死亡以及九尾在鸣人体内的封印决定了他的整个存在和系列的中心叙事弧。",
+      "if_altered_consequences": [
+        "波风和玖辛奈存活，鸣人与父母一起长大，不是孤独的被排斥孩子。",
+        "九尾不被封印在鸣人体内，他无法获得九喇嘛的查克拉。",
+        "鸣人的人柱力模式和九尾模式不存在，第四次忍界大战会有不同的结局。",
+        "宇智波一族不被指控，宇智波灭族不会发生或被延迟。"
+      ]
+    },
+    {
+      "event_id": "uchiha_clan_massacre",
+      "year": 5,
+      "name_zh": "宇智波一族灭族",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "灭族是佐助的根本创伤和他整个轨迹的推动力。没有它，就没有复仇，没有背叛。",
+      "if_altered_consequences": [
+        "佐助不会发展出复仇的执念，他的写轮眼和万花筒进化会不同。",
+        "鼬不会作为间谍加入晓组织，该组织失去了关键的情报来源。",
+        "佐助背叛木叶不会发生，第七班保持完整。",
+        "佐助永远不会杀死团藏，团藏保留影响力并可能获得火影之位。"
+      ]
+    },
+    {
+      "event_id": "shisui_death",
+      "year": 4,
+      "name_zh": "宇智波止水之死",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "团藏盗取别天神剥夺了宇智波唯一的和平手段，加速了鼬对灭族的决定。",
+      "if_altered_consequences": [
+        "别天神本可以被用于长老以防止政变而不需要灭族。",
+        "团藏没有止水的写轮眼，他的手臂力量较弱。",
+        "鼬失去了止水的信任，可能会寻求其他出路。",
+        "五影峰会期间团藏的弧线被深刻改变。"
+      ]
+    },
+    {
+      "event_id": "orochimaru_marks_sasuke",
+      "year": 12,
+      "name_zh": "大蛇丸给佐助打上诅咒印",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "诅咒印是使佐助走向禁忌力量并促使他背叛大蛇丸的主要工具。",
+      "if_altered_consequences": [
+        "没有诅咒印，佐助不会感受到大蛇丸力量的召唤，背叛的可能性大大降低。",
+        "第七班保持团结，鸣人-佐助-樱花三人组一起对抗大蛇丸的入侵。",
+        "大蛇丸失去了他获得佐助身体的长期计划。",
+        "中忍考试后的系列动态完全重组。"
+      ]
+    },
+    {
+      "event_id": "konoha_invasion_oto_suna",
+      "year": 12,
+      "name_zh": "音隐和砂隐对木叶的入侵",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "猿飞的死亡和木叶的混乱为纲手的崛起打开了道路，并长期改变了村子的政治。",
+      "if_altered_consequences": [
+        "如果猿飞存活，他仍然是火影，纲手不会被招募，改变了对晓危机的处理。",
+        "如果入侵完全失败，大蛇丸失去了他的组织，佐助没有背叛的避难所。",
+        "猿飞的死亡在晓崛起时期剥夺了木叶最聪慧的顾问。",
+        "团藏在没有猿飞制衡的情况下获得政治影响力。"
+      ]
+    },
+    {
+      "event_id": "sasuke_defection",
+      "year": 13,
+      "name_zh": "佐助背叛木叶",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "背叛重新定义了整个疾风传部分鸣人、樱花和佐助的弧线，并激励了鸣人与自来也的强化训练。",
+      "if_altered_consequences": [
+        "鸣人不会与自来也进行2.5年的训练，他的进步会不同。",
+        "佐助不会吸收大蛇丸，不会组建鹰小队。",
+        "鼬可能存活，因为没有足够强大的佐助来击败他。",
+        "五影峰会不会以相同的方式进行，团藏不会被杀死。"
+      ]
+    },
+    {
+      "event_id": "jiraiya_death",
+      "year": 15,
+      "name_zh": "自来也死于佩恩之手",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "自来也的死亡剥夺了鸣人的导师，并引发了追求和平的任务，最终导致与长门的和解。",
+      "if_altered_consequences": [
+        "自来也存活可能会独自破译密码并与鸣人一起对抗佩恩，改变战斗结局。",
+        "鸣人在木叶被攻击时不会因悲伤而陷入尾兽狂暴模式。",
+        "鸣人与长门的对话在自来也在场的情况下会有不同的动态。",
+        "鸣人失去了一位在第四次忍界大战中导航的关键指南。"
+      ]
+    },
+    {
+      "event_id": "pain_attack_konoha",
+      "year": 15,
+      "name_zh": "佩恩入侵木叶",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "佩恩的攻击和随后的和解将长门从敌人转变为事后的盟友，并给予鸣人他的和平愿景。",
+      "if_altered_consequences": [
+        "如果长门不被说服，他不会复活受害者，晓组织仍然是直接威胁。",
+        "如果鸣人失败，九尾会被提取，他会死亡，战争从一开始就输了。",
+        "木叶的大规模破坏延迟了第四次忍界大战的动员。",
+        "自来也通过鸣人传递的和平信息永远不会到达长门。"
+      ]
+    },
+    {
+      "event_id": "itachi_death",
+      "year": 15,
+      "name_zh": "鼬死于佐助之手",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "鼬的死亡和带土揭露的真相是将佐助指向木叶而不是向他靠拢的支点。",
+      "if_altered_consequences": [
+        "如果鼬在死前自己揭露真相，佐助不会被带土操纵。",
+        "佐助不会加入晓组织，不会试图攻击五影峰会。",
+        "团藏可能存活，保留他的权力和写轮眼。",
+        "佐助可能加入联盟而不是在第四次忍界大战中与其对抗。"
+      ]
+    },
+    {
+      "event_id": "fourth_great_ninja_war_start",
+      "year": 16,
+      "name_zh": "第四次忍界大战开始",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "战争迫使所有叙事线索汇聚。这是所有启示和和解实现的熔炉。",
+      "if_altered_consequences": [
+        "没有战争，斑永远不会复活，月之眼计划在暗处失败。",
+        "鸣人和佐助永远不会从羽衣获得六道查克拉。",
+        "带土的救赎和辉夜的复活没有框架来发生。",
+        "五个村子之间的联盟不会巩固，战后紧张局势持续。"
+      ]
+    },
+    {
+      "event_id": "obito_redemption_death",
+      "year": 16,
+      "name_zh": "带土的救赎与死亡",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "带土的救赎和轮回眼的转移使卡卡西能够获得两个万花筒，并对辉夜的失败做出贡献。",
+      "if_altered_consequences": [
+        "没有救赎，带土仍然敌对，斑的复活不会从内部被阻止。",
+        "卡卡西不会暂时获得两个万花筒，无法使用完美须佐能乎对抗辉夜。",
+        "导致最终胜利的因果链被打破。",
+        "波风和琳的道德遗产仍然被玷污，影响系列的主题结论。"
+      ]
+    },
+    {
+      "event_id": "kaguya_resurrection_and_defeat",
+      "year": 17,
+      "name_zh": "辉夜的复活与失败",
+      "cascade_severity": "fundamental",
+      "why_pivotal_zh": "辉夜的失败是千年威胁的解决，并决定了整个忍者文明的生存。",
+      "if_altered_consequences": [
+        "如果辉夜没有被封印，无限月读会将整个人类吸收到永恒的幻觉中。",
+        "鸣人和佐助不会获得六道标记，他们的最终战斗是不可能的。",
+        "奠定博人传时代的和平时期无法开始。",
+        "整个战后时期，包括博人和佐良娜的诞生，都被抹除。"
+      ]
+    },
+    {
+      "event_id": "naruto_sasuke_final_battle",
+      "year": 17,
+      "name_zh": "鸣人与佐助的最终战斗",
+      "cascade_severity": "very_high",
+      "why_pivotal_zh": "这场战斗决定了佐助是否建立独裁统治或世界进入和平时代。和解奠定了整个博人传时代。",
+      "if_altered_consequences": [
+        "如果佐助赢了，他会用武力摧毁旧系统并建立专制政权。",
+        "如果鸣人死了，木叶的人柱力血脉灭绝，第七代火影不存在。",
+        "没有和解，博人在没有持久和平或父亲人物佐助的世界中出生。",
+        "卡拉和后来的大筒木威胁在没有鸣人-佐助联盟的情况下被面对。"
+      ]
+    },
+    {
+      "event_id": "kurama_death",
+      "year": 36,
+      "name_zh": "九喇嘛之死",
+      "cascade_severity": "high",
+      "why_pivotal_zh": "九喇嘛的死亡剥夺了鸣人他的主要力量来源，使他在随后的大筒木威胁中变得脆弱。",
+      "if_altered_consequences": [
+        "鸣人保留他的基本九尾力量，仍然是对抗大筒木威胁的主要威慑力。",
+        "与伊史基的力量平衡不同，不需要芭蕾亚模式。",
+        "鸣人在博人传的后期弧线中的脆弱性降低，改变叙事动态。",
+        "九喇嘛的死亡移除了一个本身经历了完整救赎弧线的中心角色。"
+      ]
+    }
+  ]
+}

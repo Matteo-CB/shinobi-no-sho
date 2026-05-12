@@ -2384,8 +2384,9 @@ def test_build_fallback_motivations_uses_canon_clan_village() -> None:
     assert "[fallback canon" in out
     assert "inuzuka" in out
     assert "konohagakure" in out
-    assert "Drive principal" in out
-    assert "Ne jamais" in out
+    # Locale-agnostic : FR "Drive principal" / EN "Primary drive"
+    assert ("Drive principal" in out) or ("Primary drive" in out)
+    assert ("Ne jamais" in out) or ("Never:" in out)
 
 
 def test_build_fallback_motivations_returns_empty_when_no_canon() -> None:
@@ -2567,7 +2568,8 @@ def test_user_prompt_includes_motivations_block_when_set() -> None:
         deep_motivations_text="Drive principal : proteger_son_petit_frere",
     )
     prompt = build_user_prompt(ctx)
-    assert "[MOTIVATIONS PROFONDES]" in prompt
+    # Locale-agnostic : FR "[MOTIVATIONS PROFONDES]" / EN "[DEEP MOTIVATIONS]"
+    assert ("[MOTIVATIONS PROFONDES]" in prompt) or ("[DEEP MOTIVATIONS]" in prompt)
     assert "proteger_son_petit_frere" in prompt
 
 
@@ -2578,6 +2580,7 @@ def test_user_prompt_omits_motivations_block_when_empty() -> None:
     ctx = SelectionContext(npc_id="test_npc", year=10)
     prompt = build_user_prompt(ctx)
     assert "[MOTIVATIONS PROFONDES]" not in prompt
+    assert "[DEEP MOTIVATIONS]" not in prompt
 
 
 def test_auto_fill_selection_context_populates_motivations() -> None:

@@ -268,19 +268,31 @@ def test_phase_h_9_1_covers_all_canon_timeline_events(canon: CanonBundle) -> Non
 
 def test_phase_h_9_5_all_patterns_have_required_fields(canon: CanonBundle) -> None:
     """Phase H 9.5 strict : tous les patterns ont les fields critiques
-    (id, title_fr, description_fr, when_to_apply_fr).
+    (id, title, description, when_to_apply) dans la langue active.
 
-    Sans ces fields, le nudge_text omet le pattern silencieusement (cf
-    `if not title or not desc: continue`).
+    Phase i18n.7 : selon la langue active, les fields sont suffixes par
+    le code lang (title_fr / title_en / title_ja ...). On accepte donc
+    n'importe quel suffixe lang supporte tant que les 3 fields sont
+    presents et non vides.
     """
-    incomplete = []
+    from shinobi.i18n.loader import SUPPORTED_LANGUAGES
+
+    field_bases = ("title", "description", "when_to_apply")
+    candidate_suffixes = ["fr", *(lng for lng in SUPPORTED_LANGUAGES if lng != "fr")]
+    incomplete: list[tuple[str, str]] = []
     for p in canon.narrative_patterns.get("patterns", []):
         if not isinstance(p, dict):
             incomplete.append(("?", "not_a_dict"))
             continue
-        for field in ("id", "title_fr", "description_fr", "when_to_apply_fr"):
-            if not p.get(field):
-                incomplete.append((p.get("id", "?"), field))
+        if not p.get("id"):
+            incomplete.append((p.get("id", "?"), "id"))
+        for base in field_bases:
+            # Trouve au moins UNE variante lang-suffixee non vide.
+            found = any(
+                p.get(f"{base}_{suffix}") for suffix in candidate_suffixes
+            )
+            if not found:
+                incomplete.append((p.get("id", "?"), base))
     assert not incomplete, (
         f"Phase H 9.5 : {len(incomplete)} patterns avec fields manquants : "
         f"{incomplete[:10]}"

@@ -46,6 +46,7 @@ class Mission:
     difficulty_dc: int
     reward_ryos: int
     reputation_delta: int
+    template_id: str = ""  # mid d'origine dans _MISSION_POOL_IDS (pour categorisation locale-agnostique)
 
 
 def _rank_for_player(player_rank: str) -> str:
@@ -65,99 +66,53 @@ def _rank_for_player(player_rank: str) -> str:
 
 
 # Mini-pool de missions par rang. Le LLM peut en generer d'autres.
-_MISSION_POOL = {
+# Les ids sont stables ; titre et description sont resolus via i18n
+# au moment de la generation (snapshot dans la save).
+_MISSION_POOL_IDS: dict[str, list[str]] = {
     "D": [
-        (
-            "Retrouver le chat egare de Madame Shijimi",
-            "Le chat Tora s'est echappe pour la N-ieme fois. Mission classique des genins de Konoha.",
-        ),
-        (
-            "Aider a la moisson chez les fermiers",
-            "Les paysans ont besoin de mains supplementaires pendant la recolte.",
-        ),
-        (
-            "Escorter un marchand jusqu'au village voisin",
-            "Un marchand veut atteindre le village suivant en securite.",
-        ),
-        (
-            "Garder un sanctuaire pendant la nuit",
-            "Veiller sur un petit sanctuaire local jusqu'a l'aube.",
-        ),
-        (
-            "Reparer la cloture d'un eleveur",
-            "Travail manuel basique mais essentiel pour la securite des animaux.",
-        ),
+        "tora_cat",
+        "harvest_help",
+        "escort_merchant_local",
+        "guard_shrine",
+        "repair_fence",
     ],
     "C": [
-        (
-            "Escorter un marchand entre deux pays",
-            "Voyage d'une semaine, risque de bandits sur la route.",
-        ),
-        (
-            "Demanteler un petit gang de bandits",
-            "Un groupe de 3 ou 4 bandits sevit sur une route commerciale.",
-        ),
-        (
-            "Recuperer un artefact vole",
-            "Un objet de famille noble a ete vole, le retrouver et le ramener.",
-        ),
-        (
-            "Proteger une caravane pendant 3 jours",
-            "Voyage avec marchandises de valeur a travers une zone fragile.",
-        ),
+        "escort_merchant_intercountry",
+        "dismantle_bandits",
+        "recover_stolen_artifact",
+        "protect_caravan",
     ],
     "B": [
-        (
-            "Eliminer un deserteur de rang chunin",
-            "Un nukenin a fui le village avec des secrets sensibles.",
-        ),
-        (
-            "Infiltrer un fief mineur d'Otogakure",
-            "Mission d'espionnage prolongee, contact avec sources locales.",
-        ),
-        ("Escorter un seigneur pendant une mission diplomatique", "Risque d'attentat eleve."),
-        (
-            "Detruire un repaire de bandits organise",
-            "Une trentaine d'hommes armes, certains avec ninjutsu.",
-        ),
+        "eliminate_chunin_deserter",
+        "infiltrate_oto",
+        "escort_lord",
+        "destroy_organized_bandits",
     ],
     "A": [
-        (
-            "Assassiner un ninja deserteur de rang jonin",
-            "Cible dangereuse, possede des techniques avancees.",
-        ),
-        (
-            "Prevenir un complot contre le Kage",
-            "Mission politique sensible avec risque de trahison interne.",
-        ),
-        (
-            "Escorter une delegation diplomatique a un sommet",
-            "Plusieurs villages ennemis pourraient saboter la rencontre.",
-        ),
-        (
-            "Recuperer un parchemin de technique interdite",
-            "Le parchemin est dans le repaire d'un sannin disgracie.",
-        ),
+        "assassinate_jonin_deserter",
+        "prevent_kage_plot",
+        "escort_diplomatic",
+        "recover_forbidden_scroll",
     ],
     "S": [
-        (
-            "Eliminer un sannin renegat",
-            "Cible legendaire, plusieurs gardes du corps ninjas, repaire fortifie.",
-        ),
-        (
-            "Saboter une operation d'invasion en cours",
-            "Plusieurs jours derriere les lignes ennemies.",
-        ),
-        (
-            "Capturer un jinchuuriki vivant",
-            "Mission moralement difficile, cible probablement nationale.",
-        ),
-        (
-            "Voler les plans de bataille du Hokage rival",
-            "Infiltration d'un quartier general adverse.",
-        ),
+        "eliminate_renegade_sannin",
+        "sabotage_invasion",
+        "capture_jinchuuriki",
+        "steal_battle_plans",
     ],
 }
+
+
+def _mission_pool_resolved(rank: str) -> list[tuple[str, str, str]]:
+    """Resout les (mid, title, description) du pool pour le rang via i18n."""
+    from shinobi.i18n import t as _t
+
+    out: list[tuple[str, str, str]] = []
+    for mid in _MISSION_POOL_IDS.get(rank, []):
+        title = _t(f"engine.missions.{rank}.{mid}.title")
+        desc = _t(f"engine.missions.{rank}.{mid}.description")
+        out.append((mid, title, desc))
+    return out
 
 
 def generate_mission(
@@ -174,7 +129,8 @@ def generate_mission(
     """
     rank = _rank_for_player(player_rank)
     rng = random.Random(seed)
-    title, desc = rng.choice(_MISSION_POOL[rank])
+    pool = _mission_pool_resolved(rank)
+    mid, title, desc = rng.choice(pool)
     base_dc = MISSION_DIFFICULTY[rank]
     tension_bonus = max(0, global_tension) // 10
     base_reward = MISSION_REWARDS[rank]
@@ -188,6 +144,7 @@ def generate_mission(
         difficulty_dc=base_dc + tension_bonus,
         reward_ryos=inflated_reward,
         reputation_delta=5 if rank in ("D", "C") else 10 if rank in ("B", "A") else 20,
+        template_id=mid,
     )
 
 

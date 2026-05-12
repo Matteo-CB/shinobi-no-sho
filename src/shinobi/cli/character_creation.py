@@ -18,6 +18,7 @@ from shinobi.constants import YEAR_NARUTO_BIRTH
 from shinobi.engine.character import ChakraState, Character, FamilyMember, FamilyState
 from shinobi.engine.stats import CoreStats, ExtendedStats
 from shinobi.engine.world import create_default_world
+from shinobi.i18n import t
 from shinobi.persistence import saves as save_module
 from shinobi.types import Gender
 from shinobi.utils.slug import slugify
@@ -66,8 +67,13 @@ CLAN_NATURES: dict[str, list[str]] = {
 
 
 def run_character_creation() -> str | None:
-    """Flux complet de creation. Retourne le save_id cree, ou None si annulation."""
-    console.print(banner("Creation de personnage", "Forge ton shinobi"))
+    """Flux complet de creation. Retourne le save_id cree, ou None si annulation.
+
+    Demande d'abord le mode :
+    1. Nouveau perso (random + biais clan/kekkei) - flow original
+    2. Incarner un perso canon (Itachi, Naruto, Sasuke, ...) a un age choisi
+    """
+    console.print(banner(t("cli.character_creation.banner_title"), t("cli.character_creation.banner_subtitle")))
 
     canon = load_canon(
         optional=(
@@ -87,13 +93,34 @@ def run_character_creation() -> str | None:
         )
     )
 
+    # Mode selection : nouveau perso (random) OU incarner canon
+    console.print(t("cli.character_creation.mode.intro"))
+    mode = Prompt.ask(
+        f"[bold cyan]{t('cli.character_creation.choice_prompt')}[/bold cyan]",
+        choices=["1", "2"],
+        default="1",
+    ).strip()
+
+    if mode == "2":
+        return _run_canon_incarnation_flow(canon)
+    return _run_original_creation_flow(canon)
+
+
+def _run_original_creation_flow(canon) -> str | None:
+    """Flow original : creation random avec biais clan/village. Garde l'API
+    de l'ancien run_character_creation (renommage pour clarte).
+    """
+
     name = (
-        Prompt.ask("[bold cyan]Nom du personnage[/bold cyan]", default="Endo Aburame").strip()
+        Prompt.ask(
+            f"[bold cyan]{t('cli.character_creation.name_prompt')}[/bold cyan]",
+            default="Endo Aburame",
+        ).strip()
         or "Shinobi"
     )
 
     gender_choice = Prompt.ask(
-        "[bold cyan]Genre[/bold cyan]",
+        f"[bold cyan]{t('cli.character_creation.gender_prompt')}[/bold cyan]",
         choices=["m", "f", "n"],
         default="m",
     )
@@ -150,8 +177,8 @@ def run_character_creation() -> str | None:
         tailed_beast=tailed_beast,
     )
 
-    if not typer.confirm("Confirmer la creation ?", default=True):
-        console.print("[yellow]Creation annulee.[/yellow]")
+    if not typer.confirm(t("cli.character_creation.confirm_creation"), default=True):
+        console.print(f"[yellow]{t('cli.character_creation.creation_cancelled')}[/yellow]")
         return None
 
     char_id = slugify(name) or "shinobi"
@@ -189,7 +216,7 @@ def run_character_creation() -> str | None:
     world = world.model_copy(update={"scheduled_events": scheduled})
 
     declared_objective = Prompt.ask(
-        "[bold cyan]Premier objectif[/bold cyan] [dim](texte libre, vide pour passer)[/dim]",
+        t("cli.character_creation.first_objective_prompt"),
         default="",
     ).strip()
     if declared_objective:
@@ -199,14 +226,221 @@ def run_character_creation() -> str | None:
         character,
         world,
         canonicity_profile="default",
-        thumbnail_summary=f"{name}, {age_years} ans, {rank} a {village_id}"
-        + (f" ({clan_id} clan)" if clan_id else ""),
+        thumbnail_summary=t(
+            "cli.character_creation.thumbnail_summary",
+            name=name, age=age_years, rank=rank, village=village_id,
+        ) + (f" ({clan_id} clan)" if clan_id else ""),
     )
     console.print(
         Panel.fit(
-            f"[bold green]{name}[/bold green] vit a [cyan]{village_id}[/cyan] en l'an {starting_year}.\n\n"
-            f"Save : [yellow]{save_id}[/yellow]\n\nLance la partie depuis le menu pour commencer.",
-            title="Personnage cree",
+            t(
+                "cli.character_creation.created_panel_intro",
+                name=name, village=village_id, year=starting_year,
+            )
+            + "\n\n"
+            + t("cli.character_creation.created_panel_body", save_id=save_id),
+            title=t("cli.character_creation.created_panel_title"),
+            border_style="green",
+        )
+    )
+    return save_id
+
+
+def _run_canon_incarnation_flow(canon) -> str | None:
+    """Flow d'incarnation : selectionner un canon character + age et hydrater.
+
+    Phase 6.3 wiring : delegue la construction du Character a
+    `canon_incarnation.incarnate_canon_character`. Le world est positionne
+    a current_year = canon.birth_year + age choisi, le scheduler initialise
+    avec les events canon a cette date.
+    """
+    from shinobi.cli.canon_incarnation import (
+        incarnate_canon_character,
+        list_playable_canon_characters,
+    )
+
+    console.print(
+        Panel.fit(
+            t("cli.character_creation.canon_incarnation.intro"),
+            title=t("cli.character_creation.canon_incarnation.title"),
+            border_style="cyan",
+        )
+    )
+
+    # Selection optionnelle d'un village pour filter
+    village_filter: str | None = None
+    village_choice = Prompt.ask(
+        f"[cyan]{t('cli.character_creation.filter_village_prompt')}[/cyan]",
+        default="",
+    ).strip().lower() or None
+    if village_choice:
+        village_filter = village_choice
+
+    playable = list_playable_canon_characters(
+        canon, village_filter=village_filter,
+    )
+    if not playable:
+        console.print(f"[red]{t('cli.character_creation.no_canon_for_filter')}[/red]")
+        return None
+
+    # Affiche les top 30 par notoriete
+    table = Table(
+        title=t("cli.character_creation.canon_table_title"),
+        header_style="bold magenta",
+    )
+    table.add_column("#", style="bold cyan", justify="right")
+    table.add_column("Id", style="bold")
+    table.add_column("Clan")
+    table.add_column("Village")
+    table.add_column("Birth", justify="right")
+    table.add_column("Death", justify="right")
+    for i, c in enumerate(playable[:30], start=1):
+        death = str(c.death_year) if c.death_year is not None else "-"
+        table.add_row(
+            str(i),
+            c.id,
+            c.clan or "-",
+            c.village_of_origin or "-",
+            str(c.birth_year),
+            death,
+        )
+    console.print(table)
+    console.print(
+        f"[dim]({len(playable) - 30} autres disponibles, tape leur id "
+        "directement)[/dim]\n"
+        if len(playable) > 30 else ""
+    )
+
+    selection = Prompt.ask(
+        t("cli.character_creation.id_prompt"),
+        default="1",
+    ).strip()
+    canon_id: str | None = None
+    # 1. Tente comme numero du top 30
+    try:
+        idx = int(selection) - 1
+        if 0 <= idx < len(playable[:30]):
+            canon_id = playable[idx].id
+    except ValueError:
+        pass
+
+    # 2. Sinon, resolution fuzzy par id/name_romaji/name_fr
+    if canon_id is None:
+        from shinobi.cli.canon_incarnation import resolve_canon_id
+        canon_id, candidates = resolve_canon_id(canon, selection)
+        if canon_id is None:
+            if candidates:
+                # Ambiguite : afficher les matches
+                console.print(t("cli.character_creation.ambiguous_match", query=selection))
+                for cid in candidates[:10]:
+                    char = canon.characters[cid]
+                    name = (
+                        char.name_romaji or char.name_fr or cid
+                    )
+                    console.print(f"  - [cyan]{cid}[/cyan] ({name})")
+                console.print("\n" + t("cli.character_creation.relaunch_with_id"))
+            else:
+                console.print(
+                    f"[red]{t('cli.character_creation.canon_not_found', selection=selection)}[/red]"
+                )
+            return None
+        # Verifier que le perso choisi est jouable (a un birth_year)
+        chosen_check = canon.characters[canon_id]
+        if chosen_check.birth_year is None:
+            console.print(
+                t("cli.character_creation.canon_no_birth_year", canon_id=canon_id)
+            )
+            return None
+        console.print(
+            t("cli.character_creation.canon_found", id=canon_id)
+        )
+
+    chosen = canon.characters[canon_id]
+    age_max = (
+        chosen.death_year - chosen.birth_year - 1
+        if chosen.death_year is not None
+        else 80
+    )
+    age_default = min(13, max(6, age_max))
+    age_str = Prompt.ask(
+        t(
+            "cli.character_creation.age_prompt_with_meta",
+            chosen_birth_year=chosen.birth_year,
+            chosen_death_year=chosen.death_year or "?",
+        ),
+        default=str(age_default),
+    ).strip()
+    try:
+        age_at_start = int(age_str)
+    except ValueError:
+        console.print(
+            f"[red]{t('cli.character_creation.invalid_age', age_str=age_str)}[/red]"
+        )
+        return None
+    if age_at_start < 0:
+        age_at_start = 0
+    if age_at_start > age_max:
+        console.print(
+            f"[yellow]{t('cli.character_creation.age_capped', age_max=age_max, chosen_death_year=chosen.death_year)}[/yellow]"
+        )
+        age_at_start = age_max
+
+    character, current_year = incarnate_canon_character(
+        canon, canon_id, age_at_start,
+    )
+
+    # Show summary
+    console.print(
+        Panel.fit(
+            f"[bold]{character.name}[/bold] ({canon_id})\n"
+            f"  Age : {character.age_years} ans\n"
+            f"  Annee in-game : {current_year}\n"
+            f"  Village : {character.current_village}\n"
+            f"  Clan : {character.clan or 'civil'}\n"
+            f"  Rang : {character.rank}\n"
+            f"  Natures : {', '.join(character.natures) or 'aucune'}\n"
+            f"  Kekkei genkai : "
+            f"{', '.join(character.kekkei_genkai) or 'aucun'}\n"
+            f"  Techniques connues : {len(character.techniques_known)}\n"
+            f"  Stats : ninjutsu={character.stats.ninjutsu:.1f} "
+            f"genjutsu={character.stats.genjutsu:.1f} "
+            f"taijutsu={character.stats.taijutsu:.1f}",
+            title=t("cli.character_creation.canon_recap_title"),
+            border_style="green",
+        )
+    )
+
+    if not typer.confirm(t("cli.character_creation.confirm_incarnation"), default=True):
+        console.print(f"[yellow]{t('cli.character_creation.incarnation_cancelled')}[/yellow]")
+        return None
+
+    # Build le world a current_year
+    profile = CanonicityProfile.default()
+    world = create_default_world(profile=profile, starting_year=current_year)
+    world = world.with_seed(world.seed & 0x7FFFFFFFFFFFFFFF)
+    from shinobi.engine.events import initialize_scheduler
+    scheduled = initialize_scheduler(canon, starting_year=current_year)
+    world = world.model_copy(update={"scheduled_events": scheduled})
+
+    save_id = save_module.create_save(
+        character,
+        world,
+        canonicity_profile="default",
+        thumbnail_summary=(
+            f"{character.name} ({canon_id}), {character.age_years} ans, "
+            f"{character.rank} a {character.current_village}, "
+            f"incarnation canon"
+        ),
+    )
+    console.print(
+        Panel.fit(
+            t(
+                "cli.character_creation.incarnation_summary_panel",
+                name=character.name,
+                village=character.current_village,
+                year=current_year,
+            ),
+            title=t("cli.character_creation.incarnation_success_title"),
             border_style="green",
         )
     )
@@ -218,29 +452,32 @@ def _pick_starting_year(canon) -> int:
     eras = sorted(canon.eras.values(), key=lambda e: e.year_start)
     if not eras:
         return int(
-            Prompt.ask("[bold cyan]Annee de naissance[/bold cyan]", default=str(YEAR_NARUTO_BIRTH))
+            Prompt.ask(
+                f"[bold cyan]{t('cli.character_creation.birth_year_prompt')}[/bold cyan]",
+                default=str(YEAR_NARUTO_BIRTH),
+            )
         )
 
     table = Table(title="Eres disponibles", header_style=COLOR_TITLE)
     table.add_column("#", style="bold cyan", justify="right")
-    table.add_column("Ere", style="bold")
-    table.add_column("Periode", justify="right")
-    table.add_column("Description", style="dim")
+    table.add_column(t("cli.character_creation.era.col_era"), style="bold")
+    table.add_column(t("cli.character_creation.era.col_period"), justify="right")
+    table.add_column(t("cli.character_creation.era.col_description"), style="dim")
     for i, era in enumerate(eras, start=1):
         end = str(era.year_end) if era.year_end is not None else "present"
         table.add_row(
             str(i),
             era.name_fr,
-            f"an {era.year_start} a {end}",
+            t("cli.character_creation.era_period_value", start=era.year_start, end=end),
             era.description_fr[:80] + ("..." if len(era.description_fr) > 80 else ""),
         )
-    table.add_row("c", "[Annee personnalisee]", "[any]", "Saisis directement une annee")
+    table.add_row("c", t("cli.character_creation.era.custom_year_marker"), "[any]", "Saisis directement une annee")
     console.print(table)
 
     while True:
         choice = (
             Prompt.ask(
-                "[bold cyan]Ere[/bold cyan] [dim](numero, id, ou 'c' pour annee custom)[/dim]",
+                f"[bold cyan]{t('cli.character_creation.era.prompt')}[/bold cyan]",
                 default=str(_default_era_index(eras)),
             )
             .strip()
@@ -249,7 +486,8 @@ def _pick_starting_year(canon) -> int:
         if choice in ("c", "custom"):
             return int(
                 Prompt.ask(
-                    "[bold cyan]Annee de naissance[/bold cyan]", default=str(YEAR_NARUTO_BIRTH)
+                    f"[bold cyan]{t('cli.character_creation.birth_year_prompt')}[/bold cyan]",
+                    default=str(YEAR_NARUTO_BIRTH),
                 )
             )
         try:
@@ -261,7 +499,7 @@ def _pick_starting_year(canon) -> int:
         for era in eras:
             if era.id == choice:
                 return _year_within_era(era)
-        console.print(f"[red]Choix invalide : {choice}[/red]")
+        console.print(f"[red]{t('cli.character_creation.invalid_choice', choice=choice)}[/red]")
 
 
 def _default_era_index(eras) -> int:
@@ -281,7 +519,7 @@ def _year_within_era(era) -> int:
     )
     sub = (
         Prompt.ask(
-            "[bold cyan]Annee precise[/bold cyan] [dim](nombre, ou 'r' pour aleatoire dans l'ere)[/dim]",
+            t("cli.character_creation.precise_year_prompt"),
             default="r",
         )
         .strip()
@@ -301,14 +539,14 @@ def _pick_village(villages) -> str:
     """Selection de village avec table compacte."""
     table = Table(title="Villages disponibles", header_style=COLOR_TITLE, show_lines=False)
     table.add_column("#", style="bold cyan", justify="right")
-    table.add_column("Id")
-    table.add_column("Nom")
+    table.add_column(t("cli.character_creation.village.col_id"))
+    table.add_column(t("cli.character_creation.village.col_name"))
     for i, v in enumerate(villages, start=1):
         table.add_row(str(i), v.id, v.name_fr or v.name_romaji)
     console.print(table)
     while True:
         choice = Prompt.ask(
-            "[bold cyan]Village[/bold cyan] [dim](numero ou id)[/dim]",
+            f"[bold cyan]{t('cli.character_creation.village.prompt')}[/bold cyan]",
             default="konohagakure",
         ).strip()
         try:
@@ -319,7 +557,7 @@ def _pick_village(villages) -> str:
             pass
         if any(v.id == choice for v in villages):
             return choice
-        console.print(f"[red]Choix invalide : {choice}[/red]")
+        console.print(f"[red]{t('cli.character_creation.invalid_choice', choice=choice)}[/red]")
 
 
 def _detect_clan_from_name(canon, name: str) -> str | None:
@@ -341,12 +579,12 @@ def _pick_clan(
     )
     if not clans:
         console.print(
-            f"[dim]Aucun clan actif a {village_id} en l'an {starting_year}. Tu seras civil.[/dim]"
+            t("cli.character_creation.no_active_clan", village_id=village_id, starting_year=starting_year)
         )
         return None
 
     if hint:
-        console.print(f"[dim]Indice : ton nom suggere le clan [magenta]{hint}[/magenta][/dim]")
+        console.print(t("cli.character_creation.clan_hint_from_name", clan=hint))
     default_choice = "0"
     if hint:
         for i, c in enumerate(clans, start=1):
@@ -374,7 +612,7 @@ def _pick_clan(
 
     while True:
         choice = Prompt.ask(
-            "[bold cyan]Clan[/bold cyan] [dim](numero, id, 0 pour civil, '?<n>' pour details)[/dim]",
+            f"[bold cyan]{t('cli.character_creation.clan.prompt')}[/bold cyan]",
             default=default_choice,
         ).strip()
         if choice in ("0", ""):
@@ -395,7 +633,7 @@ def _pick_clan(
             pass
         if any(c.id == choice for c in clans):
             return choice
-        console.print(f"[red]Choix invalide : {choice}[/red]")
+        console.print(f"[red]{t('cli.character_creation.invalid_choice', choice=choice)}[/red]")
 
 
 def _show_clan_details(clan) -> None:
@@ -416,7 +654,7 @@ def _show_clan_details(clan) -> None:
         body_lines.append(f"[green]Avantages :[/green] {clan.key_advantages_fr}")
     if clan.key_disadvantages_fr:
         body_lines.append("")
-        body_lines.append(f"[red]Inconvenients :[/red] {clan.key_disadvantages_fr}")
+        body_lines.append(t("cli.character_creation.clan_disadvantages", disadvantages=clan.key_disadvantages_fr))
     if clan.key_techniques:
         body_lines.append("")
         sample = clan.key_techniques[:8]
@@ -439,13 +677,13 @@ def _pick_kekkei_genkai(clan_id: str | None) -> list[str]:
         return []
     console.print(
         Panel.fit(
-            f"Le clan [cyan]{clan_id}[/cyan] possede un don hereditaire : [magenta]{', '.join(candidates)}[/magenta]",
+            t("cli.character_creation.clan_inheritance", clan_id=clan_id, candidates=", ".join(candidates)),
             title="Kekkei genkai",
             border_style="magenta",
         )
     )
     inherit = typer.confirm(
-        "Hereditairement, le don coule dans tes veines (latent ou actif). Veux-tu l'avoir ?",
+        t("cli.character_creation.inheritance_question"),
         default=True,
     )
     return candidates if inherit else []
@@ -465,13 +703,14 @@ def _roll_rare_gifts(canon, seed_text: str, year: int) -> tuple[list[str], str |
         candidate = rng.choice(mora_pool)
         console.print(
             Panel.fit(
-                f"[bold magenta]Don exceptionnel detecte :[/bold magenta] [magenta]{candidate}[/magenta]\n"
-                "[dim]Un kekkei mora extremement rare. Tu portes en toi un fragment d'heritage divin.[/dim]",
-                title="Tirage rarissime",
+                t("cli.character_creation.kekkei_mora_detected", candidate=candidate)
+                + "\n"
+                + t("cli.character_creation.kekkei_mora_intro"),
+                title=t("cli.character_creation.rare_draw_title"),
                 border_style="magenta",
             )
         )
-        if typer.confirm("Accepter ce don (et ses risques) ?", default=True):
+        if typer.confirm(t("cli.character_creation.accept_gift_prompt"), default=True):
             kekkei_mora = [candidate]
 
     if canon.tailed_beasts and rng.random() < 0.005:
@@ -492,8 +731,7 @@ def _roll_rare_gifts(canon, seed_text: str, year: int) -> tuple[list[str], str |
             chosen_beast = rng.choice(free_beasts)
             console.print(
                 Panel.fit(
-                    f"[bold red]Tu nais jinchuuriki :[/bold red] [magenta]{chosen_beast}[/magenta]\n"
-                    "[dim]Une bete a queues est scellee en toi. Le village te craindra. Tu auras a maitriser sa rage.[/dim]",
+                    t("cli.character_creation.jinchuuriki_intro", beast=chosen_beast),
                     title="Destin lourd",
                     border_style="red",
                 )
@@ -508,29 +746,30 @@ def _pick_age_years() -> int:
     """Choix d'age avec warning si choix narrativement absurde (<6 = avant l'academie)."""
     while True:
         raw = Prompt.ask(
-            "[bold cyan]Age de depart[/bold cyan] "
-            "[dim](annees ; canon : academie a partir de 6 ans, genin 8+, chunin 11+)[/dim]",
+            t("cli.character_creation.start_age_prompt"),
             default="8",
         ).strip()
         try:
             age = int(raw)
         except ValueError:
-            console.print(f"[red]Age invalide : {raw}[/red]")
+            console.print(f"[red]{t('cli.character_creation.invalid_age_raw', raw=raw)}[/red]")
             continue
         if age < 0 or age > 100:
-            console.print("[red]Age irrealiste (0-100).[/red]")
+            console.print(f"[red]{t('cli.character_creation.age_unrealistic')}[/red]")
             continue
         if age < 6:
             console.print(
                 Panel.fit(
-                    f"[yellow]A {age} an{'s' if age > 1 else ''}, ton personnage est encore "
-                    "trop jeune pour entrer a l'academie. Il sera classe comme [bold]civilian[/bold] "
-                    "ou [bold]infant[/bold]. La plupart des actions seront limitees jusqu'a 6 ans.[/yellow]",
-                    title="Choix narratif inhabituel",
+                    t(
+                        "cli.character_creation.too_young_warn",
+                        age=age,
+                        plural="s" if age > 1 else "",
+                    ),
+                    title=t("cli.character_creation.unusual_choice_title"),
                     border_style="yellow",
                 )
             )
-            if not typer.confirm("Confirmer ce choix ?", default=False):
+            if not typer.confirm(t("cli.character_creation.confirm_choice"), default=False):
                 continue
         return age
 
@@ -561,7 +800,7 @@ def _pick_natures(clan_id: str | None) -> list[str]:
 def _pick_family(clan_id: str | None) -> FamilyState:
     """Famille : typique du clan ou orphelin."""
     choice = Prompt.ask(
-        "[bold cyan]Statut familial[/bold cyan]",
+        f"[bold cyan]{t('cli.character_creation.family.status_prompt')}[/bold cyan]",
         choices=["typique", "orphelin", "lignee"],
         default="typique",
     )
@@ -707,26 +946,35 @@ def _show_summary(
     table = Table.grid(padding=(0, 2))
     table.add_column(style="bold cyan", justify="right")
     table.add_column()
-    table.add_row("Nom", name)
-    table.add_row("Genre", gender.value)
-    table.add_row("Age", f"{age} ans")
-    table.add_row("Annee", f"an {year}")
-    table.add_row("Village", village)
+    table.add_row(t("cli.character_creation.summary.col_label_name"), name)
+    table.add_row(t("cli.character_creation.summary.col_label_gender"), gender.value)
+    table.add_row(
+        t("cli.character_creation.summary.col_label_age"),
+        t("cli.display.label.age_with_value", age=age),
+    )
+    table.add_row(t("cli.character_creation.summary.col_label_year"), f"an {year}")
+    table.add_row(t("cli.display.label.village"), village)
     if clan:
-        table.add_row("Clan", clan)
+        table.add_row(t("cli.display.label.clan"), clan)
     if kekkei:
-        table.add_row("Kekkei genkai", ", ".join(kekkei))
+        table.add_row(t("cli.display.label.kekkei_genkai"), ", ".join(kekkei))
     if kekkei_mora:
         table.add_row("Kekkei mora", ", ".join(kekkei_mora))
     if tailed_beast:
         table.add_row("Tailed beast", tailed_beast)
-    table.add_row("Natures", ", ".join(natures))
+    table.add_row(t("cli.display.label.natures"), ", ".join(natures))
     table.add_row(
-        "Stats",
+        t("cli.character_creation.summary.stats_label"),
         f"NIN {stats.ninjutsu:.1f} TAI {stats.taijutsu:.1f} GEN {stats.genjutsu:.1f} "
         f"INT {stats.intelligence:.1f} STR {stats.strength:.1f} SPD {stats.speed:.1f} "
         f"STA {stats.stamina:.1f} HS {stats.hand_seals:.1f}",
     )
-    table.add_row("Chakra max", str(extended.chakra_pool_max))
-    table.add_row("Lignee", f"{extended.lineage_value:.1f}")
-    console.print(Panel(table, title="Recap", border_style="green"))
+    table.add_row(t("cli.character_creation.summary.chakra_max"), str(extended.chakra_pool_max))
+    table.add_row(t("cli.character_creation.summary.lineage"), f"{extended.lineage_value:.1f}")
+    console.print(
+        Panel(
+            table,
+            title=t("cli.character_creation.summary.title"),
+            border_style="green",
+        )
+    )

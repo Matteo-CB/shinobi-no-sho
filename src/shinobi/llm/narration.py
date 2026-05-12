@@ -748,7 +748,7 @@ class CharacterInterpreter:
         self.client = client
 
     async def interpret(self, free_text: str, *, context_summary: str = "") -> InterpretedIntent:
-        from shinobi.llm.prompts import CHARACTER_INTERPRETER_SYSTEM_PROMPT
+        from shinobi.i18n.prompts_loader import load_prompt
         from shinobi.llm.schema import CHARACTER_INTERPRETER_SCHEMA
 
         user_msg = (
@@ -758,7 +758,7 @@ class CharacterInterpreter:
         )
         response = await self.client.generate(
             messages=[
-                Message(role="system", content=CHARACTER_INTERPRETER_SYSTEM_PROMPT),
+                Message(role="system", content=load_prompt("character_interpreter")),
                 Message(role="user", content=user_msg),
             ],
             schema=CHARACTER_INTERPRETER_SCHEMA,
@@ -809,7 +809,7 @@ class WorldResolver:
         cancellation_reason: str,
         current_year: int,
     ) -> WorldResolution:
-        from shinobi.llm.prompts import WORLD_RESOLVER_SYSTEM_PROMPT
+        from shinobi.i18n.prompts_loader import load_prompt
         from shinobi.llm.schema import WORLD_RESOLVER_SCHEMA
 
         ev = self.canon.timeline_events.get(event_id)
@@ -831,7 +831,7 @@ class WorldResolver:
         )
         response = await self.client.generate(
             messages=[
-                Message(role="system", content=WORLD_RESOLVER_SYSTEM_PROMPT),
+                Message(role="system", content=load_prompt("world_resolver")),
                 Message(role="user", content=user_msg),
             ],
             schema=WORLD_RESOLVER_SCHEMA,

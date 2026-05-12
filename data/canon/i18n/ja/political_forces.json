@@ -1,0 +1,1089 @@
+{
+  "factions": [
+    {
+      "id": "konohagakure",
+      "name_ja": "木ノ葉隠れの里",
+      "type": "village",
+      "leader_id": "tsunade",
+      "members": [
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "haruno_sakura",
+        "hatake_kakashi",
+        "sarutobi_hiruzen",
+        "namikaze_minato",
+        "senju_hashirama",
+        "senju_tobirama",
+        "uchiha_itachi",
+        "lee_rock",
+        "hyuga_neji",
+        "tenten",
+        "nara_shikamaru",
+        "akimichi_choji",
+        "yamanaka_ino",
+        "inuzuka_kiba",
+        "aburame_shino",
+        "hyuga_hinata",
+        "yuhi_kurenai",
+        "sarutobi_asuma",
+        "mitarashi_anko",
+        "umino_iruka",
+        "shimura_danzo"
+      ],
+      "allies": [
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "mount_myoboku",
+        "shikkotsu_forest",
+        "senju",
+        "uchiha",
+        "sarutobi",
+        "hyuga",
+        "nara",
+        "akimichi",
+        "yamanaka",
+        "aburame",
+        "inuzuka",
+        "hatake",
+        "uzumaki"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otogakure",
+        "root",
+        "uchiha_madara",
+        "otsutsuki"
+      ],
+      "active_year_start": -65,
+      "active_year_end": null,
+      "description_ja": "千手柱間と宇智波斑によって創設された最初の隠れ里であり、火の国の中央的な政治・軍事力である。多くの名門一族の本拠地であり、歴史上最も影響力のある忍者たちを多数輩出している。"
+    },
+    {
+      "id": "sunagakure",
+      "name_ja": "砂隠れの里",
+      "type": "village",
+      "leader_id": "gaara",
+      "members": [
+        "gaara",
+        "temari",
+        "kankuro",
+        "chiyo",
+        "ebizo",
+        "baki",
+        "sasori"
+      ],
+      "allies": [
+        "konohagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "風の国の隠れ里であり、風影によって統治されている。歴史的な対立があるにもかかわらず、木ノ葉隠れの戦略的パートナーである。元jinchuurikiのガアラは、この里に平和をもたらす決定的な影響力を行使している。"
+    },
+    {
+      "id": "kumogakure",
+      "name_ja": "雲隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "darui",
+        "c",
+        "nii_yugito",
+        "omoi",
+        "karui",
+        "samui"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "iwagakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "hyuga"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "雷の国の隠れ里であり、軍事力と雷遁技術で知られている。特に日向ヒナタの誘拐未遂事件により木ノ葉隠れとの緊張関係を抱えていたが、その後大忍者同盟の同盟国となった。"
+    },
+    {
+      "id": "iwagakure",
+      "name_ja": "岩隠れの里",
+      "type": "village",
+      "leader_id": "onoki",
+      "members": [
+        "onoki",
+        "kurotsuchi",
+        "akatsuchi",
+        "deidara",
+        "han",
+        "roshi",
+        "gari"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "kirigakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "konohagakure",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "土の国の隠れ里であり、土影によって統治されている。木ノ葉隠れに対する長年の敵意で特徴付けられている。大野木の指導下で、マダラとオビトに対抗するため大忍者同盟に参加した。"
+    },
+    {
+      "id": "kirigakure",
+      "name_ja": "霧隠れの里",
+      "type": "village",
+      "leader_id": "terumi_mei",
+      "members": [
+        "terumi_mei",
+        "ao",
+        "chojuro",
+        "momochi_zabuza",
+        "haku",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hoshigaki_kisame",
+        "pakura",
+        "suikazan_fuguki"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "five_kage"
+      ],
+      "enemies": [
+        "akatsuki",
+        "seven_ninja_swordsmen_of_the_mist",
+        "otsutsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "水の国の隠れ里であり、かつてはオビト・うちはの影響下にある水影によって統治されていた。血の霧の里として知られており、残虐な慣行で有名である。照美メイの指導下で、霧隠れは深刻な改革を開始した。"
+    },
+    {
+      "id": "amegakure",
+      "name_ja": "雨隠れの里",
+      "type": "village",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko"
+      ],
+      "allies": [
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "hanzo_salamander"
+      ],
+      "active_year_start": -20,
+      "active_year_end": 3,
+      "description_ja": "常に戦争状態にある小さな里であり、長門がペインの正体で神権政治国家に変えた。弥彦がペイン・アカツキの原型を創設したが、半蔵に殺され、これが長門をニヒリズムへと傾かせた。"
+    },
+    {
+      "id": "otogakure",
+      "name_ja": "音隠れの里",
+      "type": "village",
+      "leader_id": "orochimaru",
+      "members": [
+        "orochimaru",
+        "yakushi_kabuto",
+        "kinuta_dosu",
+        "abumi_zaku",
+        "tsuchi_kin",
+        "kimimaro",
+        "tayuya",
+        "jirobo",
+        "kidomaru"
+      ],
+      "allies": [
+        "fuma_land_of_sound",
+        "akatsuki"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure"
+      ],
+      "active_year_start": -3,
+      "active_year_end": 3,
+      "description_ja": "大蛇丸が忍者への禁止された実験の隠れ蓑として創設した里である。単なる軍事的な表面であり、中忍試験時に木ノ葉隠れを攻撃し、実験対象を募集するために使用された。"
+    },
+    {
+      "id": "takigakure",
+      "name_ja": "滝隠れの里",
+      "type": "village",
+      "leader_id": "shibuki",
+      "members": [
+        "shibuki",
+        "kakuzu"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "英雄の液体を守る孤立した隠れ里であり、一時的に並外れた力を与えることができる。そのjinchuurikiである風は暁に捕捉された。角都はこの里の出身であり、その後脱走した。"
+    },
+    {
+      "id": "yugakure",
+      "name_ja": "湯隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "hidan"
+      ],
+      "allies": [],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "蒸気の国の平和主義的な里であり、軍事的な道を放棄している。ヒダンはこの里の出身であったが、その価値観を否定し暁に参加し、里の平和的な方向性に矛盾した。"
+    },
+    {
+      "id": "hoshigakure",
+      "name_ja": "星隠れの里",
+      "type": "village",
+      "leader_id": "akahoshi",
+      "members": [
+        "akahoshi",
+        "sumaru"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "隕石から引き出された独特の星チャクラを実践する隠れ里である。その激烈な訓練は長期的に使用者に致命的な損害を与え、伝統と生存の間の内部的な緊張を明らかにしている。"
+    },
+    {
+      "id": "uzushiogakure",
+      "name_ja": "渦潮隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [],
+      "active_year_start": -100,
+      "active_year_end": -50,
+      "description_ja": "封印術と長寿で専門化した渦巻一族の故郷であり、その封印術の力を恐れた村々の連合によって破壊された。その生き残りは散り散りになり、多くが木ノ葉隠れに参加した。"
+    },
+    {
+      "id": "yukigakure",
+      "name_ja": "雪隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "kazahana_koyuki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "雪の国の里であり、土遁・風花が兄に対する殺人的なクーデターの後に統治した。木ノ葉隠れの忍者との敗北後、国は小雪の下で政治的な変革を開始した。"
+    },
+    {
+      "id": "shimogakure",
+      "name_ja": "霜隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "fuen",
+        "fuka"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れに対する一連の攻撃を主導した背反的な里である。その忍者は高度な属性技術を使用し、孤立した地域での戦闘で排除された。"
+    },
+    {
+      "id": "takumi_village",
+      "name_ja": "職人の里",
+      "type": "village",
+      "leader_id": null,
+      "members": [],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "忍者兵器の製造に特化した里であり、その武器独占を恐れた五大国によって破壊された。その生き残りは特に木ノ葉隠れへの復讐を求めた。"
+    },
+    {
+      "id": "akatsuki",
+      "name_ja": "暁",
+      "type": "organization",
+      "leader_id": "nagato",
+      "members": [
+        "nagato",
+        "konan",
+        "yahiko",
+        "uchiha_obito",
+        "uchiha_madara",
+        "uchiha_itachi",
+        "hoshigaki_kisame",
+        "deidara",
+        "sasori",
+        "hidan",
+        "kakuzu",
+        "zetsu",
+        "konan",
+        "orochimaru"
+      ],
+      "allies": [
+        "amegakure",
+        "otogakure"
+      ],
+      "enemies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure",
+        "takigakure",
+        "five_kage"
+      ],
+      "active_year_start": -15,
+      "active_year_end": 3,
+      "description_ja": "弥彦によって平和運動として創設された犯罪組織であり、その後オビトとマダラに転用された。暁は月の眼計画を実現するために尾獣を体系的に捕捉した。"
+    },
+    {
+      "id": "root",
+      "name_ja": "根",
+      "type": "organization",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo",
+        "sai",
+        "aburame_torune",
+        "yamanaka_fu",
+        "yamato"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "akatsuki",
+        "nagato"
+      ],
+      "active_year_start": -30,
+      "active_year_end": 3,
+      "description_ja": "団蔵志村によって創設された木ノ葉隠れの政府の影で活動する秘密のAnbu部門である。根は感情の抑制によってメンバーを条件付けし、里の安全保障の名の下に認められない作戦を実行した。"
+    },
+    {
+      "id": "anbu",
+      "name_ja": "Anbu",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "hatake_kakashi",
+        "yamato",
+        "uchiha_itachi",
+        "sai"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -40,
+      "active_year_end": null,
+      "description_ja": "火影の直接の命令下で活動する精鋭忍者部隊であり、機密任務を遂行する。Anbuは通常の部隊が引き受けることができない任務を実行し、暗殺とカウンター・インテリジェンスを含む。"
+    },
+    {
+      "id": "seven_ninja_swordsmen_of_the_mist",
+      "name_ja": "Seven Ninja Swordsmen",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "momochi_zabuza",
+        "hoshigaki_kisame",
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "ringo_ameyuri",
+        "munashi_jinpachi",
+        "kuriarare_kushimaru",
+        "suikazan_fuguki",
+        "chojuro"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -30,
+      "active_year_end": null,
+      "description_ja": "霧隠れの伝説的な剣を持つ七人の忍者を集めた軍事精鋭である。彼らの政治的および象徴的な影響力は、グループの解散期間中でも相当なままであった。"
+    },
+    {
+      "id": "konoha_military_police_force",
+      "name_ja": "木ノ葉隠れ警務部隊",
+      "type": "organization",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_fugaku",
+        "uchiha_itachi",
+        "uchiha_obito"
+      ],
+      "allies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -60,
+      "active_year_end": -1,
+      "description_ja": "木ノ葉隠れの内部警察部隊であり、歴史的にうちは一族によって支配されており、里内での主要な制度的権力を与えた。イタチによって実行されたうちは一族の虐殺後に解散した。"
+    },
+    {
+      "id": "five_kage",
+      "name_ja": "五影評議会",
+      "type": "organization",
+      "leader_id": null,
+      "members": [
+        "tsunade",
+        "gaara",
+        "onoki",
+        "terumi_mei",
+        "hatake_kakashi",
+        "kurotsuchi",
+        "darui",
+        "chojuro"
+      ],
+      "allies": [
+        "konohagakure",
+        "sunagakure",
+        "kumogakure",
+        "iwagakure",
+        "kirigakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki",
+        "uchiha_madara"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "五大隠れ里の指導者を集めた最高政治機関である。五影評議会は、マダラ・うちはとオビトに対抗するため第四次忍界大戦中に大忍者同盟を調整した。"
+    },
+    {
+      "id": "kara",
+      "name_ja": "カラ",
+      "type": "organization",
+      "leader_id": "otsutsuki_isshiki",
+      "members": [
+        "otsutsuki_isshiki",
+        "jigen",
+        "delta",
+        "kashin_koji",
+        "boro",
+        "ao",
+        "code",
+        "victor",
+        "deepa"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_ja": "表面上は自人によって指導される秘密組織であり、実際には大筒木一式の器である。カラは神樹の実を収穫するために神樹を栽培し、地球のチャクラ資源を搾取するための世界的な作戦を主導した。"
+    },
+    {
+      "id": "otsutsuki",
+      "name_ja": "大筒木一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "otsutsuki_kaguya",
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra",
+        "otsutsuki_isshiki",
+        "otsutsuki_momoshiki",
+        "otsutsuki_kinshiki",
+        "otsutsuki_urashiki"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uzumaki_naruto",
+        "uchiha_sasuke",
+        "five_kage",
+        "boruto_uzumaki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ja": "世界を巡ってチャクラを栽培し、神樹を植えて収穫する天上の血統である。大筒木一族はカグヤを通じて地球上のすべての忍者チャクラの起源であり、最高の地球外の脅威を表している。"
+    },
+    {
+      "id": "uchiha",
+      "name_ja": "うちは一族",
+      "type": "clan",
+      "leader_id": "uchiha_fugaku",
+      "members": [
+        "uchiha_madara",
+        "uchiha_izuna",
+        "uchiha_fugaku",
+        "uchiha_mikoto",
+        "uchiha_itachi",
+        "uchiha_sasuke",
+        "uchiha_obito",
+        "uchiha_shisui",
+        "uchiha_sarada"
+      ],
+      "allies": [
+        "konohagakure",
+        "konoha_military_police_force"
+      ],
+      "enemies": [
+        "senju",
+        "root",
+        "akatsuki"
+      ],
+      "active_year_start": -100,
+      "active_year_end": null,
+      "description_ja": "千手一族と共に木ノ葉隠れを創設した創設一族であり、Sharinganの保有者である。イタチによってほぼ全滅させられ、団蔵の命令により、その木ノ葉隠れの政府との緊張した関係はクーデター計画を助長した。"
+    },
+    {
+      "id": "senju",
+      "name_ja": "千手一族",
+      "type": "clan",
+      "leader_id": "senju_hashirama",
+      "members": [
+        "senju_hashirama",
+        "senju_tobirama",
+        "tsunade",
+        "nawaki"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzumaki"
+      ],
+      "enemies": [
+        "uchiha",
+        "uchiha_madara"
+      ],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの創設一族であり、その生命技術と柱間の木遁で有名である。千手一族はうちは一族との創設的な同盟を確立し、隠れ里システムを創造した。"
+    },
+    {
+      "id": "uzumaki",
+      "name_ja": "渦巻一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "uzumaki_naruto",
+        "uzumaki_kushina",
+        "uzumaki_mito",
+        "nagato",
+        "karin",
+        "uzumaki_boruto",
+        "uzumaki_himawari"
+      ],
+      "allies": [
+        "konohagakure",
+        "uzushiogakure",
+        "senju"
+      ],
+      "enemies": [],
+      "active_year_start": -120,
+      "active_year_end": null,
+      "description_ja": "渦潮隠れの出身であり、千手一族と血で結ばれた一族であり、封印術の達人であり、並外れた生命力を持つ。その里の破壊後、メンバーは国中に散り、一部はjinchuurikiになった。"
+    },
+    {
+      "id": "hyuga",
+      "name_ja": "日向一族",
+      "type": "clan",
+      "leader_id": "hyuga_hiashi",
+      "members": [
+        "hyuga_hiashi",
+        "hyuga_hizashi",
+        "hyuga_neji",
+        "hyuga_hinata",
+        "hyuga_hanabi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "kumogakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "Uchiha一族の衰退後、木ノ葉隠れの里で最も影響力のある一族。Byakuganと柔拳の使い手であり、内部構造は本家と分家に分かれており、分家は呪いの封印によって支配されている。"
+    },
+    {
+      "id": "nara",
+      "name_ja": "奈良一族",
+      "type": "clan",
+      "leader_id": "nara_shikaku",
+      "members": [
+        "nara_shikaku",
+        "nara_yoshino",
+        "nara_shikamaru"
+      ],
+      "allies": [
+        "konohagakure",
+        "akimichi",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、影の操作技術と神鹿で知られている。奈良一族は秋道一族と山中一族と共に、世代から世代へと受け継がれる三角同盟を形成している。"
+    },
+    {
+      "id": "akimichi",
+      "name_ja": "秋道一族",
+      "type": "clan",
+      "leader_id": "akimichi_choza",
+      "members": [
+        "akimichi_choza",
+        "akimichi_choji",
+        "akimichi_chocho"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "yamanaka"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、肉体変形と物理的拡張技術を専門としている。奈良一族と山中一族の歴史的パートナーであり、秋道一族は三者構成の戦闘部隊として重要な役割を担っている。"
+    },
+    {
+      "id": "yamanaka",
+      "name_ja": "山中一族",
+      "type": "clan",
+      "leader_id": "yamanaka_inoichi",
+      "members": [
+        "yamanaka_inoichi",
+        "yamanaka_ino",
+        "yamanaka_inojin",
+        "yamanaka_fu"
+      ],
+      "allies": [
+        "konohagakure",
+        "nara",
+        "akimichi"
+      ],
+      "enemies": [
+        "root"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、精神転移技術とテレパシーを習得している。情報収集と戦術的通信において重要な役割を果たしており、山中いのいちは第四次忍界大戦中に通信部隊の長を務めた。"
+    },
+    {
+      "id": "sarutobi",
+      "name_ja": "猿飛一族",
+      "type": "clan",
+      "leader_id": "sarutobi_hiruzen",
+      "members": [
+        "sarutobi_hiruzen",
+        "sarutobi_biwako",
+        "sarutobi_asuma",
+        "sarutobi_konohamaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "orochimaru"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、村に第三代火影を輩出した。猿飛ヒルゼンは教師であり政治家としての理想を体現し、アスマは精鋭jonin として活躍した。"
+    },
+    {
+      "id": "shimura",
+      "name_ja": "志村一族",
+      "type": "clan",
+      "leader_id": "shimura_danzo",
+      "members": [
+        "shimura_danzo"
+      ],
+      "allies": [
+        "root"
+      ],
+      "enemies": [
+        "konohagakure",
+        "uchiha",
+        "nagato"
+      ],
+      "active_year_start": -60,
+      "active_year_end": 3,
+      "description_ja": "小規模な一族で、志村ダンゾウが最も影響力のある代表者であった。木ノ葉隠れの里の政府の影で活動し、ダンゾウは秘密裏にSharinganを蓄積し、数十年間村の政治的出来事を操作していた。"
+    },
+    {
+      "id": "aburame",
+      "name_ja": "油女一族",
+      "type": "clan",
+      "leader_id": "aburame_shibi",
+      "members": [
+        "aburame_shibi",
+        "aburame_shino",
+        "aburame_torune"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、メンバーは出生時にキカイチュウ昆虫を宿主として、これらの生物を敵のchakraを消費する生きた武器として使用する。慎重で分析的であり、村内の情報収集において重要な役割を果たしている。"
+    },
+    {
+      "id": "inuzuka",
+      "name_ja": "犬塚一族",
+      "type": "clan",
+      "leader_id": "inuzuka_tsume",
+      "members": [
+        "inuzuka_tsume",
+        "inuzuka_kiba",
+        "inuzuka_hana"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の一族で、各メンバーは専門の忍犬とコンビを組む。速度と洗練された犬の感覚に基づいた戦闘スタイルにより、比類なき斥候と追跡者となっている。"
+    },
+    {
+      "id": "hatake",
+      "name_ja": "はたけ一族",
+      "type": "clan",
+      "leader_id": "hatake_kakashi",
+      "members": [
+        "hatake_sakumo",
+        "hatake_kakashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の限定的な血統で、白い牙サクモと彼の息子カカシによって有名である。カカシは第六代火影となった。サクモの自殺に関連する一時的な不名誉にもかかわらず、カカシは家族の名誉を回復し、主要な指導的人物となった。"
+    },
+    {
+      "id": "kaguya_clan",
+      "name_ja": "かぐや一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [
+        "kirigakure"
+      ],
+      "active_year_start": -80,
+      "active_year_end": 2,
+      "description_ja": "Shikotsumyaku技術を持つ狂信的な戦士の一族で、自分たちの骨を操作することができる。霧隠れの里への無分別な攻撃中にほぼ全滅し、唯一の注目すべき生存者はキミマロであり、大蛇丸に拾われた。"
+    },
+    {
+      "id": "hozuki",
+      "name_ja": "鬼灯一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "hozuki_mangetsu",
+        "hozuki_suigetsu",
+        "hozuki_gengetsu"
+      ],
+      "allies": [
+        "kirigakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "霧隠れの里の一族で、水化の術を習得している。万月は七人の忍刀剣士の一人であり、幻月は第二代水影として活躍し、一族に顕著な政治的影響力をもたらした。"
+    },
+    {
+      "id": "funato",
+      "name_ja": "船戸一族",
+      "type": "clan",
+      "leader_id": "funato_araumi",
+      "members": [
+        "funato_araumi",
+        "funato_isari",
+        "funato_tenma",
+        "funato_seiren",
+        "funato_ikada"
+      ],
+      "allies": [],
+      "enemies": [
+        "kirigakure",
+        "konohagakure"
+      ],
+      "active_year_start": 15,
+      "active_year_end": 16,
+      "description_ja": "水の国の海域で活動する海賊shinobi一族で、霧隠れの里への復讐を求めている。荒海は地域の海上安定性に対する直接的な脅威と見なされるほどの力を蓄積していた。"
+    },
+    {
+      "id": "chinoike",
+      "name_ja": "血の池一族",
+      "type": "clan",
+      "leader_id": "oyashiro_en",
+      "members": [
+        "oyashiro_en",
+        "chino"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure",
+        "uchiha"
+      ],
+      "active_year_start": -80,
+      "active_year_end": null,
+      "description_ja": "Ketsuryuganを持つ呪われた一族で、血を操作できる赤い眼である。Uchiha一族によって組織された政治的操作の後、地獄の谷に追放され、木ノ葉隠れの里に対する深い恨みを抱いている。"
+    },
+    {
+      "id": "fuma",
+      "name_ja": "風魔一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [
+        "karashi"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "fuma_land_of_sound"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "恐れられた傭兵の元一族で、木ノ葉隠れの里と提携する派閥と音の国の大蛇丸に参加する反体制派に分かれている。この内部分裂は伝統と忍者の機会主義の間の緊張を反映している。"
+    },
+    {
+      "id": "mount_myoboku",
+      "name_ja": "妙木山",
+      "type": "village",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "gamabunta",
+        "gamakichi",
+        "gamatatsu",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [
+        "akatsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ja": "招き蛙の聖地であり、仙人モードのsenjutsuの故郷。千手一族と漆戸一族の招き契約を通じて木ノ葉隠れの里との祖先的な結びつきを保ち、自来也とナルトを含む複数の伝説的shinobiを育成した。"
+    },
+    {
+      "id": "shikkotsu_forest",
+      "name_ja": "湿骨林",
+      "type": "village",
+      "leader_id": "katsuyu",
+      "members": [
+        "katsuyu",
+        "tsunade",
+        "haruno_sakura"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ja": "巨大な招き蛞蝓が住む神話的な森で、特にカツユが有名である。伝説的な綱手の弟子と医療shinobi に関連し、湿骨林は忍者世界で独特の治癒と支援の力を表している。"
+    },
+    {
+      "id": "ryuchi_cave",
+      "name_ja": "龍地洞",
+      "type": "village",
+      "leader_id": "snake_sage_white",
+      "members": [
+        "snake_sage_white",
+        "orochimaru",
+        "yakushi_kabuto",
+        "manda"
+      ],
+      "allies": [
+        "otogakure"
+      ],
+      "enemies": [],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ja": "招き蛇の聖地であり、蛇のsenjutsuの座。大蛇丸はここで契約を結び、薬師カブトを仙人モードで育成し、龍地洞は妙木山への暗い対比を提供している。"
+    },
+    {
+      "id": "nadeshiko_village",
+      "name_ja": "撫子の里",
+      "type": "village",
+      "leader_id": "shizuka",
+      "members": [
+        "shizuka",
+        "tokiwa"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "女性のみの里で、伝統では将来の指導者が彼女が愛する男性に挑戦して勝つことが求められている。この慣習は政治的孤立に寄与しているが、その戦士たちに精鋭戦闘員の評判を与えている。"
+    },
+    {
+      "id": "tsuchigumo_village",
+      "name_ja": "土蜘蛛の里",
+      "type": "village",
+      "leader_id": "hotaru",
+      "members": [
+        "hotaru"
+      ],
+      "allies": [
+        "konohagakure"
+      ],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "土蜘蛛一族によって伝えられた禁止された爆発技術を守る里。木ノ葉隠れの里との同盟によって保護されており、この技術は複数の犯罪組織から求められていた。"
+    },
+    {
+      "id": "mount_myoboku_sages",
+      "name_ja": "妙木山の仙人たち",
+      "type": "organization",
+      "leader_id": "fukasaku",
+      "members": [
+        "fukasaku",
+        "shima",
+        "jiraiya",
+        "uzumaki_naruto"
+      ],
+      "allies": [
+        "konohagakure",
+        "mount_myoboku"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -50,
+      "active_year_end": null,
+      "description_ja": "妙木山に住む仙人モードの師匠の秩序で、それを学ぶことができる稀な選ばれた者にsenjutsuの芸術を伝える。彼らの精神的で予言的な影響は、忍者の歴史における複数の重要な決定を導いた。"
+    },
+    {
+      "id": "hagoromo_clan",
+      "name_ja": "羽衣一族",
+      "type": "clan",
+      "leader_id": "otsutsuki_hagoromo",
+      "members": [
+        "otsutsuki_hagoromo",
+        "otsutsuki_hamura",
+        "otsutsuki_indra"
+      ],
+      "allies": [
+        "senju",
+        "uzumaki"
+      ],
+      "enemies": [
+        "kaguya_otsutsuki",
+        "otsutsuki"
+      ],
+      "active_year_start": -1000,
+      "active_year_end": null,
+      "description_ja": "すべてのshinobi chakraの創設者の血統で、六道仙人を通じてかぐや大筒木から直接降りてきた。インドラとアシュラの間の紛争は、Uchiha一族と千手一族によって永続される祖先的な対立を開始した。"
+    },
+    {
+      "id": "jomae_village",
+      "name_ja": "上麻衣の里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "mui"
+      ],
+      "allies": [],
+      "enemies": [
+        "konohagakure"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "大塔牢獄の作成と管理を専門とする里で、忍者世界で最も安全な刑務所施設である。この刑務所に対する権限は、大国間の微妙な政治的立場を与えている。"
+    },
+    {
+      "id": "kusagakure",
+      "name_ja": "草隠れの里",
+      "type": "village",
+      "leader_id": null,
+      "members": [
+        "karin"
+      ],
+      "allies": [],
+      "enemies": [],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "木ノ葉隠れの里の中忍試験に参加した小さな隠れ里。香燐は幼少期の一部をここで過ごしてから大蛇丸に参加し、その政治的境界の透過性を示している。"
+    },
+    {
+      "id": "yotsuki",
+      "name_ja": "四月一日一族",
+      "type": "clan",
+      "leader_id": null,
+      "members": [],
+      "allies": [
+        "kumogakure"
+      ],
+      "enemies": [
+        "akatsuki"
+      ],
+      "active_year_start": -60,
+      "active_year_end": null,
+      "description_ja": "雲隠れの里の影響力のある一族で、メンバーは村の最高の軍事および政治的職務を占めている。第四代雷影エーと彼の養子キラービーは最も象徴的な代表者である。"
+    }
+  ]
+}

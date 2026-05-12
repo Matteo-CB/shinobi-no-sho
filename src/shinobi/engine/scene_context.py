@@ -20,6 +20,7 @@ from shinobi.canon.models import CanonBundle
 from shinobi.canon.models import Character as CanonCharacter
 from shinobi.engine.character import Character
 from shinobi.engine.world import WorldState
+from shinobi.i18n import t
 
 # Nombre max de PNJ accessibles a injecter (eviter le surcharge prompt).
 MAX_ACCESSIBLE_NPCS = 25
@@ -250,8 +251,8 @@ def _current_rank(canon_char: CanonCharacter, year: int) -> str | None:
 
 def _role_label(canon_char: CanonCharacter) -> str:
     if canon_char.clan:
-        return f"membre du clan {canon_char.clan}"
-    return "shinobi"
+        return t("engine.scene_context.role.clan_member", clan=canon_char.clan)
+    return t("engine.scene_context.role.shinobi")
 
 
 def _kage_at(canon: CanonBundle, village_id: str, year: int) -> str | None:
@@ -282,7 +283,7 @@ def _imminent_events(canon: CanonBundle, world: WorldState, *, horizon_days: int
     target_year_max = world.current_year + (horizon_days // 365 + 1)
     for ev in canon.timeline_events.values():
         if world.current_year <= ev.year <= target_year_max:
-            out.append(f"an {ev.year} : {ev.name_fr}")
+            out.append(t("engine.scene_context.event_year_label", year=ev.year, name=ev.name_fr))
     return sorted(out)[:10]
 
 
@@ -291,80 +292,93 @@ def _build_constraints_fr(
 ) -> list[str]:
     """Liste lisible des contraintes physiques/sociales actuelles."""
     out: list[str] = []
-    out.append(f"Le joueur a {age} ans, rang {character.rank}, dans {character.current_village}.")
+    out.append(
+        t(
+            "engine.scene_context.constraint.player_summary",
+            age=age,
+            rank=character.rank,
+            village=character.current_village,
+        )
+    )
     if age < 4:
-        out.append(
-            "Trop jeune pour des actions complexes (entrainement leger, observation, parler aux parents)."
-        )
+        out.append(t("engine.scene_context.constraint.too_young_complex"))
     elif age < 6:
-        out.append(
-            "Trop jeune pour combattre ou se deplacer seul. Limite a son foyer et au quartier proche."
-        )
+        out.append(t("engine.scene_context.constraint.too_young_combat"))
     elif age < 12 and character.rank == "academy_student":
-        out.append(
-            "Eleve de l'academie : restreint au village, journee partagee entre cours et famille."
-        )
+        out.append(t("engine.scene_context.constraint.academy_student"))
     if not can_leave:
-        out.append(
-            "Ne peut PAS quitter le village seul. Toute action a l'exterieur necessite un tuteur."
-        )
+        out.append(t("engine.scene_context.constraint.cannot_leave_village"))
     if not combat_capable:
-        out.append("Pas en etat de combat (trop jeune, blesse, ou non entraine).")
+        out.append(t("engine.scene_context.constraint.not_combat_capable"))
     if character.health.fatigue >= 75:
-        out.append("Tres fatigue, doit se reposer avant d'entreprendre une action exigeante.")
+        out.append(t("engine.scene_context.constraint.too_fatigued"))
     if character.chakra.current < character.chakra.max * 0.2:
-        out.append("Chakra presque vide, techniques tres limitees jusqu'a recuperation.")
+        out.append(t("engine.scene_context.constraint.low_chakra"))
     return out
 
 
 def format_scene_context_for_prompt(ctx: SceneContext) -> str:
     """Formate le contexte de scene pour injection dans le system prompt LLM."""
     lines: list[str] = []
-    lines.append("[CONTEXTE FACTUEL DE LA SCENE - SOURCE DE VERITE]")
+    lines.append(t("engine.scene_context.prompt.header"))
     lines.append("")
-    lines.append(f"Date in-game : an {ctx.current_year}, {ctx.current_date}")
     lines.append(
-        f"Joueur : {ctx.player_age} ans, {ctx.player_rank}, dans {ctx.player_village} ({ctx.player_location})"
+        t(
+            "engine.scene_context.prompt.date_line",
+            year=ctx.current_year,
+            date=ctx.current_date,
+        )
+    )
+    lines.append(
+        t(
+            "engine.scene_context.prompt.player_line",
+            age=ctx.player_age,
+            rank=ctx.player_rank,
+            village=ctx.player_village,
+            location=ctx.player_location,
+        )
     )
     lines.append("")
-    lines.append("Contraintes actuelles (a RESPECTER ABSOLUMENT) :")
+    lines.append(t("engine.scene_context.prompt.constraints_header"))
     for c in ctx.constraints_fr:
         lines.append(f"  - {c}")
     lines.append("")
-    lines.append("PNJ canoniquement accessibles au joueur en ce moment :")
+    lines.append(t("engine.scene_context.prompt.accessible_npcs_header"))
     if ctx.accessible_npcs:
         for npc in ctx.accessible_npcs:
-            same = "meme village" if npc.is_in_same_village else f"autre village ({npc.village})"
-            rank = npc.rank_in_canon or "rang inconnu"
+            same = (
+                t("engine.scene_context.prompt.same_village")
+                if npc.is_in_same_village
+                else t("engine.scene_context.prompt.other_village", village=npc.village)
+            )
+            rank = npc.rank_in_canon or t("engine.scene_context.prompt.rank_unknown")
             lines.append(
-                f"  - {npc.name} (id: {npc.character_id}, {npc.age} ans, {rank}, {same}) - role: {npc.role_label}"
+                t(
+                    "engine.scene_context.prompt.npc_entry",
+                    name=npc.name,
+                    npc_id=npc.character_id,
+                    age=npc.age,
+                    rank=rank,
+                    same=same,
+                    role=npc.role_label,
+                )
             )
     else:
-        lines.append(
-            "  (aucun PNJ canon accessible : les seules interactions sont avec des PNJ generiques)"
-        )
+        lines.append("  " + t("engine.scene_context.prompt.no_accessible_npc"))
     lines.append("")
-    lines.append("Lieux accessibles au joueur :")
+    lines.append(t("engine.scene_context.prompt.accessible_locations_header"))
     lines.append("  " + ", ".join(ctx.accessible_locations))
     if ctx.notable_events_imminent:
         lines.append("")
-        lines.append("Evenements canon a l'horizon (informatif, ne pas spoiler au joueur) :")
+        lines.append(t("engine.scene_context.prompt.notable_events_header"))
         for ev in ctx.notable_events_imminent:
             lines.append(f"  - {ev}")
     lines.append("")
-    lines.append("REGLES STRICTES :")
-    lines.append(
-        "  - Tu ne dois PROPOSER ou MENTIONNER que des PNJ presents dans la liste ci-dessus."
-    )
-    lines.append(
-        "  - Tu ne dois PAS proposer d'aller voir un perso situe dans un autre village si le joueur ne peut pas quitter."
-    )
-    lines.append(
-        "  - Tu ne dois PAS proposer d'actions inadaptees a l'age et au rang du joueur (un eleve de 1 an ne peut pas se battre)."
-    )
-    lines.append(
-        "  - Si le joueur tente une action incoherente, narre-la comme une impossibilite contextuelle, pas comme un succes."
-    )
+    lines.append(t("engine.scene_context.prompt.rules_header"))
+    lines.append("  - " + t("engine.scene_context.prompt.rule_only_mention_npcs"))
+    lines.append("  - " + t("engine.scene_context.prompt.rule_no_other_village_npc"))
+    lines.append("  - " + t("engine.scene_context.prompt.rule_age_appropriate"))
+    lines.append("  - " + t("engine.scene_context.prompt.rule_incoherent_action"))
     return "\n".join(lines)
 
 

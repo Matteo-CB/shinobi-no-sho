@@ -34,6 +34,7 @@ from shinobi.agents.action_space import (
 from shinobi.agents.cache import LLMCache, compute_cache_key
 from shinobi.agents.memory import AgentMemory
 from shinobi.agents.types import MemoryEntry
+from shinobi.i18n import t
 from shinobi.logging_setup import get_logger
 from shinobi.personality.types import NPCPersonality
 
@@ -74,22 +75,34 @@ class SelectionContext:
     extras: dict[str, Any] = field(default_factory=dict)
 
 
-# Default system prompt - Naruto-tonal, contraint
-DEFAULT_SYSTEM_PROMPT = """Tu es un PNJ canonique de l'univers Naruto. Tu prends UNE seule action ce tour.
-Tu agis selon ta personnalite, ta memoire pertinente, tes plans, et ce que tu sais du monde.
-Tu reponds STRICTEMENT en JSON conforme au schema fourni. Pas de markdown.
-Choix d'action : declare_intention, speak, travel, attack, search_information, meditate, plot, idle, custom.
-Reste sobre. Pas de tirets cadratins. Pas d'emoji. Pas d'argot otaku."""
+def default_system_prompt() -> str:
+    """Resolve le system prompt par defaut localise via i18n.
+
+    A appeler explicitement (les module-level constantes seraient figees a
+    l'import, ce qui empeche le suivi de la langue active).
+    """
+    return t("agents.selector.system_prompt")
+
+
+def __getattr__(name: str) -> str:
+    """Compat pour `from shinobi.agents.selector import DEFAULT_SYSTEM_PROMPT`.
+
+    Resolu a l'import via la langue courante. Les chemins d'execution interne
+    preferent default_system_prompt() pour suivre les changements de langue.
+    """
+    if name == "DEFAULT_SYSTEM_PROMPT":
+        return default_system_prompt()
+    raise AttributeError(name)
 
 
 def build_user_prompt(ctx: SelectionContext) -> str:
     """Compose le user prompt depuis le SelectionContext."""
     blocks: list[str] = []
-    blocks.append(f"[IDENTITE]\nTu es {ctx.npc_id}. An in-game : {ctx.year}.")
+    blocks.append(t("agents.selector.identity_block", npc_id=ctx.npc_id, year=ctx.year))
     if ctx.location_id:
-        blocks.append(f"Tu te trouves a : {ctx.location_id}")
+        blocks.append(t("agents.selector.location_line", location=ctx.location_id))
     if ctx.present_npc_ids:
-        blocks.append(f"Presents : {', '.join(ctx.present_npc_ids)}")
+        blocks.append(t("agents.selector.present_line", npcs=", ".join(ctx.present_npc_ids)))
     if ctx.personality is not None:
         # Top 5 dimensions par valeur absolue (dimensions saillantes)
         dims = sorted(
@@ -97,7 +110,7 @@ def build_user_prompt(ctx: SelectionContext) -> str:
             key=lambda kv: abs(kv[1] - 0.5), reverse=True,
         )[:5]
         traits = ", ".join(f"{d.value}={v:.2f}" for d, v in dims)
-        blocks.append(f"[PERSONNALITE saillante]\n{traits}")
+        blocks.append(t("agents.selector.personality_block", traits=traits))
     if ctx.top_memories:
         mem_lines = []
         for m in ctx.top_memories:
@@ -105,14 +118,18 @@ def build_user_prompt(ctx: SelectionContext) -> str:
             if len(text) > 200:
                 text = text[:197] + "..."
             mem_lines.append(f"- {text}")
-        blocks.append("[MEMOIRE pertinente]\n" + "\n".join(mem_lines))
+        blocks.append(
+            t("agents.selector.memory_header") + "\n" + "\n".join(mem_lines)
+        )
     if ctx.active_plans_text:
         blocks.append(
-            "[PLANS en cours]\n"
+            t("agents.selector.plans_header") + "\n"
             + "\n".join(f"- {p}" for p in ctx.active_plans_text)
         )
     if ctx.relations_summary:
-        blocks.append(f"[RELATIONS]\n{ctx.relations_summary}")
+        blocks.append(
+            t("agents.selector.relations_header") + "\n" + ctx.relations_summary
+        )
     # Phase G+E wiring : directives Director inserees AVANT motivations et
     # world summary, pour que le LLM lise les patterns Kishimoto + acts
     # narratifs en premier (priorite tonal et arc-level).
@@ -120,15 +137,15 @@ def build_user_prompt(ctx: SelectionContext) -> str:
         blocks.append(ctx.director_nudge_text)
     # Phase H wiring 9.2 : motivations profondes inserees AVANT l'etat du
     # monde local pour que le LLM les ait fraiches en lisant les facts.
-    # Si vide, le block est skip (pas de "[MOTIVATIONS PROFONDES]\n" inutile).
     if ctx.deep_motivations_text:
-        blocks.append(f"[MOTIVATIONS PROFONDES]\n{ctx.deep_motivations_text}")
+        blocks.append(
+            t("agents.selector.deep_motivations_header") + "\n" + ctx.deep_motivations_text
+        )
     if ctx.world_summary:
-        blocks.append(f"[ETAT DU MONDE LOCAL]\n{ctx.world_summary}")
-    blocks.append(
-        "[INSTRUCTION]\nChoisis UNE action JSON conforme au schema. "
-        "Reste sobre, en accord avec ta personnalite et tes plans."
-    )
+        blocks.append(
+            t("agents.selector.world_state_header") + "\n" + ctx.world_summary
+        )
+    blocks.append(t("agents.selector.instruction_block"))
     return "\n\n".join(blocks)
 
 
@@ -212,13 +229,15 @@ class ActionSelector:
         cache: LLMCache | None = None,
         model_id: str = "qwen3-4b",
         temperature: float = 0.7,
-        system_prompt: str = DEFAULT_SYSTEM_PROMPT,
+        system_prompt: str | None = None,
         trivial_state_shortcut: bool = True,
     ) -> None:
         self._llm_call = llm_call
         self._cache = cache
         self._model_id = model_id
         self._temperature = temperature
+        # None = resoudre le default localise au moment de l'usage (pas a
+        # l'import, sinon la langue active n'est pas encore initialisee).
         self._system_prompt = system_prompt
         # Spec §11.1 : si True, court-circuite le LLM pour les etats triviaux
         self._trivial_state_shortcut = trivial_state_shortcut
@@ -268,8 +287,9 @@ class ActionSelector:
             return deterministic_fallback_action(ctx)
 
         user_prompt = build_user_prompt(ctx)
+        system_prompt = self._system_prompt or default_system_prompt()
         cache_key = compute_cache_key(
-            f"{self._system_prompt}\n###\n{user_prompt}",
+            f"{system_prompt}\n###\n{user_prompt}",
             self._model_id,
             self._temperature,
         )
@@ -289,7 +309,7 @@ class ActionSelector:
         if self._llm_call is not None:
             try:
                 raw = await self._llm_call(
-                    self._system_prompt,
+                    system_prompt,
                     user_prompt,
                     AGENT_ACTION_JSON_SCHEMA,
                     self._model_id,

@@ -68,13 +68,19 @@ def build_system_prompt(ctx: PersonaContext | None = None) -> str:
 
     Si ctx est None (avant initialisation du state §4), un PersonaContext par
     defaut est utilise, qui injecte "(non défini)" comme valeur sentinelle.
+
+    Phase i18n.10 : la template est resolue par
+    `shinobi.i18n.prompts_loader.load_prompt("narrator")` selon la langue
+    active (Accept-Language ou preferences). Glossary footer auto-injecte.
     """
-    template = SYSTEM_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    from shinobi.i18n.prompts_loader import load_prompt
+
+    template = load_prompt("narrator", inject_glossary=False)
     redirections = load_few_shot_redirections()
     few_shot = format_few_shot_block(redirections)
     if ctx is None:
         ctx = PersonaContext()
-    return template.format(
+    body = template.format(
         player_name=ctx.player_name,
         rank=ctx.rank,
         village=ctx.village,
@@ -83,3 +89,10 @@ def build_system_prompt(ctx: PersonaContext | None = None) -> str:
         year=ctx.year,
         few_shot_examples=few_shot,
     )
+    # Footer glossary ajoute apres .format() pour eviter qu'un terme dans
+    # le footer ne soit confondu avec un placeholder.
+    from shinobi.i18n.catalog import get_active_language
+    from shinobi.i18n.glossary import llm_prompt_footer
+
+    footer = llm_prompt_footer(get_active_language())
+    return body + footer if footer else body

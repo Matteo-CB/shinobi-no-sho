@@ -276,7 +276,7 @@ class SnapshotBuilder:
         for npc_id in top_ids:
             try:
                 neighbors = self._social_network.neighbors(npc_id, year=year)
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 # Audit anti-silent : un bug signature SocialNetwork.neighbors
                 # ferait disparaitre toutes les relations du snapshot.
                 logger.warning(
@@ -370,10 +370,11 @@ class LLMTensionAnalyst:
 
     async def _invoke_llm(self, snapshot: str, year: int):
         """Effectue l'appel LLM avec schema strict."""
+        from shinobi.i18n.prompts_loader import load_prompt
         from shinobi.llm.client import Message  # import lazy
 
         messages = [
-            Message(role="system", content=TENSION_ANALYST_SYSTEM_PROMPT),
+            Message(role="system", content=load_prompt("tension_analyst")),
             Message(role="user", content=(
                 f"{snapshot}\n\n"
                 f"[INSTRUCTION]\n"

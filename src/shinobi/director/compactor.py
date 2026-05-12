@@ -229,10 +229,11 @@ class NarrativeCompactor:
             period_end_year=period_end_year,
             eras=eras,
         )
+        from shinobi.i18n.prompts_loader import load_prompt
         try:
             response = await self.client.generate(
                 messages=[
-                    Message(role="system", content=_SYSTEM_PROMPT),
+                    Message(role="system", content=load_prompt("director_compactor")),
                     Message(role="user", content=user_msg),
                 ],
             )

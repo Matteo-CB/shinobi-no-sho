@@ -380,3 +380,39 @@ Verifie :
 
 - Verifie que tu as bien cree le repo en prive (pas public par accident)
 - Si l'auth echoue, configure un Personal Access Token GitHub ou une cle SSH
+
+---
+
+## Annexe : Langue de l'interface (i18n.v1.0)
+
+Au tout premier lancement de `shinobi`, un **language picker** apparait et
+te demande de choisir parmi 8 langues : Francais, English, Espanol,
+Japonais, Chinois simplifie, Coreen, Portugais (Bresil), Allemand. Le
+choix est persiste dans `~/.config/shinobi-no-sho/preferences.json` (ou
+`%LOCALAPPDATA%/shinobi-no-sho/preferences.json` sur Windows).
+
+Tu peux changer la langue plus tard via :
+
+```powershell
+shinobi config --language ja      # bascule au japonais
+shinobi config --language fr      # retour au francais
+```
+
+Ou interactivement via le menu CLI : `/preferences` puis choix.
+
+Cote API HTTP (si tu utilises le serveur FastAPI), le header
+`Accept-Language` est respecte pour la duree d'une requete sans toucher
+la langue persistee :
+
+```bash
+curl -H "Accept-Language: ja" http://localhost:8000/canon/characters/uchiha_itachi
+# -> name_romaji intact + name/description resolus en japonais
+```
+
+La narration LLM, les datasets canon Phase H, les sections wiki, et les
+messages d'erreur API sont tous lang-aware. Les termes Naruto critiques
+(chakra, Hokage, Sharingan, Konohagakure, etc.) sont conserves en romaji
+quelle que soit la langue choisie via le glossary `data/i18n/glossary.json`.
+
+Voir `docs/14_i18n.md` pour la spec complete et `docs/15_i18n_maintenance.md`
+pour le workflow d'ajout de nouvelle chaine traduite.

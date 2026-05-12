@@ -63,6 +63,7 @@ from shinobi.engine.rng import next_seed
 from shinobi.engine.rumors import player_can_hear, receive_rumor
 from shinobi.engine.time import advance_time
 from shinobi.engine.world import NPCState
+from shinobi.i18n import t
 from shinobi.llm.client import LLMClient
 from shinobi.llm.narration import NarrationRequest, Narrator
 from shinobi.persistence import saves as save_module
@@ -81,40 +82,82 @@ from shinobi.utils.time_utils import GameDate
 console = Console()
 
 
-META_HELP = {
-    "/status": "Affiche le panneau de statut detaille",
-    "/techniques": "Liste tes techniques connues et en cours",
-    "/objectives": "Liste tes objectifs declares",
-    "/declare": "Declare un nouvel objectif (texte libre)",
-    "/path <goal_id>": "Demande au pathfinder LLM le prochain pas vers un objectif",
-    "/missions": "Liste les missions disponibles",
-    "/buy": "Ouvrir la boutique du village",
-    "/sell": "Vendre un item de ton inventaire",
-    "/inventory": "Affiche ton inventaire",
-    "/use <item_id>": "Consomme un item (soldier_pill, ramen_bowl, antidote, ...)",
-    "/active_missions": "Liste les missions acceptees",
-    "/reputation": "Affiche ta reputation par village",
-    "/biography": "Affiche le journal biographique (rank-ups, techniques apprises, traumas)",
-    "/knowledge": "Affiche ce que tu sais (events canon, secrets reveles)",
-    "/rumors": "Affiche les rumeurs entendues",
-    "/breadcrumbs": "Affiche les sous-objectifs reveles non encore accomplis",
-    "/weapons": "Liste tes armes equipees",
-    "/summons": "Liste tes contrats d'invocation",
-    "/sign_contract <name>": "Signe un contrat d'invocation (toad, snake, slug, hawk, etc.)",
-    "/invoke <name>": "Tente d'invoquer une creature (consomme 30 chakra)",
-    "/skip <duree>": "Saute le temps : '/skip 7d' pour 7 jours, '/skip 1m' pour 1 mois",
-    "/journal": "Indique ou se trouve le journal",
-    "/dialogues": "Affiche les N dernieres lignes de dialogue capturees (style VN)",
-    "/export-vn-dialogues <path>": "Exporte le log des dialogues au format JSON VN",
-    "/personality <npc_id>": "Affiche le vecteur de personnalite + drift d'un PNJ (Phase D)",
-    "/beliefs <npc_id>": "Sub-KG d'un PNJ : facts qu'il sait + fidelity (Phase B §5.4)",
-    "/tensions": "Detecte les tensions narratives via les 20 invariants Phase C (detector + analyst si due)",
-    "/tensions-llm": "Force l'analyst LLM Qwen3-4B (snapshot KG -> opportunites narratives)",
-    "/agents": "Liste les agents Phase E (top-15 + secondary 50)",
-    "/agent <npc_id>": "Inspecte la memoire 3-niveaux + dernieres actions d'un agent",
-    "/fast-forward <mois>": "Simule N mois sans le joueur (digest des events)",
-    "/help": "Affiche cette aide",
-    "/quit": "Sauvegarde et retourne au menu principal",
+def _meta_help() -> dict[str, str]:
+    """Build META_HELP at call time so descriptions reflect current language."""
+    return {
+        "/status": t("cli.play.help.status"),
+        "/techniques": t("cli.play.help.techniques"),
+        "/objectives": t("cli.play.help.objectives"),
+        "/declare": t("cli.play.help.declare"),
+        "/path <goal_id>": t("cli.play.help.path"),
+        "/missions": t("cli.play.help.missions"),
+        "/buy": t("cli.play.help.buy"),
+        "/sell": t("cli.play.help.sell"),
+        "/inventory": t("cli.play.help.inventory"),
+        "/use <item_id>": t("cli.play.help.use"),
+        "/active_missions": t("cli.play.help.active_missions"),
+        "/reputation": t("cli.play.help.reputation"),
+        "/biography": t("cli.play.help.biography"),
+        "/knowledge": t("cli.play.help.knowledge"),
+        "/rumors": t("cli.play.help.rumors"),
+        "/breadcrumbs": t("cli.play.help.breadcrumbs"),
+        "/weapons": t("cli.play.help.weapons"),
+        "/summons": t("cli.play.help.summons"),
+        "/sign_contract <name>": t("cli.play.help.sign_contract"),
+        "/invoke <name>": t("cli.play.help.invoke"),
+        "/skip <duree>": t("cli.play.help.skip"),
+        "/journal": t("cli.play.help.journal"),
+        "/dialogues": t("cli.play.help.dialogues"),
+        "/export-vn-dialogues <path>": t("cli.play.help.export_vn"),
+        "/personality <npc_id>": t("cli.play.help.personality"),
+        "/beliefs <npc_id>": t("cli.play.help.beliefs"),
+        "/tensions": t("cli.play.help.tensions"),
+        "/tensions-llm": t("cli.play.help.tensions_llm"),
+        "/agents": t("cli.play.help.agents"),
+        "/agent <npc_id>": t("cli.play.help.agent"),
+        "/fast-forward <mois>": t("cli.play.help.fast_forward"),
+        "/language": t("cli.play.help.language"),
+        "/help": t("cli.play.help.help"),
+        "/quit": t("cli.play.help.quit"),
+    }
+
+
+# Backward-compat alias used by tests; lazy-init to current language.
+META_HELP: dict[str, str] = {
+    "/status": "",
+    "/techniques": "",
+    "/objectives": "",
+    "/declare": "",
+    "/path <goal_id>": "",
+    "/missions": "",
+    "/buy": "",
+    "/sell": "",
+    "/inventory": "",
+    "/use <item_id>": "",
+    "/active_missions": "",
+    "/reputation": "",
+    "/biography": "",
+    "/knowledge": "",
+    "/rumors": "",
+    "/breadcrumbs": "",
+    "/weapons": "",
+    "/summons": "",
+    "/sign_contract <name>": "",
+    "/invoke <name>": "",
+    "/skip <duree>": "",
+    "/journal": "",
+    "/dialogues": "",
+    "/export-vn-dialogues <path>": "",
+    "/personality <npc_id>": "",
+    "/beliefs <npc_id>": "",
+    "/tensions": "",
+    "/tensions-llm": "",
+    "/agents": "",
+    "/agent <npc_id>": "",
+    "/fast-forward <mois>": "",
+    "/language": "",
+    "/help": "",
+    "/quit": "",
 }
 
 # Choix de duree pour une action.
@@ -253,7 +296,7 @@ def play_session(save_id: str) -> None:
                         error=type(exc).__name__, msg=str(exc)[:200],
                     )
                     main_loop_director_state = DirectorState()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             # Audit anti-silent : si l'init main_loop_kg_store crash
             # (DB locked, schema migration, etc), la session continue
             # SANS Phase A KG actif - degradation majeure invisible.
@@ -266,9 +309,13 @@ def play_session(save_id: str) -> None:
 
     console.print(
         Panel.fit(
-            f"Tu reprends [bold yellow]{character.name}[/bold yellow] a l'an {world.current_year}, "
-            f"jour {world.current_date}.\nTape [cyan]/help[/cyan] pour les commandes.",
-            title="Partie en cours",
+            t(
+                "cli.play.session_resume",
+                name=character.name,
+                year=world.current_year,
+                date=world.current_date,
+            ),
+            title=t("cli.play.session_in_progress_title"),
             border_style="cyan",
         )
     )
@@ -280,8 +327,8 @@ def play_session(save_id: str) -> None:
             action_menu(console, last_proposed)
 
         intent_text = Prompt.ask(
-            "[bold cyan]Action[/bold cyan] [dim](numero, texte libre, ou /help)[/dim]",
-            default="je m'entraine au taijutsu",
+            t("cli.play.action_prompt"),
+            default=t("cli.play.training_default"),
         ).strip()
 
         if intent_text.startswith("/"):
@@ -301,7 +348,7 @@ def play_session(save_id: str) -> None:
                     dialogue_log.to_jsonl_file(save_module.dialogue_log_path(save_id))
                 except Exception:
                     pass
-                console.print("[green]Sauvegarde effectuee. Retour au menu.[/green]")
+                console.print(f"[green]{t('cli.play.save_done')}[/green]")
                 return
             turn -= 1
             continue
@@ -340,13 +387,26 @@ def play_session(save_id: str) -> None:
         # Route declare_goal via texte libre (raccourci sans /declare)
         if parsed.action_type == ActionType.declare_goal:
             from shinobi.goals.declaration import declare_goal as _declare
+            from shinobi.i18n.catalog import get_active_language
+            from shinobi.i18n.player_translator import process_player_input
 
             description = parsed.parameters.get("description") or intent_text
+            active_lang = get_active_language()
+            try:
+                src_lang, translated, _pending = process_player_input(
+                    description,
+                    target_lang=active_lang,
+                    fallback_source=active_lang,
+                )
+            except Exception:
+                src_lang, translated = active_lang, {}
             goal = _declare(
                 description_player=description,
                 interpretation_canonical=description,
                 declared_at_year=world.current_year,
                 declared_at_age=character.age_years,
+                description_player_original_language=src_lang,
+                description_player_translated=translated,
             )
             save_module.save_goal(save_id, goal)
             console.print(f"[green]Objectif declare : {goal.id[:8]} — {description}[/green]")
@@ -357,11 +417,11 @@ def play_session(save_id: str) -> None:
         if parsed.action_type == ActionType.request_objective_path:
             goals = [g for g in save_module.load_goals(save_id) if g.status.value == "declared"]
             if not goals:
-                console.print("[yellow]Aucun objectif declare. Utilise /declare ou tape \"je declare un objectif: ...\".[/yellow]")
+                console.print(f"[yellow]{t('cli.play.no_objective')}[/yellow]")
                 turn -= 1
                 continue
             target_goal = goals[-1]
-            console.print(f"[cyan]Pathfinder pour : {target_goal.description_player}[/cyan]")
+            console.print(t("cli.play.pathfinder_for", description=target_goal.description_player))
             try:
                 asyncio.run(_pathfinder_flow(target_goal, character, world, canon, retriever, save_id))
             except Exception as exc:
@@ -456,7 +516,7 @@ def play_session(save_id: str) -> None:
         # Auto-completion des breadcrumbs : verifie si l'action complete une condition
         completed_now = _check_breadcrumb_completions(save_id, character, result, world.current_year)
         for bc_desc in completed_now:
-            console.print(f"  [bold green]>>> Sous-objectif accompli :[/bold green] {bc_desc}")
+            console.print(t("cli.play.subgoal_completed", description=bc_desc))
 
         prev_date = GameDate(
             year=world.current_year,
@@ -486,9 +546,9 @@ def play_session(save_id: str) -> None:
 
         _print_result(result, parsed.action_type, turn)
         for f in fired:
-            console.print(f"  [yellow]>>> Evenement canon declenche : {f.event_id}[/yellow]")
+            console.print(t("cli.play.canon_event_fired", event_id=f.event_id))
         for c in cancelled:
-            console.print(f"  [red]>>> Evenement canon annule : {c.event_id}[/red]")
+            console.print(t("cli.play.canon_event_cancelled", event_id=c.event_id))
             # Phase F : WorldResolver auto si strategy declenche un substitute.
             # Spec doc 02 §8.2 : 'substitute' (un event prend la place),
             # 'cascade_cancel' (effets domino qui peuvent generer un substitute),
@@ -544,7 +604,7 @@ def play_session(save_id: str) -> None:
                     save_id, fired, canon, personality_engine,
                 )
             except Exception as exc:
-                console.print(f"[dim]Drift Phase D ignore : {type(exc).__name__}[/dim]")
+                console.print(t("cli.play.drift_phase_d_skipped", error=type(exc).__name__))
 
         # Vieillissement : si l'annee a change, remettre l'age en phase et appliquer aging_decay/growth
         character = _age_character_if_needed(character, world)
@@ -567,7 +627,9 @@ def play_session(save_id: str) -> None:
                 pass
 
         # Verification automatique des Goals declares
-        completed_goals = _check_goal_completions(save_id, character, world.current_year)
+        completed_goals = _check_goal_completions(
+            save_id, character, world.current_year, canon=canon,
+        )
         for goal_desc in completed_goals:
             console.print(f"  [bold magenta]>>> Objectif accompli :[/bold magenta] {goal_desc}")
 
@@ -666,7 +728,9 @@ def play_session(save_id: str) -> None:
             except Exception:
                 pass
         except Exception as exc:
-            console.print(f"[red]Erreur de sauvegarde : {type(exc).__name__}: {exc}[/red]")
+            console.print(
+                f"[red]{t('cli.play.save_error', error_type=type(exc).__name__, error=str(exc))}[/red]"
+            )
 
         # Phase C §5.3 : tick le TensionScheduler apres chaque tour normal.
         # Spec '1 inf/3 mois in-game'. Le LLMClient est cree LAZY pour ce
@@ -696,10 +760,10 @@ def play_session(save_id: str) -> None:
                         f"[magenta]>>> Tension Analyst (1 inf/3 mois) : "
                         f"{len(tick_result.tensions.tensions)} opportunites detectees[/magenta]"
                     )
-                    for t in tick_result.tensions.tensions[:3]:
+                    for tn in tick_result.tensions.tensions[:3]:
                         console.print(
-                            f"  [dim][{t.severity.value}][/dim] "
-                            f"{t.description[:80]}"
+                            f"  [dim][{tn.severity.value}][/dim] "
+                            f"{tn.description[:80]}"
                         )
                     # Persiste le state apres analyst run
                     try:
@@ -712,7 +776,7 @@ def play_session(save_id: str) -> None:
                             ),
                             encoding="utf-8",
                         )
-                    except Exception as exc:  # noqa: BLE001
+                    except Exception as exc:
                         from shinobi.logging_setup import get_logger as _glog
                         _glog(__name__).warning(
                             "main_loop_scheduler_state_persist_failed",
@@ -773,7 +837,7 @@ def play_session(save_id: str) -> None:
                             error=type(exc).__name__,
                             msg=str(exc)[:200],
                         )
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 # Audit anti-silent : Phase C tick principal pouvait crasher
                 # silencieusement (signature drift, KG corrompu, etc).
                 from shinobi.logging_setup import get_logger as _glog
@@ -791,7 +855,7 @@ def play_session(save_id: str) -> None:
             pass
 
     console.print(
-        Panel(f"[red]Fin de la vie de {character.name}.[/red]", title="Mort", border_style="red")
+        Panel(t("cli.play.death_text", name=character.name), title=t("cli.play.death_panel"), border_style="red")
     )
 
 
@@ -826,15 +890,15 @@ def _print_result(result: ActionResult, action_type: ActionType, turn: int) -> N
         body_lines.append(Text(f"  HP : {result.hp_delta}", style="bold red"))
     if result.fatigue_delta:
         sign = "+" if result.fatigue_delta > 0 else ""
-        body_lines.append(Text(f"  Fatigue : {sign}{result.fatigue_delta}", style="yellow"))
+        body_lines.append(Text(t("cli.play.fatigue_delta", sign=sign, delta=result.fatigue_delta), style="yellow"))
     if result.chakra_cost:
-        body_lines.append(Text(f"  Chakra consomme : -{result.chakra_cost}", style="cyan"))
+        body_lines.append(Text(t("cli.play.chakra_consumed", cost=result.chakra_cost), style="cyan"))
 
     body = Text("\n").join(body_lines)
     console.print(
         Panel(
             body,
-            title=f"Resultat (tour {turn}, {result.duration_minutes // 60}h{result.duration_minutes % 60:02d})",
+            title=t("cli.play.action_result_title", turn=turn, hours=result.duration_minutes // 60, minutes=result.duration_minutes % 60),
             border_style=outcome_color(result.outcome.value),
         )
     )
@@ -847,11 +911,11 @@ def _pick_duration(default_hours: int) -> int:
     table.add_column()
     for i, (label, _hours) in enumerate(DURATION_PRESETS, start=1):
         table.add_row(str(i), label)
-    table.add_row("c", "Duree personnalisee (en heures)")
-    console.print(Panel(table, title="Duree d'engagement", border_style="cyan"))
+    table.add_row("c", t("cli.play.duration_custom"))
+    console.print(Panel(table, title=t("cli.play.duration_engagement"), border_style="cyan"))
     choice = (
         Prompt.ask(
-            "[bold cyan]Duree[/bold cyan]",
+            f"[bold cyan]{t('cli.play.duration_prompt')}[/bold cyan]",
             default=str(_default_duration_index(default_hours)),
         )
         .strip()
@@ -897,9 +961,14 @@ def _handle_meta(
     """Traite une commande meta. Retourne (continue, character, world)."""
     if command in ("/quit", "/exit"):
         return False, character, world
+    if command == "/language":
+        from shinobi.cli.language_picker import run_language_reset_menu
+
+        run_language_reset_menu(console=console)
+        return True, character, world
     if command == "/help":
-        body = "\n".join(f"  [cyan]{cmd}[/cyan] : {desc}" for cmd, desc in META_HELP.items())
-        console.print(Panel(body, title="Commandes meta", border_style="cyan"))
+        body = "\n".join(f"  [cyan]{cmd}[/cyan] : {desc}" for cmd, desc in _meta_help().items())
+        console.print(Panel(body, title=t("cli.play.help.title"), border_style="cyan"))
     elif command == "/status":
         print_status(console, character, world)
     elif command == "/techniques":
@@ -912,14 +981,28 @@ def _handle_meta(
         print_objectives(console, descriptions)
     elif command == "/declare":
         from shinobi.goals.declaration import declare_goal
+        from shinobi.i18n.catalog import get_active_language
+        from shinobi.i18n.player_translator import process_player_input
 
         text = Prompt.ask("[bold cyan]Decris ton objectif[/bold cyan]")
         if text.strip():
+            description = text.strip()
+            active_lang = get_active_language()
+            try:
+                src_lang, translated, _pending = process_player_input(
+                    description,
+                    target_lang=active_lang,
+                    fallback_source=active_lang,
+                )
+            except Exception:
+                src_lang, translated = active_lang, {}
             goal = declare_goal(
-                description_player=text.strip(),
-                interpretation_canonical=text.strip(),
+                description_player=description,
+                interpretation_canonical=description,
                 declared_at_year=world.current_year,
                 declared_at_age=character.age_years,
+                description_player_original_language=src_lang,
+                description_player_translated=translated,
             )
             save_module.save_goal(save_id, goal)
             console.print(f"[green]Objectif declare : {goal.id[:8]}[/green]")
@@ -931,7 +1014,9 @@ def _handle_meta(
         if target_goal is None:
             console.print(f"[red]Objectif introuvable : {goal_id_partial}[/red]")
         else:
-            console.print(f"[cyan]Recherche du chemin pour : {target_goal.description_player}[/cyan]")
+            console.print(
+                f"[cyan]{t('cli.play.path_searching', description=target_goal.description_player)}[/cyan]"
+            )
             try:
                 asyncio.run(_pathfinder_flow(target_goal, character, world, canon, retriever, save_id))
             except Exception as exc:
@@ -953,7 +1038,7 @@ def _handle_meta(
     elif command == "/active_missions":
         items = save_module.load_active_missions(save_id)
         if not items:
-            console.print(Panel("Aucune mission acceptee.", title="Missions"))
+            console.print(Panel(t("cli.play.no_active_mission"), title=t("cli.play.missions_title")))
         else:
             lines = []
             for m in items:
@@ -962,26 +1047,26 @@ def _handle_meta(
                     else ("[red]echoue[/red]" if m["success"] is False else "[yellow]en cours[/yellow]")
                 )
                 lines.append(f"  [{m['rank']}] {m['title']} ({status})")
-            console.print(Panel("\n".join(lines), title=f"Missions ({len(items)})"))
+            console.print(Panel("\n".join(lines), title=t("cli.play.missions_title_count", count=len(items))))
     elif command == "/inventory":
-        from shinobi.engine.shop import ITEM_CATALOG, get_inventory_summary
+        from shinobi.engine.shop import ITEM_CATALOG, get_inventory_summary, shop_item_name
 
         items = get_inventory_summary(character.inventory, character.weapons)
         if not items:
-            console.print(Panel("Inventaire vide.", title="Inventaire"))
+            console.print(Panel(t("cli.play.inventory_empty"), title=t("cli.play.inventory_title")))
         else:
             lines = []
             for item_id, qty in items:
                 item = ITEM_CATALOG.get(item_id)
-                name = item.name_fr if item else item_id
+                name = shop_item_name(item_id) if item else item_id
                 lines.append(f"  {name} (x{qty})")
-            console.print(Panel("\n".join(lines), title=f"Inventaire ({character.money} ryos)"))
+            console.print(Panel("\n".join(lines), title=t("cli.play.inventory_title_money", money=character.money)))
     elif command == "/reputation":
         if not character.reputation.by_village:
-            console.print(Panel("Aucune reputation enregistree.", title="Reputation"))
+            console.print(Panel(t("cli.play.no_reputation"), title=t("cli.play.reputation_title")))
         else:
             lines = [f"  {e.village_id}: {e.score}" for e in character.reputation.by_village]
-            console.print(Panel("\n".join(lines), title="Reputation par village"))
+            console.print(Panel("\n".join(lines), title=t("cli.play.reputation_subtitle")))
     elif command == "/missions":
         character, world = _missions_flow(character, world, save_id, canon)
     elif command == "/biography":
@@ -1011,7 +1096,7 @@ def _handle_meta(
     elif command.startswith("/skip"):
         character, world = _skip_time(command, character, world)
     elif command == "/journal":
-        console.print(f"[dim]Journal : data/saves/{save_id}/narrative_log.jsonl[/dim]")
+        console.print(f"[dim]{t('cli.play.journal_path', save_id=save_id)}[/dim]")
     elif command == "/dialogues":
         _print_dialogue_log(dialogue_log)
     elif command.startswith("/export-vn-dialogues"):
@@ -1077,7 +1162,7 @@ def _print_dialogue_log(dialogue_log: DialogueLog | None) -> None:
         console.print("[yellow]Log de dialogues VN non initialise.[/yellow]")
         return
     if dialogue_log.size == 0:
-        console.print(Panel("Aucun dialogue capture pour l'instant.", title="Dialogues VN"))
+        console.print(Panel(t("cli.play.no_dialogue_yet"), title="Dialogues VN"))
         return
     last = dialogue_log.last_n(20)
     lines = []
@@ -1103,13 +1188,15 @@ def _print_personality(save_id: str, npc_id: str) -> None:
     db_path = save_module.personality_db_path(save_id)
     if not db_path.exists():
         console.print(
-            "[yellow]Aucune base de personnalite (Phase D non initialisee).[/yellow]"
+            f"[yellow]{t('cli.play.no_personality_db')}[/yellow]"
         )
         return
     with PersonalityStore(db_path) as store:
         personality = store.get_personality(npc_id)
     if personality is None:
-        console.print(f"[yellow]Aucune personnalite enregistree pour {npc_id}.[/yellow]")
+        console.print(
+            f"[yellow]{t('cli.play.no_personality_for_npc', npc_id=npc_id)}[/yellow]"
+        )
         return
     engine = PersonalityEngine()
     top_drifted = engine.top_drifted_dimensions(personality, n=5)
@@ -1146,15 +1233,15 @@ def _export_vn_dialogues(dialogue_log: DialogueLog | None, target: Path) -> None
         console.print("[yellow]Log de dialogues VN non initialise.[/yellow]")
         return
     if dialogue_log.size == 0:
-        console.print("[yellow]Aucun dialogue a exporter.[/yellow]")
+        console.print(f"[yellow]{t('cli.play.no_dialogue_to_export')}[/yellow]")
         return
     try:
         n = export_to_vn_json(dialogue_log.all(), target)
         console.print(
-            f"[green]Export VN reussi : {n} ligne(s) ecrite(s) dans {target}[/green]"
+            t("cli.play.export_vn_success", count=n, path=target)
         )
     except Exception as exc:
-        console.print(f"[red]Echec export VN : {type(exc).__name__}: {exc}[/red]")
+        console.print(t("cli.play.export_vn_failed", error_type=type(exc).__name__, error=str(exc)))
 
 
 def _missions_flow(character, world, save_id: str, canon):
@@ -1168,10 +1255,10 @@ def _missions_flow(character, world, save_id: str, canon):
     )
     table = Table(title=f"Missions disponibles (rang {character.rank})", header_style=COLOR_TITLE)
     table.add_column("#", style="bold cyan", justify="right")
-    table.add_column("Rang")
-    table.add_column("Titre")
-    table.add_column("Duree", justify="right")
-    table.add_column("Recompense", justify="right")
+    table.add_column(t("cli.play.missions.col_rank"))
+    table.add_column(t("cli.play.missions.col_title"))
+    table.add_column(t("cli.play.missions.col_duration"), justify="right")
+    table.add_column(t("cli.play.missions.col_reward"), justify="right")
     table.add_column("DC", justify="right")
     for i, m in enumerate(missions, start=1):
         table.add_row(
@@ -1182,10 +1269,10 @@ def _missions_flow(character, world, save_id: str, canon):
             f"{m.reward_ryos:,} r".replace(",", " "),
             str(m.difficulty_dc),
         )
-    table.add_row("0", "-", "[ne pas accepter de mission]", "-", "-", "-")
+    table.add_row("0", "-", t("cli.play.no_mission_choice"), "-", "-", "-")
     console.print(table)
 
-    choice = Prompt.ask("[bold cyan]Mission[/bold cyan] [dim](numero)[/dim]", default="0").strip()
+    choice = Prompt.ask(t("cli.play.missions.pick_prompt"), default="0").strip()
     if choice in ("0", ""):
         return character, world
     try:
@@ -1200,8 +1287,8 @@ def _missions_flow(character, world, save_id: str, canon):
     console.print(
         Panel(
             f"[bold]{mission.title}[/bold]\n[dim]{mission.description_fr}[/dim]\n\n"
-            f"Tu pars en mission : duree {mission.duration_hours}h.",
-            title=f"Mission {mission.rank} acceptee",
+            + t("cli.play.mission_start", hours=mission.duration_hours),
+            title=t("cli.play.missions.accepted_panel_title", rank=mission.rank),
             border_style="magenta",
         )
     )
@@ -1219,9 +1306,9 @@ def _missions_flow(character, world, save_id: str, canon):
     from shinobi.engine.character import BiographyEvent
 
     summary = (
-        f"Mission {mission.rank} reussie : {mission.title}"
+        t("cli.play.mission_succeeded", rank=mission.rank, title=mission.title)
         if success
-        else f"Mission {mission.rank} echouee : {mission.title}"
+        else t("cli.play.mission_failed", rank=mission.rank, title=mission.title)
     )
     bio = BiographyEvent(
         year=world.current_year,
@@ -1247,16 +1334,16 @@ def _missions_flow(character, world, save_id: str, canon):
             Panel(
                 f"[bold green]Mission accomplie ![/bold green]\n"
                 f"Recompense : [yellow]+{ryos:,}[/yellow] ryos.".replace(",", " ") + consequences_block,
-                title="Succes",
+                title=t("cli.play.success_panel"),
                 border_style="green",
             )
         )
     else:
         console.print(
             Panel(
-                "[bold red]Mission echouee.[/bold red]\n"
-                "Tu rentres blesse au village. Reputation legerement entamee." + consequences_block,
-                title="Echec",
+                f"[bold red]{t('cli.play.mission_failed_panel')}[/bold red]\n"
+                + t("cli.play.mission_partial_panel") + consequences_block,
+                title=t("cli.play.failure_panel"),
                 border_style="red",
             )
         )
@@ -1332,7 +1419,7 @@ async def _world_resolve_cancellation(
         )
         console.print(
             Panel(
-                f"[bold]A la place :[/bold] {resolution.substitute_event_summary}\n"
+                t("cli.play.substitute_event", summary=resolution.substitute_event_summary) + "\n"
                 + ("\nConsequences :\n" + "\n".join(f"  - {c.get('description', '')}" for c in resolution.consequences) if resolution.consequences else "")
                 + (f"\n\nRumeur qui circule : [italic]{resolution.rumor_template}[/italic]" if resolution.rumor_template else ""),
                 title=f"Resolution narrative : {canon_ev.name_fr}",
@@ -1369,17 +1456,14 @@ async def _world_resolve_cancellation(
             )
             if phase_f_resolution.status == "injected":
                 console.print(
-                    f"  [dim cyan]Phase F : SubstituteEvent {phase_f_resolution.substitute.id} "
-                    f"injecte dans KG ({len(phase_f_resolution.validation_attempts)} attempt(s))[/dim cyan]"
+                    t(
+                        "cli.play.phase_f_substitute",
+                        sub_id=phase_f_resolution.substitute.id,
+                    )
                 )
-                # Spec round 6 : retourne le new_world pour que le caller
-                # puisse l'assigner. Sans ca, la boucle reste ouverte
-                # cote runtime CLI.
                 return new_world
             elif phase_f_resolution.status == "regen_exhausted":
-                console.print(
-                    "  [dim red]Phase F : silent_cancel (regen exhausted)[/dim red]"
-                )
+                console.print(t("cli.play.phase_f_silent_cancel"))
         except Exception as exc:
             # Phase F best-effort : ne pas casser le gameplay si la pipeline echoue.
             # Round 23 : on log au lieu de swallow silencieux. Avant, un crash
@@ -1397,23 +1481,39 @@ async def _world_resolve_cancellation(
 
 def _shop_buy_flow(character):
     """Affiche la boutique du village et propose un achat."""
-    from shinobi.engine.shop import buy_item, list_shop_inventory
+    from shinobi.engine.shop import (
+        buy_item,
+        list_shop_inventory,
+        shop_item_description,
+        shop_item_name,
+    )
 
     items = list_shop_inventory(character.current_village)
     if not items:
-        console.print(f"[yellow]Aucune boutique a {character.current_village}.[/yellow]")
+        console.print(
+            f"[yellow]{t('cli.play.no_shop_in_village', village_id=character.current_village)}[/yellow]"
+        )
         return character
-    table = Table(title=f"Boutique de {character.current_village} ({character.money} ryos en poche)", header_style=COLOR_TITLE)
+    table = Table(
+        title=t("cli.play.shop.title", village=character.current_village, money=character.money),
+        header_style=COLOR_TITLE,
+    )
     table.add_column("#", style="bold cyan", justify="right")
-    table.add_column("Item")
-    table.add_column("Categorie", style="dim")
-    table.add_column("Prix", justify="right", style="yellow")
-    table.add_column("Description", style="dim")
+    table.add_column(t("cli.play.shop.col_item"))
+    table.add_column(t("cli.play.shop.col_category"), style="dim")
+    table.add_column(t("cli.play.shop.col_price"), justify="right", style="yellow")
+    table.add_column(t("cli.play.shop.col_description"), style="dim")
     for i, (item, price) in enumerate(items, start=1):
-        table.add_row(str(i), item.name_fr, item.category, f"{price}", item.description_fr[:60])
-    table.add_row("0", "[ne rien acheter]", "-", "-", "-")
+        table.add_row(
+            str(i),
+            shop_item_name(item.id),
+            item.category,
+            f"{price}",
+            shop_item_description(item.id)[:60],
+        )
+    table.add_row("0", t("cli.play.shop.no_buy"), "-", "-", "-")
     console.print(table)
-    choice = Prompt.ask("[bold cyan]Item[/bold cyan]", default="0").strip()
+    choice = Prompt.ask(f"[bold cyan]{t('cli.play.shop.item_prompt')}[/bold cyan]", default="0").strip()
     if choice in ("0", ""):
         return character
     try:
@@ -1424,32 +1524,38 @@ def _shop_buy_flow(character):
         return character
     item, price = items[idx]
     new_char, msg = buy_item(character, item, price)
-    color = "green" if "Achete" in msg else "red"
+    color = "green" if new_char is not character else "red"
     console.print(f"[{color}]{msg}[/{color}]")
     return new_char
 
 
 def _shop_sell_flow(character):
     """Propose la revente d'items de l'inventaire (et des armes)."""
-    from shinobi.engine.shop import ITEM_CATALOG, SELL_RATIO, get_inventory_summary, sell_item
+    from shinobi.engine.shop import (
+        ITEM_CATALOG,
+        SELL_RATIO,
+        get_inventory_summary,
+        sell_item,
+        shop_item_name,
+    )
 
     items = get_inventory_summary(character.inventory, character.weapons)
     if not items:
-        console.print("[yellow]Inventaire vide.[/yellow]")
+        console.print(t("cli.play.inventory_empty_yellow"))
         return character
-    table = Table(title="Revente (40% du prix d'achat)", header_style=COLOR_TITLE)
+    table = Table(title=t("cli.play.shop.sell_title"), header_style=COLOR_TITLE)
     table.add_column("#", style="bold cyan", justify="right")
-    table.add_column("Item")
-    table.add_column("Quantite", justify="right")
-    table.add_column("Prix vente", justify="right", style="yellow")
+    table.add_column(t("cli.play.shop.col_item"))
+    table.add_column(t("cli.play.shop.col_quantity"), justify="right")
+    table.add_column(t("cli.play.shop.col_sell_price"), justify="right", style="yellow")
     for i, (item_id, qty) in enumerate(items, start=1):
         item = ITEM_CATALOG.get(item_id)
-        name = item.name_fr if item else item_id
+        name = shop_item_name(item_id) if item else item_id
         sell_price = int(item.base_price_ryos * SELL_RATIO) if item else 0
         table.add_row(str(i), name, str(qty), f"{sell_price}")
-    table.add_row("0", "[ne rien vendre]", "-", "-")
+    table.add_row("0", t("cli.play.shop.no_sell"), "-", "-")
     console.print(table)
-    choice = Prompt.ask("[bold cyan]Item[/bold cyan]", default="0").strip()
+    choice = Prompt.ask(f"[bold cyan]{t('cli.play.shop.item_prompt')}[/bold cyan]", default="0").strip()
     if choice in ("0", ""):
         return character
     try:
@@ -1460,7 +1566,7 @@ def _shop_sell_flow(character):
         return character
     item_id, _qty = items[idx]
     new_char, msg = sell_item(character, item_id)
-    color = "green" if "Vendu" in msg else "red"
+    color = "green" if new_char is not character else "red"
     console.print(f"[{color}]{msg}[/{color}]")
     return new_char
 
@@ -1488,6 +1594,14 @@ async def _pathfinder_flow(goal, character, world, canon, retriever, save_id: st
         )
         response = await pathfinder.find_path(request)
         console.print(Panel(response.interpretation or "(pas d'interpretation)", title="Interpretation", border_style="cyan"))
+        # Phase 5 : transition declared -> in_progress quand le pathfinder
+        # produit son 1er indice. Sans ca, le statut reste 'declared' meme
+        # apres exploration active. Idempotent (no-op si deja in_progress).
+        if response.breadcrumbs:
+            from shinobi.goals.declaration import mark_goal_in_progress
+            updated_goal = mark_goal_in_progress(goal)
+            if updated_goal.status != goal.status:
+                save_module.save_goal(save_id, updated_goal)
         for bc in response.breadcrumbs:
             save_module.save_breadcrumb(save_id, bc)
             price_str = ""
@@ -1499,7 +1613,7 @@ async def _pathfinder_flow(goal, character, world, canon, retriever, save_id: st
                     f"[bold]{bc.description}[/bold]\n"
                     f"  Base canonique : {bc.canonical_basis}"
                     + price_str,
-                    title=f"Indice {bc.sequence_index} pour '{goal.description_player[:40]}'",
+                    title=t("cli.play.indice_panel_title", seq=bc.sequence_index, goal_short=goal.description_player[:40]),
                     border_style="magenta",
                 )
             )
@@ -1530,7 +1644,7 @@ def _skip_time(command: str, character, world):
     # Le perso vieillit avec aging_decay/growth (pas juste +N ans naif)
     character = _age_character_if_needed(character, new_world)
     console.print(
-        f"[green]Temps avance de {n}{unit}. Nouvelle date : an {new_date.year}, jour {new_date.date_str}[/green]"
+        f"[green]{t('cli.play.time_advanced', n=n, unit=unit, year=new_date.year, date=new_date.date_str)}[/green]"
     )
     return character, new_world
 
@@ -1692,9 +1806,11 @@ def _ensure_agents_initialized(
             roster = initialize_roster(store, included_since_year=current_year)
             if console is not None:
                 console.print(
-                    f"[dim]Agents Phase E initialises : "
-                    f"{roster.major_count} majors + "
-                    f"{roster.secondary_count} secondary[/dim]"
+                    t(
+                        "cli.play.agents_phase_e_initialized",
+                        majors=roster.major_count,
+                        secondary=roster.secondary_count,
+                    )
                 )
         else:
             roster = AgentRoster(store)
@@ -1707,8 +1823,7 @@ def _ensure_agents_initialized(
             promoted = roster.promote_arc_relevant(current_year, eras_data)
             if promoted and console is not None:
                 console.print(
-                    f"[dim]Arc-relevant NPCs promus : "
-                    f"{', '.join(promoted)}[/dim]"
+                    t("cli.play.arc_relevant_promoted", ids=", ".join(promoted))
                 )
 
 
@@ -1825,7 +1940,7 @@ async def _run_tensions_llm_analyst(
     kg_db = save_module.kg_db_path(save_id)
     if not kg_db.exists():
         console.print(
-            "[yellow]KG non initialise (Phase A requise).[/yellow]"
+            t("cli.play.kg_not_initialized_a")
         )
         return
     console.print("[cyan]Snapshot KG + analyst LLM en cours...[/cyan]")
@@ -1878,7 +1993,7 @@ async def _run_tensions_llm_analyst(
     if not result.tensions.tensions:
         console.print(
             Panel(
-                "[dim]Aucune opportunite narrative identifiee.[/dim]",
+                f"[dim]{t('cli.play.no_narrative_opportunity')}[/dim]",
                 title="LLM Analyst", border_style="magenta",
             )
         )
@@ -1889,18 +2004,18 @@ async def _run_tensions_llm_analyst(
         key=lambda t: sev_order.get(t.severity.value, 99),
     )
     lines = []
-    for t in sorted_t[:15]:
+    for tn in sorted_t[:15]:
         sev_color = {
             "critical": "red", "high": "magenta",
             "medium": "yellow", "low": "dim",
-        }.get(t.severity.value, "white")
+        }.get(tn.severity.value, "white")
         lines.append(
-            f"  [{sev_color}]{t.severity.value:8s}[/{sev_color}] "
-            f"[{t.type.value}] {t.description[:80]}"
+            f"  [{sev_color}]{tn.severity.value:8s}[/{sev_color}] "
+            f"[{tn.type.value}] {tn.description[:80]}"
         )
-        if t.involved_entities:
+        if tn.involved_entities:
             lines.append(
-                f"    [dim]impliques : {', '.join(t.involved_entities[:5])}[/dim]"
+                f"    [dim]impliques : {', '.join(tn.involved_entities[:5])}[/dim]"
             )
     console.print(
         Panel(
@@ -2067,7 +2182,7 @@ def _print_npc_beliefs(save_id: str, npc_id: str, *, year: int) -> None:
 
     kg_db = save_module.kg_db_path(save_id)
     if not kg_db.exists():
-        console.print("[yellow]KG non initialise.[/yellow]")
+        console.print(t("cli.play.kg_not_initialized_a"))
         return
     with KnowledgeGraphStore(kg_db) as kg:
         # Facts dans known_to(npc) (sub-KG personnel)
@@ -2086,7 +2201,7 @@ def _print_npc_beliefs(save_id: str, npc_id: str, *, year: int) -> None:
     if not known_facts and beliefs_count == 0:
         console.print(
             Panel(
-                f"[dim]Aucun fact connu et aucun belief enregistre pour {npc_id}.[/dim]",
+                f"[dim]{t('cli.play.no_fact_no_belief', npc_id=npc_id)}[/dim]",
                 title=f"Sub-KG : {npc_id}",
                 border_style="cyan",
             )
@@ -2109,7 +2224,7 @@ def _print_npc_beliefs(save_id: str, npc_id: str, *, year: int) -> None:
     console.print(
         Panel(
             "\n".join(lines),
-            title=f"Sub-KG (Phase B) : {npc_id}",
+            title=t("cli.play.beliefs_subkg_title", npc_id=npc_id),
             border_style="cyan",
         )
     )
@@ -2213,7 +2328,7 @@ def _print_tensions(save_id: str, *, year: int, canon=None) -> None:
     kg_db = save_module.kg_db_path(save_id)
     if not kg_db.exists():
         console.print(
-            "[yellow]KG non initialise. Les tensions necessitent Phase A.[/yellow]"
+            t("cli.play.tensions_kg_required")
         )
         return
     with KnowledgeGraphStore(kg_db) as kg:
@@ -2222,8 +2337,8 @@ def _print_tensions(save_id: str, *, year: int, canon=None) -> None:
     if not result.tensions.tensions:
         console.print(
             Panel(
-                f"Aucune tension detectee a l'an {year}.",
-                title="Phase C : Tension Detector",
+                t("cli.play.no_tension_at_year", year=year),
+                title=t("cli.play.tensions_panel_title"),
                 border_style="cyan",
             )
         )
@@ -2238,26 +2353,26 @@ def _print_tensions(save_id: str, *, year: int, canon=None) -> None:
         ),
     )
     lines = []
-    for t in sorted_tensions[:15]:
+    for tn in sorted_tensions[:15]:
         sev_color = {
             "critical": "red", "high": "magenta",
             "medium": "yellow", "low": "dim",
-        }.get(t.severity.value, "white")
+        }.get(tn.severity.value, "white")
         lines.append(
-            f"  [{sev_color}]{t.severity.value:8s}[/{sev_color}] "
-            f"[{t.type.value}] {t.description[:80]}"
+            f"  [{sev_color}]{tn.severity.value:8s}[/{sev_color}] "
+            f"[{tn.type.value}] {tn.description[:80]}"
         )
-        if t.involved_entities:
+        if tn.involved_entities:
             lines.append(
-                f"    [dim]impliques : {', '.join(t.involved_entities[:5])}[/dim]"
+                f"    [dim]impliques : {', '.join(tn.involved_entities[:5])}[/dim]"
             )
     if len(sorted_tensions) > 15:
-        lines.append(f"  [dim]... ({len(sorted_tensions) - 15} de plus)[/dim]")
+        lines.append(t("cli.play.more_count", count=len(sorted_tensions) - 15))
     console.print(
         Panel(
             "\n".join(lines),
             title=(
-                f"Phase C : {len(sorted_tensions)} tensions detectees (an {year})"
+                t("cli.play.tensions_panel_count_year", count=len(sorted_tensions), year=year)
             ),
             border_style="cyan",
         )
@@ -2268,7 +2383,7 @@ def _print_agents_roster(save_id: str) -> None:
     """Liste les agents top-15 / secondary-50 avec last_active."""
     db_path = save_module.agents_db_path(save_id)
     if not db_path.exists():
-        console.print("[yellow]Roster Phase E non initialise.[/yellow]")
+        console.print(t("cli.play.roster_phase_e_not_init"))
         return
     with AgentMemoryStore(db_path) as store:
         majors = store.list_roster(tier=AgentTier.major)
@@ -2282,13 +2397,13 @@ def _print_agents_roster(save_id: str) -> None:
         )
         lines.append(f"  {e.npc_id}{last}")
     lines.append("")
-    lines.append(f"[cyan]Secondary ({len(secondary)}, par lot tous les 10 ticks) :[/cyan]")
+    lines.append(t("cli.play.secondary_header", count=len(secondary)))
     for e in secondary[:10]:
         lines.append(f"  {e.npc_id}")
     if len(secondary) > 10:
-        lines.append(f"  ... ({len(secondary) - 10} de plus)")
+        lines.append(t("cli.play.more_count", count=len(secondary) - 10))
     console.print(
-        Panel("\n".join(lines), title="Roster agents Phase E", border_style="cyan")
+        Panel("\n".join(lines), title=t("cli.play.agents_roster_title"), border_style="cyan")
     )
 
 
@@ -2296,14 +2411,14 @@ def _print_agent_detail(save_id: str, npc_id: str) -> None:
     """Affiche memoire 3-niveaux + dernieres actions d'un agent."""
     db_path = save_module.agents_db_path(save_id)
     if not db_path.exists():
-        console.print("[yellow]Roster Phase E non initialise.[/yellow]")
+        console.print(t("cli.play.roster_phase_e_not_init"))
         return
     with AgentMemoryStore(db_path) as store:
         entry = store.get_roster_entry(npc_id)
         memory = store.load_memory(npc_id)
         actions = store.list_actions(npc_id, limit=10)
     if entry is None and memory.size == 0:
-        console.print(f"[yellow]Aucun agent enregistre pour {npc_id}.[/yellow]")
+        console.print(f"[yellow]{t('cli.play.no_agent_for_npc', npc_id=npc_id)}[/yellow]")
         return
     tier = entry.tier.value if entry else "background"
     lines = [
@@ -2366,7 +2481,7 @@ async def _run_fast_forward(
     )
 
     console.print(
-        f"[cyan]Fast-forward {months} mois en cours (mode passif)...[/cyan]"
+        t("cli.play.fast_forward_in_progress", months=months)
     )
     # Spec §6.1 : BGE-M3 wired si dispo. Fallback gracieux Jaccard sinon.
     bge_encoder, bge_query = try_load_bge_encoders()
@@ -2439,7 +2554,7 @@ async def _run_fast_forward(
                     error=type(exc).__name__, msg=str(exc)[:200],
                 )
                 ff_director_state = _DState()
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         # Audit anti-silent : si l'import DirectorState casse (ex refactor
         # path) ou autre, on log au lieu de continuer en mode degraded
         # silencieux (FF tournerait sans Director).
@@ -2522,7 +2637,7 @@ async def _run_fast_forward(
                 if tick_result.analyst_ran and tick_result.tensions.tensions:
                     analyst_tensions_acc.extend(tick_result.tensions.tensions)
                 tensions_for_director = tick_result.tensions
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 from shinobi.logging_setup import get_logger as _glog
                 _glog(__name__).warning(
                     "phase_c_tick_failed_in_ff",
@@ -2551,7 +2666,7 @@ async def _run_fast_forward(
                 )
                 # _phase_g_tick_director mute le state in-place via Director.tick
                 _ = director_report
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 # Audit anti-silent : log au lieu de pass nu (un bug de
                 # signature ou import casse Phase G en FF se voyait pas
                 # avant). Defensive : on continue la simulation.
@@ -2612,7 +2727,7 @@ async def _run_fast_forward(
         # apres chaque tick canon scheduler. Cap a 1x par mois (= ticks_per_month)
         # pour amortir le cout de build_nudge_text : sans ce throttle,
         # 4 builds/tick * 4 tick/mois = 16 builds/mois pour le meme nudge.
-        ticks_per_month = engine._ticks_per_month  # noqa: SLF001
+        ticks_per_month = engine._ticks_per_month
         last_nudge_built_tick = [-1]
 
         def _refresh_nudge(eng, cur_year: int, cur_tick: int) -> None:
@@ -2673,27 +2788,24 @@ async def _run_fast_forward(
         for e in digest.entries[:20]:
             lines.append(f"  [dim]an {e.year}[/dim] {e.headline[:90]}")
         if len(digest.entries) > 20:
-            lines.append(f"  ... ({len(digest.entries) - 20} de plus)")
+            lines.append(t("cli.play.more_count", count=len(digest.entries) - 20))
     else:
         lines.append("")
-        lines.append("[dim]Aucun event marquant detecte (importance < seuil).[/dim]")
+        lines.append(t("cli.play.no_marking_event"))
 
     # Phase C §5.3 : afficher les tensions LLM analyst capturees
     if analyst_tensions_acc:
         lines.append("")
-        lines.append(
-            f"[magenta]Tensions narratives detectees par l'analyst LLM "
-            f"({len(analyst_tensions_acc)}) :[/magenta]"
-        )
+        lines.append(t("cli.play.tensions_analyst_header", count=len(analyst_tensions_acc)))
         # Trie par severity descendant
         sev_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
         sorted_t = sorted(
             analyst_tensions_acc,
             key=lambda t: sev_order.get(t.severity.value, 99),
         )
-        for t in sorted_t[:8]:
+        for tn in sorted_t[:8]:
             lines.append(
-                f"  [{t.severity.value}] [{t.type.value}] {t.description[:80]}"
+                f"  [{tn.severity.value}] [{tn.type.value}] {tn.description[:80]}"
             )
 
     # Phase C §5.3 : afficher aussi les tensions detector finales (apres
@@ -2710,22 +2822,19 @@ async def _run_fast_forward(
                 # Filtre severity >= medium pour eviter spam
                 sev_order_d = {"critical": 0, "high": 1, "medium": 2, "low": 3}
                 medium_plus = [
-                    t for t in final_det.tensions
-                    if sev_order_d.get(t.severity.value, 99) <= 2
+                    tn for tn in final_det.tensions
+                    if sev_order_d.get(tn.severity.value, 99) <= 2
                 ]
                 if medium_plus:
                     lines.append("")
-                    lines.append(
-                        f"[cyan]Tensions detector deterministe en fin "
-                        f"de fast-forward ({len(medium_plus)}) :[/cyan]"
-                    )
+                    lines.append(t("cli.play.tensions_detector_finals_header", count=len(medium_plus)))
                     medium_plus.sort(
                         key=lambda t: sev_order_d.get(t.severity.value, 99),
                     )
-                    for t in medium_plus[:8]:
+                    for tn in medium_plus[:8]:
                         lines.append(
-                            f"  [{t.severity.value}] [{t.type.value}] "
-                            f"{t.description[:80]}"
+                            f"  [{tn.severity.value}] [{tn.type.value}] "
+                            f"{tn.description[:80]}"
                         )
         except Exception:
             pass
@@ -2746,7 +2855,7 @@ async def _run_fast_forward(
                 ),
                 encoding="utf-8",
             )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             from shinobi.logging_setup import get_logger as _glog
             _glog(__name__).warning(
                 "ff_scheduler_state_persist_failed",
@@ -2768,7 +2877,7 @@ async def _run_fast_forward(
                 ),
                 encoding="utf-8",
             )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             # Audit anti-silent : si la persistence DirectorState echoue,
             # le reload de save aura un state stale -> acts composes pendant
             # FF perdus. On log pour exposer (ex permission denied, JSON
@@ -2883,11 +2992,9 @@ async def _attempt_narration(
             dialogue_log=dialogue_log,
         )
         npc_summary = (
-            f"PNJ canon presents : {', '.join(present_npcs)}"
+            t("cli.play.present_npcs_summary", npcs=", ".join(present_npcs))
             if present_npcs
-            else "Aucun PNJ canon nomme dans la scene. Si la situation implique des"
-            " interlocuteurs (sensei, parent, marchand, etc.), invente leur id role-based"
-            " (snake_case, ex: sensei_academie, marchand_taverne) et fais-les parler."
+            else t("cli.play.no_canon_npc_in_scene")
         )
         request = NarrationRequest(
             turn_summary=intent,
@@ -2952,7 +3059,7 @@ def _build_relevant_factions_text(
             present_npc_ids=tuple(present_npcs or ()),
         )
         return text or None
-    except Exception:  # noqa: BLE001
+    except Exception:
         from shinobi.logging_setup import get_logger as _glog
         _glog(__name__).warning(
             "narrator_relevant_factions_failed",
@@ -2976,7 +3083,7 @@ def _build_present_npcs_motivations_text(
             present_npc_ids=present_npcs,
         )
         return text or None
-    except Exception:  # noqa: BLE001
+    except Exception:
         from shinobi.logging_setup import get_logger as _glog
         _glog(__name__).warning(
             "narrator_present_npcs_motivations_failed",
@@ -3037,19 +3144,36 @@ def _age_character_if_needed(character, world):
     return advance_age(character, expected_age)
 
 
-def _check_goal_completions(save_id: str, character, current_year: int) -> list[str]:
+def _check_goal_completions(save_id: str, character, current_year: int, *, canon=None) -> list[str]:
     """Verifie tous les goals declares et marque ceux qui sont accomplis.
 
     Renvoie la liste des descriptions accomplies ce tour.
     """
     from shinobi.goals.completion import check_goal_by_target, check_goal_completion
-    from shinobi.goals.declaration import complete_goal
+    from shinobi.goals.declaration import complete_goal, detect_goal_failure, fail_goal
 
     goals = save_module.load_goals(save_id)
     breadcrumbs = save_module.load_breadcrumbs(save_id)
     completed_now: list[str] = []
+    canon_chars = canon.characters if canon is not None else {}
+    player_dead = getattr(character, "is_dead", False)
     for goal in goals:
-        if goal.status.value != "declared":
+        # Phase 5 : on traite declared ET in_progress (un goal active reste
+        # eligible a completion via target_match meme apres pathfinder).
+        if goal.status.value not in ("declared", "in_progress"):
+            continue
+        # Phase 5 : detection auto-failure (target mort, joueur mort).
+        # Prend precedence sur completion : un goal sur Itachi ne peut pas
+        # etre complete si Itachi est mort entre temps.
+        fail_reason = detect_goal_failure(
+            goal,
+            canon_characters=canon_chars,
+            current_year=current_year,
+            player_is_dead=player_dead,
+        )
+        if fail_reason is not None:
+            failed_goal = fail_goal(goal, current_year, reason=fail_reason)
+            save_module.save_goal(save_id, failed_goal)
             continue
         is_done = check_goal_completion(goal, breadcrumbs) or check_goal_by_target(goal, character)
         if is_done:
@@ -3117,21 +3241,17 @@ def _render_mechanical_narration(result, parsed, character, world):
 def _pay_for_information_flow(character, world, save_id: str, *, amount: int):
     """Le joueur paie pour reveler le prochain breadcrumb cache d'un objectif actif."""
     if character.money < amount:
-        console.print(
-            f"[red]Tu n'as pas {amount} ryos en poche (tu as {character.money}).[/red]"
-        )
+        console.print(t("cli.play.not_enough_ryos_pocket", amount=amount, money=character.money))
         return character, world
     goals = [g for g in save_module.load_goals(save_id) if g.status.value == "declared"]
     if not goals:
-        console.print("[yellow]Aucun objectif declare. Personne n'a rien a te vendre.[/yellow]")
+        console.print(f"[yellow]{t('cli.play.no_objective_pay')}[/yellow]")
         return character, world
     target_goal = goals[-1]
     breadcrumbs = save_module.load_breadcrumbs(save_id, parent_goal_id=target_goal.id)
     hidden = [bc for bc in breadcrumbs if not bc.revealed]
     if not hidden:
-        console.print(
-            "[yellow]Le contact te repond qu'il n'a rien de plus a t'apprendre pour cet objectif.[/yellow]"
-        )
+        console.print(t("cli.play.contact_no_more_to_say"))
         return character, world
     next_bc = hidden[0]
     from shinobi.goals.breadcrumbs import BreadcrumbPrice, mark_revealed
@@ -3186,8 +3306,8 @@ def _charge_living_cost(character, world, *, days_passed: int):
     if short > 200:
         new_char = apply_damage(new_char, min(15, short // 100), description="malnutrition")
     console.print(
-        f"  [yellow]Pas assez de ryos pour vivre ({short} ryos manquants). "
-        f"Tu dors dehors, mal nourri.[/yellow]"
+        f"  [yellow]{t('cli.play.not_enough_ryos', short=short)} "
+        f"{t('cli.play.malnutrition_msg')}[/yellow]"
     )
     return new_char
 
@@ -3225,19 +3345,23 @@ def _log_biography_milestones(char_before, char_after, world, action_type, resul
             BiographyEvent(
                 year=year,
                 age=age,
-                summary=f"Promotion : {char_before.rank} -> {char_after.rank}",
+                summary=t(
+                    "engine.biography.summary.promotion",
+                    old=char_before.rank,
+                    new=char_after.rank,
+                ),
                 category="rank_promotion",
             )
         )
 
-    before_techs = {t.technique_id for t in char_before.techniques_known}
-    after_techs = {t.technique_id for t in char_after.techniques_known}
+    before_techs = {tk.technique_id for tk in char_before.techniques_known}
+    after_techs = {tk.technique_id for tk in char_after.techniques_known}
     for tid in after_techs - before_techs:
         events.append(
             BiographyEvent(
                 year=year,
                 age=age,
-                summary=f"Technique apprise : {tid}",
+                summary=t("engine.biography.summary.technique_learned", technique_id=tid),
                 category="technique_learned",
             )
         )
@@ -3247,7 +3371,7 @@ def _log_biography_milestones(char_before, char_after, world, action_type, resul
             BiographyEvent(
                 year=year,
                 age=age,
-                summary=char_after.death_circumstances or "Mort",
+                summary=char_after.death_circumstances or t("cli.play.death_default"),
                 category="trauma",
             )
         )
@@ -3260,7 +3384,11 @@ def _log_biography_milestones(char_before, char_after, world, action_type, resul
                 BiographyEvent(
                     year=year,
                     age=age,
-                    summary=f"Blessure grave (hp {char_after.health.hp_current}/{char_after.health.hp_max})",
+                    summary=t(
+                        "engine.biography.summary.severe_injury",
+                        hp=char_after.health.hp_current,
+                        hp_max=char_after.health.hp_max,
+                    ),
                     category="trauma",
                 )
             )
@@ -3270,7 +3398,10 @@ def _log_biography_milestones(char_before, char_after, world, action_type, resul
             BiographyEvent(
                 year=year,
                 age=age,
-                summary=f"Devient nukenin de {char_before.current_village}",
+                summary=t(
+                    "engine.biography.summary.becomes_nukenin",
+                    village=char_before.current_village,
+                ),
                 category="other",
             )
         )
@@ -3284,16 +3415,21 @@ def _log_biography_milestones(char_before, char_after, world, action_type, resul
 def _travel_flow(character, world, target_village: str):
     """Voyage inter-village : consomme du temps reel + fatigue, peut declencher des events au passage."""
     if target_village == character.current_village:
-        console.print("[yellow]Tu es deja a destination.[/yellow]")
+        console.print(f"[yellow]{t('cli.play.already_at_destination')}[/yellow]")
         return character, world
     minutes = travel_minutes(character.current_village, target_village)
     days = max(1, minutes // (24 * 60))
     fatigue_cost = min(80, 8 * days)
     console.print(
         Panel.fit(
-            f"Tu pars de [cyan]{character.current_village}[/cyan] vers [cyan]{target_village}[/cyan].\n"
-            f"Voyage estime : [yellow]{days} jours[/yellow]. Fatigue accumulee : +{fatigue_cost}.",
-            title="Voyage",
+            t(
+                "cli.play.travel_panel",
+                from_village=character.current_village,
+                to_village=target_village,
+            )
+            + "\n"
+            + t("cli.play.travel_estimate", days=days, fatigue=fatigue_cost),
+            title=t("cli.play.travel_title"),
             border_style="cyan",
         )
     )
@@ -3320,13 +3456,13 @@ def _travel_flow(character, world, target_village: str):
 def _desertion_flow(character, world):
     """Le joueur abandonne son village. Reputation chute, status nukenin, location = wilderness."""
     if character.is_missing_nin:
-        console.print("[yellow]Tu es deja un nukenin. Inutile de redecla la fuite.[/yellow]")
+        console.print(t("cli.play.already_nukenin"))
         return character, world
     if not Prompt.ask(
-        "[bold red]Tu vas tout abandonner et devenir nukenin. Confirmer ? (oui/non)[/bold red]",
+        f"[bold red]{t('cli.play.confirm_desertion')}[/bold red]",
         default="non",
     ).strip().lower().startswith("o"):
-        console.print("[dim]Abandonne. Tu restes loyal.[/dim]")
+        console.print(t("cli.play.desertion_aborted"))
         return character, world
     village = character.current_village
     new_char = character.model_copy(
@@ -3340,10 +3476,12 @@ def _desertion_flow(character, world):
     new_char = add_reputation(new_char, village, -100)
     console.print(
         Panel.fit(
-            f"[bold red]Tu desertes {village}.[/bold red]\n"
-            "[dim]Tu brises ton bandeau. Le village te traque desormais. "
-            "Le bingo book va parler de toi.[/dim]",
-            title="Nukenin",
+            t(
+                "cli.play.desertion_panel",
+                village=village,
+                bingo=t("cli.play.bingo_book_warning"),
+            ),
+            title=t("cli.play.nukenin_title"),
             border_style="red",
         )
     )
@@ -3355,7 +3493,7 @@ def _desertion_flow(character, world):
 def _print_biography(character) -> None:
     """Affiche le journal biographique du personnage."""
     if not character.biography_log:
-        console.print(Panel("Aucun evenement biographique enregistre.", title="Biographie"))
+        console.print(Panel(t("cli.play.no_biography"), title=t("cli.play.biography_panel_title")))
         return
     lines = []
     for ev in character.biography_log[-50:]:
@@ -3372,7 +3510,7 @@ def _print_biography(character) -> None:
     console.print(
         Panel(
             "\n".join(lines),
-            title=f"Biographie de {character.name} ({len(character.biography_log)} evenements)",
+            title=t("cli.play.biography_panel_count", name=character.name, count=len(character.biography_log)),
             border_style="cyan",
         )
     )
@@ -3395,7 +3533,7 @@ def _print_knowledge(character) -> None:
         body = ", ".join(character.knowledge.known_locations[-15:])
         sections.append(("[bold blue]Lieux visites/connus[/bold blue]", body))
     if not sections:
-        console.print(Panel("Tu ne sais encore rien d'important.", title="Connaissances"))
+        console.print(Panel(t("cli.play.knowledge_empty"), title=t("cli.play.knowledge_title")))
         return
     body = "\n\n".join(f"{title}\n{content}" for title, content in sections)
     console.print(Panel(body, title="Connaissances", border_style="blue"))
@@ -3405,7 +3543,7 @@ def _print_rumors(world, canon) -> None:
     """Affiche les rumeurs reçues par le joueur."""
     received = [r for r in world.rumors if r.received_by_player]
     if not received:
-        console.print(Panel("Aucune rumeur entendue pour le moment.", title="Rumeurs"))
+        console.print(Panel(t("cli.play.no_rumor_yet"), title=t("cli.play.rumors_panel_title")))
         return
     lines = []
     for r in received[-20:]:
@@ -3416,7 +3554,7 @@ def _print_rumors(world, canon) -> None:
             f"[dim](fid {r.fidelity:.2f}, {r.diffusion_radius})[/dim]"
         )
     console.print(
-        Panel("\n".join(lines), title=f"Rumeurs ({len(received)})", border_style="yellow")
+        Panel("\n".join(lines), title=t("cli.play.rumors_panel_count", count=len(received)), border_style="yellow")
     )
 
 
@@ -3424,7 +3562,7 @@ def _print_breadcrumbs(save_id: str) -> None:
     """Affiche les sous-objectifs reveles non encore accomplis."""
     bcs = save_module.load_breadcrumbs(save_id)
     if not bcs:
-        console.print(Panel("Aucun sous-objectif revele.", title="Pistes"))
+        console.print(Panel(t("cli.play.no_breadcrumb"), title=t("cli.play.pistes_title")))
         return
     revealed = [b for b in bcs if b.revealed]
     pending = [b for b in revealed if not b.completed]
@@ -3440,9 +3578,9 @@ def _print_breadcrumbs(save_id: str) -> None:
         block = "\n".join(f"  [green]v[/green] [dim]{b.description}[/dim]" for b in completed[-10:])
         blocks.append(f"[bold green]Accomplis ({len(completed)})[/bold green]\n{block}")
     if not blocks:
-        console.print(Panel("Aucun sous-objectif revele.", title="Pistes"))
+        console.print(Panel(t("cli.play.no_breadcrumb"), title=t("cli.play.pistes_title")))
         return
-    console.print(Panel("\n\n".join(blocks), title="Pistes", border_style="magenta"))
+    console.print(Panel("\n\n".join(blocks), title=t("cli.play.pistes_title"), border_style="magenta"))
 
 
 def _print_weapons(character) -> None:
@@ -3450,8 +3588,8 @@ def _print_weapons(character) -> None:
     if not character.weapons:
         console.print(
             Panel(
-                "Aucune arme equipee. Achete-en au shop ou recupere-en sur des adversaires.",
-                title="Armes",
+                t("cli.play.no_weapon"),
+                title=t("cli.play.weapons_title"),
             )
         )
         return
@@ -3459,7 +3597,7 @@ def _print_weapons(character) -> None:
     for w in character.weapons:
         marker = " [dim](x" + str(w.quantity) + ")[/dim]" if w.quantity > 1 else ""
         lines.append(f"  [cyan]{w.weapon_id}[/cyan] [dim]({w.quality})[/dim]{marker}")
-    console.print(Panel("\n".join(lines), title=f"Armes ({len(character.weapons)})", border_style="cyan"))
+    console.print(Panel("\n".join(lines), title=t("cli.play.weapons_title_count", count=len(character.weapons)), border_style="cyan"))
 
 
 def _print_summons(character) -> None:
@@ -3467,7 +3605,7 @@ def _print_summons(character) -> None:
     if not character.summons:
         console.print(
             Panel(
-                "Aucun contrat d'invocation signe. Cherche un sannin ou un sage pour en obtenir un.",
+                t("cli.play.no_summon_contract"),
                 title="Invocations",
             )
         )
@@ -3478,39 +3616,49 @@ def _print_summons(character) -> None:
     )
 
 
-CANONICAL_SUMMONS = {
-    "toad": "Crapauds du Mont Myoboku (lignee Jiraiya/Naruto/Minato)",
-    "snake": "Serpents du Mont Ryuchi (lignee Orochimaru/Sasuke)",
-    "slug": "Limaces du Mont Shikkotsu (lignee Tsunade/Sakura)",
-    "hawk": "Faucons (lignee Sasuke post-revolt)",
-    "monkey": "Singes (Hiruzen Sarutobi)",
-    "ninken": "Meute de chiens ninja (lignee Hatake)",
-    "weasel": "Belettes (Temari)",
-    "crow": "Corbeaux (Itachi, Shisui)",
-    "dragon": "Dragons (Kakuzu, lignee rare)",
-}
+CANONICAL_SUMMONS_IDS: tuple[str, ...] = (
+    "toad",
+    "snake",
+    "slug",
+    "hawk",
+    "monkey",
+    "ninken",
+    "weasel",
+    "crow",
+    "dragon",
+)
+
+
+def _summon_label(contract_id: str) -> str:
+    """Resout le libelle localise d'un contrat canonique."""
+    return t(f"cli.play.summons.{contract_id}.label")
 
 
 def _sign_contract_flow(character, contract_name: str):
     """Signe un contrat d'invocation. Heuristique : ouvert a tout nom canonique connu."""
-    canonical = CANONICAL_SUMMONS.get(contract_name)
-    if canonical is None:
+    if contract_name not in CANONICAL_SUMMONS_IDS:
         console.print(
-            f"[yellow]Contrat '{contract_name}' inconnu. "
-            f"Liste : {', '.join(CANONICAL_SUMMONS.keys())}[/yellow]"
+            t(
+                "cli.play.contract_unknown",
+                name=contract_name,
+                available=", ".join(CANONICAL_SUMMONS_IDS),
+            )
         )
         return character
+    canonical = _summon_label(contract_name)
     if contract_name in character.summons:
-        console.print(f"[dim]Tu as deja signe le contrat des {contract_name}.[/dim]")
+        console.print(t("cli.play.contract_already_signed", contract=contract_name))
         return character
     new_summons = [*character.summons, contract_name]
     new_char = character.model_copy(update={"summons": new_summons})
     console.print(
         Panel.fit(
-            f"[bold magenta]Contrat signe : {contract_name}[/bold magenta]\n"
-            f"[dim]{canonical}[/dim]\n"
-            "[dim]Tu peux desormais invoquer une creature de cette lignee avec /invoke <name>.[/dim]",
-            title="Kuchiyose no Jutsu",
+            t(
+                "cli.play.contract_signed_panel",
+                contract=contract_name,
+                canonical=canonical,
+            ),
+            title=t("cli.play.contract_signed_title"),
             border_style="magenta",
         )
     )
@@ -3520,11 +3668,11 @@ def _sign_contract_flow(character, contract_name: str):
 def _invoke_flow(character, contract_name: str):
     """Invocation : consomme 30 chakra, succes selon ninjutsu + chakra_control."""
     if contract_name not in character.summons:
-        console.print(f"[red]Tu n'as pas signe le contrat des {contract_name}.[/red]")
+        console.print(t("cli.play.contract_not_signed", contract=contract_name))
         return character
     if character.chakra.current < 30:
         console.print(
-            f"[red]Pas assez de chakra ({character.chakra.current}/30 requis pour Kuchiyose).[/red]"
+            f"[red]{t('cli.play.summon_insufficient_chakra', current=character.chakra.current, required=30)}[/red]"
         )
         return character
     new_chakra = character.chakra.model_copy(update={"current": character.chakra.current - 30})
@@ -3533,8 +3681,8 @@ def _invoke_flow(character, contract_name: str):
     if skill < 1.5:
         console.print(
             Panel(
-                "Ton invocation rate. Le chakra se dissipe. Tes mains tremblent.",
-                title="Kuchiyose echoue",
+                t("cli.play.summon_failed_msg"),
+                title=t("cli.play.summon_failed_title"),
                 border_style="red",
             )
         )
@@ -3542,18 +3690,16 @@ def _invoke_flow(character, contract_name: str):
     if skill < 3.0:
         console.print(
             Panel(
-                f"Une petite creature de la lignee des {contract_name} apparait. "
-                "Modeste mais fidele.",
-                title="Kuchiyose mineur",
+                t("cli.play.summon_minor_text", contract=contract_name),
+                title=t("cli.play.summon_minor_title"),
                 border_style="cyan",
             )
         )
     else:
         console.print(
             Panel(
-                f"Une creature majeure de la lignee des {contract_name} apparait dans un nuage de fumee. "
-                "Elle attend tes ordres.",
-                title="Kuchiyose majeur",
+                t("cli.play.summon_major_text", contract=contract_name),
+                title=t("cli.play.summon_major_title"),
                 border_style="magenta",
             )
         )
@@ -3602,7 +3748,7 @@ def _llm_reinterpret_if_custom(parsed, intent_text: str, character, world):
         new_parsed = asyncio.run(_do())
         if new_parsed is not None:
             console.print(
-                f"  [dim italic]Action interpretee comme : {new_parsed.action_type.value}[/dim italic]"
+                t("cli.play.action_reinterpreted", action_type=new_parsed.action_type.value)
             )
             return new_parsed
     except Exception as exc:
@@ -3624,9 +3770,12 @@ def _maybe_auto_desert(character, world):
         return character, world
     console.print(
         Panel.fit(
-            f"[bold yellow]Ta reputation a {village} est devenue intenable ({score}). "
-            "Tu peux choisir de fuir avant que la garde ne t'arrete.[/bold yellow]",
-            title="Mise en garde",
+            "[bold yellow]"
+            + t("cli.play.reputation_intenable", village=village, score=score)
+            + " "
+            + t("cli.play.flee_warning")
+            + "[/bold yellow]",
+            title=t("cli.play.warning_title"),
             border_style="yellow",
         )
     )

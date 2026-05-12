@@ -9,126 +9,61 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from shinobi.engine.character import Character, Inventory, OwnedWeapon
+from shinobi.i18n import t
 
 
 @dataclass(frozen=True)
 class ShopItem:
-    """Item achetable dans une boutique."""
+    """Item achetable dans une boutique.
+
+    Le nom et la description sont resolus via i18n a l'affichage
+    (utiliser shop_item_name / shop_item_description).
+    """
 
     id: str
-    name_fr: str
     category: str  # "weapon", "consumable", "scroll", "tool", "clothing"
     base_price_ryos: int
-    description_fr: str
 
 
-# Catalogue universel d'items achetables.
+# Catalogue universel d'items achetables. Les libelles FR/EN sont stockes dans data/i18n.
 ITEM_CATALOG: dict[str, ShopItem] = {
-    "kunai": ShopItem(
-        id="kunai", name_fr="Kunai", category="weapon", base_price_ryos=200,
-        description_fr="Lame ninja standard, lancable ou maniable au corps a corps."
-    ),
-    "shuriken": ShopItem(
-        id="shuriken", name_fr="Shuriken", category="weapon", base_price_ryos=150,
-        description_fr="Etoile a lancer, projectile rapide a longue portee."
-    ),
-    "fuma_shuriken": ShopItem(
-        id="fuma_shuriken", name_fr="Fuma shuriken", category="weapon", base_price_ryos=2500,
-        description_fr="Grand shuriken pliable, tres puissant. Usage tactique."
-    ),
-    "smoke_bomb": ShopItem(
-        id="smoke_bomb", name_fr="Bombe fumigene", category="consumable", base_price_ryos=500,
-        description_fr="Disparait instantanement dans un nuage opaque."
-    ),
-    "explosive_tag": ShopItem(
-        id="explosive_tag", name_fr="Sceau explosif", category="consumable", base_price_ryos=800,
-        description_fr="Parchemin a apposer, explose au declenchement."
-    ),
-    "soldier_pill": ShopItem(
-        id="soldier_pill", name_fr="Pilule du soldat", category="consumable", base_price_ryos=3000,
-        description_fr="Restaure 50% du chakra max. Effets secondaires si abus."
-    ),
-    "blood_pill": ShopItem(
-        id="blood_pill", name_fr="Pilule de sang", category="consumable", base_price_ryos=1500,
-        description_fr="Acceler la regeneration sanguine apres une blessure."
-    ),
-    "antidote": ShopItem(
-        id="antidote", name_fr="Antidote universel", category="consumable", base_price_ryos=2000,
-        description_fr="Neutralise la plupart des poisons ninja."
-    ),
-    "ration_bar": ShopItem(
-        id="ration_bar", name_fr="Ration de mission", category="consumable", base_price_ryos=100,
-        description_fr="Concentre nutritionnel pour une journee."
-    ),
-    "scroll_basic_e": ShopItem(
-        id="scroll_basic_e", name_fr="Parchemin technique E", category="scroll", base_price_ryos=100,
-        description_fr="Technique mineure (Henge, Bunshin, Kawarimi)."
-    ),
-    "scroll_basic_d": ShopItem(
-        id="scroll_basic_d", name_fr="Parchemin technique D", category="scroll", base_price_ryos=1000,
-        description_fr="Technique de niveau genin."
-    ),
-    "scroll_basic_c": ShopItem(
-        id="scroll_basic_c", name_fr="Parchemin technique C", category="scroll", base_price_ryos=10000,
-        description_fr="Technique de niveau chunin (ex: Bunshin no Jutsu de masse)."
-    ),
-    "scroll_basic_b": ShopItem(
-        id="scroll_basic_b", name_fr="Parchemin technique B", category="scroll", base_price_ryos=100000,
-        description_fr="Technique tactique avancee, vendue rarement."
-    ),
-    "scroll_basic_a": ShopItem(
-        id="scroll_basic_a", name_fr="Parchemin technique A", category="scroll", base_price_ryos=1000000,
-        description_fr="Technique d'elite, vendue uniquement aux ninjas confirmes."
-    ),
-    "rope": ShopItem(
-        id="rope", name_fr="Corde ninja", category="tool", base_price_ryos=100,
-        description_fr="Corde renforcee de chakra, immobilise les cibles."
-    ),
-    "wire": ShopItem(
-        id="wire", name_fr="Fil de chakra", category="tool", base_price_ryos=300,
-        description_fr="Fil ultra-fin pour pieges et techniques de fuinjutsu."
-    ),
-    "makibishi": ShopItem(
-        id="makibishi", name_fr="Pointes makibishi", category="tool", base_price_ryos=400,
-        description_fr="Pointes a disperser au sol pour ralentir un poursuivant."
-    ),
-    "scope": ShopItem(
-        id="scope", name_fr="Lunette ninja", category="tool", base_price_ryos=2000,
-        description_fr="Optique a longue portee pour reconnaissance discrete."
-    ),
-    "sealing_scroll": ShopItem(
-        id="sealing_scroll", name_fr="Parchemin de scellement", category="tool", base_price_ryos=1500,
-        description_fr="Permet de stocker et transporter des objets dans un sceau."
-    ),
-    "ninja_outfit": ShopItem(
-        id="ninja_outfit", name_fr="Tenue ninja standard", category="clothing", base_price_ryos=5000,
-        description_fr="Tunique flexible et resistante, adaptable a toutes missions."
-    ),
-    "flak_jacket": ShopItem(
-        id="flak_jacket", name_fr="Veste de chunin", category="clothing", base_price_ryos=15000,
-        description_fr="Veste tactique chunin avec poches multiples et protection legere."
-    ),
-    "anbu_armor": ShopItem(
-        id="anbu_armor", name_fr="Armure Anbu", category="clothing", base_price_ryos=80000,
-        description_fr="Armure ceramique tres resistante, masque inclus. Reservee aux Anbu."
-    ),
-    "headband": ShopItem(
-        id="headband", name_fr="Bandeau de village", category="clothing", base_price_ryos=2000,
-        description_fr="Bandeau frontal avec embleme du village. Symbole d'appartenance."
-    ),
-    "first_aid_kit": ShopItem(
-        id="first_aid_kit", name_fr="Trousse medicale", category="consumable", base_price_ryos=3500,
-        description_fr="Bandages, sutures, herbes medicinales pour soins de terrain."
-    ),
-    "ramen_bowl": ShopItem(
-        id="ramen_bowl", name_fr="Bol de ramen", category="consumable", base_price_ryos=300,
-        description_fr="Repas chaud, restaure une partie de la fatigue."
-    ),
-    "sake_jar": ShopItem(
-        id="sake_jar", name_fr="Jarre de sake", category="consumable", base_price_ryos=1500,
-        description_fr="Boisson alcoolisee. Effets variables selon la consommation."
-    ),
+    "kunai": ShopItem(id="kunai", category="weapon", base_price_ryos=200),
+    "shuriken": ShopItem(id="shuriken", category="weapon", base_price_ryos=150),
+    "fuma_shuriken": ShopItem(id="fuma_shuriken", category="weapon", base_price_ryos=2500),
+    "smoke_bomb": ShopItem(id="smoke_bomb", category="consumable", base_price_ryos=500),
+    "explosive_tag": ShopItem(id="explosive_tag", category="consumable", base_price_ryos=800),
+    "soldier_pill": ShopItem(id="soldier_pill", category="consumable", base_price_ryos=3000),
+    "blood_pill": ShopItem(id="blood_pill", category="consumable", base_price_ryos=1500),
+    "antidote": ShopItem(id="antidote", category="consumable", base_price_ryos=2000),
+    "ration_bar": ShopItem(id="ration_bar", category="consumable", base_price_ryos=100),
+    "scroll_basic_e": ShopItem(id="scroll_basic_e", category="scroll", base_price_ryos=100),
+    "scroll_basic_d": ShopItem(id="scroll_basic_d", category="scroll", base_price_ryos=1000),
+    "scroll_basic_c": ShopItem(id="scroll_basic_c", category="scroll", base_price_ryos=10000),
+    "scroll_basic_b": ShopItem(id="scroll_basic_b", category="scroll", base_price_ryos=100000),
+    "scroll_basic_a": ShopItem(id="scroll_basic_a", category="scroll", base_price_ryos=1000000),
+    "rope": ShopItem(id="rope", category="tool", base_price_ryos=100),
+    "wire": ShopItem(id="wire", category="tool", base_price_ryos=300),
+    "makibishi": ShopItem(id="makibishi", category="tool", base_price_ryos=400),
+    "scope": ShopItem(id="scope", category="tool", base_price_ryos=2000),
+    "sealing_scroll": ShopItem(id="sealing_scroll", category="tool", base_price_ryos=1500),
+    "ninja_outfit": ShopItem(id="ninja_outfit", category="clothing", base_price_ryos=5000),
+    "flak_jacket": ShopItem(id="flak_jacket", category="clothing", base_price_ryos=15000),
+    "anbu_armor": ShopItem(id="anbu_armor", category="clothing", base_price_ryos=80000),
+    "headband": ShopItem(id="headband", category="clothing", base_price_ryos=2000),
+    "first_aid_kit": ShopItem(id="first_aid_kit", category="consumable", base_price_ryos=3500),
+    "ramen_bowl": ShopItem(id="ramen_bowl", category="consumable", base_price_ryos=300),
+    "sake_jar": ShopItem(id="sake_jar", category="consumable", base_price_ryos=1500),
 }
+
+
+def shop_item_name(item_id: str) -> str:
+    """Resout le nom localise d'un item du catalogue."""
+    return t(f"engine.shop.items.{item_id}.name")
+
+
+def shop_item_description(item_id: str) -> str:
+    """Resout la description localisee d'un item du catalogue."""
+    return t(f"engine.shop.items.{item_id}.description")
 
 
 # Inventaire de chaque village (subset du catalogue + multiplicateur de prix).
@@ -191,8 +126,9 @@ def buy_item(character: Character, item: ShopItem, price: int) -> tuple[Characte
     Les autres vont dans inventory.scrolls ou inventory.misc.
     """
     if character.money < price:
-        return character, f"Pas assez de ryos ({character.money} / {price} requis)."
+        return character, t("engine.shop.buy.insufficient", money=character.money, price=price)
     new_money = character.money - price
+    name = shop_item_name(item.id)
     if item.category == "weapon":
         existing = next((w for w in character.weapons if w.weapon_id == item.id), None)
         if existing:
@@ -201,7 +137,7 @@ def buy_item(character: Character, item: ShopItem, price: int) -> tuple[Characte
         else:
             new_weapons = [*character.weapons, OwnedWeapon(weapon_id=item.id, quantity=1)]
         new_char = character.model_copy(update={"money": new_money, "weapons": new_weapons})
-        return new_char, f"Achete : {item.name_fr} pour {price} ryos. (arme equipee)"
+        return new_char, t("engine.shop.buy.success_weapon", name=name, price=price)
     new_inv_misc = dict(character.inventory.misc)
     if item.category == "scroll":
         new_scrolls = list(character.inventory.scrolls)
@@ -211,19 +147,20 @@ def buy_item(character: Character, item: ShopItem, price: int) -> tuple[Characte
         new_inv_misc[item.id] = new_inv_misc.get(item.id, 0) + 1
         new_inv = character.inventory.model_copy(update={"misc": new_inv_misc})
     new_char = character.model_copy(update={"money": new_money, "inventory": new_inv})
-    return new_char, f"Achete : {item.name_fr} pour {price} ryos."
+    return new_char, t("engine.shop.buy.success", name=name, price=price)
 
 
 def sell_item(character: Character, item_id: str) -> tuple[Character, str]:
     """Vend un item de l'inventaire ou d'arme equipee. Retourne (character, message)."""
     item = ITEM_CATALOG.get(item_id)
     if item is None:
-        return character, f"Item inconnu : {item_id}"
+        return character, t("engine.shop.sell.unknown_item", item_id=item_id)
     sell_price = int(item.base_price_ryos * SELL_RATIO)
+    name = shop_item_name(item.id)
     if item.category == "weapon":
         existing = next((w for w in character.weapons if w.weapon_id == item_id), None)
         if existing is None or existing.quantity <= 0:
-            return character, "Tu n'as pas cette arme."
+            return character, t("engine.shop.sell.no_weapon")
         if existing.quantity > 1:
             updated = existing.model_copy(update={"quantity": existing.quantity - 1})
             new_weapons = [updated if w.weapon_id == item_id else w for w in character.weapons]
@@ -232,16 +169,16 @@ def sell_item(character: Character, item_id: str) -> tuple[Character, str]:
         new_char = character.model_copy(
             update={"money": character.money + sell_price, "weapons": new_weapons}
         )
-        return new_char, f"Vendu : {item.name_fr} pour {sell_price} ryos."
+        return new_char, t("engine.shop.sell.success", name=name, price=sell_price)
     if item.category == "scroll":
         if item_id not in character.inventory.scrolls:
-            return character, "Tu n'as pas ce parchemin."
+            return character, t("engine.shop.sell.no_scroll")
         new_scrolls = list(character.inventory.scrolls)
         new_scrolls.remove(item_id)
         new_inv = character.inventory.model_copy(update={"scrolls": new_scrolls})
     else:
         if character.inventory.misc.get(item_id, 0) <= 0:
-            return character, "Tu n'as pas cet item."
+            return character, t("engine.shop.sell.no_item")
         new_misc = dict(character.inventory.misc)
         new_misc[item_id] -= 1
         if new_misc[item_id] <= 0:
@@ -250,7 +187,7 @@ def sell_item(character: Character, item_id: str) -> tuple[Character, str]:
     new_char = character.model_copy(
         update={"money": character.money + sell_price, "inventory": new_inv}
     )
-    return new_char, f"Vendu : {item.name_fr} pour {sell_price} ryos."
+    return new_char, t("engine.shop.sell.success", name=name, price=sell_price)
 
 
 def get_inventory_summary(

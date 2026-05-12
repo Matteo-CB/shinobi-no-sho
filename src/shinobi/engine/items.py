@@ -8,6 +8,7 @@ from shinobi.engine.character import Character
 from shinobi.engine.progression import (
     apply_fatigue,
 )
+from shinobi.i18n import t
 
 
 @dataclass(frozen=True)
@@ -21,7 +22,10 @@ class ItemEffect:
 def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]:
     """Consomme un item de l'inventaire et applique son effet."""
     if character.inventory.misc.get(item_id, 0) <= 0:
-        return character, ItemEffect(success=False, summary_fr=f"Tu n'as pas d'{item_id} dans ton inventaire.")
+        return character, ItemEffect(
+            success=False,
+            summary_fr=t("engine.items.no_inventory", item_id=item_id),
+        )
 
     new_misc = dict(character.inventory.misc)
     new_misc[item_id] -= 1
@@ -41,7 +45,7 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         new_char = apply_fatigue(new_char, 5)
         return new_char, ItemEffect(
             success=True,
-            summary_fr=f"Tu avales la pilule du soldat. Chakra +{gain}, mais ton corps en paiera le prix plus tard.",
+            summary_fr=t("engine.items.soldier_pill.summary", gain=gain),
         )
 
     if item_id == "blood_pill":
@@ -52,7 +56,7 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         new_char = new_char.with_health(new_health)
         return new_char, ItemEffect(
             success=True,
-            summary_fr=f"Tu avales la pilule de sang. La regeneration s'accelere : HP +{gain_hp}.",
+            summary_fr=t("engine.items.blood_pill.summary", gain=gain_hp),
         )
 
     if item_id == "antidote":
@@ -60,14 +64,14 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         new_char = new_char.with_health(new_health)
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Tu prends l'antidote. Tous les poisons en circulation sont neutralises.",
+            summary_fr=t("engine.items.antidote.summary"),
         )
 
     if item_id == "ration_bar":
         new_char = apply_fatigue(new_char, -10)  # -10 fatigue
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Tu manges la ration. Fatigue legerement reduite.",
+            summary_fr=t("engine.items.ration_bar.summary"),
         )
 
     if item_id == "ramen_bowl":
@@ -78,7 +82,7 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         new_char = new_char.with_health(new_health)
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Le bol de ramen chaud te ravigote. Fatigue -25, HP +10.",
+            summary_fr=t("engine.items.ramen_bowl.summary"),
         )
 
     if item_id == "first_aid_kit":
@@ -92,7 +96,7 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         new_char = new_char.with_health(new_health)
         return new_char, ItemEffect(
             success=True,
-            summary_fr=f"Tu utilises la trousse medicale. HP +{gain_hp}, blessures soignees.",
+            summary_fr=t("engine.items.first_aid_kit.summary", gain=gain_hp),
         )
 
     if item_id == "sake_jar":
@@ -100,22 +104,22 @@ def use_item(character: Character, item_id: str) -> tuple[Character, ItemEffect]
         # Sake = baisse temporaire de perception (non modelisee ici, narratif)
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Tu bois la jarre de sake. Tu te sens plus detendu, mais ta perception en patit.",
+            summary_fr=t("engine.items.sake_jar.summary"),
         )
 
     if item_id == "smoke_bomb":
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Tu actives la bombe fumigene. Un nuage opaque masque ta retraite.",
+            summary_fr=t("engine.items.smoke_bomb.summary"),
         )
 
     if item_id == "explosive_tag":
         return new_char, ItemEffect(
             success=True,
-            summary_fr="Tu apposes le sceau explosif. Pret a declencher.",
+            summary_fr=t("engine.items.explosive_tag.summary"),
         )
 
     return new_char, ItemEffect(
         success=True,
-        summary_fr=f"Tu utilises {item_id}. Effet narratif uniquement, pas de mecanique definie.",
+        summary_fr=t("engine.items.unknown_effect", item_id=item_id),
     )

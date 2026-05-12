@@ -55,7 +55,11 @@ def test_baby_cannot_leave_village(canon) -> None:
     ctx = compute_scene_context(char, world, canon)
     assert not ctx.player_can_leave_village
     assert not ctx.player_combat_capable
-    assert any("trop jeune" in c.lower() for c in ctx.constraints_fr)
+    # Locale-agnostic : la contrainte "trop jeune"/"too young" doit etre generee
+    assert any(
+        ("trop jeune" in c.lower()) or ("too young" in c.lower())
+        for c in ctx.constraints_fr
+    )
 
 
 def test_genin_can_leave_village(canon) -> None:

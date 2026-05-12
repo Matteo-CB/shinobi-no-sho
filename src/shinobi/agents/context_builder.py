@@ -19,27 +19,25 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
+from shinobi.i18n import t
 from shinobi.kg.schema import Canonicity
 from shinobi.kg.social import SocialNetwork
 from shinobi.kg.store import KnowledgeGraphStore
 
-# Relations -> verbe FR pour humaniser la summary
-_RELATION_VERBS_FR: dict[str, str] = {
-    "said_to": "a parle a",
-    "attacked": "a attaque",
-    "traveled_to": "est alle a",
-    "declared_intention": "a declare",
-    "searched_for": "cherche",
-    "plotted_against": "complote contre",
-    "current_village": "reside a",
-    "located_at": "se trouve a",
-    "alive": "est en vie",
-    "rank": "rang",
-    "involves": "implique dans",
-    "has_kekkei_genkai": "porte le kekkei genkai",
-    "is_jinchuriki_of": "est jinchuriki de",
-    "kage": "kage de",
-}
+# Relations dont la verbalisation est gerée via i18n. Les ids de relation
+# inconnus retombent sur l'id brut (cf `_relation_verb`).
+_RELATION_KEYS: frozenset[str] = frozenset({
+    "said_to", "attacked", "traveled_to", "declared_intention", "searched_for",
+    "plotted_against", "current_village", "located_at", "alive", "rank",
+    "involves", "has_kekkei_genkai", "is_jinchuriki_of", "kage",
+})
+
+
+def _relation_verb(relation: str) -> str:
+    """Resout le verbe localise d'une relation KG (fallback sur l'id brut)."""
+    if relation in _RELATION_KEYS:
+        return t(f"agents.context_builder.relation.{relation}")
+    return relation
 
 
 def build_world_summary_for_npc(
@@ -84,12 +82,12 @@ def build_world_summary_for_npc(
 
     lines: list[str] = []
     for fact in personal:
-        verb = _RELATION_VERBS_FR.get(fact.relation, fact.relation)
+        verb = _relation_verb(fact.relation)
         if fact.object:
             lines.append(f"  {fact.subject} {verb} {fact.object}")
         else:
             lines.append(f"  {fact.subject} {verb}")
-    return "Faits connus :\n" + "\n".join(lines)
+    return t("agents.context_builder.world_summary.header") + "\n" + "\n".join(lines)
 
 
 def build_relations_summary_for_npc(
@@ -125,10 +123,16 @@ def build_relations_summary_for_npc(
         sign = "+" if link.strength >= 0 else ""
         scene_tag = " [present]" if other in present_set else ""
         lines.append(
-            f"  {link.link_type} avec {other}: "
-            f"{sign}{link.strength:.2f}{scene_tag}"
+            t(
+                "agents.context_builder.relations.entry",
+                link_type=link.link_type,
+                other=other,
+                sign=sign,
+                strength=f"{link.strength:.2f}",
+                scene_tag=scene_tag,
+            )
         )
-    return "Relations :\n" + "\n".join(lines)
+    return t("agents.context_builder.relations.header") + "\n" + "\n".join(lines)
 
 
 def build_fallback_motivations_from_canon(
@@ -158,23 +162,17 @@ def build_fallback_motivations_from_canon(
     village = getattr(canon_character, "village_of_origin", None)
     if not clan and not village:
         return ""
-    lines: list[str] = ["[fallback canon - profil non enrichi]"]
+    lines: list[str] = [t("agents.context_builder.fallback.header")]
     if clan:
-        lines.append(
-            f"Drive principal : preserver l'honneur et les interets du "
-            f"clan {clan}"
-        )
+        lines.append(t("agents.context_builder.fallback.drive_clan", clan=clan))
     if village:
-        lines.append(
-            f"Drive secondaire : loyaute envers {village} (sauf si clan "
-            f"en conflit avec)"
-        )
+        lines.append(t("agents.context_builder.fallback.drive_village", village=village))
     if clan:
-        lines.append("Ne jamais :")
-        lines.append(f"  - trahir ouvertement le clan {clan}")
+        lines.append(t("agents.context_builder.fallback.never_header"))
+        lines.append(t("agents.context_builder.fallback.never_betray_clan", clan=clan))
         if village:
             lines.append(
-                f"  - causer la chute de {village} pour gain personnel"
+                t("agents.context_builder.fallback.never_destroy_village", village=village)
             )
     return "\n".join(lines)
 
@@ -227,14 +225,14 @@ def build_deep_motivations_text(
     if isinstance(motivations, dict):
         primary = motivations.get("primary")
         if isinstance(primary, str) and primary:
-            lines.append(f"Drive principal : {primary}")
+            lines.append(t("agents.context_builder.deep.drive_primary", value=primary))
         secondary = motivations.get("secondary")
         if isinstance(secondary, str) and secondary:
-            lines.append(f"Drive secondaire : {secondary}")
+            lines.append(t("agents.context_builder.deep.drive_secondary", value=secondary))
 
     red_lines = profile.get("moral_red_lines")
     if isinstance(red_lines, list) and red_lines:
-        lines.append("Ne jamais :")
+        lines.append(t("agents.context_builder.fallback.never_header"))
         for rl in red_lines[:max_red_lines]:
             if isinstance(rl, str) and rl:
                 lines.append(f"  - {rl}")
@@ -243,19 +241,19 @@ def build_deep_motivations_text(
     if isinstance(secrets, list) and secrets:
         for s in secrets[:max_secrets]:
             if isinstance(s, str) and s:
-                lines.append(f"Ambition cachee : {s}")
+                lines.append(t("agents.context_builder.deep.secret_ambition", value=s))
                 break  # un seul secret pour rester compact
 
     fear = profile.get("deepest_fear")
     if isinstance(fear, str) and fear:
         # Cap a 200 chars pour eviter prompts bloated.
         f_short = fear[:200] + ("..." if len(fear) > 200 else "")
-        lines.append(f"Peur profonde : {f_short}")
+        lines.append(t("agents.context_builder.deep.deepest_fear", value=f_short))
 
     self_image = profile.get("self_image")
     if isinstance(self_image, str) and self_image:
         si_short = self_image[:200] + ("..." if len(self_image) > 200 else "")
-        lines.append(f"Image de soi : {si_short}")
+        lines.append(t("agents.context_builder.deep.self_image", value=si_short))
 
     if not lines:
         return ""

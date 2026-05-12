@@ -9,6 +9,7 @@ from shinobi.engine.character import (
     Injury,
 )
 from shinobi.engine.stats import CoreStats, ExtendedStats, aging_decay, aging_growth
+from shinobi.i18n import t
 
 # Stats entrainables et la classe a laquelle elles appartiennent (core ou ext).
 TRAINABLE_CORE = {
@@ -196,8 +197,10 @@ def apply_fatigue(character: Character, amount: int) -> Character:
     return character.with_health(new_health)
 
 
-def apply_damage(character: Character, amount: int, *, description: str = "blessure") -> Character:
+def apply_damage(character: Character, amount: int, *, description: str | None = None) -> Character:
     """Inflige des degats. Si HP <= 0, le perso meurt."""
+    if description is None:
+        description = t("engine.progression.default_injury")
     new_hp = max(0, character.health.hp_current - amount)
     if new_hp == 0:
         return character.model_copy(

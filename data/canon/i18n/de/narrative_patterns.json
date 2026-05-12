@@ -1,0 +1,180 @@
+{
+  "patterns": [
+    {
+      "id": "revelation_en_couches",
+      "title_de": "Offenbarung in aufeinanderfolgenden Schichten",
+      "description_de": "Eine Figur oder ein Ereignis wird zunächst unter einem unvollständigen oder trügerischen Blickwinkel präsentiert. Nachfolgende Offenbarungen, die über mehrere Bögen verteilt sind, kehren die Wahrnehmung des Lesers schrittweise um, wobei jede Schicht die Wahrheit komplexer macht als die vorherige.",
+      "canon_examples": [
+        "Itachi : präsentiert als Verräter und Brudermörder (Teil I), dann als Doppelspion und Opfer zum Schutz Konohas (Sasuke vs Itachi Arc, Shippuden)",
+        "Tobi enthüllt als Obito Uchiha, dessen scheinbarer Tod auf der Kannabi-Brücke Kapitel zuvor gezeigt worden war",
+        "Madara enthüllt als Manipulator von Tobi/Obito, selbst manipuliert durch Weißen Zetsu, der für Kaguya handelt",
+        "Der Kyubi zunächst als reines Monster präsentiert, dann enthüllt als leidendes Wesen mit Namen, Kurama, und komplexer Beziehung zu den Uzumaki",
+        "Die Ursprünge des Dorfes Konoha durch Hashirama-Madara-Rückblicke im Vierter Großer Krieg Arc neu kontextualisiert"
+      ],
+      "when_to_apply_de": "Wenn eine Figur oder eine Vergangenheit abgeschlossen und beurteilt zu sein scheint: eine verborgene Wahrheit reservieren, die die moralische Bedeutung von allem Vorherigen verändert."
+    },
+    {
+      "id": "trahison_preparee_en_germe",
+      "title_de": "Langfristig vorbereiteter Verrat",
+      "description_de": "Diskrete Hinweise werden lange vor einem Verrat oder einer Trennung gestreut. Der Leser kann nachträglich die ignorierten Signale zurückverfolgen. Der Verrat entsteht aus einer alten psychologischen Wunde, niemals aus einer willkürlichen Regung.",
+      "canon_examples": [
+        "Sasuke zeigt von Anfang an eine Besessenheit von Rache und emotionale Distanz, die seine Fahnenflucht zum Tal des Endes ankündigen",
+        "Kabuto, präsentiert als Tsunades Assistent, dann als Doppelspion von Orochimaru seit der Chunin-Prüfung enthüllt",
+        "Obito, Bewunderer von Rin und Kakashi, wechselt nur nach Rins Tod, verursacht durch Kakashi, Saat im Kannabi-Rückblick gelegt",
+        "Danzo: seine unterirdischen Aktionen (Diebstahl von Sharingan-Augen, Manipulation der Stiftung) werden in Fragmenten vor seiner Konfrontation mit Sasuke erwähnt"
+      ],
+      "when_to_apply_de": "Verhaltenshinweise bei der Einführung einer Figur pflanzen, damit ihre Trennung rückblickend unvermeidlich wirkt, niemals willkürlich."
+    },
+    {
+      "id": "redemption_par_dialogue_de_bataille",
+      "title_de": "Erlösung durch Kampfdialog",
+      "description_de": "Der physische Kampf wird von einem verbalen und emotionalen Kampf begleitet. Der Protagonist weigert sich, seinen Gegner zu töten, und versucht, ihn zu verstehen. Der moralische Sieg geht dem physischen Sieg voraus oder ersetzt ihn, und der Antagonist wechselt die Seite oder akzeptiert seinen Tod in Frieden.",
+      "canon_examples": [
+        "Naruto bricht Gaaras Hasszyklus, indem er sein Leid als Waise anerkennt, Chunin Arc und Resonanz zum Rettungs-Gaara Arc",
+        "Naruto erreicht Nagato durch die Erinnerung an Jiraiya und das Konzept des Schmerzkreislaufs, Pain Assault Arc",
+        "Naruto und Sasuke tauschen ihre Überzeugungen während der gesamten Saga bis zum endgültigen Duell im Tal des Endes II aus",
+        "Obito gewinnt seine Menschlichkeit in seinem Dialog mit Naruto auf dem Schlachtfeld des Vierten Großen Krieges zurück",
+        "Gaara überzeugt die Daimyos und Kage, die Shinobi-Allianz durch Worte statt durch Gewalt zu bilden"
+      ],
+      "when_to_apply_de": "Bei einem Kampfhöhepunkt: einen Austausch über gemeinsamen Schmerz integrieren, um den Feind in einen Spiegel des Helden zu verwandeln und eine rein gewalttätige Lösung zu vermeiden."
+    },
+    {
+      "id": "power_up_par_traumatisme",
+      "title_de": "Machterwachen durch Trauma",
+      "description_de": "Eine Figur schaltet ihre Fähigkeiten nur unter extremem Verlust oder Leiden frei oder verstärkt sie. Die Kraft ist somit narrativ kostspielig und jede Machtentwicklung ist mit sichtbarem Trauer verbunden.",
+      "canon_examples": [
+        "Sasuke weckt das Sharingan während des Uchiha-Clan-Massakers durch Itachi",
+        "Sasuke weckt das Mangekyou Sharingan nach Itachis Tod",
+        "Naruto erhält Zugang zu Kyubis Chakra in Momenten der Verzweiflung, besonders wenn Sasuke von Orochimaru gefangen wird",
+        "Kakashi weckt sein Mangekyou Sharingan, nachdem er Rin mit eigener Hand töten musste",
+        "Naruto erhält den Sennin-Modus und dann den Chakra-Modus der Sechs Wege, indem er Jiraiya und dann Kurama spirituell integriert"
+      ],
+      "when_to_apply_de": "Jede Machtentwicklung sollte einem konkreten Verlust vorausgehen, um zu signalisieren, dass Kraft einen messbaren menschlichen Preis hat."
+    },
+    {
+      "id": "mentor_fantome_par_flashback",
+      "title_de": "Phantom-Mentor durch Rückblick reaktiviert",
+      "description_de": "Ein toter Meister lenkt die Handlung weiterhin durch Rückblendszenen, die in Krisenzeiten ausgelöst werden. Seine Lehre, zunächst unvollständig, gewinnt ihre volle Bedeutung erst nach dem Tod oder danach. Der Held erhält somit ein aufgeschobenes Erbe.",
+      "canon_examples": [
+        "Jiraiya tot: seine Worte über den Glauben an die neue Generation kehren zu Naruto während des Pain Arcs zurück und leiten seine Entscheidung, Nagato zu verzeihen",
+        "Hiruzen: seine Lektionen über Konohas Werte werden in Rückblenden während Orochimarus Invasion und des Todes des Dritten Hokage erinnert",
+        "Itachi: alle seine kryptischen Worte zu Sasuke als Kind werden nach seinem Tod neu interpretiert und enthüllen seine wahre Mission",
+        "Minato erscheint in Rückblenden und als Projektion des Kyubi, um sein Vertrauen an Naruto während des Kampfes mit der neunschweifigen Version zu übermitteln"
+      ],
+      "when_to_apply_de": "Einen Mentor sterben lassen, bevor seine Lehre verstanden wird: der Erbe wird während eines Höhepunkts rückblickend verstehen, was die Trauer narrativ produktiv macht."
+    },
+    {
+      "id": "cycle_de_haine_intergenerationnel",
+      "title_de": "Intergenerationeller Hasszyklus",
+      "description_de": "Die Konflikte zwischen aktuellen Figuren wurzeln in Groll, der von Generation zu Generation weitergegeben wird. Kishimoto zeigt, dass Hass eher ein Erbe als eine Wahl ist, und der Protagonist muss diesen Zyklus von innen heraus brechen, nicht durch Gewalt.",
+      "canon_examples": [
+        "Die Senju-Uchiha-Rivalität, die Konoha gründet, wiederholt sich in der Naruto-Sasuke-Dynamik",
+        "Nagato, Erbe des Hasses der Konoha-Kriege, perpetuiert das Leid, das er rächen wollte",
+        "Das System der Jinchuriki erhält das Misstrauen gegenüber Schwanzbestien und ihren Trägern von Generation zu Generation",
+        "Obito reproduziert Madaras Plan, weil Madara ihm eine auf Verlust aufgebaute Weltsicht übermittelt hat",
+        "Der Hass zwischen Shinobi-Dörfern wird als bewusst aufrechterhaltener wirtschaftlicher und politischer Motor der Mächtigen präsentiert"
+      ],
+      "when_to_apply_de": "Einen zentralen Konflikt in einer Geschichte vergangener Generationen verankern, um ihm moralisches Gewicht zu geben und zu zeigen, dass das Brechen des Zyklus ein Heldentum an sich ist."
+    },
+    {
+      "id": "double_identite_masque_visage",
+      "title_de": "Maske und wahres Gesicht",
+      "description_de": "Viele zentrale Figuren tragen eine öffentliche Identität, die eine wahre oder schmerzhaftere Identität verbirgt. Die Enthüllung des wahren Gesichts fällt oft mit einem moralischen Wendepunkt der Geschichte zusammen.",
+      "canon_examples": [
+        "Tobi spielt den harmlosen Narren, bevor er sich als Obito Uchiha enthüllt, der Instigator des Kyubi-Angriffs auf Konoha",
+        "Naruto verbirgt seine Einsamkeit und seinen Schmerz hinter einer lauten und clownhaften Persona seit Kapitel 1",
+        "Itachi behält die Maske des Verräters und Mörders, um seine Schutzsmission bis zu seinem Tod zu verbergen",
+        "Sai verbirgt alle Emotionen wie von Danzo trainiert, sein wahres Gesicht taucht langsam im Kontakt mit Team 7 auf",
+        "Kabuto nimmt nacheinander die Identität des medizinischen Assistenten, des Spions, dann der hybriden Orochimaru-Figur in seiner Suche nach sich selbst an"
+      ],
+      "when_to_apply_de": "Eine wiederkehrende Nebenfigur als Träger einer Maske konstruieren: ihre späte Enthüllung lädt das narrative Interesse neu auf und verteilt die Sympathien des Lesers neu."
+    },
+    {
+      "id": "echo_entre_generations",
+      "title_de": "Strukturelles Echo zwischen Generationen",
+      "description_de": "Situationen, Duo-Dynamiken oder Dilemmata wiederholen sich identisch zwischen Eltern und Kindern oder zwischen Meistern und Schülern. Diese Parallelen werden explizit hervorgehoben, um zu zeigen, dass sich die Geschichte wiederholt, bis ein Held sie bricht.",
+      "canon_examples": [
+        "Naruto-Sasuke exakte Spiegelung von Hashirama-Madara, zwei Rivalen, die sich lieben und um gegensätzliche Visionen kämpfen",
+        "Jiraiya-Minato-Naruto: die Linie des Sensei und des Schülers, die das Ideal perpetuiert, an die neue Generation zu glauben",
+        "Das Trio Naruto-Sasuke-Sakura reproduziert bewusst das Trio Jiraiya-Orochimaru-Tsunade in seiner psychologischen Zusammensetzung",
+        "Die aufeinanderfolgenden Hokages stehen vor der gleichen Gründungsfrage: Wie schützt man Konoha, ohne die Gewalt zu reproduzieren, die es gründet"
+      ],
+      "when_to_apply_de": "Wenn der Held einen großen Entscheidungspunkt erreicht, enthüllen, dass ein Vorfahr oder Mentor genau dieses Dilemma erlebt hat, um die universelle Bedeutung dieser Wahl zu unterstreichen."
+    },
+    {
+      "id": "antagoniste_miroir_du_heros",
+      "title_de": "Antagonist als Spiegel des Protagonisten",
+      "description_de": "Der Hauptfeind teilt die gleichen Ursprünge, die gleiche Einsamkeit oder die gleichen Bestrebungen wie der Held, hat aber gegensätzliche Entscheidungen getroffen. Der Kampf zwischen ihnen ist daher ein verkörpertes philosophisches Debatte, keine einfache Gut-Böse-Opposition.",
+      "canon_examples": [
+        "Nagato wie Naruto: Kriegswaise, von Jiraiya aufgezogen, die gleiche Schmerz erfahren, aber Terror als Antwort gewählt",
+        "Gaara wie Naruto: Jinchuriki, von seinem Dorf abgelehnt, Spiegel dessen, was Naruto ohne seine Bindungen hätte werden können",
+        "Obito wie Naruto: junger idealistischer Shinobi, durch einen Verlust gebrochen, wählt Illusion statt des Schmerzes der realen Welt",
+        "Sasuke wie Naruto: gleiche Kindheitseinsamkeit, gleiche Suche nach Anerkennung, Divergenz nur auf dem Weg, um darauf zu reagieren"
+      ],
+      "when_to_apply_de": "Den Antagonisten als die mögliche Version des Helden konstruieren, die schlecht gelaufen ist: Der Kampf gewinnt dann eine intime Dimension und der Held kann nicht gewinnen, ohne seine eigene Schwäche zu verstehen."
+    },
+    {
+      "id": "guerison_par_reconnaissance",
+      "title_de": "Heilung durch Anerkennung von Leid",
+      "description_de": "Die verletzte Figur heilt nicht durch Kraft oder Sieg, sondern weil eine andere Figur ihren Schmerz benennt und validiert. Diese empathische Anerkennung wird als das einzige Gegenmittel gegen den Hasszyklus präsentiert.",
+      "canon_examples": [
+        "Naruto sagt Gaara, dass er seine Einsamkeit als Jinchuriki versteht, was Gaaras erste Tränen auslöst",
+        "Naruto sagt Nagato, dass sein Schmerz real und legitim ist, bevor er ihm einen anderen Weg anbietet",
+        "Naruto spricht mit Kurama über die Einsamkeit und das Misstrauen, das die Schwanzbestie erlitten hat, und verwandelt ihre Beziehung in ein Bündnis",
+        "Itachi drückt implizit seine Anerkennung gegenüber Sasuke aus, indem er ihm die Wahrheit in ihren letzten Momenten offenbart",
+        "Sakura erkennt Sasukes Leid bei der endgültigen Konfrontation an und weigert sich, ihn auf seinen Status als Feind zu reduzieren"
+      ],
+      "when_to_apply_de": "Bevor sich ein Antagonist wendet, den Helden eine explizite Anerkennung des gegnerischen Schmerzes aussprechen lassen: Die Umwandlung wird glaubwürdig, weil sie motiviert ist, nicht erzwungen."
+    },
+    {
+      "id": "sacrifice_fondateur_cache",
+      "title_de": "Verborgenes Gründungsopfer",
+      "description_de": "Eine Institution, ein Dorf oder eine moralische Ordnung beruht auf einem bewussten und geheim gehaltenen Opfer. Wenn dieses Geheimnis ans Licht kommt, stellt es die Legitimität von allem, was darauf aufgebaut wurde, in Frage.",
+      "canon_examples": [
+        "Konoha beruht auf dem vom Rat befohlenen Uchiha-Clan-Massaker und von Hiruzen geduldet, enthüllt im Sasuke vs Itachi Arc",
+        "Das System der Jinchuriki besteht darin, Kinder wie Naruto und Gaara als Opfer zu bringen, um die militärische Stabilität der Dörfer zu garantieren",
+        "Minato und Kushina sterben bewusst, um den Kyubi in Naruto zu versiegeln, Gründungsopfer der gesamten Figur",
+        "Die Gründung Konohas selbst beruht auf Madaras Verrat durch Hashirama, lange Zeit in der offiziellen Geschichte verborgen"
+      ],
+      "when_to_apply_de": "Ein Gründungsgeheimnis in eine als gerecht präsentierte Institution einführen: Seine Enthüllung schafft eine moralische Krise, die Figuren zwingt, zwischen Loyalität und Wahrheit zu wählen."
+    },
+    {
+      "id": "philosophie_incarnee_dans_le_combat",
+      "title_de": "Philosophie verkörpert in der Kampftechnik",
+      "description_de": "Der Kampfstil einer Figur drückt direkt ihre Weltsicht oder Psychologie aus. Techniken sind nicht neutral: Sie sind Metaphern für das, was sie ist oder was sie zu beweisen versucht.",
+      "canon_examples": [
+        "Naruto nutzt laute, übertriebene und auf Quantität basierende Techniken: Spiegelbild seiner Philosophie der Überwindung durch Anstrengung und Zahl",
+        "Neji kämpft mit dem Byakugan und dem Jyuken und glaubt an das Schicksal: Seine Niederlage gegen Naruto dekonstruiert seine eigene Philosophie durch seine eigene Technik",
+        "Itachis Techniken basieren alle auf Illusion und bewusstem Opfer: Spiegel seines ganzen Lebens",
+        "Rock Lee kämpft ohne Ninjutsu oder Genjutsu, nur mit Taijutsu, verkörpert die Überzeugung, dass reine Arbeit angeborenes Talent überwindet",
+        "Nagatos Rinnegan mit seinen sechs Wegen reproduziert buchstäblich die buddhistischen Konzepte von Tod und Wiedergeburt, die er der Welt aufzwingen will"
+      ],
+      "when_to_apply_de": "Jedes Kampfsystem als Erweiterung der Psychologie der Figur konzipieren, damit Konfrontationen gleichzeitig als Aktion und als Wertedebatte gelesen werden."
+    },
+    {
+      "id": "promesse_comme_moteur_narratif",
+      "title_de": "Versprechen als Antrieb des narrativen Bogens",
+      "description_de": "Ein früh in einem Arc oder in der Serie ausgesprochenes Versprechen strukturiert die gesamte dramatische Progression. Das Versprechen ist eine narrative Schuld, die die Geschichte mit Verzögerung erfüllt, oft unter radikal veränderten Bedingungen.",
+      "canon_examples": [
+        "Naruto verspricht Sakura, Sasuke zurückzubringen: Dieses Versprechen strukturiert die Beziehung zwischen den Figuren über die gesamte Serie",
+        "Naruto verspricht dem sterbenden Neji, niemals aufzugeben, trägt das Gewicht seines Todes als Brennstoff während des Vierten Großen Krieges",
+        "Naruto verspricht sich selbst, Hokage zu werden, seit Kapitel 1: Das Versprechen organisiert seinen Entwicklungsbogen bis zum Abschluss",
+        "Obito verspricht Rin, Hokage zu werden, Versprechen durch seinen scheinbaren Tod gebrochen und in die Rechtfertigung seiner nihilistischen Revolution umgewandelt"
+      ],
+      "when_to_apply_de": "Eine öffentliche Zusage von einer Figur zu Beginn eines Bogens machen: Sie dient als emotionaler Anker und als Messung der Figurenveränderung im Laufe der Zeit."
+    },
+    {
+      "id": "ostracisme_comme_origine_heroique",
+      "title_de": "Ausgrenzung als Ursprung der Größe",
+      "description_de": "Fast alle Figuren, die mächtig oder moralisch vorbildlich geworden sind, haben in der Kindheit soziale Ablehnung erlitten. Die Ausgrenzung wird als die Bedingung präsentiert, die entweder den Helden oder den Tyrannen schmiedet, je nachdem, ob die Figur eine menschliche Bindung findet, um sie zu verankern.",
+      "canon_examples": [
+        "Naruto vom ganzen Dorf als Kyubi-Träger abgelehnt: sein Bedürfnis nach Anerkennung ist die Quelle seiner Kraft und seiner Fehler",
+        "Gaara von seinem Vater und Onkel sogar abgelehnt: Er wird zum Monster, bevor Naruto ihm einen Spiegel seiner selbst anbietet",
+        "Sasuke isoliert durch den Tod seines ganzen Clans: Seine Ausgrenzung ist diffuser, aber ebenso strukturierend für sein Bedürfnis nach Validierung und Rache",
+        "Rock Lee als Ninja ohne natürliches Talent marginalisiert: Seine Ablehnung durch das System bringt ihn dazu, neu zu definieren, was ein Shinobi ist",
+        "Die Schwanzbestien selbst sind ausgestoßene Entitäten und instrumentalisiert, ihre Revolte wird als legitime Reaktion präsentiert"
+      ],
+      "when_to_apply_de": "Die anfängliche Ausgrenzung einer Figur mit Präzision definieren: Sie bestimmt, ob sie zum Retter oder Zerstörer wird, je nach den Bindungen, die sie danach trifft."
+    }
+  ]
+}

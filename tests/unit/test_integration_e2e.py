@@ -102,7 +102,7 @@ def test_full_session_creation_play_save_reload(isolated_saves_dir) -> None:
 
     kunai = ITEM_CATALOG["kunai"]
     character, msg = buy_item(character, kunai, kunai.base_price_ryos)
-    assert "Achete" in msg
+    assert "Purchased" in msg or "Achete" in msg
     assert any(w.weapon_id == "kunai" for w in character.weapons)
 
     # Tour 3 : declare goal + verifie completion
@@ -218,10 +218,10 @@ def test_shop_sell_back_a_weapon() -> None:
     character = _make_character()
     item = ITEM_CATALOG["fuma_shuriken"]
     character, msg = buy_item(character, item, item.base_price_ryos)
-    assert "Achete" in msg
+    assert "Purchased" in msg or "Achete" in msg
     assert any(w.weapon_id == "fuma_shuriken" for w in character.weapons)
     money_before_sell = character.money
     character, msg2 = sell_item(character, "fuma_shuriken")
-    assert "Vendu" in msg2
+    assert "Sold" in msg2 or "Vendu" in msg2
     assert character.money > money_before_sell
     assert not any(w.weapon_id == "fuma_shuriken" for w in character.weapons)
